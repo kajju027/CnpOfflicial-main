@@ -90,19 +90,28 @@ html {
 }
 
 body {
-  background-color: #e8ecf2;
+  background-color: #e5eaf1;
   background-image:
-    radial-gradient(circle, rgba(0,0,0,0.035) 1px, transparent 1px),
-    radial-gradient(ellipse at 15% 35%, rgba(13,110,253,0.065) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 15%, rgba(67,160,71,0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 95%, rgba(13,110,253,0.035) 0%, transparent 40%);
-  background-size: 18px 18px, 100% 100%, 100% 100%, 100% 100%;
+    repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(0,0,0,0.018) 27px, rgba(0,0,0,0.018) 28px),
+    repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(0,0,0,0.018) 27px, rgba(0,0,0,0.018) 28px),
+    radial-gradient(ellipse at 15% 25%, rgba(13,110,253,0.09) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 15%, rgba(67,160,71,0.065) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 85%, rgba(13,110,253,0.055) 0%, transparent 45%),
+    radial-gradient(ellipse at 70% 55%, rgba(139,92,246,0.04) 0%, transparent 40%);
+  background-size: 28px 28px, 28px 28px, 200% 200%, 200% 200%, 200% 200%, 200% 200%;
+  animation: liquidGrid 20s ease-in-out infinite;
   font-family: 'Alata', sans-serif;
   display: flex;
   justify-content: center;
   padding: 10px;
   min-height: 100vh;
   -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes liquidGrid {
+  0%, 100% { background-position: 0 0, 0 0, 0% 0%, 100% 0%, 50% 100%, 70% 50%; }
+  33% { background-position: 0 0, 0 0, 40% 30%, 60% 40%, 30% 50%, 50% 30%; }
+  66% { background-position: 0 0, 0 0, 70% 60%, 30% 70%, 80% 20%, 40% 80%; }
 }
 
 .container {
@@ -135,10 +144,8 @@ body {
 .card::before {
   content: '';
   position: absolute;
-  top: -40%;
-  left: -40%;
-  width: 180%;
-  height: 180%;
+  top: -40%; left: -40%;
+  width: 180%; height: 180%;
   background: radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.07) 0%, transparent 45%);
   pointer-events: none;
 }
@@ -271,10 +278,8 @@ body {
 .info-card::after {
   content: '';
   position: absolute;
-  top: -25px;
-  right: -25px;
-  width: 80px;
-  height: 80px;
+  top: -25px; right: -25px;
+  width: 80px; height: 80px;
   border-radius: 50%;
   opacity: 0.5;
   pointer-events: none;
@@ -287,15 +292,15 @@ body {
 .info-card:active { transform: translateY(0) scale(0.995); }
 
 .join-card {
-  border-top: 1.5px solid rgba(67,160,71,0.12);
-  border-bottom: 1.5px solid rgba(67,160,71,0.12);
+  border-top: 1.5px solid rgba(67,160,71,0.2);
+  border-bottom: 1.5px solid rgba(67,160,71,0.2);
   border-left: 4px solid #43A047;
   border-right: 4px solid #43A047;
 }
 
 .share-card {
-  border-top: 1.5px solid rgba(13,110,253,0.12);
-  border-bottom: 1.5px solid rgba(13,110,253,0.12);
+  border-top: 1.5px solid rgba(13,110,253,0.2);
+  border-bottom: 1.5px solid rgba(13,110,253,0.2);
   border-left: 4px solid #0d6efd;
   border-right: 4px solid #0d6efd;
 }
@@ -464,15 +469,10 @@ body {
 .visit-btn-slide { display: inline-block; background: #fff; color: #000; font-size: 10px; font-weight: 700; padding: 5px 12px; border-radius: 6px; text-decoration: none; transition: all 0.2s ease; }
 .visit-btn-slide:hover { background: #BFFF00; box-shadow: 0 0 8px rgba(191,255,0,0.2); }
 
-.panel-footer { padding: 11px; border-top: 1px solid rgba(255,255,255,0.04); background: rgba(8,8,11,0.97); margin-top: auto; display: flex; flex-direction: column; gap: 8px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-
-.panel-online-row { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 6px 0; }
-.panel-online-label { color: #555; font-size: 11px; font-weight: 500; }
-.panel-online-num { color: #BFFF00; font-size: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; }
-
-.live-chat-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: linear-gradient(135deg, #0d6efd, #0a58ca); color: #fff; padding: 11px; border-radius: 9px; text-decoration: none; font-weight: 600; font-size: 13px; transition: all 0.25s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 3px 10px rgba(13,110,253,0.14); -webkit-user-select: none; user-select: none; }
-.live-chat-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(13,110,253,0.25); }
-.live-chat-btn:active { transform: scale(0.97); transition-duration: 0.06s; }
+.panel-footer { padding: 11px; border-top: 1px solid rgba(255,255,255,0.04); background: rgba(8,8,11,0.97); margin-top: auto; }
+.panel-footer .live-chat-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: linear-gradient(135deg, #0d6efd, #0a58ca); color: #fff; padding: 11px; border-radius: 9px; text-decoration: none; font-weight: 600; font-size: 13px; transition: all 0.25s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 3px 10px rgba(13,110,253,0.14); -webkit-user-select: none; user-select: none; }
+.panel-footer .live-chat-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(13,110,253,0.25); }
+.panel-footer .live-chat-btn:active { transform: scale(0.97); transition-duration: 0.06s; }
 
 .no-notification { text-align: center; color: #4a4a4a; padding: 34px 16px; font-size: 13px; }
 
@@ -544,10 +544,6 @@ body {
   <div class="notification-list" id="notificationList"></div>
 
   <div class="panel-footer">
-    <div class="panel-online-row">
-      <span class="panel-online-label">Online Now :</span>
-      <span class="panel-online-num" id="panelCount">--</span>
-    </div>
     <a href="/Feedback" class="live-chat-btn" id="liveChatBtn">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
@@ -606,7 +602,6 @@ body {
     </button>
   </div>
 
-	
   <div class="site-footer">
     <div class="footer-divider"></div>
     <div class="footer-watching">
