@@ -1,11 +1,10 @@
 /* ═══════════════════════════════════════════════════
-   Cricket News Point — Stream Player v2.0
+   Cricket News Point — Light Theme v2.0
    ═══════════════════════════════════════════════════ */
 
 
 /* ─────────────────────────────────────────
    LOADER
-   Fades out and hides the loading screen
    ───────────────────────────────────────── */
 function hideLoader() {
     var loader = document.getElementById("loadingScreen");
@@ -19,8 +18,6 @@ function hideLoader() {
 
 /* ─────────────────────────────────────────
    POPUP — WhatsApp Join Logic
-   - Saves join state to localStorage
-   - Forces join after 3 skips
    ───────────────────────────────────────── */
 function joinNow() {
     localStorage.setItem('hasJoined', 'true');
@@ -51,7 +48,6 @@ function showPopup() {
 
 /* ─────────────────────────────────────────
    ORIENTATION LOCK
-   Locks landscape on fullscreen, CSS rotate fallback
    ───────────────────────────────────────── */
 function lockLandscape() {
     try {
@@ -75,7 +71,7 @@ function unlockOrientation() {
         } else if (window.screen && window.screen.unlockOrientation) {
             window.screen.unlockOrientation();
         }
-    } catch (e) { /* silent */ }
+    } catch (e) {}
 }
 
 function applyRotateCssFallback() {
@@ -112,40 +108,33 @@ document.addEventListener('msfullscreenchange', onFullScreenChange);
 
 
 /* ─────────────────────────────────────────
-   APP INITIALIZATION
-   Fetches stream data from two JSON sources,
-   matches by ID, renders appropriate UI
+   APP INIT
    ───────────────────────────────────────── */
 async function initializeApp() {
     try {
-        var jsonUrl1 = 'https://sayan-json-official.pages.dev/loura.json';
-        var jsonUrl2 = 'https://allrounderid2.pages.dev/id.json';
-
         var results = await Promise.allSettled([
-            fetch(jsonUrl1),
-            fetch(jsonUrl2)
+            fetch('https://sayan-json-official.pages.dev/loura.json'),
+            fetch('https://allrounderid2.pages.dev/id.json')
         ]);
 
-        var data1 = [];
-        var data2 = [];
+        var data1 = [], data2 = [];
 
         if (results[0].status === 'fulfilled' && results[0].value.ok) {
-            var json1 = await results[0].value.json();
-            data1 = json1.iframes || [];
+            var j1 = await results[0].value.json();
+            data1 = j1.iframes || [];
         }
         if (results[1].status === 'fulfilled' && results[1].value.ok) {
-            var json2 = await results[1].value.json();
-            data2 = json2.iframes || [];
+            var j2 = await results[1].value.json();
+            data2 = j2.iframes || [];
         }
 
-        var params = new URLSearchParams(window.location.search);
-        var streamId = params.get('id');
+        var streamId = new URLSearchParams(window.location.search).get('id');
 
-        var streamData = data1.find(function(item) { return item.id === streamId; }) ||
-                         data2.find(function(item) { return item.id === streamId; });
+        var stream = data1.find(function(i) { return i.id === streamId; }) ||
+                    data2.find(function(i) { return i.id === streamId; });
 
-        if (streamData) {
-            renderIframeUI(streamData);
+        if (stream) {
+            renderIframeUI(stream);
             setTimeout(showPopup, 1000);
         } else {
             renderErrorUI();
@@ -155,24 +144,21 @@ async function initializeApp() {
         renderErrorUI();
     }
 
-    /* Start Supercounters extraction */
     startCounterExtraction();
-
     hideLoader();
 }
 
 
 /* ─────────────────────────────────────────
-   RENDER: Stream Player Page
-   Header → Player → WhatsApp Card → Share Card
+   RENDER: Stream Page
+   Header (no live badge) → Player → Join Card only
    ───────────────────────────────────────── */
 function renderIframeUI(data) {
-    var content = document.getElementById('stream-content');
+    var el = document.getElementById('stream-content');
 
-    content.innerHTML =
+    el.innerHTML =
         '<div class="stream-header">' +
             '<h1>' + data.name + '</h1>' +
-            '<div class="live-badge"><i class="fa-solid fa-circle"></i> LIVE</div>' +
         '</div>' +
 
         '<div id="player-container">' +
@@ -186,62 +172,15 @@ function renderIframeUI(data) {
 
         '<div class="info-card">' +
             '<div class="action-title">' +
-                '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:#5b8def;width:14px;height:14px;">' +
+                '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:#059669;width:14px;height:14px;">' +
                     '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>' +
                 '</svg>' +
-                '<span style="font-weight:500;color:#6c7594;font-size:.78rem;">Follow for Updates</span>' +
+                '<span style="font-weight:500;color:#6b7280;font-size:.78rem;">Join for Instant Updates</span>' +
             '</div>' +
             '<a href="https://t.me/+dxIv8TLRVhU3OGQ1" target="_blank" rel="noopener" class="action-button">' +
                 '<span style="font-weight:500;">Join WhatsApp Channel</span>' +
             '</a>' +
-        '</div>' +
-
-        '<div class="info-card">' +
-            '<div class="action-title">' +
-                '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:#5b8def;width:14px;height:14px;">' +
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>' +
-                '</svg>' +
-                '<span style="font-weight:500;color:#6c7594;font-size:.78rem;">Share With Friends</span>' +
-            '</div>' +
-            '<button class="action-button" id="shareButton">' +
-                '<span style="font-weight:500;">Share This Stream</span>' +
-            '</button>' +
         '</div>';
-
-    /* Share button logic */
-    var shareBtn = document.getElementById('shareButton');
-    shareBtn.addEventListener('click', function() {
-        var shareData = {
-            title: data.name,
-            text: data.name + '\n\nFrom Cricket News Point\n\nWatch Live Cricket Streaming Free in HD!',
-            url: window.location.href
-        };
-        if (navigator.share) {
-            navigator.share(shareData).then(function() {
-                setShareFeedback(shareBtn, 'Shared Successfully');
-            }).catch(function() {
-                fallbackCopy(data.name, shareBtn);
-            });
-        } else {
-            fallbackCopy(data.name, shareBtn);
-        }
-    });
-
-    function fallbackCopy(name, btn) {
-        var text = name + '\n\nFrom Cricket News Point\n\n' + window.location.href;
-        navigator.clipboard.writeText(text).then(function() {
-            setShareFeedback(btn, 'Link Copied');
-        });
-    }
-
-    function setShareFeedback(btn, msg) {
-        btn.innerHTML = '<span style="font-weight:500;">' + msg + '</span>';
-        btn.classList.add('copied');
-        setTimeout(function() {
-            btn.innerHTML = '<span style="font-weight:500;">Share This Stream</span>';
-            btn.classList.remove('copied');
-        }, 2000);
-    }
 
     startViewCounter(data.id);
 }
@@ -249,13 +188,13 @@ function renderIframeUI(data) {
 
 /* ─────────────────────────────────────────
    RENDER: Error Page
-   No-signal icon + 2×2 action card grid
+   No-signal icon + 2×2 grid (blue/blue/green/green)
    ───────────────────────────────────────── */
 function renderErrorUI() {
-    var content = document.getElementById('stream-content');
+    var el = document.getElementById('stream-content');
     document.title = "Signal Lost";
 
-    content.innerHTML =
+    el.innerHTML =
         '<div class="error-container">' +
             '<div class="err-icon-wrap">' +
                 '<svg viewBox="0 0 24 24">' +
@@ -310,71 +249,54 @@ function renderErrorUI() {
 
 /* ─────────────────────────────────────────
    SUPERCOUNTERS EXTRACTION
-   Hidden div → poll → extract number → display
-   Falls back to "770" if blocked/unavailable
+   Hidden div → poll → extract → display → fallback 770
    ───────────────────────────────────────── */
-
-/* Extracts the count from hidden Supercounters DOM */
 function extractCounter() {
     var hidden = document.getElementById('sc-hidden');
     if (!hidden) return null;
 
-    /* Step 1: Check <img> alt attribute */
     var img = hidden.querySelector('img');
     if (img && img.alt) {
-        var num = parseInt(img.alt, 10);
-        if (!isNaN(num) && num > 0) return num;
+        var n = parseInt(img.alt, 10);
+        if (!isNaN(n) && n > 0) return n;
     }
 
-    /* Step 2: Check <span> textContent */
     var span = hidden.querySelector('span');
     if (span && span.textContent) {
-        var num2 = parseInt(span.textContent, 10);
-        if (!isNaN(num2) && num2 > 0) return num2;
+        var n2 = parseInt(span.textContent, 10);
+        if (!isNaN(n2) && n2 > 0) return n2;
     }
 
-    /* Step 3: Scan all children for any valid number */
-    var children = hidden.querySelectorAll('*');
-    for (var i = 0; i < children.length; i++) {
-        var text = (children[i].alt || children[i].textContent || '').trim();
-        var num3 = parseInt(text, 10);
-        if (!isNaN(num3) && num3 > 0) return num3;
+    var all = hidden.querySelectorAll('*');
+    for (var i = 0; i < all.length; i++) {
+        var t = (all[i].alt || all[i].textContent || '').trim();
+        var n3 = parseInt(t, 10);
+        if (!isNaN(n3) && n3 > 0) return n3;
     }
-
     return null;
 }
 
-/* Polls hidden div every 500ms, max 15 attempts */
 function startCounterExtraction() {
     var attempts = 0;
-    var maxAttempts = 15;
     var found = false;
 
     var poll = setInterval(function() {
         attempts++;
         var count = extractCounter();
-
         if (count !== null) {
             clearInterval(poll);
             found = true;
             displayCounter(count);
         }
-
-        if (attempts >= maxAttempts) {
-            clearInterval(poll);
-        }
+        if (attempts >= 15) clearInterval(poll);
     }, 500);
 
-    /* Fallback: show 770 after 3.5s if extraction never succeeded */
     setTimeout(function() {
-        var el = document.getElementById('footerCount');
-        if (el && el.textContent === '--') {
-            displayCounter(770);
-        }
+        var fc = document.getElementById('footerCount');
+        if (fc && fc.textContent === '--') displayCounter(770);
     }, 3500);
 }
 
-/* Injects extracted number into footer display */
 function displayCounter(num) {
     var el = document.getElementById('footerCount');
     if (el) el.textContent = num;
@@ -382,26 +304,23 @@ function displayCounter(num) {
 
 
 /* ─────────────────────────────────────────
-   VIEW COUNTER
-   Fetches from API, formats K/M, blue toggle
+   VIEW COUNTER — K/M toggle
    ───────────────────────────────────────── */
 var globalRawViews = 0;
 var isMillionCycleState = false;
 
-/* Toggles between K and M display for large numbers */
 function startMillionToggleCycle() {
-    (function runCycle() {
+    (function run() {
         isMillionCycleState = false;
         updateDisplay();
         setTimeout(function() {
             isMillionCycleState = true;
             updateDisplay();
-            setTimeout(runCycle, 6000);
+            setTimeout(run, 6000);
         }, 25000);
     })();
 }
 
-/* Formats the raw number and updates the DOM */
 function updateDisplay() {
     var el = document.getElementById("viewCount");
     if (!el) return;
@@ -412,8 +331,7 @@ function updateDisplay() {
         return;
     }
 
-    var str = "";
-    var isBlue = false;
+    var str = "", isBlue = false;
 
     if (globalRawViews < 10000) {
         str = globalRawViews + " Views";
@@ -432,20 +350,18 @@ function updateDisplay() {
     }
 
     el.innerText = str;
-    el.style.color = isBlue ? "#5b8def" : "#ffffff";
+    el.style.color = isBlue ? "#60a5fa" : "#ffffff";
 }
 
-/* Fetches current view count from API */
 async function fetchViews(streamId) {
     try {
         var res = await fetch('https://sayan-prime.pages.dev/api/get?key=' + streamId, {
-            method: 'GET',
-            credentials: 'omit'
+            method: 'GET', credentials: 'omit'
         });
-        if (!res.ok) throw new Error('Network error');
+        if (!res.ok) throw new Error('err');
         var json = await res.json();
         if (json.total) globalRawViews = parseInt(json.total, 10);
-    } catch (err) {
+    } catch (e) {
         if (globalRawViews === 0) {
             var el = document.getElementById("viewCount");
             if (el) el.innerText = "N/A";
@@ -454,13 +370,12 @@ async function fetchViews(streamId) {
     updateDisplay();
 }
 
-/* Registers a hit, fetches initial count, starts polling */
 async function startViewCounter(streamId) {
     try {
         await fetch('https://sayan-prime.pages.dev/api/hit?key=' + streamId + '&unique=1', {
             credentials: 'omit'
         });
-    } catch (e) { /* silent */ }
+    } catch (e) {}
 
     await fetchViews(streamId);
     setInterval(function() { fetchViews(streamId); }, 100000);
