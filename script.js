@@ -1,11 +1,7 @@
 /* ═══════════════════════════════════════════════════
-   Cricket News Point — Light Theme v2.0
+   Cricket News Point — Blue Light Theme
    ═══════════════════════════════════════════════════ */
 
-
-/* ─────────────────────────────────────────
-   LOADER
-   ───────────────────────────────────────── */
 function hideLoader() {
     var loader = document.getElementById("loadingScreen");
     if (loader) {
@@ -15,10 +11,6 @@ function hideLoader() {
     }
 }
 
-
-/* ─────────────────────────────────────────
-   POPUP — WhatsApp Join Logic
-   ───────────────────────────────────────── */
 function joinNow() {
     localStorage.setItem('hasJoined', 'true');
     window.open("https://t.me/+dxIv8TLRVhU3OGQ1", "_blank");
@@ -45,10 +37,6 @@ function showPopup() {
     document.getElementById("popup").classList.add("show");
 }
 
-
-/* ─────────────────────────────────────────
-   ORIENTATION LOCK
-   ───────────────────────────────────────── */
 function lockLandscape() {
     try {
         if ('orientation' in screen && screen.orientation && screen.orientation.lock) {
@@ -106,10 +94,6 @@ document.addEventListener('fullscreenchange', onFullScreenChange);
 document.addEventListener('webkitfullscreenchange', onFullScreenChange);
 document.addEventListener('msfullscreenchange', onFullScreenChange);
 
-
-/* ─────────────────────────────────────────
-   APP INIT
-   ───────────────────────────────────────── */
 async function initializeApp() {
     try {
         var results = await Promise.allSettled([
@@ -148,11 +132,6 @@ async function initializeApp() {
     hideLoader();
 }
 
-
-/* ─────────────────────────────────────────
-   RENDER: Stream Page
-   Header (no live badge) → Player → Join Card only
-   ───────────────────────────────────────── */
 function renderIframeUI(data) {
     var el = document.getElementById('stream-content');
 
@@ -172,7 +151,7 @@ function renderIframeUI(data) {
 
         '<div class="info-card">' +
             '<div class="action-title">' +
-                '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:#059669;width:14px;height:14px;">' +
+                '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:#2563eb;width:14px;height:14px;">' +
                     '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>' +
                 '</svg>' +
                 '<span style="font-weight:500;color:#6b7280;font-size:.78rem;">Join for Instant Updates</span>' +
@@ -185,11 +164,6 @@ function renderIframeUI(data) {
     startViewCounter(data.id);
 }
 
-
-/* ─────────────────────────────────────────
-   RENDER: Error Page
-   No-signal icon + 2×2 grid (blue/blue/green/green)
-   ───────────────────────────────────────── */
 function renderErrorUI() {
     var el = document.getElementById('stream-content');
     document.title = "Signal Lost";
@@ -246,51 +220,30 @@ function renderErrorUI() {
         '</div>';
 }
 
-
-/* ─────────────────────────────────────────
-   SUPERCOUNTERS EXTRACTION
-   Hidden div → poll → extract → display → fallback 770
-   ───────────────────────────────────────── */
+/* ── Supercounters Extraction ── */
 function extractCounter() {
     var hidden = document.getElementById('sc-hidden');
     if (!hidden) return null;
-
     var img = hidden.querySelector('img');
-    if (img && img.alt) {
-        var n = parseInt(img.alt, 10);
-        if (!isNaN(n) && n > 0) return n;
-    }
-
+    if (img && img.alt) { var n = parseInt(img.alt, 10); if (!isNaN(n) && n > 0) return n; }
     var span = hidden.querySelector('span');
-    if (span && span.textContent) {
-        var n2 = parseInt(span.textContent, 10);
-        if (!isNaN(n2) && n2 > 0) return n2;
-    }
-
+    if (span && span.textContent) { var n2 = parseInt(span.textContent, 10); if (!isNaN(n2) && n2 > 0) return n2; }
     var all = hidden.querySelectorAll('*');
     for (var i = 0; i < all.length; i++) {
         var t = (all[i].alt || all[i].textContent || '').trim();
-        var n3 = parseInt(t, 10);
-        if (!isNaN(n3) && n3 > 0) return n3;
+        var n3 = parseInt(t, 10); if (!isNaN(n3) && n3 > 0) return n3;
     }
     return null;
 }
 
 function startCounterExtraction() {
     var attempts = 0;
-    var found = false;
-
     var poll = setInterval(function() {
         attempts++;
         var count = extractCounter();
-        if (count !== null) {
-            clearInterval(poll);
-            found = true;
-            displayCounter(count);
-        }
+        if (count !== null) { clearInterval(poll); displayCounter(count); }
         if (attempts >= 15) clearInterval(poll);
     }, 500);
-
     setTimeout(function() {
         var fc = document.getElementById('footerCount');
         if (fc && fc.textContent === '--') displayCounter(770);
@@ -302,20 +255,15 @@ function displayCounter(num) {
     if (el) el.textContent = num;
 }
 
-
-/* ─────────────────────────────────────────
-   VIEW COUNTER — K/M toggle
-   ───────────────────────────────────────── */
+/* ── View Counter ── */
 var globalRawViews = 0;
 var isMillionCycleState = false;
 
 function startMillionToggleCycle() {
     (function run() {
-        isMillionCycleState = false;
-        updateDisplay();
+        isMillionCycleState = false; updateDisplay();
         setTimeout(function() {
-            isMillionCycleState = true;
-            updateDisplay();
+            isMillionCycleState = true; updateDisplay();
             setTimeout(run, 6000);
         }, 25000);
     })();
@@ -324,66 +272,35 @@ function startMillionToggleCycle() {
 function updateDisplay() {
     var el = document.getElementById("viewCount");
     if (!el) return;
-
-    if (globalRawViews === 0 || isNaN(globalRawViews)) {
-        el.innerText = "0 Views";
-        el.style.color = "#ffffff";
-        return;
-    }
-
+    if (globalRawViews === 0 || isNaN(globalRawViews)) { el.innerText = "0 Views"; el.style.color = "#ffffff"; return; }
     var str = "", isBlue = false;
-
-    if (globalRawViews < 10000) {
-        str = globalRawViews + " Views";
-    } else if (globalRawViews < 1500000) {
-        str = (globalRawViews / 1000).toFixed(1) + "K Views";
-    } else if (globalRawViews < 100000000) {
-        if (isMillionCycleState) {
-            str = (globalRawViews / 1000000).toFixed(2) + "M Views";
-            isBlue = true;
-        } else {
-            str = (globalRawViews / 1000).toFixed(1) + "K Views";
-        }
-    } else {
-        str = (globalRawViews / 1000000).toFixed(2) + "M Views";
-        isBlue = true;
-    }
-
+    if (globalRawViews < 10000) { str = globalRawViews + " Views"; }
+    else if (globalRawViews < 1500000) { str = (globalRawViews / 1000).toFixed(1) + "K Views"; }
+    else if (globalRawViews < 100000000) {
+        if (isMillionCycleState) { str = (globalRawViews / 1000000).toFixed(2) + "M Views"; isBlue = true; }
+        else { str = (globalRawViews / 1000).toFixed(1) + "K Views"; }
+    } else { str = (globalRawViews / 1000000).toFixed(2) + "M Views"; isBlue = true; }
     el.innerText = str;
     el.style.color = isBlue ? "#60a5fa" : "#ffffff";
 }
 
 async function fetchViews(streamId) {
     try {
-        var res = await fetch('https://sayan-prime.pages.dev/api/get?key=' + streamId, {
-            method: 'GET', credentials: 'omit'
-        });
+        var res = await fetch('https://sayan-prime.pages.dev/api/get?key=' + streamId, { method: 'GET', credentials: 'omit' });
         if (!res.ok) throw new Error('err');
         var json = await res.json();
         if (json.total) globalRawViews = parseInt(json.total, 10);
     } catch (e) {
-        if (globalRawViews === 0) {
-            var el = document.getElementById("viewCount");
-            if (el) el.innerText = "N/A";
-        }
+        if (globalRawViews === 0) { var el = document.getElementById("viewCount"); if (el) el.innerText = "N/A"; }
     }
     updateDisplay();
 }
 
 async function startViewCounter(streamId) {
-    try {
-        await fetch('https://sayan-prime.pages.dev/api/hit?key=' + streamId + '&unique=1', {
-            credentials: 'omit'
-        });
-    } catch (e) {}
-
+    try { await fetch('https://sayan-prime.pages.dev/api/hit?key=' + streamId + '&unique=1', { credentials: 'omit' }); } catch (e) {}
     await fetchViews(streamId);
     setInterval(function() { fetchViews(streamId); }, 100000);
     startMillionToggleCycle();
 }
 
-
-/* ─────────────────────────────────────────
-   BOOT
-   ───────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", initializeApp);
