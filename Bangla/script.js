@@ -8,9 +8,8 @@ var DATA_SOURCES  = [
 ];
 var IPL_DATA_URL  = "https://sayan-json-4.pages.dev/api/ipl-data.json";
 
-/* Cached fetch — starts immediately on script parse */
+/* Prefetch starts immediately on script parse — before DOMContentLoaded */
 var _dataPromise = null;
-
 function prefetchStreamData() {
   if (_dataPromise) return _dataPromise;
   _dataPromise = Promise.all(
@@ -22,8 +21,6 @@ function prefetchStreamData() {
   );
   return _dataPromise;
 }
-
-/* Fire prefetch immediately */
 prefetchStreamData();
 
 /* ── POPUP ── */
@@ -34,14 +31,13 @@ function closePopup() {
 function joinNow()       { closePopup(); window.open(WHATSAPP_LINK, '_blank', 'noopener,noreferrer'); }
 function alreadyJoined() { closePopup(); }
 
-/* ── VISITOR COUNT (SuperCounters) ── */
+/* ── SUPERCOUNTERS visitor count ── */
 function updateFooterCount(n) {
   if (!n || isNaN(n) || n <= 0) return false;
   var el = document.getElementById('footerCount');
   if (el) el.textContent = n;
   return true;
 }
-
 function extractScCount() {
   var c = document.getElementById('sc-hidden');
   if (!c) return false;
@@ -61,12 +57,10 @@ function extractScCount() {
   }
   return false;
 }
-
 var _scAttempts = 0;
 var _scTimer = setInterval(function() {
   if (extractScCount() || ++_scAttempts > 60) clearInterval(_scTimer);
 }, 500);
-
 setTimeout(function() {
   var el = document.getElementById('footerCount');
   if (el && el.textContent === '--') el.textContent = '...';
@@ -100,7 +94,6 @@ function addShimmer() {
   w.style.position = 'relative';
   w.insertBefore(s, w.firstChild);
 }
-
 function removeShimmer() {
   var s = document.getElementById('iframeShimmer');
   if (s && s.parentNode) s.parentNode.removeChild(s);
@@ -130,7 +123,6 @@ function loadStream(targetId) {
       var m = results[i].iframes.find(function(x) { return x.id === targetId; });
       if (m) { found = m; break; }
     }
-
     if (found) {
       var t = setTimeout(removeShimmer, 12000);
       frame.addEventListener('load', function onLoad() {
@@ -162,55 +154,89 @@ function resolveTargetId() {
   return last ? decodeURIComponent(last) : '';
 }
 
-/* ── NOTIFICATIONS — load on page load, cache result ── */
+/* ── NOTIFICATIONS ── */
 var _notifLoaded = false;
+
+function renderNoNotif(list) {
+  list.innerHTML =
+    '<div class="no-notif">' +
+      '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>' +
+      'No announcements right now.<br>Check back soon.' +
+    '</div>';
+}
+
+function buildNotifCard(item) {
+  var card = document.createElement('div');
+  card.className = 'notif-card';
+  var visitBtn = item.url
+    ? '<a href="' + escHtml(item.url) + '" target="_blank" rel="noopener noreferrer" class="visit-btn-slide">' +
+        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>' +
+        'View' +
+      '</a>'
+    : '';
+  card.innerHTML =
+    '<div class="notif-badge">' +
+      '<span class="notif-badge-dot"></span>' +
+      '<span class="notif-badge-text">Live</span>' +
+    '</div>' +
+    '<div class="notif-message">' + escHtml(item.message || item.text || item.title || '') + '</div>' +
+    '<div class="notif-footer">' +
+      '<span class="notif-time">' +
+        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="9" height="9"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 6v6l4 2"/></svg>' +
+        escHtml(item.time || item.date || item.timestamp || 'Just now') +
+      '</span>' +
+      visitBtn +
+    '</div>';
+  return card;
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
 function loadNotifications() {
   if (_notifLoaded) return;
   _notifLoaded = true;
 
   var list    = document.getElementById('notificationList');
-  var skeleton= document.getElementById('notifSkeleton');
+  var skeleton = document.getElementById('notifSkeleton');
   if (!list) return;
 
-  /* Use the already-fetched stream data which contains notifications */
   prefetchStreamData().then(function(results) {
     var items = [];
+
+    /* Try every possible field name your JSON might use */
+    var fields = ['notifications', 'announcements', 'messages', 'updates', 'notice', 'notices'];
     for (var i = 0; i < results.length; i++) {
       if (!results[i]) continue;
-      var n = results[i].notifications || results[i].announcements || [];
-      if (Array.isArray(n) && n.length) { items = n; break; }
+      for (var f = 0; f < fields.length; f++) {
+        var arr = results[i][fields[f]];
+        if (Array.isArray(arr) && arr.length) { items = arr; break; }
+      }
+      if (items.length) break;
     }
 
-    if (skeleton) skeleton.remove();
+    if (skeleton && skeleton.parentNode) skeleton.parentNode.removeChild(skeleton);
 
     if (!items.length) {
-      list.innerHTML = '<div class="no-notification">No announcements right now.<br>Check back soon &#x1F914;</div>';
+      renderNoNotif(list);
       return;
     }
 
     var frag = document.createDocumentFragment();
     items.slice(0, 6).forEach(function(item) {
-      var card = document.createElement('div');
-      card.className = 'notif-card';
-      var visitBtn = item.url
-        ? '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="visit-btn-slide">View</a>'
-        : '';
-      card.innerHTML =
-        '<div class="notif-message">' + (item.message || item.text || '') + '</div>' +
-        '<div class="notif-footer">' +
-          '<span class="notif-time">' +
-            '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 6v6l4 2"/></svg>' +
-            (item.time || item.date || 'Just now') +
-          '</span>' +
-          visitBtn +
-        '</div>';
-      frag.appendChild(card);
+      frag.appendChild(buildNotifCard(item));
     });
+    list.innerHTML = '';
     list.appendChild(frag);
+
   }).catch(function() {
-    if (skeleton) skeleton.remove();
-    if (list) list.innerHTML = '<div class="no-notification">Could not load announcements.</div>';
+    if (skeleton && skeleton.parentNode) skeleton.parentNode.removeChild(skeleton);
+    renderNoNotif(list);
   });
 }
 
@@ -253,12 +279,17 @@ function initShareButton() {
     var url   = window.location.href;
     var title = document.title;
     var text  = title + '\n\nFrom Cricket News Point — Watch Live Cricket Free in HD!';
-    if (navigator.share) { navigator.share({ title: title, text: text, url: url }).catch(function() {}); return; }
+    if (navigator.share) {
+      navigator.share({ title: title, text: text, url: url }).catch(function() {});
+      return;
+    }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url)
-        .then(function() { showToast('Link Copied !!'); })
+        .then(function() { showToast('Link Copied !'); })
         .catch(function() { fallbackCopy(url); });
-    } else { fallbackCopy(url); }
+    } else {
+      fallbackCopy(url);
+    }
   });
 }
 
@@ -266,8 +297,9 @@ function fallbackCopy(text) {
   var ta = document.createElement('textarea');
   ta.value = text;
   ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
-  document.body.appendChild(ta); ta.focus(); ta.select();
-  try { document.execCommand('copy'); showToast('Link Copied !!'); } catch(e) { alert('Link: ' + text); }
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); showToast('Link Copied !'); } catch(e) { alert('Link: ' + text); }
   document.body.removeChild(ta);
 }
 
@@ -275,26 +307,56 @@ function showToast(msg) {
   var old = document.getElementById('cnpToast');
   if (old && old.parentNode) old.parentNode.removeChild(old);
   var t = document.createElement('div');
-  t.id = 'cnpToast'; t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(10px);background:rgba(30,41,59,0.92);color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-family:inherit;font-weight:500;white-space:nowrap;z-index:99999;opacity:0;transition:opacity 0.3s,transform 0.3s;pointer-events:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)';
+  t.id = 'cnpToast';
+  t.textContent = msg;
+  t.style.cssText = [
+    'position:fixed',
+    'bottom:calc(20px + env(safe-area-inset-bottom,0px))',
+    'left:50%',
+    'transform:translateX(-50%) translateY(10px)',
+    'background:rgba(15,23,42,0.92)',
+    'color:#fff',
+    'padding:10px 20px',
+    'border-radius:24px',
+    'font-size:13px',
+    'font-family:inherit',
+    'font-weight:500',
+    'white-space:nowrap',
+    'z-index:99999',
+    'opacity:0',
+    'transition:opacity 0.28s,transform 0.28s',
+    'pointer-events:none',
+    '-webkit-backdrop-filter:blur(8px)',
+    'backdrop-filter:blur(8px)'
+  ].join(';');
   document.body.appendChild(t);
-  requestAnimationFrame(function() { requestAnimationFrame(function() { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; }); });
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      t.style.opacity = '1';
+      t.style.transform = 'translateX(-50%) translateY(0)';
+    });
+  });
   setTimeout(function() {
-    t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(10px)';
-    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 350);
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(10px)';
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 320);
   }, 2400);
 }
 
 /* ── FULLSCREEN LANDSCAPE LOCK ── */
 function initFullscreen() {
-  var events = ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'];
-  events.forEach(function(ev) { document.addEventListener(ev, function() {
-    var el = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-    if (el && screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function() {});
-  }); });
+  ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+    .forEach(function(ev) {
+      document.addEventListener(ev, function() {
+        var el = document.fullscreenElement || document.webkitFullscreenElement ||
+                 document.mozFullScreenElement || document.msFullscreenElement;
+        if (el && screen.orientation && screen.orientation.lock)
+          screen.orientation.lock('landscape').catch(function() {});
+      });
+    });
 }
 
-/* ── INIT ── */
+/* ── POPUP BUTTONS ── */
 function initPopupButtons() {
   var j = document.getElementById('btnJoinNow');
   var a = document.getElementById('btnAlreadyJoined');
@@ -302,12 +364,13 @@ function initPopupButtons() {
   if (a) a.addEventListener('click', alreadyJoined);
 }
 
+/* ── ENTRY POINT ── */
 document.addEventListener('DOMContentLoaded', function() {
   initPopupButtons();
   initSlidePanel();
   initShareButton();
   initFullscreen();
   loadStream(resolveTargetId());
-  /* Pre-load notifications in background so panel opens instantly */
-  setTimeout(loadNotifications, 800);
+  /* Background-load notifications so panel opens instantly on first tap */
+  setTimeout(loadNotifications, 700);
 });
