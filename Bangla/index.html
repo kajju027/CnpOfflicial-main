@@ -158,102 +158,30 @@ body{
 .btn-joined-main{background:transparent;color:#484850;font-size:12px;font-weight:400;display:block;padding:7px 14px;width:auto;margin:0 auto;}
 
 /* ── SLIDE PANEL ── */
-.slide-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.52);z-index:8888;opacity:0;visibility:hidden;transition:opacity 0.3s,visibility 0.3s;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
-.slide-overlay.open{opacity:1;visibility:visible;}
-.slide-panel{
-  position:fixed;top:0;right:-100%;width:82%;max-width:340px;
-  height:100%;height:100dvh;
-  background:#09090e;
-  z-index:9999;transition:right 0.4s cubic-bezier(0.4,0,0.2,1);
-  display:flex;flex-direction:column;
-  border-left:1px solid rgba(255,255,255,0.06);
-  font-family:'Plus Jakarta Sans',sans-serif;
-  overflow:hidden;
-}
-.slide-panel.open{right:0;}
 
-.slide-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:15px 16px;border-bottom:1px solid rgba(255,255,255,0.06);
-  background:#0d0d14;flex-shrink:0;
-}
-.slide-title{color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;gap:7px;}
 .slide-title svg{flex-shrink:0;color:#BFFF00;}
-.close-btn{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:#bbb;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s,transform 0.2s;touch-action:manipulation;flex-shrink:0;}
-.close-btn:hover{background:#e53e3e;color:#fff;transform:rotate(90deg);}
 
 /* Panel scroll area */
-.panel-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:14px 12px;}
 
 /* Section labels */
-.ps-label{font-size:9px;font-weight:700;color:#383848;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:8px;margin-top:4px;display:flex;align-items:center;gap:5px;}
+
 .ps-label svg{width:10px;height:10px;color:#BFFF00;}
 
 /* ── NOTIFICATION CARDS (screenshot-style dark cards) ── */
-.notif-card{
-  background:#111118;
-  border:1px solid rgba(255,255,255,0.055);
-  border-radius:12px;
-  padding:13px 14px;
-  margin-bottom:8px;
-  box-shadow:0 2px 14px rgba(0,0,0,0.35),0 0 0 0.5px rgba(255,255,255,0.03) inset;
-  animation:notifIn 0.32s ease forwards;
-  opacity:0;transform:translateX(16px);
+
 }
-.notif-card:nth-child(1){animation-delay:0.05s;}.notif-card:nth-child(2){animation-delay:0.1s;}.notif-card:nth-child(3){animation-delay:0.15s;}.notif-card:nth-child(4){animation-delay:0.2s;}
-@keyframes notifIn{to{opacity:1;transform:translateX(0);}}
 
-.notif-card-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.notif-card-icon{width:30px;height:30px;border-radius:8px;background:rgba(191,255,0,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .notif-card-icon svg{width:15px;height:15px;color:#BFFF00;}
-.notif-card-label{font-size:10px;font-weight:700;color:#BFFF00;text-transform:uppercase;letter-spacing:0.8px;}
-.notif-card-time{font-size:9px;color:#363640;margin-left:auto;display:flex;align-items:center;gap:3px;}
-.notif-card-time svg{width:9px;height:9px;color:#BFFF00;}
-.notif-message{color:#d0d0dc;font-size:12.5px;font-weight:500;line-height:1.6;}
-.notif-divider{height:1px;background:rgba(255,255,255,0.04);margin:9px 0;}
-.notif-card-footer{display:flex;align-items:center;justify-content:flex-end;}
-.visit-btn{display:inline-flex;align-items:center;gap:4px;background:#1a1a22;border:1px solid rgba(255,255,255,0.1);color:#ccc;font-size:10px;font-weight:600;padding:4px 10px;border-radius:6px;text-decoration:none;transition:background 0.2s,border-color 0.2s;white-space:nowrap;}
-.visit-btn:hover{background:rgba(191,255,0,0.12);border-color:rgba(191,255,0,0.3);color:#BFFF00;}
-.visit-btn svg{width:9px;height:9px;}
 
-.no-notif{text-align:center;color:#2e2e3a;padding:28px 14px;font-size:12px;line-height:1.7;}
-.no-notif svg{display:block;margin:0 auto 8px;width:26px;height:26px;color:#222230;}
+.notif-card-time svg{width:9px;height:9px;color:#BFFF00;}
 
 /* ── LEGAL CARDS in panel (screenshot-style) ── */
-.panel-legal-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;}
-.plb{
-  background:#111118;
-  border:1px solid rgba(255,255,255,0.055);
-  border-radius:12px;padding:12px 11px;
-  cursor:pointer;-webkit-appearance:none;appearance:none;
-  display:flex;flex-direction:column;align-items:flex-start;gap:7px;
-  transition:background 0.2s,border-color 0.2s,transform 0.15s;
-  touch-action:manipulation;text-align:left;
-  box-shadow:0 2px 10px rgba(0,0,0,0.3),0 0 0 0.5px rgba(255,255,255,0.03) inset;
-}
-.plb:hover{background:#18181f;border-color:rgba(255,255,255,0.1);}
-.plb:active{transform:scale(0.96);}
-.plb-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.plb-icon svg{width:14px;height:14px;}
-.plb-privacy .plb-icon{background:rgba(13,110,253,0.15);color:#60a5fa;}
-.plb-terms .plb-icon{background:rgba(139,92,246,0.15);color:#a78bfa;}
-.plb-disclaimer .plb-icon{background:rgba(245,158,11,0.15);color:#fbbf24;}
-.plb-contact .plb-icon{background:rgba(34,197,94,0.15);color:#4ade80;}
-.plb-label{font-size:10.5px;font-weight:700;color:#b0b0c0;line-height:1.3;display:block;}
-.plb-sub{font-size:9px;color:#383848;font-weight:400;display:block;margin-top:1px;}
 
 /* Panel footer */
-.panel-footer{padding:10px 12px;border-top:1px solid rgba(255,255,255,0.04);background:#09090e;flex-shrink:0;}
-.live-chat-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,#0d6efd,#0a58ca);color:#fff;padding:11px;border-radius:9px;text-decoration:none;font-weight:600;font-size:13px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 3px 10px rgba(13,110,253,0.15);}
-.live-chat-btn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(13,110,253,0.25);}
-.live-chat-btn svg{width:15px;height:15px;flex-shrink:0;}
 
 /* Skeleton */
-.loading-skeleton{display:flex;flex-direction:column;gap:7px;}
-.skeleton-card{border-radius:11px;padding:14px;background:#111118;border:1px solid rgba(255,255,255,0.04);}
-.skeleton-line{height:8px;background:rgba(255,255,255,0.07);border-radius:4px;margin-bottom:8px;animation:skPulse 1.4s ease-in-out infinite;}
-.skeleton-line.short{width:48%;margin-bottom:0;}
-@keyframes skPulse{0%,100%{opacity:0.3;}50%{opacity:0.85;}}
+
+50%{opacity:0.85;}}
 
 /* ── LEGAL BOTTOM SHEET ── */
 .ls-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.58);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);z-index:88888;opacity:0;visibility:hidden;transition:opacity 0.3s,visibility 0.3s;}
@@ -371,67 +299,6 @@ body{
       <button class="btn-popup btn-join-main" id="btnJoinNow">JOIN NOW</button>
       <button class="btn-popup btn-joined-main" id="btnAlreadyJoined">Already Joined</button>
     </div>
-  </div>
-</div>
-
-<!-- SLIDE PANEL -->
-<div class="slide-overlay" id="slideOverlay"></div>
-<div class="slide-panel" id="slidePanel" role="complementary" aria-label="Announcements">
-  <div class="slide-header">
-    <div class="slide-title">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="17" height="17">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
-      </svg>
-      Cricket News Point
-    </div>
-    <button class="close-btn" id="btnCloseSlide" aria-label="Close">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-  </div>
-
-  <div class="panel-scroll">
-    <!-- Announcements -->
-    <div class="ps-label">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
-      Live Announcements
-    </div>
-    <div id="notificationList">
-      <div class="loading-skeleton" id="notifSkeleton">
-        <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-        <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
-      </div>
-    </div>
-
-    <!-- Legal quick links -->
-    <div class="ps-label" style="margin-top:14px;">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      Info &amp; Legal
-    </div>
-    <div class="panel-legal-grid">
-      <button class="plb plb-privacy" data-sheet="privacy">
-        <span class="plb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></span>
-        <span class="plb-label">Privacy Policy</span><span class="plb-sub">Data &amp; cookies</span>
-      </button>
-      <button class="plb plb-terms" data-sheet="terms">
-        <span class="plb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></span>
-        <span class="plb-label">Terms of Use</span><span class="plb-sub">Rules &amp; usage</span>
-      </button>
-      <button class="plb plb-disclaimer" data-sheet="disclaimer">
-        <span class="plb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></span>
-        <span class="plb-label">Disclaimer</span><span class="plb-sub">Content policy</span>
-      </button>
-      <button class="plb plb-contact" data-sheet="contact">
-        <span class="plb-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></span>
-        <span class="plb-label">Contact Us</span><span class="plb-sub">DMCA &amp; help</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="panel-footer">
-    <a href="/Feedback" class="live-chat-btn">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-      Send Feedback
-    </a>
   </div>
 </div>
 
