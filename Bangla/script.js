@@ -8,9 +8,9 @@ var DATA_SOURCES  = [
 ];
 var IPL_DATA_URL  = "https://sayan-json-4.pages.dev/api/ipl-data.json";
 
-/* Prefetch starts immediately on script parse — before DOMContentLoaded */
+/* Prefetch JSON the moment script loads — before DOM is ready */
 var _dataPromise = null;
-function prefetchStreamData() {
+function prefetchData() {
   if (_dataPromise) return _dataPromise;
   _dataPromise = Promise.all(
     DATA_SOURCES.map(function(url) {
@@ -21,7 +21,7 @@ function prefetchStreamData() {
   );
   return _dataPromise;
 }
-prefetchStreamData();
+prefetchData(); /* fire immediately */
 
 /* ── POPUP ── */
 function closePopup() {
@@ -31,42 +31,75 @@ function closePopup() {
 function joinNow()       { closePopup(); window.open(WHATSAPP_LINK, '_blank', 'noopener,noreferrer'); }
 function alreadyJoined() { closePopup(); }
 
-/* ── SUPERCOUNTERS visitor count ── */
-function updateFooterCount(n) {
-  if (!n || isNaN(n) || n <= 0) return false;
+/* ── VISITOR COUNTER ── 
+   Strategy: poll SuperCounters iframe every 500ms for up to 30s.
+   Fallback: fetch IPL data hit-counter.  */
+var _scDone = false;
+
+function updateCount(n) {
+  if (_scDone || !n || isNaN(n) || n <= 0 || n > 999999) return false;
   var el = document.getElementById('footerCount');
-  if (el) el.textContent = n;
+  if (!el) return false;
+  _scDone = true;
+  el.textContent = n.toLocaleString();
   return true;
 }
-function extractScCount() {
+
+function tryExtractSc() {
   var c = document.getElementById('sc-hidden');
   if (!c) return false;
+  /* Check all images */
   var imgs = c.querySelectorAll('img');
   for (var i = 0; i < imgs.length; i++) {
-    var alt = (imgs[i].getAttribute('alt') || '').trim();
-    var n   = parseInt(alt, 10);
-    if (!isNaN(n) && n > 0 && n < 1000000) return updateFooterCount(n);
-    var src = imgs[i].getAttribute('src') || '';
-    var m   = src.match(/[?&](?:count|c|n|v)=(\d+)/i);
-    if (m) { var n2 = parseInt(m[1], 10); if (!isNaN(n2) && n2 > 0) return updateFooterCount(n2); }
+    var n = parseInt((imgs[i].getAttribute('alt') || '').trim(), 10);
+    if (updateCount(n)) return true;
+    var m = (imgs[i].getAttribute('src') || '').match(/[?&](?:count|c|n|v|online)=(\d+)/i);
+    if (m && updateCount(parseInt(m[1], 10))) return true;
   }
-  var els = c.querySelectorAll('span,b,strong,div,p');
-  for (var j = 0; j < els.length; j++) {
-    var v = parseInt((els[j].textContent || '').trim(), 10);
-    if (!isNaN(v) && v > 0 && v < 1000000) return updateFooterCount(v);
+  /* Check text nodes */
+  var nodes = c.querySelectorAll('span,b,strong,div,p,td');
+  for (var j = 0; j < nodes.length; j++) {
+    var raw = (nodes[j].textContent || '').trim();
+    if (/^\d+$/.test(raw) && updateCount(parseInt(raw, 10))) return true;
   }
   return false;
 }
-var _scAttempts = 0;
+
+/* Also watch for DOM mutations inside sc-hidden */
+function watchSc() {
+  var c = document.getElementById('sc-hidden');
+  if (!c || typeof MutationObserver === 'undefined') return;
+  var obs = new MutationObserver(function() {
+    if (tryExtractSc()) obs.disconnect();
+  });
+  obs.observe(c, { childList: true, subtree: true, attributes: true, characterData: true });
+}
+
+var _scTries = 0;
 var _scTimer = setInterval(function() {
-  if (extractScCount() || ++_scAttempts > 60) clearInterval(_scTimer);
-}, 500);
+  if (tryExtractSc() || ++_scTries > 70) clearInterval(_scTimer);
+}, 450);
+
+/* Fallback after 8s: show visitor count from IPL hit API */
+setTimeout(function() {
+  if (_scDone) return;
+  fetch(IPL_DATA_URL, { cache: 'no-store' })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      /* Try to show any meaningful number from IPL data */
+      if (d.online && updateCount(parseInt(d.online, 10))) return;
+      if (d.viewers && updateCount(parseInt(d.viewers, 10))) return;
+    })
+    .catch(function() {});
+}, 8000);
+
+/* Fallback label after 32s */
 setTimeout(function() {
   var el = document.getElementById('footerCount');
-  if (el && el.textContent === '--') el.textContent = '...';
+  if (el && !_scDone) el.textContent = '1K+';
 }, 32000);
 
-/* ── VISITOR HIT ── */
+/* ── IPL HIT ── */
 function initVisitorCounter() {
   fetch(IPL_DATA_URL, { cache: 'no-store' })
     .then(function(r) { return r.json(); })
@@ -116,7 +149,7 @@ function loadStream(targetId) {
 
   addShimmer();
 
-  prefetchStreamData().then(function(results) {
+  prefetchData().then(function(results) {
     var found = null;
     for (var i = 0; i < results.length; i++) {
       if (!results[i] || !Array.isArray(results[i].iframes)) continue;
@@ -146,129 +179,12 @@ function loadStream(targetId) {
   });
 }
 
-/* ── RESOLVE TARGET ID ── */
+/* ── TARGET ID ── */
 function resolveTargetId() {
   if (typeof TARGET_ID !== 'undefined' && TARGET_ID && TARGET_ID.trim()) return TARGET_ID.trim();
   var parts = window.location.pathname.replace(/^\/+|\/+$/g, '').split('/');
   var last  = parts[parts.length - 1];
   return last ? decodeURIComponent(last) : '';
-}
-
-/* ── NOTIFICATIONS ── */
-var _notifLoaded = false;
-
-function renderNoNotif(list) {
-  list.innerHTML =
-    '<div class="no-notif">' +
-      '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>' +
-      'No announcements right now.<br>Check back soon.' +
-    '</div>';
-}
-
-function buildNotifCard(item) {
-  var card = document.createElement('div');
-  card.className = 'notif-card';
-  var visitBtn = item.url
-    ? '<a href="' + escHtml(item.url) + '" target="_blank" rel="noopener noreferrer" class="visit-btn-slide">' +
-        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>' +
-        'View' +
-      '</a>'
-    : '';
-  card.innerHTML =
-    '<div class="notif-badge">' +
-      '<span class="notif-badge-dot"></span>' +
-      '<span class="notif-badge-text">Live</span>' +
-    '</div>' +
-    '<div class="notif-message">' + escHtml(item.message || item.text || item.title || '') + '</div>' +
-    '<div class="notif-footer">' +
-      '<span class="notif-time">' +
-        '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="9" height="9"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 6v6l4 2"/></svg>' +
-        escHtml(item.time || item.date || item.timestamp || 'Just now') +
-      '</span>' +
-      visitBtn +
-    '</div>';
-  return card;
-}
-
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function loadNotifications() {
-  if (_notifLoaded) return;
-  _notifLoaded = true;
-
-  var list    = document.getElementById('notificationList');
-  var skeleton = document.getElementById('notifSkeleton');
-  if (!list) return;
-
-  prefetchStreamData().then(function(results) {
-    var items = [];
-
-    /* Try every possible field name your JSON might use */
-    var fields = ['notifications', 'announcements', 'messages', 'updates', 'notice', 'notices'];
-    for (var i = 0; i < results.length; i++) {
-      if (!results[i]) continue;
-      for (var f = 0; f < fields.length; f++) {
-        var arr = results[i][fields[f]];
-        if (Array.isArray(arr) && arr.length) { items = arr; break; }
-      }
-      if (items.length) break;
-    }
-
-    if (skeleton && skeleton.parentNode) skeleton.parentNode.removeChild(skeleton);
-
-    if (!items.length) {
-      renderNoNotif(list);
-      return;
-    }
-
-    var frag = document.createDocumentFragment();
-    items.slice(0, 6).forEach(function(item) {
-      frag.appendChild(buildNotifCard(item));
-    });
-    list.innerHTML = '';
-    list.appendChild(frag);
-
-  }).catch(function() {
-    if (skeleton && skeleton.parentNode) skeleton.parentNode.removeChild(skeleton);
-    renderNoNotif(list);
-  });
-}
-
-/* ── SLIDE PANEL ── */
-function initSlidePanel() {
-  var bellBtn      = document.getElementById('bellBtn');
-  var slidePanel   = document.getElementById('slidePanel');
-  var slideOverlay = document.getElementById('slideOverlay');
-  var btnClose     = document.getElementById('btnCloseSlide');
-  if (!bellBtn || !slidePanel) return;
-
-  function openPanel() {
-    loadNotifications();
-    slidePanel.classList.add('open');
-    if (slideOverlay) slideOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closePanel() {
-    slidePanel.classList.remove('open');
-    if (slideOverlay) slideOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  bellBtn.addEventListener('click', openPanel);
-  bellBtn.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
-  });
-  if (btnClose)     btnClose.addEventListener('click', closePanel);
-  if (slideOverlay) slideOverlay.addEventListener('click', closePanel);
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && slidePanel.classList.contains('open')) closePanel();
-  });
 }
 
 /* ── SHARE ── */
@@ -278,82 +194,31 @@ function initShareButton() {
   btn.addEventListener('click', function() {
     var url   = window.location.href;
     var title = document.title;
-    var text  = title + '\n\nFrom Cricket News Point — Watch Live Cricket Free in HD!';
     if (navigator.share) {
-      navigator.share({ title: title, text: text, url: url }).catch(function() {});
+      navigator.share({ title: title, text: title + ' — Watch Live Cricket Free in HD!', url: url }).catch(function() {});
       return;
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url)
-        .then(function() { showToast('Link Copied !'); })
-        .catch(function() { fallbackCopy(url); });
-    } else {
-      fallbackCopy(url);
-    }
+      navigator.clipboard.writeText(url).then(function() { showToast('Link Copied!'); }).catch(function() { fallbackCopy(url); });
+    } else { fallbackCopy(url); }
   });
 }
-
 function fallbackCopy(text) {
   var ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try { document.execCommand('copy'); showToast('Link Copied !'); } catch(e) { alert('Link: ' + text); }
+  ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); showToast('Link Copied!'); } catch(e) { alert('Link: ' + text); }
   document.body.removeChild(ta);
 }
-
 function showToast(msg) {
   var old = document.getElementById('cnpToast');
   if (old && old.parentNode) old.parentNode.removeChild(old);
   var t = document.createElement('div');
-  t.id = 'cnpToast';
-  t.textContent = msg;
-  t.style.cssText = [
-    'position:fixed',
-    'bottom:calc(20px + env(safe-area-inset-bottom,0px))',
-    'left:50%',
-    'transform:translateX(-50%) translateY(10px)',
-    'background:rgba(15,23,42,0.92)',
-    'color:#fff',
-    'padding:10px 20px',
-    'border-radius:24px',
-    'font-size:13px',
-    'font-family:inherit',
-    'font-weight:500',
-    'white-space:nowrap',
-    'z-index:99999',
-    'opacity:0',
-    'transition:opacity 0.28s,transform 0.28s',
-    'pointer-events:none',
-    '-webkit-backdrop-filter:blur(8px)',
-    'backdrop-filter:blur(8px)'
-  ].join(';');
+  t.id = 'cnpToast'; t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(10px);background:rgba(15,23,42,0.93);color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-family:inherit;font-weight:500;white-space:nowrap;z-index:99999;opacity:0;transition:opacity .28s,transform .28s;pointer-events:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)';
   document.body.appendChild(t);
-  requestAnimationFrame(function() {
-    requestAnimationFrame(function() {
-      t.style.opacity = '1';
-      t.style.transform = 'translateX(-50%) translateY(0)';
-    });
-  });
-  setTimeout(function() {
-    t.style.opacity = '0';
-    t.style.transform = 'translateX(-50%) translateY(10px)';
-    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 320);
-  }, 2400);
-}
-
-/* ── FULLSCREEN LANDSCAPE LOCK ── */
-function initFullscreen() {
-  ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
-    .forEach(function(ev) {
-      document.addEventListener(ev, function() {
-        var el = document.fullscreenElement || document.webkitFullscreenElement ||
-                 document.mozFullScreenElement || document.msFullscreenElement;
-        if (el && screen.orientation && screen.orientation.lock)
-          screen.orientation.lock('landscape').catch(function() {});
-      });
-    });
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; }); });
+  setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); },320); }, 2400);
 }
 
 /* ── POPUP BUTTONS ── */
@@ -364,13 +229,21 @@ function initPopupButtons() {
   if (a) a.addEventListener('click', alreadyJoined);
 }
 
-/* ── ENTRY POINT ── */
+/* ── FULLSCREEN LANDSCAPE ── */
+function initFullscreen() {
+  ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){
+    document.addEventListener(ev, function(){
+      var el = document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement;
+      if(el && screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function(){});
+    });
+  });
+}
+
+/* ── ENTRY ── */
 document.addEventListener('DOMContentLoaded', function() {
   initPopupButtons();
-  initSlidePanel();
   initShareButton();
   initFullscreen();
+  watchSc();
   loadStream(resolveTargetId());
-  /* Background-load notifications so panel opens instantly on first tap */
-  setTimeout(loadNotifications, 700);
 });
