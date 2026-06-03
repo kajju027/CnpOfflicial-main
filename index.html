@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Under Maintenance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#050505;color:#fff;min-height:100vh;overflow-x:hidden;display:flex;align-items:center;justify-content:center;padding:24px}
+.bg-glow{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(circle,rgba(59,130,246,0.12) 0%,transparent 70%);pointer-events:none;z-index:0}
+.bg-glow-2{position:fixed;bottom:-200px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(59,130,246,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:24px 24px;z-index:0;pointer-events:none}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+@keyframes pulse-slow{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes spin-slow{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes slide-up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes progress{0%{width:0%}100%{width:72%}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px rgba(59,130,246,0.1)}50%{box-shadow:0 0 40px rgba(59,130,246,0.25)}}
+.wrapper{position:relative;z-index:1;max-width:580px;width:100%;text-align:center}
+.anim-1{animation:slide-up 0.8s ease-out forwards}
+.anim-2{animation:slide-up 0.8s ease-out 0.15s forwards;opacity:0}
+.anim-3{animation:slide-up 0.8s ease-out 0.3s forwards;opacity:0}
+.anim-4{animation:slide-up 0.8s ease-out 0.45s forwards;opacity:0}
+.anim-5{animation:slide-up 0.8s ease-out 0.6s forwards;opacity:0}
+.anim-6{animation:slide-up 0.8s ease-out 0.75s forwards;opacity:0}
+.anim-7{animation:fade-in 1s ease-out 0.9s forwards;opacity:0}
+.icon-box{width:88px;height:88px;margin:0 auto 44px;border-radius:22px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.18);display:flex;align-items:center;justify-content:center;position:relative;animation:float 6s ease-in-out infinite,glow-pulse 4s ease-in-out infinite}
+.icon-box .badge{position:absolute;top:-5px;right:-5px;width:22px;height:22px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center}
+.icon-box .badge span{font-size:11px;font-weight:700;color:#fff}
+.status-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:9999px;background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.18);margin-bottom:32px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#F97316;animation:pulse-slow 2s ease-in-out infinite}
+.status-pill span{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#FB923C}
+h1{font-size:clamp(34px,6vw,54px);font-weight:600;line-height:1.08;letter-spacing:-0.035em;margin-bottom:12px}
+h1 .blue{color:#3B82F6}
+.sub{font-size:15px;font-weight:400;color:#6B7280;margin-bottom:36px}
+.quote-card{position:relative;padding:32px 28px 24px;border-radius:20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);text-align:left;margin-bottom:36px;transition:border-color 0.4s}
+.quote-card:hover{border-color:rgba(255,255,255,0.12)}
+.quote-card .qmark{position:absolute;top:-6px;left:24px;font-size:72px;line-height:1;color:rgba(59,130,246,0.15);font-family:Georgia,serif;pointer-events:none}
+.quote-card p{font-size:15px;font-weight:300;line-height:1.85;color:#9CA3AF;position:relative;z-index:1}
+.quote-card .author{text-align:right;margin-top:20px;font-size:13px;color:#6B7280;font-weight:400}
+.progress-card{border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:24px;margin-bottom:36px;text-align:left}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.progress-header .label{font-size:13px;font-weight:500;color:#9CA3AF}
+.progress-header .value{font-size:13px;font-weight:600;color:#fff}
+.progress-track{height:6px;border-radius:9999px;background:rgba(255,255,255,0.06);overflow:hidden;margin-bottom:18px}
+.progress-fill{height:100%;border-radius:9999px;background:linear-gradient(90deg,#3B82F6,#60A5FA);animation:progress 2.5s ease-out 1.4s forwards;width:0%}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.step{display:flex;flex-direction:column;align-items:center;gap:5px}
+.step-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.step-icon.done{background:rgba(34,197,94,0.12)}
+.step-icon.active{background:rgba(59,130,246,0.12)}
+.step-icon.pending{background:rgba(255,255,255,0.03)}
+.step span{font-size:10px;color:#6B7280;font-weight:500;letter-spacing:0.02em}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:8px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:9999px;background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.13);font-size:11px;font-weight:500;color:#60A5FA;white-space:nowrap}
+.tag svg{flex-shrink:0}
+.btn-contact{display:inline-flex;align-items:center;gap:8px;padding:12px 32px;border-radius:9999px;background:#fff;color:#000;font-weight:500;font-size:14px;font-family:'Inter',sans-serif;text-decoration:none;transition:all 0.3s;cursor:pointer;border:none}
+.btn-contact:hover{background:#e5e5e5;transform:scale(1.05);box-shadow:0 0 35px rgba(255,255,255,0.1)}
+.footer-line{margin-top:52px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.footer-line .line{width:40px;height:1px;background:rgba(255,255,255,0.07)}
+.footer-line p{font-size:12px;color:#4B5563;font-weight:400}
+.footer-line p strong{color:#6B7280;font-weight:500}
+.bottom-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:9999px;background:rgba(10,10,10,0.85);border:1px solid rgba(255,255,255,0.05)}
+.bottom-bar .dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse-slow 2s ease-in-out infinite}
+.bottom-bar span{font-size:11px;color:#6B7280;font-weight:400}
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+<div class="grid-bg"></div>
+
+<div class="wrapper">
+
+<div class="icon-box anim-1">
+<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+<div class="badge"><span>!</span></div>
+</div>
+
+<div class="anim-2">
+<div class="status-pill">
+<div class="status-dot"></div>
+<span>Maintenance in Progress</span>
+</div>
+</div>
+
+<h1 class="anim-3">We'll Be Back <span class="blue">Shortly</span></h1>
+
+<p class="sub anim-4">Hang tight — we're making things better for you.</p>
+
+<div class="tags anim-4">
+<span class="tag">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+FIFA World Cup
+</span>
+<span class="tag">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+India ODI Series
+</span>
+<span class="tag">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+Infrastructure Upgrade
+</span>
+</div>
+
+<div class="quote-card anim-5">
+<div class="qmark">&ldquo;</div>
+<p>With the FIFA World Cup and India's upcoming international ODI series right around the corner, we're scaling our infrastructure to handle the massive surge in live traffic. Server optimization, database migration, and real-time delivery pipelines are all being upgraded to the latest versions — so when the matches go live, everything runs flawlessly without a single drop in performance. Bear with us for just a little while longer.</p>
+<p class="author">~ Sayan ✍️</p>
+</div>
+
+<div class="progress-card anim-6">
+<div class="progress-header">
+<span class="label">Update Progress</span>
+<span class="value">72%</span>
+</div>
+<div class="progress-track">
+<div class="progress-fill"></div>
+</div>
+<div class="steps">
+<div class="step">
+<div class="step-icon done">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</div>
+<span>Backup</span>
+</div>
+<div class="step">
+<div class="step-icon active">
+<svg class="anim-spin" style="animation:spin-slow 2s linear infinite" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+</div>
+<span>Update</span>
+</div>
+<div class="step">
+<div class="step-icon pending">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+</div>
+<span>Deploy</span>
+</div>
+</div>
+</div>
+
+<a href="https://sayan-mete.pages.dev/contact" target="_blank" class="btn-contact anim-6">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+Contact Developer
+</a>
+
+<div class="footer-line anim-7">
+<div class="line"></div>
+<p>Crafted by <strong>Sayan</strong></p>
+</div>
+
+</div>
+
+<div class="bottom-bar anim-7">
+<div class="dot"></div>
+<span>Monitoring system status</span>
+</div>
+
+</body>
+</html>
