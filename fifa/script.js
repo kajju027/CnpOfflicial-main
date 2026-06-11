@@ -1,6 +1,6 @@
 'use strict';
 
-var WHATSAPP_LINK = "https://whatsapp.com/channel/0029VaeylYYBPzjVNomWuZ0T";
+var WHATSAPP_LINK = "https://whatsapp.com/channel/0029VbDMpWVAe5VldaFI370o";
 var VIEW_API_BASE = "https://sayan-prime.pages.dev/api";
 var DATA_SOURCES  = [
   "https://sayan-json-4.pages.dev/loura.json",
