@@ -6,31 +6,22 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CRICKET NEWS POINT - CnpTVOfficial</title>
+<title>CRICKET  NEWS POINT - CnpTVOfficial </title>
 
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5NE717HVD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-G5NE717HVD');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G5NE717HVD');</script>
 
-<!-- Supercounters widget: hidden off-screen, purely for tracking -->
 <div id="sc-hidden" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;" aria-hidden="true">
   <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
   <script type="text/javascript">sc_online_i(1735331,"ffffff","28054a");</script>
 </div>
 
-<!-- Google Fonts: Acme (titles) + Amaranth (buttons/body) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Acme&family=Amaranth:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-/* ── Reset ── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
 html {
   height: 100%;
@@ -39,7 +30,6 @@ html {
   text-size-adjust: 100%;
 }
 
-/* Full-screen black body, no scroll */
 body {
   width: 100%;
   height: 100%;
@@ -51,7 +41,6 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ── Main iframe: true fullscreen, hidden until stream loads ── */
 #main-iframe {
   position: fixed;
   top: 0; left: 0;
@@ -64,7 +53,6 @@ body {
   z-index: 1;
 }
 
-/* ── Logo: fixed top-left corner ── */
 .logo-btn {
   position: fixed;
   top: 10px; left: 10px;
@@ -81,7 +69,6 @@ body {
   filter: drop-shadow(0 2px 8px rgba(0,0,0,.8));
 }
 
-/* ── Loading screen: shown while stream URL is fetching ── */
 #loading-screen {
   position: fixed; inset: 0; z-index: 100;
   background: #0a0a0a;
@@ -103,7 +90,6 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Popup overlay: dark blur backdrop ── */
 .popup-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.88);
@@ -116,7 +102,6 @@ body {
 }
 .popup-overlay.visible { display: flex; }
 
-/* Popup card: gold gradient border + dark inner box */
 .popup-wrap {
   position: relative;
   width: 100%; max-width: 358px;
@@ -127,8 +112,8 @@ body {
   animation: popIn 0.42s cubic-bezier(0.175,0.885,0.32,1.275) both;
 }
 @keyframes popIn {
-  from { opacity: 0; transform: scale(0.87) translateY(24px); }
-  to   { opacity: 1; transform: scale(1)   translateY(0); }
+  from { opacity:0; transform: scale(0.87) translateY(24px); }
+  to   { opacity:1; transform: scale(1)   translateY(0); }
 }
 
 .popup-box {
@@ -138,7 +123,6 @@ body {
   text-align: center;
 }
 
-/* Popup title */
 .popup-title {
   color: #ffcc00;
   font-family: 'Acme', sans-serif;
@@ -147,7 +131,6 @@ body {
   margin-bottom: 12px;
 }
 
-/* Popup body text */
 .popup-text {
   color: #a0a0a8;
   font-size: 14px;
@@ -162,7 +145,6 @@ body {
   margin-top: 7px;
 }
 
-/* Shared button base */
 .btn-popup {
   width: 100%; padding: 14px; border: none;
   border-radius: 13px;
@@ -172,10 +154,11 @@ body {
   -webkit-user-select: none; user-select: none;
   -webkit-appearance: none; appearance: none;
   touch-action: manipulation;
+  text-decoration: none;
+  display: block;
 }
 .btn-popup:active { transform: scale(0.95); }
 
-/* "JOIN NOW" button — green, prominent */
 .btn-join-main {
   background: linear-gradient(90deg, #1bcc26, #17b823);
   color: #fff;
@@ -183,21 +166,21 @@ body {
   letter-spacing: 0.6px;
   box-shadow: 0 5px 20px rgba(23,184,35,0.32);
   margin-bottom: 9px;
-  display: block;
+  line-height: 1;
+  padding: 14px;
+  text-align: center;
 }
 .btn-join-main:hover { box-shadow: 0 8px 26px rgba(23,184,35,0.42); }
 
-/* "Already Joined" button — subtle/ghost style */
 .btn-joined-main {
   background: transparent;
   color: #484850;
   font-size: 12px; font-weight: 400;
-  display: block;
-  padding: 7px 14px;
   width: auto; margin: 0 auto;
+  padding: 7px 14px;
+  text-align: center;
 }
 
-/* ── Error screen: shown when stream ID not found ── */
 #error-screen {
   position: fixed; inset: 0; z-index: 80;
   background: #0d0d16;
@@ -265,9 +248,8 @@ body {
   border-color: rgba(255,255,255,.28);
   transform: translateY(-1px);
 }
-.error-contact-btn svg { width: 16px; height: 16px; fill: #fff; flex-shrink: 0; }
+.error-contact-btn svg { width:16px; height:16px; fill:#fff; flex-shrink:0; }
 
-/* ── Disable hover effects on touch devices to avoid sticky states ── */
 @media (hover: none) {
   .logo-btn:hover { opacity: 1; }
   .btn-join-main:hover { box-shadow: 0 5px 20px rgba(23,184,35,0.32); }
@@ -277,27 +259,21 @@ body {
 </head>
 <body>
 
-<!-- Logo: top-left, links to page root -->
 <a href="#" class="logo-btn">
   <img src="https://livedakho.pages.dev/file_00000000d56c7208939f3cb5bb73adc0.png" alt="Logo" loading="eager">
 </a>
 
-<!-- Loading spinner: visible while stream URL resolves -->
 <div id="loading-screen">
   <div class="loading-ring"></div>
   <div class="loading-label">Loading Stream</div>
 </div>
 
-<!-- Main stream iframe: hidden until src is assigned and loaded -->
 <iframe id="main-iframe"
   allowfullscreen
   allow="encrypted-media; fullscreen; autoplay; picture-in-picture"
   scrolling="no">
 </iframe>
 
-<!-- ══ WhatsApp Channel Popup ══
-     JOIN NOW  → opens WhatsApp channel in new tab + closes popup
-     Already Joined → only closes popup                          -->
 <div class="popup-overlay" id="popup" role="dialog" aria-modal="true">
   <div class="popup-wrap">
     <div class="popup-box">
@@ -307,17 +283,12 @@ body {
         <b>CRICKET NEWS POINT ™</b>
         For Instant Updates &amp; Exclusive Links.
       </div>
-
-      <!-- JOIN NOW: redirects to WA channel + closes popup -->
-      <button class="btn-popup btn-join-main" id="popupJoinBtn">JOIN NOW</button>
-
-      <!-- Already Joined: just closes the popup, no redirect -->
+      <a class="btn-popup btn-join-main" id="popupJoinBtn" target="_blank" rel="noopener noreferrer">JOIN NOW</a>
       <button class="btn-popup btn-joined-main" id="popupSkipBtn">Already Joined</button>
     </div>
   </div>
 </div>
 
-<!-- Error screen: shown when stream ID is missing or not found in JSON -->
 <div id="error-screen">
   <div class="error-card">
     <div class="error-icon">
@@ -345,74 +316,49 @@ body {
 (function () {
   'use strict';
 
-  /* ════ CONFIG — update these URLs as needed ════ */
   var PRIMARY_JSON   = 'https://sayan-json-3.pages.dev/loura.json';
   var FALLBACK_JSON  = 'https://cors-proxy.cooks.fyi/https://allrounderid2.pages.dev/id.json';
   var CONTACT_LINK   = 'https://wa.me/message/BOF76S5WFJVMN1';
-  var WA_CHANNEL     = 'https://whatsapp.com/channel/0029VaeylYYBPzjVNomWuZ0T'; // WhatsApp channel URL
-  var RETRY_DELAY_MS = 15000; // auto-retry interval when stream is in error state (ms)
-  /* ════════════════════════════════════════════ */
+  var WA_CHANNEL     = 'https://whatsapp.com/channel/0029VaeylYYBPzjVNomWuZ0T';
+  var RETRY_DELAY_MS = 15000;
 
-  /* DOM references */
   var iframe     = document.getElementById('main-iframe');
   var loadScreen = document.getElementById('loading-screen');
   var errScreen  = document.getElementById('error-screen');
   var errBadge   = document.getElementById('error-badge');
   var contactBtn = document.getElementById('error-contact-btn');
   var popup      = document.getElementById('popup');
-  var joinBtn    = document.getElementById('popupJoinBtn');   // "JOIN NOW"
-  var skipBtn    = document.getElementById('popupSkipBtn');   // "Already Joined"
+  var joinBtn    = document.getElementById('popupJoinBtn');
+  var skipBtn    = document.getElementById('popupSkipBtn');
 
-  /* Assign contact link to error screen button */
   contactBtn.href = CONTACT_LINK;
+  joinBtn.href    = WA_CHANNEL;
 
-  /* ────────────────────────────────────────────
-     POPUP LOGIC
-     ─────────────────────────────────────────── */
-
-  /* Show popup on page load */
   popup.classList.add('visible');
 
-  /* Smooth fade-out + hide the popup overlay */
   function closePopup() {
-    popup.style.opacity    = '0';
+    popup.style.opacity = '0';
     popup.style.transition = 'opacity .2s';
     setTimeout(function () { popup.style.display = 'none'; }, 220);
   }
 
-  /*
-   * JOIN NOW clicked:
-   *   1. Open WhatsApp channel in a new tab
-   *   2. Close popup after a tiny delay (so the tab opens first)
-   */
   joinBtn.addEventListener('click', function () {
-    window.open(WA_CHANNEL, '_blank'); // redirect to WhatsApp channel
-    setTimeout(closePopup, 200);       // then close the popup
+    setTimeout(closePopup, 300);
   });
 
-  /*
-   * Already Joined clicked:
-   *   Only close the popup — no redirect
-   */
   skipBtn.addEventListener('click', closePopup);
 
-  /* ────────────────────────────────────────────
-     LOADING SCREEN — hide when iframe finishes loading
-     ─────────────────────────────────────────── */
   var loaderHidden = false;
   function hideLoader() {
     if (loaderHidden) return;
     loaderHidden = true;
     loadScreen.style.transition = 'opacity .35s';
-    loadScreen.style.opacity    = '0';
-    iframe.style.visibility     = 'visible';
+    loadScreen.style.opacity = '0';
+    iframe.style.visibility = 'visible';
     setTimeout(function () { loadScreen.style.display = 'none'; }, 370);
   }
   iframe.addEventListener('load', hideLoader);
 
-  /* ────────────────────────────────────────────
-     ERROR STATE — show error card + silent retry
-     ─────────────────────────────────────────── */
   var retryTimer   = null;
   var currentId    = null;
   var inErrorState = false;
@@ -423,7 +369,7 @@ body {
     errBadge.textContent     = id ? '"' + id + '"' : '"Unknown"';
     errScreen.classList.add('show');
     inErrorState = true;
-    scheduleRetry(id); // start silent background retry
+    scheduleRetry(id);
   }
 
   function hideError() {
@@ -432,7 +378,6 @@ body {
     clearTimeout(retryTimer);
   }
 
-  /* Retry silently in the background — user sees no UI change */
   function scheduleRetry(id) {
     clearTimeout(retryTimer);
     retryTimer = setTimeout(function () {
@@ -440,9 +385,6 @@ body {
     }, RETRY_DELAY_MS);
   }
 
-  /* ────────────────────────────────────────────
-     FULLSCREEN → auto-landscape on mobile
-     ─────────────────────────────────────────── */
   function tryLandscape() {
     if (screen.orientation && screen.orientation.lock) {
       screen.orientation.lock('landscape').catch(function () {});
@@ -457,27 +399,19 @@ body {
   document.addEventListener('webkitfullscreenchange', onFSChange);
   document.addEventListener('mozfullscreenchange',    onFSChange);
   function onFSChange() {
-    var fsEl = document.fullscreenElement
-             || document.webkitFullscreenElement
-             || document.mozFullScreenElement;
+    var fsEl = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
     if (fsEl) { tryLandscape(); } else { exitLandscape(); }
   }
 
-  /* ────────────────────────────────────────────
-     URL PARSING — extract stream ID from ?id=, ?raw, or path
-     ─────────────────────────────────────────── */
   function getStreamId() {
     var s = window.location.search;
     if (s.indexOf('id=') !== -1) return new URLSearchParams(s).get('id') || null;
     if (s.length > 1) return s.slice(1).trim() || null;
     var parts = window.location.pathname.replace(/\/+$/, '').split('/');
-    var last  = parts[parts.length - 1];
+    var last = parts[parts.length - 1];
     return last || null;
   }
 
-  /* ────────────────────────────────────────────
-     STREAM LOADER — match ID in JSON, set iframe src
-     ─────────────────────────────────────────── */
   function applyStream(data, id) {
     var item = (data.iframes || []).find(function (x) {
       return x.id === id || x.id === (id || '').trim();
@@ -485,13 +419,12 @@ body {
     if (item && item.iframeSrc) {
       iframe.src = item.iframeSrc;
       hideError();
-      if (item.hit) { fetch(item.hit).catch(function () {}); } // fire hit tracker
+      if (item.hit) { fetch(item.hit).catch(function () {}); }
       return true;
     }
-    return false; // ID not found in this JSON
+    return false;
   }
 
-  /* Try fallback JSON if primary doesn't have the stream */
   function tryFallback(id) {
     if (FALLBACK_JSON.indexOf('REPLACE') !== -1) { showError(id); return; }
     fetch(FALLBACK_JSON)
@@ -500,8 +433,7 @@ body {
       .catch(function () { showError(id); });
   }
 
-  /* Fetch primary JSON first, fallback on failure */
-  function fetchAndLoad(id) {
+  function fetchAndLoad(id, isSilentRetry) {
     fetch(PRIMARY_JSON)
       .then(function (r) { return r.json(); })
       .then(function (data) {
@@ -510,17 +442,15 @@ body {
       .catch(function () { tryFallback(id); });
   }
 
-  /* ────────────────────────────────────────────
-     INIT — parse ID from URL and kick off stream load
-     ─────────────────────────────────────────── */
   currentId = getStreamId();
   if (currentId) {
-    fetchAndLoad(currentId);
+    fetchAndLoad(currentId, false);
   } else {
-    showError(null); // no ID in URL — show error immediately
+    showError(null);
   }
 
 })();
 </script>
 </body>
 </html>
+
