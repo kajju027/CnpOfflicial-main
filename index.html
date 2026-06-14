@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>CRICKET  NEWS POINT - CnpTVOfficial </title>
+
+<!-- Google Tag Manager -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G5NE717HVD"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G5NE717HVD');</script>
+
+<!-- Supercounters: fully hidden -->
+<div id="sc-hidden" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;" aria-hidden="true">
+  <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+  <script type="text/javascript">sc_online_i(1735331,"ffffff","28054a");</script>
+</div>
+
+<!-- Fonts (same as uploaded file) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Acme&family=Amaranth:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html {
+  height: 100%;
+  height: -webkit-fill-available;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  background: #000;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── IFRAME — true fullscreen ── */
+#main-iframe {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  border: none;
+  display: block;
+  visibility: hidden;
+  z-index: 1;
+}
+
+/* ── LOGO top-left ── */
+.logo-btn {
+  position: fixed;
+  top: 10px; left: 10px;
+  z-index: 50;
+  display: flex; align-items: center;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.logo-btn:hover { opacity: .8; }
+.logo-btn img {
+  height: 36px; width: auto;
+  border-radius: 7px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.8));
+}
+
+/* ── LOADING SCREEN ── */
+#loading-screen {
+  position: fixed; inset: 0; z-index: 100;
+  background: #0a0a0a;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+}
+.loading-ring {
+  width: 48px; height: 48px;
+  border: 3px solid rgba(255,255,255,.1);
+  border-top-color: rgba(255,255,255,.55);
+  border-radius: 50%;
+  animation: spin .75s linear infinite;
+}
+.loading-label {
+  font-size: 12px; letter-spacing: 1.5px;
+  color: rgba(255,255,255,.28);
+  text-transform: uppercase;
+  font-family: Arial, sans-serif;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.popup-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.88);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  z-index: 99999;
+}
+.popup-overlay.visible { display: flex; }
+
+.popup-wrap {
+  position: relative;
+  width: 100%; max-width: 358px;
+  padding: 2px;
+  background: linear-gradient(145deg, rgba(255,204,0,0.8) 0%, rgba(255,224,80,0.4) 50%, rgba(255,204,0,0.8) 100%);
+  border-radius: 18px;                /* ← normal corners, no clip-path */
+  box-shadow: 0 0 50px rgba(255,204,0,0.14), 0 30px 70px rgba(0,0,0,0.72);
+  animation: popIn 0.42s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+@keyframes popIn {
+  from { opacity:0; transform: scale(0.87) translateY(24px); }
+  to   { opacity:1; transform: scale(1)   translateY(0); }
+}
+
+.popup-box {
+  background: linear-gradient(168deg, #1e1e26 0%, #0e0e13 100%);
+  border-radius: 16px;               /* ← normal corners, no clip-path */
+  padding: 34px 24px 26px;
+  text-align: center;
+}
+
+.popup-title {
+  color: #ffcc00;
+  font-family: 'Acme', sans-serif;
+  font-size: 30px;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.popup-text {
+  color: #a0a0a8;
+  font-size: 14px;
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+.popup-text b {
+  color: #fff;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 17px;
+  display: block;
+  margin-top: 7px;
+}
+
+.btn-popup {
+  width: 100%; padding: 14px; border: none;
+  border-radius: 13px;
+  font-family: 'Amaranth', sans-serif;
+  cursor: pointer;
+  transition: transform .18s, box-shadow .18s;
+  -webkit-user-select: none; user-select: none;
+  -webkit-appearance: none; appearance: none;
+  touch-action: manipulation;
+}
+.btn-popup:active { transform: scale(0.95); }
+
+.btn-join-main {
+  background: linear-gradient(90deg, #1bcc26, #17b823);
+  color: #fff;
+  font-size: 18px; font-weight: 700;
+  letter-spacing: 0.6px;
+  box-shadow: 0 5px 20px rgba(23,184,35,0.32);
+  margin-bottom: 9px;
+  display: block;
+}
+.btn-join-main:hover { box-shadow: 0 8px 26px rgba(23,184,35,0.42); }
+
+.btn-joined-main {
+  background: transparent;
+  color: #484850;
+  font-size: 12px; font-weight: 400;
+  display: block;
+  padding: 7px 14px;
+  width: auto; margin: 0 auto;
+}
+
+/* ── ERROR SCREEN — calm, no red ── */
+#error-screen {
+  position: fixed; inset: 0; z-index: 80;
+  background: #0d0d16;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 24px;
+}
+#error-screen.show { display: flex; }
+
+.error-card {
+  background: rgba(255,255,255,.04);
+  border: 1.5px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  padding: 52px 32px 42px;
+  max-width: 400px; width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  animation: popIn .35s cubic-bezier(.34,1.45,.64,1);
+}
+.error-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.05);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 22px;
+}
+.error-icon svg {
+  width: 36px; height: 36px;
+  stroke: rgba(255,255,255,.55); fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.error-title {
+  font-family: 'Acme', sans-serif;
+  font-size: clamp(22px, 6vw, 28px);
+  font-weight: 800; color: #efefef;
+  margin-bottom: 12px;
+}
+.error-badge {
+  display: inline-block;
+  background: rgba(245,165,0,.12);
+  border: 1px solid rgba(245,165,0,.28);
+  color: #f5a500;
+  font-size: 13.5px; font-weight: 700;
+  padding: 4px 16px; border-radius: 20px;
+  margin-bottom: 14px; letter-spacing: .4px;
+}
+.error-body {
+  font-size: 14px; color: rgba(255,255,255,.38);
+  line-height: 1.8; margin-bottom: 32px;
+  font-family: Arial, sans-serif;
+}
+.error-contact-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 30px; border-radius: 50px;
+  background: rgba(255,255,255,.09);
+  border: 1.5px solid rgba(255,255,255,.16);
+  color: #fff; cursor: pointer;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 15px; font-weight: 700;
+  text-decoration: none; letter-spacing: .3px;
+  transition: background .2s, border-color .2s, transform .15s;
+}
+.error-contact-btn:hover {
+  background: rgba(255,255,255,.15);
+  border-color: rgba(255,255,255,.28);
+  transform: translateY(-1px);
+}
+.error-contact-btn svg { width:16px; height:16px; fill:#fff; flex-shrink:0; }
+
+/* ── Mobile: no hover effects (prevent heat) ── */
+@media (hover: none) {
+  .logo-btn:hover { opacity: 1; }
+  .btn-join-main:hover { box-shadow: 0 5px 20px rgba(23,184,35,0.32); }
+  .error-contact-btn:hover { background: rgba(255,255,255,.09); transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Logo top-left -->
+<a href="#" class="logo-btn">
+  <img src="https://livedakho.pages.dev/file_00000000d56c7208939f3cb5bb73adc0.png" alt="Logo" loading="eager">
+</a>
+
+<!-- Loading screen -->
+<div id="loading-screen">
+  <div class="loading-ring"></div>
+  <div class="loading-label">Loading Stream</div>
+</div>
+
+<!-- Main iframe (hidden until loaded) -->
+<iframe id="main-iframe"
+  allowfullscreen
+  allow="encrypted-media; fullscreen; autoplay; picture-in-picture"
+  scrolling="no">
+</iframe>
+
+<!-- ══ POPUP — exact from uploaded file, normal corners ══ -->
+<div class="popup-overlay" id="popup" role="dialog" aria-modal="true">
+  <div class="popup-wrap">
+    <div class="popup-box">
+      <div class="popup-title">Follow Us !!</div>
+      <div class="popup-text">
+        Join our WhatsApp channel<br>
+        <b>CRICKET NEWS POINT ™</b>
+        For Instant Updates &amp; Exclusive Links.
+      </div>
+      <button class="btn-popup btn-join-main" id="popupJoinBtn">JOIN NOW</button>
+      <button class="btn-popup btn-joined-main" id="popupSkipBtn">Already Joined</button>
+    </div>
+  </div>
+</div>
+
+<!-- Error Screen -->
+<div id="error-screen">
+  <div class="error-card">
+    <div class="error-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+        <line x1="12" y1="2" x2="12" y2="12"/>
+      </svg>
+    </div>
+    <div class="error-title">Stream Not Found</div>
+    <div class="error-badge" id="error-badge">"Unknown"</div>
+    <div class="error-body">
+      The requested stream is not available right now.<br>
+      Please check the link or try again later.
+    </div>
+    <a href="https://wa.me/message/BOF76S5WFJVMN1" target="_blank" class="error-contact-btn" id="error-contact-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M9.993 15.674l-.398 5.604c.57 0 .817-.245 1.113-.54l2.67-2.557 5.53 4.047c1.014.558 1.734.264 1.987-.939l3.6-16.86c.3-1.4-.506-1.95-1.496-1.58L1.27 9.64c-1.37.53-1.35 1.29-.233 1.64l5.68 1.77 13.337-8.418c.59-.39 1.13-.175.69.215"/>
+      </svg>
+      Contact Support
+    </a>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ════ CONFIG ════ */
+  var PRIMARY_JSON     = 'https://sayan-json-3.pages.dev/loura.json';
+  var FALLBACK_JSON    = 'https://cors-proxy.cooks.fyi/https://allrounderid2.pages.dev/id.json'; // ← replace with fallback URL
+  var CONTACT_LINK     = 'https://wa.me/message/BOF76S5WFJVMN1';
+  var WA_CHANNEL       = 'https://whatsapp.com/channel/0029VaeylYYBPzjVNomWuZ0T';
+  var RETRY_DELAY_MS   = 15000; // retry only on error, every 15s
+  /* ════════════════ */
+
+  var iframe      = document.getElementById('main-iframe');
+  var loadScreen  = document.getElementById('loading-screen');
+  var errScreen   = document.getElementById('error-screen');
+  var errBadge    = document.getElementById('error-badge');
+  var contactBtn  = document.getElementById('error-contact-btn');
+  var popup       = document.getElementById('popup');
+  var joinBtn     = document.getElementById('popupJoinBtn');
+  var skipBtn     = document.getElementById('popupSkipBtn');
+
+  contactBtn.href = CONTACT_LINK;
+  joinBtn.href    = WA_CHANNEL;
+
+  /* ── Popup ── */
+  popup.classList.add('visible');
+  function closePopup() {
+    popup.style.opacity = '0';
+    popup.style.transition = 'opacity .2s';
+    setTimeout(function () { popup.style.display = 'none'; }, 220);
+  }
+  skipBtn.addEventListener('click', closePopup);
+  joinBtn.addEventListener('click', function () { setTimeout(closePopup, 200); });
+
+  /* ── Loading hide (when iframe loads) ── */
+  var loaderHidden = false;
+  function hideLoader() {
+    if (loaderHidden) return;
+    loaderHidden = true;
+    loadScreen.style.transition = 'opacity .35s';
+    loadScreen.style.opacity = '0';
+    iframe.style.visibility = 'visible';
+    setTimeout(function () { loadScreen.style.display = 'none'; }, 370);
+  }
+  iframe.addEventListener('load', hideLoader);
+
+  /* ── Error state + retry ONLY on error ── */
+  var retryTimer  = null;
+  var currentId   = null;
+  var inErrorState = false;
+
+  function showError(id) {
+    loadScreen.style.display = 'none';
+    iframe.style.visibility  = 'hidden';
+    errBadge.textContent     = id ? '"' + id + '"' : '"Unknown"';
+    errScreen.classList.add('show');
+    inErrorState = true;
+    /* Start silent retry only when in error */
+    scheduleRetry(id);
+  }
+
+  function hideError() {
+    errScreen.classList.remove('show');
+    inErrorState = false;
+    clearTimeout(retryTimer);
+  }
+
+  function scheduleRetry(id) {
+    clearTimeout(retryTimer);
+    retryTimer = setTimeout(function () {
+      /* Silent retry — user sees nothing */
+      fetchAndLoad(id, true);
+    }, RETRY_DELAY_MS);
+  }
+
+  /* ── Fullscreen → Landscape on mobile ── */
+  function tryLandscape() {
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(function () {});
+    }
+  }
+  function exitLandscape() {
+    if (screen.orientation && screen.orientation.unlock) {
+      try { screen.orientation.unlock(); } catch (e) {}
+    }
+  }
+  document.addEventListener('fullscreenchange',       onFSChange);
+  document.addEventListener('webkitfullscreenchange', onFSChange);
+  document.addEventListener('mozfullscreenchange',    onFSChange);
+  function onFSChange() {
+    var fsEl = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+    if (fsEl) { tryLandscape(); } else { exitLandscape(); }
+  }
+
+  /* ── URL ID parsing ── */
+  function getStreamId() {
+    var s = window.location.search;
+    if (s.indexOf('id=') !== -1) return new URLSearchParams(s).get('id') || null;
+    if (s.length > 1) return s.slice(1).trim() || null;
+    var parts = window.location.pathname.replace(/\/+$/, '').split('/');
+    var last = parts[parts.length - 1];
+    return last || null;
+  }
+
+  /* ── Stream loader ── */
+  function applyStream(data, id) {
+    var item = (data.iframes || []).find(function (x) {
+      return x.id === id || x.id === (id || '').trim();
+    });
+    if (item && item.iframeSrc) {
+      iframe.src = item.iframeSrc;
+      hideError();
+      if (item.hit) { fetch(item.hit).catch(function () {}); }
+      return true;
+    }
+    return false;
+  }
+
+  function tryFallback(id) {
+    if (FALLBACK_JSON.indexOf('REPLACE') !== -1) { showError(id); return; }
+    fetch(FALLBACK_JSON)
+      .then(function (r) { return r.json(); })
+      .then(function (data) { if (!applyStream(data, id)) showError(id); })
+      .catch(function () { showError(id); });
+  }
+
+  function fetchAndLoad(id, isSilentRetry) {
+    fetch(PRIMARY_JSON)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!applyStream(data, id)) tryFallback(id);
+      })
+      .catch(function () { tryFallback(id); });
+  }
+
+  /* ── Init ── */
+  currentId = getStreamId();
+  if (currentId) {
+    fetchAndLoad(currentId, false);
+  } else {
+    showError(null);
+  }
+
+})();
+</script>
+</body>
+</html>
