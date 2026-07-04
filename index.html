@@ -6,18 +6,25 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CRICKET  NEWS POINT - CnpTVOfficial </title>
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>CRICKET NEWS POINT - CnpTVOfficial</title>
+<link rel="icon" href="https://livedakho.pages.dev/file_00000000d56c7208939f3cb5bb73adc0.png">
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5NE717HVD"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G5NE717HVD');</script>
 
-<div id="sc-hidden" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;" aria-hidden="true">
-  <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
-  <script type="text/javascript">sc_online_i(1735331,"ffffff","28054a");</script>
-</div>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://sayan-json-5.pages.dev">
+<link rel="dns-prefetch" href="https://sayan-json-5.pages.dev">
+<link rel="preconnect" href="https://allrounderid2.pages.dev">
+<link rel="dns-prefetch" href="https://allrounderid2.pages.dev">
 <link href="https://fonts.googleapis.com/css2?family=Acme&family=Amaranth:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -229,9 +236,23 @@ body {
 }
 .error-body {
   font-size: 14px; color: rgba(255,255,255,.38);
-  line-height: 1.8; margin-bottom: 32px;
+  line-height: 1.8; margin-bottom: 14px;
   font-family: Arial, sans-serif;
 }
+.error-retry-note {
+  display: flex; align-items: center; justify-content: center;
+  gap: 7px;
+  font-size: 12.5px; color: rgba(255,255,255,.34);
+  font-family: Arial, sans-serif;
+  letter-spacing: .3px;
+  margin-bottom: 30px;
+}
+.error-retry-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #f5a500;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: .35; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.1); } }
 .error-contact-btn {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 13px 30px; border-radius: 50px;
@@ -259,7 +280,12 @@ body {
 </head>
 <body>
 
-<a href="#" class="logo-btn">
+<div style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;" aria-hidden="true">
+  <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+  <script type="text/javascript">sc_online_i(1735331,"ffffff","28054a");</script>
+</div>
+
+<a href="https://t.me/CnpTVOfficial" class="logo-btn" target="_blank" rel="noopener noreferrer">
   <img src="https://livedakho.pages.dev/file_00000000d56c7208939f3cb5bb73adc0.png" alt="Logo" loading="eager">
 </a>
 
@@ -271,6 +297,7 @@ body {
 <iframe id="main-iframe"
   allowfullscreen
   allow="encrypted-media; fullscreen; autoplay; picture-in-picture"
+  referrerpolicy="no-referrer-when-downgrade"
   scrolling="no">
 </iframe>
 
@@ -303,7 +330,11 @@ body {
       The requested stream is not available right now.<br>
       Please check the link or try again later.
     </div>
-    <a href="https://wa.me/message/BOF76S5WFJVMN1" target="_blank" class="error-contact-btn" id="error-contact-btn">
+    <div class="error-retry-note">
+      <span class="error-retry-dot"></span>
+      <span>Retrying automatically</span>
+    </div>
+    <a href="https://wa.me/message/BOF76S5WFJVMN1" target="_blank" rel="noopener noreferrer" class="error-contact-btn" id="error-contact-btn">
       <svg viewBox="0 0 24 24">
         <path d="M9.993 15.674l-.398 5.604c.57 0 .817-.245 1.113-.54l2.67-2.557 5.53 4.047c1.014.558 1.734.264 1.987-.939l3.6-16.86c.3-1.4-.506-1.95-1.496-1.58L1.27 9.64c-1.37.53-1.35 1.29-.233 1.64l5.68 1.77 13.337-8.418c.59-.39 1.13-.175.69.215"/>
       </svg>
@@ -316,23 +347,25 @@ body {
 (function () {
   'use strict';
 
-  var PRIMARY_JSON   = 'https://sayan-json-5.pages.dev/loura.json';
-  var FALLBACK_JSON  = 'https://allrounderid2.pages.dev/id.json';
-  var CONTACT_LINK   = 'https://wa.me/message/BOF76S5WFJVMN1';
-  var WA_CHANNEL     = 'https://whatsapp.com/channel/0029VaeylYYBPzjVNomWuZ0T';
-  var RETRY_DELAY_MS = 10000;
+  var PRIMARY_JSON = 'https://sayan-json-5.pages.dev/loura.json';
+  var FALLBACK_JSON = 'https://allrounderid2.pages.dev/id.json';
+  var CONTACT_LINK = 'https://wa.me/message/BOF76S5WFJVMN1';
+  var WA_CHANNEL = 'https://whatsapp.com/channel/0029VaeylYYBPzjVNomWuZ0T';
+  var FETCH_TIMEOUT_MS = 8000;
+  var RETRY_DELAY_MS = 6000;
+  var IFRAME_SAFETY_MS = 15000;
 
-  var iframe     = document.getElementById('main-iframe');
+  var iframe = document.getElementById('main-iframe');
   var loadScreen = document.getElementById('loading-screen');
-  var errScreen  = document.getElementById('error-screen');
-  var errBadge   = document.getElementById('error-badge');
+  var errScreen = document.getElementById('error-screen');
+  var errBadge = document.getElementById('error-badge');
   var contactBtn = document.getElementById('error-contact-btn');
-  var popup      = document.getElementById('popup');
-  var joinBtn    = document.getElementById('popupJoinBtn');
-  var skipBtn    = document.getElementById('popupSkipBtn');
+  var popup = document.getElementById('popup');
+  var joinBtn = document.getElementById('popupJoinBtn');
+  var skipBtn = document.getElementById('popupSkipBtn');
 
   contactBtn.href = CONTACT_LINK;
-  joinBtn.href    = WA_CHANNEL;
+  joinBtn.href = WA_CHANNEL;
 
   popup.classList.add('visible');
 
@@ -349,9 +382,12 @@ body {
   skipBtn.addEventListener('click', closePopup);
 
   var loaderHidden = false;
+  var iframeSafetyTimer = null;
+
   function hideLoader() {
     if (loaderHidden) return;
     loaderHidden = true;
+    clearTimeout(iframeSafetyTimer);
     loadScreen.style.transition = 'opacity .35s';
     loadScreen.style.opacity = '0';
     iframe.style.visibility = 'visible';
@@ -359,14 +395,13 @@ body {
   }
   iframe.addEventListener('load', hideLoader);
 
-  var retryTimer   = null;
-  var currentId    = null;
+  var retryTimer = null;
   var inErrorState = false;
 
   function showError(id) {
     loadScreen.style.display = 'none';
-    iframe.style.visibility  = 'hidden';
-    errBadge.textContent     = id ? '"' + id + '"' : '"Unknown"';
+    iframe.style.visibility = 'hidden';
+    errBadge.textContent = id ? '"' + id + '"' : '"Unknown"';
     errScreen.classList.add('show');
     inErrorState = true;
     scheduleRetry(id);
@@ -381,7 +416,7 @@ body {
   function scheduleRetry(id) {
     clearTimeout(retryTimer);
     retryTimer = setTimeout(function () {
-      fetchAndLoad(id, true);
+      fetchAndLoad(id);
     }, RETRY_DELAY_MS);
   }
 
@@ -395,9 +430,9 @@ body {
       try { screen.orientation.unlock(); } catch (e) {}
     }
   }
-  document.addEventListener('fullscreenchange',       onFSChange);
+  document.addEventListener('fullscreenchange', onFSChange);
   document.addEventListener('webkitfullscreenchange', onFSChange);
-  document.addEventListener('mozfullscreenchange',    onFSChange);
+  document.addEventListener('mozfullscreenchange', onFSChange);
   function onFSChange() {
     var fsEl = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
     if (fsEl) { tryLandscape(); } else { exitLandscape(); }
@@ -405,46 +440,75 @@ body {
 
   function getStreamId() {
     var s = window.location.search;
-    if (s.indexOf('id=') !== -1) return new URLSearchParams(s).get('id') || null;
-    if (s.length > 1) return s.slice(1).trim() || null;
-    var parts = window.location.pathname.replace(/\/+$/, '').split('/');
-    var last = parts[parts.length - 1];
-    return last || null;
-  }
-
-  function applyStream(data, id) {
-    var item = (data.iframes || []).find(function (x) {
-      return x.id === id || x.id === (id || '').trim();
-    });
-    if (item && item.iframeSrc) {
-      iframe.src = item.iframeSrc;
-      hideError();
-      if (item.hit) { fetch(item.hit).catch(function () {}); }
-      return true;
+    var raw = null;
+    if (s.length > 1) {
+      raw = s.slice(1);
+      var eq = raw.indexOf('=');
+      if (eq !== -1) { raw = raw.slice(eq + 1); }
+      raw = raw.split('&')[0];
+      try { raw = decodeURIComponent(raw); } catch (e) {}
+    } else {
+      var parts = window.location.pathname.replace(/\/+$/, '').split('/');
+      raw = parts[parts.length - 1];
     }
-    return false;
+    if (!raw) return null;
+    raw = raw.trim();
+    return raw || null;
   }
 
-  function tryFallback(id) {
-    if (FALLBACK_JSON.indexOf('REPLACE') !== -1) { showError(id); return; }
-    fetch(FALLBACK_JSON)
-      .then(function (r) { return r.json(); })
-      .then(function (data) { if (!applyStream(data, id)) showError(id); })
-      .catch(function () { showError(id); });
+  function freshUrl(url) {
+    var sep = url.indexOf('?') === -1 ? '?' : '&';
+    return url + sep + 'nocache=' + Date.now();
   }
 
-  function fetchAndLoad(id, isSilentRetry) {
-    fetch(PRIMARY_JSON)
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        if (!applyStream(data, id)) tryFallback(id);
+  function fetchJSON(url) {
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, FETCH_TIMEOUT_MS);
+    return fetch(freshUrl(url), { cache: 'no-store', signal: controller.signal })
+      .then(function (r) {
+        clearTimeout(timer);
+        if (!r.ok) throw new Error('bad response');
+        return r.json();
       })
-      .catch(function () { tryFallback(id); });
+      .catch(function (err) {
+        clearTimeout(timer);
+        throw err;
+      });
   }
 
-  currentId = getStreamId();
+  function findMatch(data, id) {
+    var list = (data && data.iframes) || [];
+    var found = list.find(function (x) {
+      return String(x.id) === String(id);
+    });
+    return (found && found.iframeSrc) ? found : null;
+  }
+
+  function applyStream(item) {
+    clearTimeout(iframeSafetyTimer);
+    iframe.src = item.iframeSrc;
+    iframeSafetyTimer = setTimeout(hideLoader, IFRAME_SAFETY_MS);
+    hideError();
+    if (item.hit) { fetch(item.hit, { cache: 'no-store' }).catch(function () {}); }
+  }
+
+  function fetchAndLoad(id) {
+    Promise.allSettled([fetchJSON(PRIMARY_JSON), fetchJSON(FALLBACK_JSON)])
+      .then(function (results) {
+        var primaryData = results[0].status === 'fulfilled' ? results[0].value : null;
+        var fallbackData = results[1].status === 'fulfilled' ? results[1].value : null;
+        var item = findMatch(primaryData, id) || findMatch(fallbackData, id);
+        if (item) {
+          applyStream(item);
+        } else {
+          showError(id);
+        }
+      });
+  }
+
+  var currentId = getStreamId();
   if (currentId) {
-    fetchAndLoad(currentId, false);
+    fetchAndLoad(currentId);
   } else {
     showError(null);
   }
@@ -453,4 +517,3 @@ body {
 </script>
 </body>
 </html>
-
