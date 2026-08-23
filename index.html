@@ -16,15 +16,16 @@
 <title>CRICKET NEWS POINT - CnpTVOfficial</title>
 <link rel="icon" href="/file_00000000d56c7208939f3cb5bb73adc0.png">
 
+<!-- Google Analytics (gtag) – existing, keep as is -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5NE717HVD"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G5NE717HVD');</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://sonujson-v3.pages.dev/">
-<link rel="dns-prefetch" href="https://sonujson-v3.pages.dev/">
+<link rel="preconnect" href="https://sonujson-v4.pages.dev/">
+<link rel="dns-prefetch" href="https://sonujson-v4.pages.dev/">
 <link rel="preconnect" href="https://allrounder2-0.pages.dev/">
-<link rel="dns-prefetch" href="https://allrounder2-0.pages.dev/">
+<link rel="dns-prefetch" href="1dot1dot1dot1.cloudflare-dns.com">
 <link href="https://fonts.googleapis.com/css2?family=Acme&family=Amaranth:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -328,10 +329,17 @@ body {
 </head>
 <body>
 
-<div style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;" aria-hidden="true">
-  <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
-  <script type="text/javascript">sc_online_i(1735331,"ffffff","28054a");</script>
-</div>
+<!-- ============================================ -->
+<!--  REPLACEMENT: Old SuperCounters widget removed -->
+<!--  New privacy‑friendly Plausible Analytics added -->
+<!-- ============================================ -->
+<!-- Plausible Analytics (async, cookieless, lightweight) -->
+<script async src="https://plausible.io/js/pa-V6G876ZlLnrpWmFMMa9yS.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<!-- End Plausible Analytics -->
 
 <a href="https://t.me/CnpTVOfficial" class="logo-btn" target="_blank" rel="noopener noreferrer">
   <img src="/file_00000000d56c7208939f3cb5bb73adc0.png" alt="Logo" loading="eager">
@@ -402,7 +410,7 @@ body {
 (function () {
   'use strict';
 
-  var PRIMARY_JSON = 'https://sonujson-v3.pages.dev/loura.json';
+  var PRIMARY_JSON = 'https://sonujson-v4.pages.dev/loura.json';
   var FALLBACK_JSON = 'https://allrounder2-0.pages.dev/id.json';
   var CONTACT_LINK = 'https://t.me/CnpTVOfficial';
   var WA_CHANNEL = 'https://whatsapp.com/channel/0029VaeylYYBPzjVNomWuZ0T';
