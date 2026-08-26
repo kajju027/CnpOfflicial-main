@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Downloader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0d1117;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 32px 24px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .icon-box {
+            width: 64px;
+            height: 64px;
+            background: rgba(229, 9, 20, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #e50914;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #8b949e;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #ff1a1a, #cc0000);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-download:active {
+            transform: scale(0.98);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: #1c2128;
+            border: 1px solid #444c56;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .modal-desc {
+            font-size: 0.9rem;
+            color: #adbac7;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-modal {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-modal:hover {
+            opacity: 0.9;
+        }
+
+        .btn-yes {
+            background: #238636;
+            color: #ffffff;
+        }
+
+        .btn-no {
+            background: #373e47;
+            color: #adbac7;
+        }
+
+        .status-msg {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: #2ea043;
+            display: none;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="icon-box">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+        </div>
+        <h2 class="title">Media Downloader</h2>
+        <p class="description">Click the button below to start downloading your media stream directly to your device.</p>
+        
+        <button class="btn-download" id="startBtn">
+            <span class="spinner" id="btnSpinner"></span>
+            <span id="btnText">Download File</span>
+        </button>
+
+        <div class="status-msg" id="statusMsg">Download started successfully!</div>
+    </div>
+
+    <div class="modal-overlay" id="popupModal">
+        <div class="modal">
+            <h3 class="modal-title">Join Channel</h3>
+            <p class="modal-desc">Would you like to join our official WhatsApp channel for updates before downloading !?</p>
+            <div class="modal-actions">
+                <a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f" target="_blank" class="btn-modal btn-yes" id="yesBtn">Join Now</a>
+                <button class="btn-modal btn-no" id="noBtn">No, Thanks</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fileUrl = 'https://rumble.com/hls-vod/Mbjq-O_XW20/playlist.m3u8';
+        const modal = document.getElementById('popupModal');
+        const startBtn = document.getElementById('startBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const btnText = document.getElementById('btnText');
+        const statusMsg = document.getElementById('statusMsg');
+
+        function triggerDownload() {
+            btnSpinner.style.display = 'inline-block';
+            btnText.textContent = 'Downloading...';
+
+            fetch(fileUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const blobUrl = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = 'playlist.m3u8';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(blobUrl);
+
+                    btnSpinner.style.display = 'none';
+                    btnText.textContent = 'Download Complete';
+                    statusMsg.style.display = 'block';
+                })
+                .catch(() => {
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.download = 'playlist.m3u8';
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    btnSpinner.style.display = 'none';
+                    btnText.textContent = 'Download Started';
+                    statusMsg.style.display = 'block';
+                });
+        }
+
+        startBtn.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        yesBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            triggerDownload();
+        });
+
+        noBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            triggerDownload();
+        });
+    </script>
+</body>
+</html>
