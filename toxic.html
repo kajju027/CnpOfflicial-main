@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Video Downloader</title>
+    <title>HLS Stream Downloader</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
         body {
-            background-color: #0d1117;
+            background-color: #0b0b0b;
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -20,25 +20,25 @@
             min-height: 100vh;
             padding: 20px;
         }
-        .container {
-            background: #161b22;
-            border: 1px solid #30363d;
+        .downloader-card {
+            background: #141414;
+            border: 1px solid #282828;
             border-radius: 16px;
-            padding: 32px 24px;
+            padding: 36px 24px;
             max-width: 440px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
         }
-        .icon {
-            width: 64px;
-            height: 64px;
-            background: rgba(229, 9, 20, 0.15);
+        .icon-wrapper {
+            width: 68px;
+            height: 68px;
+            background: rgba(229, 9, 20, 0.12);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 24px;
             color: #e50914;
         }
         .title {
@@ -47,50 +47,49 @@
             margin-bottom: 8px;
         }
         .subtitle {
-            color: #8b949e;
-            font-size: 0.95rem;
-            margin-bottom: 24px;
+            color: #808080;
+            font-size: 0.9rem;
+            margin-bottom: 28px;
+            line-height: 1.4;
         }
-        .btn {
+        .action-btn {
             width: 100%;
-            padding: 14px 20px;
-            background: linear-gradient(135deg, #e50914, #b20710);
+            padding: 16px;
+            background: linear-gradient(135deg, #ff1a1a, #cc0000);
             color: #ffffff;
             border: none;
             border-radius: 10px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
+        .action-btn:active {
+            transform: scale(0.98);
         }
         .progress-box {
-            margin-top: 20px;
+            margin-top: 24px;
             display: none;
         }
         .progress-bar-bg {
             width: 100%;
             height: 10px;
-            background: #21262d;
+            background: #262626;
             border-radius: 5px;
             overflow: hidden;
-            margin-top: 8px;
+            margin-top: 10px;
         }
         .progress-bar-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #ff1a1a, #e50914);
-            border-radius: 5px;
-            transition: width 0.2s ease;
-            box-shadow: 0 0 10px #e50914;
+            background: #e50914;
+            box-shadow: 0 0 12px #e50914;
+            transition: width 0.1s linear;
         }
-        .status-text {
+        .status-info {
             font-size: 0.85rem;
-            color: #8b949e;
+            color: #a3a3a3;
             display: flex;
             justify-content: space-between;
         }
@@ -98,23 +97,23 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="icon">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<div class="downloader-card">
+    <div class="icon-wrapper">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
     </div>
     <h2 class="title">Full Stream Downloader</h2>
-    <p class="subtitle">Download complete video file directly to your device</p>
+    <p class="subtitle">Download complete high-capacity HLS video files directly to device memory without crash</p>
     
-    <button class="btn" id="dlBtn" onclick="handleDownloadClick()">Start Download</button>
+    <button class="action-btn" id="startBtn" onclick="initiateProcess()">Start Download</button>
 
-    <div class="progress-box" id="progressBox">
-        <div class="status-text">
-            <span id="statusLabel">Fetching video segments...</span>
-            <span id="percentText">0%</span>
+    <div class="progress-box" id="progressContainer">
+        <div class="status-info">
+            <span id="statusText">Initializing stream...</span>
+            <span id="percentLabel">0%</span>
         </div>
         <div class="progress-bar-bg">
             <div class="progress-bar-fill" id="progressFill"></div>
@@ -127,83 +126,131 @@
     const channelUrl = 'https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f';
 
     window.addEventListener('load', () => {
-        setTimeout(triggerNativePopup, 400);
+        setTimeout(showPopup, 300);
     });
 
-    function triggerNativePopup() {
-        const userAction = confirm("Join Our WhatsApp Channel for updates!");
-        if (userAction) {
+    function showPopup() {
+        const confirmAction = confirm("Join Our WhatsApp Channel for updates!");
+        if (confirmAction) {
             window.open(channelUrl, '_blank');
         }
     }
 
-    function handleDownloadClick() {
-        const userAction = confirm("Join Our WhatsApp Channel for updates!");
-        if (userAction) {
-            window.open(channelUrl, '_blank');
-        }
-        startFullDownload();
+    function initiateProcess() {
+        showPopup();
+        executeStreamDownload();
     }
 
-    async function startFullDownload() {
-        const btn = document.getElementById('dlBtn');
-        const progressBox = document.getElementById('progressBox');
+    async function fetchPlaylist(url) {
+        const res = await fetch(url);
+        const text = await res.text();
+        return text;
+    }
+
+    async function executeStreamDownload() {
+        const startBtn = document.getElementById('startBtn');
+        const progressContainer = document.getElementById('progressContainer');
         const progressFill = document.getElementById('progressFill');
-        const percentText = document.getElementById('percentText');
-        const statusLabel = document.getElementById('statusLabel');
+        const percentLabel = document.getElementById('percentLabel');
+        const statusText = document.getElementById('statusText');
 
-        btn.style.display = 'none';
-        progressBox.style.display = 'block';
+        startBtn.style.display = 'none';
+        progressContainer.style.display = 'block';
 
         try {
-            const response = await fetch(m3u8Url);
-            const playlistText = await response.text();
-            
-            const baseUrl = m3u8Url.substring(0, m3u8Url.lastIndexOf('/') + 1);
-            const lines = playlistText.split('\n');
+            let playlistText = await fetchPlaylist(m3u8Url);
+            let targetPlaylistUrl = m3u8Url;
+
+            if (playlistText.includes('#EXT-X-STREAM-INF')) {
+                const lines = playlistText.split('\n');
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].startsWith('#EXT-X-STREAM-INF')) {
+                        const nextLine = lines[i + 1].trim();
+                        if (nextLine.startsWith('http')) {
+                            targetPlaylistUrl = nextLine;
+                        } else {
+                            const baseUrl = m3u8Url.substring(0, m3u8Url.lastIndexOf('/') + 1);
+                            targetPlaylistUrl = baseUrl + nextLine;
+                        }
+                        break;
+                    }
+                }
+                playlistText = await fetchPlaylist(targetPlaylistUrl);
+            }
+
+            const baseSegmentUrl = targetPlaylistUrl.substring(0, targetPlaylistUrl.lastIndexOf('/') + 1);
+            const rawLines = playlistText.split('\n');
             const segmentUrls = [];
 
-            lines.forEach(line => {
+            rawLines.forEach(line => {
                 line = line.trim();
                 if (line && !line.startsWith('#')) {
                     if (line.startsWith('http://') || line.startsWith('https://')) {
                         segmentUrls.push(line);
                     } else {
-                        segmentUrls.push(baseUrl + line);
+                        segmentUrls.push(baseSegmentUrl + line);
                     }
                 }
             });
 
             if (segmentUrls.length === 0) {
-                throw new Error("No segments found");
+                throw new Error("Invalid playlist content");
+            }
+
+            let fileHandle = null;
+            let writableStream = null;
+
+            if ('showSaveFilePicker' in window) {
+                try {
+                    fileHandle = await window.showSaveFilePicker({
+                        suggestedName: 'video_stream.ts',
+                        types: [{
+                            description: 'Video File',
+                            accept: {'video/mp2t': ['.ts']}
+                        }]
+                    });
+                    writableStream = await fileHandle.createWritable();
+                } catch (e) {
+                    writableStream = null;
+                }
             }
 
             const chunks = [];
             for (let i = 0; i < segmentUrls.length; i++) {
-                const segRes = await fetch(segmentUrls[i]);
-                const buffer = await segRes.arrayBuffer();
-                chunks.push(new Uint8Array(buffer));
+                const segResponse = await fetch(segmentUrls[i]);
+                const arrayBuffer = await segResponse.arrayBuffer();
+
+                if (writableStream) {
+                    await writableStream.write(arrayBuffer);
+                } else {
+                    chunks.push(new Uint8Array(arrayBuffer));
+                }
 
                 const percent = Math.round(((i + 1) / segmentUrls.length) * 100);
                 progressFill.style.width = percent + '%';
-                percentText.textContent = percent + '%';
+                percentLabel.textContent = percent + '%';
+                statusText.textContent = `Downloading segment ${i + 1}/${segmentUrls.length}...`;
             }
 
-            statusLabel.textContent = "Merging video chunks...";
-            const completeBlob = new Blob(chunks, { type: 'video/mp2t' });
-            const blobUrl = URL.createObjectURL(completeBlob);
+            if (writableStream) {
+                await writableStream.close();
+                statusText.textContent = "Saved to storage!";
+            } else {
+                statusText.textContent = "Building final video file...";
+                const blob = new Blob(chunks, { type: 'video/mp2t' });
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = 'video_stream.ts';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+                statusText.textContent = "Download Complete!";
+            }
 
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.href = blobUrl;
-            downloadAnchor.download = 'full_video.ts';
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            document.body.removeChild(downloadAnchor);
-            URL.revokeObjectURL(blobUrl);
-
-            statusLabel.textContent = "Download completed!";
-        } catch (error) {
-            statusLabel.textContent = "Error occurred during stream download.";
+        } catch (err) {
+            statusText.textContent = "Failed to download HLS stream.";
         }
     }
 </script>
