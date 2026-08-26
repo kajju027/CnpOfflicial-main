@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Downloader</title>
+    <title>Full Video Downloader</title>
     <style>
         * {
             margin: 0;
@@ -11,7 +11,6 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
-
         body {
             background-color: #0d1117;
             color: #ffffff;
@@ -21,19 +20,17 @@
             min-height: 100vh;
             padding: 20px;
         }
-
-        .card {
+        .container {
             background: #161b22;
             border: 1px solid #30363d;
             border-radius: 16px;
             padding: 32px 24px;
-            max-width: 420px;
+            max-width: 440px;
             width: 100%;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-
-        .icon-box {
+        .icon {
             width: 64px;
             height: 64px;
             background: rgba(229, 9, 20, 0.15);
@@ -44,24 +41,20 @@
             margin: 0 auto 20px;
             color: #e50914;
         }
-
         .title {
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 8px;
         }
-
-        .description {
+        .subtitle {
             color: #8b949e;
             font-size: 0.95rem;
             margin-bottom: 24px;
-            line-height: 1.4;
         }
-
-        .btn-download {
+        .btn {
             width: 100%;
             padding: 14px 20px;
-            background: linear-gradient(135deg, #ff1a1a, #cc0000);
+            background: linear-gradient(135deg, #e50914, #b20710);
             color: #ffffff;
             border: none;
             border-radius: 10px;
@@ -69,215 +62,150 @@
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            transition: all 0.3s ease;
         }
-
-        .btn-download:active {
-            transform: scale(0.98);
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
         }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            padding: 20px;
-            z-index: 1000;
+        .progress-box {
+            margin-top: 20px;
+            display: none;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: #1c2128;
-            border: 1px solid #444c56;
-            border-radius: 16px;
-            padding: 24px;
-            max-width: 360px;
+        .progress-bar-bg {
             width: 100%;
-            text-align: center;
-            transform: scale(0.8);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 10px;
+            background: #21262d;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 8px;
         }
-
-        .modal-overlay.active .modal {
-            transform: scale(1);
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff1a1a, #e50914);
+            border-radius: 5px;
+            transition: width 0.2s ease;
+            box-shadow: 0 0 10px #e50914;
         }
-
-        .modal-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .modal-desc {
-            font-size: 0.9rem;
-            color: #adbac7;
-            margin-bottom: 20px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn-modal {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.2s ease;
-        }
-
-        .btn-modal:hover {
-            opacity: 0.9;
-        }
-
-        .btn-yes {
-            background: #238636;
-            color: #ffffff;
-        }
-
-        .btn-no {
-            background: #373e47;
-            color: #adbac7;
-        }
-
-        .status-msg {
-            margin-top: 16px;
+        .status-text {
             font-size: 0.85rem;
-            color: #2ea043;
-            display: none;
-        }
-
-        .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid #fff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            color: #8b949e;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="icon-box">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-        </div>
-        <h2 class="title">Media Downloader</h2>
-        <p class="description">Click the button below to start downloading your media stream directly to your device.</p>
-        
-        <button class="btn-download" id="startBtn">
-            <span class="spinner" id="btnSpinner"></span>
-            <span id="btnText">Download File</span>
-        </button>
-
-        <div class="status-msg" id="statusMsg">Download started successfully!</div>
+<div class="container">
+    <div class="icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
     </div>
+    <h2 class="title">Full Stream Downloader</h2>
+    <p class="subtitle">Download complete video file directly to your device</p>
+    
+    <button class="btn" id="dlBtn" onclick="handleDownloadClick()">Start Download</button>
 
-    <div class="modal-overlay" id="popupModal">
-        <div class="modal">
-            <h3 class="modal-title">Join Channel</h3>
-            <p class="modal-desc">Would you like to join our official WhatsApp channel for updates before downloading !?</p>
-            <div class="modal-actions">
-                <a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f" target="_blank" class="btn-modal btn-yes" id="yesBtn">Join Now</a>
-                <button class="btn-modal btn-no" id="noBtn">No, Thanks</button>
-            </div>
+    <div class="progress-box" id="progressBox">
+        <div class="status-text">
+            <span id="statusLabel">Fetching video segments...</span>
+            <span id="percentText">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressFill"></div>
         </div>
     </div>
+</div>
 
-    <script>
-        const fileUrl = 'https://rumble.com/hls-vod/Mbjq-O_XW20/playlist.m3u8';
-        const modal = document.getElementById('popupModal');
-        const startBtn = document.getElementById('startBtn');
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
-        const btnSpinner = document.getElementById('btnSpinner');
-        const btnText = document.getElementById('btnText');
-        const statusMsg = document.getElementById('statusMsg');
+<script>
+    const m3u8Url = 'https://rumble.com/hls-vod/Mbjq-O_XW20/playlist.m3u8';
+    const channelUrl = 'https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f';
 
-        function triggerDownload() {
-            btnSpinner.style.display = 'inline-block';
-            btnText.textContent = 'Downloading...';
+    window.addEventListener('load', () => {
+        setTimeout(triggerNativePopup, 400);
+    });
 
-            fetch(fileUrl)
-                .then(response => response.blob())
-                .then(blob => {
-                    const blobUrl = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = blobUrl;
-                    link.download = 'playlist.m3u8';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(blobUrl);
-
-                    btnSpinner.style.display = 'none';
-                    btnText.textContent = 'Download Complete';
-                    statusMsg.style.display = 'block';
-                })
-                .catch(() => {
-                    const link = document.createElement('a');
-                    link.href = fileUrl;
-                    link.download = 'playlist.m3u8';
-                    link.target = '_blank';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-
-                    btnSpinner.style.display = 'none';
-                    btnText.textContent = 'Download Started';
-                    statusMsg.style.display = 'block';
-                });
+    function triggerNativePopup() {
+        const userAction = confirm("Join Our WhatsApp Channel for updates!");
+        if (userAction) {
+            window.open(channelUrl, '_blank');
         }
+    }
 
-        startBtn.addEventListener('click', () => {
-            modal.classList.add('active');
-        });
+    function handleDownloadClick() {
+        const userAction = confirm("Join Our WhatsApp Channel for updates!");
+        if (userAction) {
+            window.open(channelUrl, '_blank');
+        }
+        startFullDownload();
+    }
 
-        yesBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-            triggerDownload();
-        });
+    async function startFullDownload() {
+        const btn = document.getElementById('dlBtn');
+        const progressBox = document.getElementById('progressBox');
+        const progressFill = document.getElementById('progressFill');
+        const percentText = document.getElementById('percentText');
+        const statusLabel = document.getElementById('statusLabel');
 
-        noBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-            triggerDownload();
-        });
-    </script>
+        btn.style.display = 'none';
+        progressBox.style.display = 'block';
+
+        try {
+            const response = await fetch(m3u8Url);
+            const playlistText = await response.text();
+            
+            const baseUrl = m3u8Url.substring(0, m3u8Url.lastIndexOf('/') + 1);
+            const lines = playlistText.split('\n');
+            const segmentUrls = [];
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (line && !line.startsWith('#')) {
+                    if (line.startsWith('http://') || line.startsWith('https://')) {
+                        segmentUrls.push(line);
+                    } else {
+                        segmentUrls.push(baseUrl + line);
+                    }
+                }
+            });
+
+            if (segmentUrls.length === 0) {
+                throw new Error("No segments found");
+            }
+
+            const chunks = [];
+            for (let i = 0; i < segmentUrls.length; i++) {
+                const segRes = await fetch(segmentUrls[i]);
+                const buffer = await segRes.arrayBuffer();
+                chunks.push(new Uint8Array(buffer));
+
+                const percent = Math.round(((i + 1) / segmentUrls.length) * 100);
+                progressFill.style.width = percent + '%';
+                percentText.textContent = percent + '%';
+            }
+
+            statusLabel.textContent = "Merging video chunks...";
+            const completeBlob = new Blob(chunks, { type: 'video/mp2t' });
+            const blobUrl = URL.createObjectURL(completeBlob);
+
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.href = blobUrl;
+            downloadAnchor.download = 'full_video.ts';
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
+            URL.revokeObjectURL(blobUrl);
+
+            statusLabel.textContent = "Download completed!";
+        } catch (error) {
+            statusLabel.textContent = "Error occurred during stream download.";
+        }
+    }
+</script>
 </body>
 </html>
