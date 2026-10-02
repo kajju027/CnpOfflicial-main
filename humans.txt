@@ -1,4 +1,0 @@
-Team: Cricket News Point
-Developer: Sayan
-Site: https://cnptv.pages.dev
-Technology: HTML5, JavaScript
