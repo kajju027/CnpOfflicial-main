@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>INDIA VS WESTINDIES — Live Match Stream HD</title>
+  
+  <!-- Primary SEO -->
+  <meta name="description" content="Watch India vs West Indies live cricket match streaming in HD. Switch multi-angle sports channels with zero lag." />
+  <meta name="keywords" content="India vs West Indies, live cricket, ind vs wi live, live sports stream, cricket streaming HD" />
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#050505">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Performance Fonts & Material Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQXW3DBDQL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CQXW3DBDQL');
+  </script>
+
+  <style>
+    :root {
+      --bg-dark: #050505;
+      --primary: #f97316;
+      --primary-glow: #ff9100;
+      --accent: #ff5e3a;
+      --card-bg: rgba(22, 22, 28, 0.75);
+      --card-hover: rgba(32, 28, 25, 0.9);
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+      --glass-border: 1px solid rgba(255, 255, 255, 0.09);
+      --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      background: var(--bg-dark);
+      font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      min-height: 100%;
+      color: var(--text-main);
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background-color: #050505;
+      background-image:
+        radial-gradient(circle at 10% 15%, rgba(249, 115, 22, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(255, 94, 58, 0.12) 0%, transparent 45%);
+      position: relative;
+    }
+
+    /* Fixed Glass Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(14px, 2.5vh, 22px) clamp(16px, 4vw, 36px);
+      background: rgba(5, 5, 5, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 50;
+      min-height: clamp(56px, 7vh, 72px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.4), transparent);
+    }
+
+    .logo {
+      font-size: clamp(1.4rem, 3.2vw, 2rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .logo .match { color: #f97316; text-shadow: 0 0 35px rgba(249, 115, 22, 0.4); }
+    .logo .dekho { color: #ffffff; text-shadow: 0 0 25px rgba(255, 255, 255, 0.1); }
+    .logo .dot { color: #f97316; font-size: 0.45em; margin-left: 0.05em; opacity: 0.9; }
+
+    .main {
+      margin-top: clamp(56px, 7vh, 72px);
+      min-height: calc(100vh - clamp(56px, 7vh, 72px));
+      min-height: calc(100dvh - clamp(56px, 7vh, 72px));
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    /* Video Player Area (Native Fullscreen with Natural Landscape Auto-Rotation) */
+    .player-wrapper {
+      width: 100%;
+      background: #000000;
+      flex-shrink: 0;
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      max-height: 72vh;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media (min-width: 900px) {
+      .player-wrapper { 
+        padding-bottom: 0; 
+        height: min(56.25vw, 70vh); 
+        max-height: 70vh; 
+      }
+    }
+
+    .player-wrapper iframe {
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      border: none; 
+      background: #000000;
+      z-index: 1;
+    }
+
+    /* Section Sub-Header / Channel Category Bar */
+    .section-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      max-width: 1100px;
+      margin: 12px auto 0;
+      width: 100%;
+    }
+
+    .section-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+    }
+
+    .section-title .material-icons {
+      color: var(--primary);
+      font-size: 22px;
+    }
+
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #ef4444;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .live-pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 8px #ef4444;
+      animation: pulseDot 1.8s infinite;
+    }
+
+    @keyframes pulseDot {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #ef4444; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
+    /* Channels Grid */
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      padding: 12px 20px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (min-width: 640px) { .channels-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+    @media (min-width: 960px) { .channels-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
+
+    /* Match Channels Card Design (Saffron/Orange & Deep Dark Theme) */
+    .channel-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      position: relative;
+      transition: var(--transition);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    .channel-card:hover { 
+      border-color: rgba(249, 115, 22, 0.45); 
+      transform: translateY(-4px); 
+      background: var(--card-hover); 
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65), 0 0 25px rgba(249, 115, 22, 0.18);
+    }
+
+    .channel-card .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.35) 100%);
+      border: 1.5px solid rgba(249, 115, 22, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.15rem;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .channel-card:hover .icon { 
+      border-color: var(--primary); 
+      transform: scale(1.06);
+      box-shadow: 0 0 25px rgba(249, 115, 22, 0.45); 
+    }
+
+    .channel-card .name { 
+      font-weight: 800; 
+      font-size: 1rem; 
+      color: #f0f2f5; 
+      letter-spacing: 0.2px; 
+    }
+
+    .channel-card .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(249, 115, 22, 0.12);
+      border: 1px solid rgba(249, 115, 22, 0.28);
+      padding: 3px 9px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .channel-card.active { 
+      border-color: var(--primary); 
+      background: rgba(249, 115, 22, 0.12); 
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 35px rgba(249, 115, 22, 0.25); 
+    }
+
+    .channel-card.active .icon { 
+      border-color: #ff9100; 
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      box-shadow: 0 0 25px rgba(249, 115, 22, 0.55); 
+    }
+
+    .channel-card.active .badge {
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    /* Modal Popup */
+    #waOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      padding: 20px;
+      animation: fadeInPopup 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    #waOverlay.show { display: flex; }
+
+    #waCard {
+      width: 100%;
+      max-width: 400px;
+      background: linear-gradient(160deg, #16181f, #0a0c0f);
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      border-radius: 24px;
+      padding: 36px 28px 28px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(249, 115, 22, 0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #waIcon {
+      width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      box-shadow: 0 0 35px rgba(37, 211, 102, 0.35);
+      position: relative; z-index: 1;
+    }
+
+    #waIcon svg { width: 36px; height: 36px; }
+
+    #waCard h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    #waCard p {
+      color: var(--text-muted);
+      margin: 0 0 24px;
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+      line-height: 1.5;
+    }
+
+    .waBtns { display: flex; gap: 12px; }
+
+    .waBtn {
+      flex: 1;
+      padding: 13px 0;
+      border: none;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    #joinedBtn {
+      background: rgba(255, 255, 255, 0.06);
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    #joinedBtn:hover { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
+
+    #joinNow {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(37, 211, 102, 0.35);
+    }
+    #joinNow:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(37, 211, 102, 0.55); }
+
+    @keyframes fadeInPopup {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <span class="match">match</span><span class="dekho">dekho</span><span class="dot">•</span>
+    </div>
+  </header>
+
+  <div class="main">
+
+    <!-- Video Player (Native Fullscreen with Natural Landscape Auto-Rotation) -->
+    <div class="player-wrapper">
+      <iframe src="https://allrounder3-0.pages.dev/cricket/sony-3" allowfullscreen loading="lazy" title="Live Match" allow="encrypted-media; fullscreen; autoplay"></iframe>
+    </div>
+
+    <!-- Channels Section Bar -->
+    <div class="section-bar">
+      <div class="section-title">
+        <span class="material-icons">live_tv</span>
+        <span>Stream Channels</span>
+      </div>
+      <div class="live-status-pill">
+        <span class="live-pulse-dot"></span>
+        <span>Live HD</span>
+      </div>
+    </div>
+
+    <!-- Channels Grid -->
+    <div class="channels-grid" id="channelsGrid"></div>
+
+  </div>
+
+  <!-- WhatsApp Modal -->
+  <div id="waOverlay">
+    <div id="waCard">
+      <div id="waIcon">
+        <svg viewBox="0 0 24 24" fill="white" width="36" height="36">
+          <path d="M20.52 3.48A11.82 11.82 0 0 0 12.04 0C5.45 0 .08 5.37.08 11.96c0 2.11.55 4.17 1.59 5.99L0 24l6.24-1.63a11.9 11.9 0 0 0 5.8 1.48h.01c6.59 0 11.96-5.37 11.96-11.96 0-3.19-1.24-6.19-3.49-8.41zM12.05 21.8a9.8 9.8 0 0 1-5-1.37l-.36-.21-3.7.97.99-3.61-.24-.37a9.77 9.77 0 1 1 8.31 4.59zm5.38-7.34c-.29-.14-1.72-.85-1.98-.95-.27-.1-.46-.14-.66.14-.19.29-.76.95-.93 1.14-.17.19-.34.22-.63.08-.29-.14-1.21-.45-2.31-1.45-.85-.75-1.43-1.68-1.6-1.96-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.66-1.59-.91-2.17-.24-.57-.49-.49-.66-.5h-.56c-.19 0-.49.07-.75.36s-.98.96-.98 2.34.99 2.71 1.13 2.9c.14.19 1.95 2.98 4.72 4.18.66.29 1.18.46 1.58.59.66.21 1.26.18 1.74.11.53-.08 1.72-.7 1.96-1.37.24-.67.24-1.24.17-1.37-.07-.13-.27-.21-.56-.35z"/>
+        </svg>
+      </div>
+      <h2>Join WhatsApp Channel</h2>
+      <p>Get match links &amp; live sports updates delivered straight to your phone.</p>
+      <div class="waBtns">
+        <button class="waBtn" id="joinedBtn">Already Joined</button>
+        <button class="waBtn" id="joinNow">Join Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const WHATSAPP_LINK = 'https://whatsapp.com/channel/0029Vb99cQ95K3zXgZsecR29';
+      const AD_SCRIPT_SRC = 'https://pl31630399.profitableratecpmnetwork.com/1e/ad/c3/1eadc3dd7604b2436ca0409b43cf0a34.js';
+
+      const channels = [
+        { name: 'Hindi', url: 'https://allrounder3-0.pages.dev/cricket/sony-3', logo: 'HN' },
+        { name: 'English', url: 'https://allrounder3-0.pages.dev/eng', logo: 'EN' },
+        { name: 'Willow', url: 'https://allrounder3-0.pages.dev/cricket/willow', logo: 'WL' },
+        { name: 'TNT Sports', url: 'https://allrounder3-0.pages.dev/cricket/tnt', logo: 'TNT' },
+        { name: 'Fox 4K', url: 'https://allrounder-live12.pages.dev/channel/fox1', logo: 'FOX' },
+        { name: 'All Device', url: 'https://allrounder-live12.pages.dev/hotstar', logo: 'ALL' }
+      ];
+
+      const grid = document.getElementById('channelsGrid');
+      const playerIframe = document.querySelector('.player-wrapper iframe');
+
+      function renderChannels(activeIndex) {
+        grid.innerHTML = channels.map((ch, index) => `
+          <div class="channel-card ${index === activeIndex ? 'active' : ''}" data-index="${index}">
+            <div class="icon">${ch.logo}</div>
+            <div class="name">${ch.name}</div>
+            <div class="badge">HD · Live</div>
+          </div>
+        `).join('');
+
+        grid.querySelectorAll('.channel-card').forEach(card => {
+          card.addEventListener('click', function() {
+            const idx = parseInt(this.dataset.index);
+            switchChannel(idx);
+          });
+        });
+      }
+
+      function switchChannel(index) {
+        const ch = channels[index];
+        if (!ch) return;
+        playerIframe.src = ch.url;
+        grid.querySelectorAll('.channel-card').forEach(c => {
+          c.classList.toggle('active', parseInt(c.dataset.index) === index);
+        });
+      }
+
+      renderChannels(0);
+
+      // WhatsApp Modal Logic (Triggered in 2000ms / 2 seconds)
+      const waOverlay = document.getElementById('waOverlay');
+      setTimeout(function() {
+        waOverlay.classList.add('show');
+      }, 2000);
+
+      // Dynamic Ad Injection Logic
+      let adLoaded = false;
+      function injectAdScript() {
+        if (adLoaded) return;
+        adLoaded = true;
+        const script = document.createElement('script');
+        script.src = AD_SCRIPT_SRC;
+        script.async = true;
+        document.body.appendChild(script);
+      }
+
+      // Check if user previously clicked Already Joined
+      if (sessionStorage.getItem('enable_site_ads') === 'true') {
+        injectAdScript();
+      }
+
+      // Join Now: Redirects directly to WhatsApp, NO ADS shown
+      document.getElementById('joinNow').onclick = function() {
+        window.open(WHATSAPP_LINK, '_blank');
+        waOverlay.classList.remove('show');
+      };
+
+      // Already Joined: Enables ads from now on upon interaction
+      document.getElementById('joinedBtn').onclick = function() {
+        waOverlay.classList.remove('show');
+        sessionStorage.setItem('enable_site_ads', 'true');
+        injectAdScript();
+      };
+
+      waOverlay.addEventListener('click', function(e) {
+        if (e.target === waOverlay) {
+          waOverlay.classList.remove('show');
+        }
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
