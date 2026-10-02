@@ -6,7 +6,7 @@
   <title>India Vs West Indies - Live Match Stream 4K</title>
   
   <!-- Primary SEO -->
-  <meta name="description" content="Watch India vs West Indies live cricket match streaming in HD. Switch multi-angle sports channels with zero lag." />
+  <meta name="description" content="Watch India vs West Indies live cricket match streaming in 4K HD. Switch multi-angle sports channels with zero lag." />
   <meta name="keywords" content="India vs West Indies, live cricket, ind vs wi live, live sports stream, cricket streaming HD" />
   
   <!-- Theme Color -->
@@ -20,9 +20,8 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   
   <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-G5NE717HVD"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G5NE717HVD',{anonymize_ip:true});</script>
-
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5NE717HVD"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G5NE717HVD',{anonymize_ip:true});</script>
 
   <style>
     :root {
@@ -94,17 +93,35 @@
       background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.4), transparent);
     }
 
+    /* Header Logo / Title: India Vs West Indies (Straight Vs, Grand Size) */
     .logo {
-      font-size: clamp(1.4rem, 3.2vw, 2rem);
+      font-size: clamp(1.45rem, 3.8vw, 2.3rem);
       font-weight: 900;
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 10px;
+      text-transform: capitalize;
     }
-    .logo .match { color: #f97316; text-shadow: 0 0 35px rgba(249, 115, 22, 0.4); }
-    .logo .dekho { color: #ffffff; text-shadow: 0 0 25px rgba(255, 255, 255, 0.1); }
-    .logo .dot { color: #f97316; font-size: 0.45em; margin-left: 0.05em; opacity: 0.9; }
+
+    .team-name {
+      color: #ffffff;
+      background: linear-gradient(180deg, #ffffff 65%, rgba(249, 115, 22, 0.35) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.22));
+      transition: var(--transition);
+    }
+
+    .vs-text {
+      color: #f97316;
+      font-size: 0.95em;
+      font-weight: 900;
+      font-style: normal;
+      text-shadow: 0 0 22px rgba(249, 115, 22, 0.7);
+      padding: 0 3px;
+    }
 
     .main {
       margin-top: clamp(56px, 7vh, 72px);
@@ -115,16 +132,16 @@
       width: 100%;
     }
 
-    /* Video Player Area (Native Fullscreen with Natural Landscape Auto-Rotation) */
+    /* Video Player Area */
     .player-wrapper {
       width: 100%;
       background: #000000;
       flex-shrink: 0;
       position: relative;
-      padding-bottom: 56.25%;
+      padding-bottom: 64%;
       height: 0;
-      max-height: 72vh;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+      max-height: 84vh;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.95);
       overflow: hidden;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -132,8 +149,8 @@
     @media (min-width: 900px) {
       .player-wrapper { 
         padding-bottom: 0; 
-        height: min(56.25vw, 70vh); 
-        max-height: 70vh; 
+        height: min(60vw, 82vh); 
+        max-height: 82vh; 
       }
     }
 
@@ -148,14 +165,13 @@
       z-index: 1;
     }
 
-    /* Section Sub-Header / Channel Category Bar */
+    /* Section Bar (Clean & Focused with No Pills) */
     .section-bar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      max-width: 1100px;
-      margin: 12px auto 0;
+      padding: 18px 20px 10px;
+      max-width: 1020px;
+      margin: 14px auto 0;
       width: 100%;
     }
 
@@ -163,7 +179,7 @@
       display: inline-flex;
       align-items: center;
       gap: 9px;
-      font-size: 1.05rem;
+      font-size: 1.08rem;
       font-weight: 800;
       color: #ffffff;
       letter-spacing: -0.2px;
@@ -174,138 +190,114 @@
       font-size: 22px;
     }
 
-    .live-status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      border-radius: 50px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: #ef4444;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-
-    .live-pulse-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #ef4444;
-      box-shadow: 0 0 8px #ef4444;
-      animation: pulseDot 1.8s infinite;
-    }
-
-    @keyframes pulseDot {
-      0% { transform: scale(0.9); opacity: 0.7; }
-      50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #ef4444; }
-      100% { transform: scale(0.9); opacity: 0.7; }
-    }
-
     /* Channels Grid */
     .channels-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 14px;
-      padding: 12px 20px 40px;
-      max-width: 1100px;
+      padding: 12px 20px 26px;
+      max-width: 1020px;
       margin: 0 auto;
       width: 100%;
     }
 
-    @media (min-width: 640px) { .channels-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
-    @media (min-width: 960px) { .channels-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
+    @media (min-width: 640px) { 
+      .channels-grid { 
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 16px; 
+      } 
+    }
 
-    /* Match Channels Card Design (Saffron/Orange & Deep Dark Theme) */
+    /* Channel Card: Rotating Border Beam on Active */
     .channel-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 20px 16px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      text-align: center;
       position: relative;
+      border-radius: 14px;
+      padding: 2px;
+      cursor: pointer;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.09);
       transition: var(--transition);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
     }
 
-    .channel-card:hover { 
-      border-color: rgba(249, 115, 22, 0.45); 
-      transform: translateY(-4px); 
-      background: var(--card-hover); 
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65), 0 0 25px rgba(249, 115, 22, 0.18);
-    }
-
-    .channel-card .icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.35) 100%);
-      border: 1.5px solid rgba(249, 115, 22, 0.4);
+    .channel-card-inner {
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(145deg, rgba(24, 24, 30, 0.96) 0%, rgba(15, 15, 20, 0.98) 100%);
+      border-radius: 12px;
+      padding: 18px 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 900;
-      font-size: 1.15rem;
-      color: #ffffff;
-      letter-spacing: 0.5px;
+      gap: 8px;
+      text-align: center;
       transition: var(--transition);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .channel-card:hover .icon { 
-      border-color: var(--primary); 
-      transform: scale(1.06);
-      box-shadow: 0 0 25px rgba(249, 115, 22, 0.45); 
+      width: 100%;
+      height: 100%;
     }
 
     .channel-card .name { 
       font-weight: 800; 
-      font-size: 1rem; 
+      font-size: 1.05rem; 
       color: #f0f2f5; 
       letter-spacing: 0.2px; 
+      transition: var(--transition);
     }
 
-    .channel-card .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--primary);
-      background: rgba(249, 115, 22, 0.12);
-      border: 1px solid rgba(249, 115, 22, 0.28);
-      padding: 3px 9px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .channel-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 18px rgba(249, 115, 22, 0.2);
+      border-color: rgba(249, 115, 22, 0.4);
     }
 
-    .channel-card.active { 
-      border-color: var(--primary); 
-      background: rgba(249, 115, 22, 0.12); 
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 35px rgba(249, 115, 22, 0.25); 
-    }
-
-    .channel-card.active .icon { 
-      border-color: #ff9100; 
-      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-      box-shadow: 0 0 25px rgba(249, 115, 22, 0.55); 
-    }
-
-    .channel-card.active .badge {
-      background: var(--primary);
+    .channel-card:hover .name {
       color: #ffffff;
-      font-weight: 800;
+    }
+
+    /* Active Channel: Rotating Border Beam Animation */
+    .channel-card.active {
+      border-color: transparent;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 25px rgba(249, 115, 22, 0.35);
+    }
+
+    .channel-card.active::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent 0%, #f97316 25%, #ffea00 48%, #ffffff 58%, #f97316 75%, transparent 100%);
+      animation: rotateBorder 3s linear infinite;
+      z-index: 1;
+    }
+
+    .channel-card.active .channel-card-inner {
+      background: linear-gradient(145deg, #1f1612 0%, #15110e 100%);
+    }
+
+    .channel-card.active .name {
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+    }
+
+    @keyframes rotateBorder {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Integrated Clean Footer */
+    .site-footer {
+      text-align: center;
+      padding: 18px 20px 40px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #64748b;
+      letter-spacing: 0.4px;
+      max-width: 1020px;
+      margin: 0 auto;
+      width: 100%;
     }
 
     /* Modal Popup */
@@ -402,13 +394,15 @@
 
   <header class="header">
     <div class="logo">
-      <span class="match">India</span><span class="dekho"> Vs </span><span class="dot"> West Indies</span>
+      <span class="team-name">India</span>
+      <span class="vs-text">Vs</span>
+      <span class="team-name">West Indies</span>
     </div>
   </header>
 
   <div class="main">
 
-    <!-- Video Player (Native Fullscreen with Natural Landscape Auto-Rotation) -->
+    <!-- Video Player -->
     <div class="player-wrapper">
       <iframe src="https://sonucdn-v3.pages.dev/star.html?id=H2HD" allowfullscreen loading="lazy" title="Live Match" allow="encrypted-media; fullscreen; autoplay"></iframe>
     </div>
@@ -419,14 +413,15 @@
         <span class="material-icons">live_tv</span>
         <span>Stream Channels</span>
       </div>
-      <div class="live-status-pill">
-        <span class="live-pulse-dot"></span>
-        <span>Ads Free 4K</span>
-      </div>
     </div>
 
     <!-- Channels Grid -->
     <div class="channels-grid" id="channelsGrid"></div>
+
+    <!-- Integrated Footer -->
+    <div class="site-footer">
+      2026 Sayan Inc. | All Rights Reserved
+    </div>
 
   </div>
 
@@ -453,23 +448,30 @@
       const AD_SCRIPT_SRC = 'https://pl31630399.profitableratecpmnetwork.com/1e/ad/c3/1eadc3dd7604b2436ca0409b43cf0a34.js';
 
       const channels = [
-        { name: 'Hindi', url: 'https://sonucdn-v3.pages.dev/star.html?id=H2HD', logo: 'HN' },
-        { name: 'English', url: 'https://sonucdn-v3.pages.dev/star.html?id=E2HD', logo: 'EN' },
-        { name: 'TNT Sports', url: 'https://matchdekho.pages.dev/player/drm?url=https://akamaii.lovable.app/api/public/px/geobypass?url=https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/puehlftk5j/out/v1/f7f0da1ee112481ca0024e6d4dd97f4a/cenc.mpd&keys=f3df7843080ae743bf865dc5fdf64c68:567c863bc12eb74788ea74888c042e1b', logo: 'TNT' },
-        { name: 'Tamil', url: 'https://sonucdn-v3.pages.dev/star.html?id=S2HD', logo: '4K' },
-        { name: 'Telugu', url: 'https://sonucdn-v3.pages.dev/star.html?id=TE2HD', logo: '4K' },
-        { name: 'Advertisement', url: 'https://www.profitableratecpmnetwork.com/kvvdkj2exw?key=420d97a4898f4ac72dbe933909150fbd', logo: '18+' }
+        { name: 'Hindi', url: 'https://sonucdn-v3.pages.dev/star.html?id=H2HD' },
+        { name: 'English', url: 'https://sonucdn-v3.pages.dev/star.html?id=E2HD' },
+        { name: 'TNT Sports', url: 'https://matchdekho.pages.dev/player/drm?url=https://akamaii.lovable.app/api/public/px/geobypass?url=https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/puehlftk5j/out/v1/f7f0da1ee112481ca0024e6d4dd97f4a/cenc.mpd&keys=f3df7843080ae743bf865dc5fdf64c68:567c863bc12eb74788ea74888c042e1b' },
+        { name: 'Tamil', url: 'https://sonucdn-v3.pages.dev/star.html?id=S2HD' },
+        { name: 'Telugu', url: 'https://sonucdn-v3.pages.dev/star.html?id=TE2HD' },
+        { name: 'Advertisement', url: 'https://www.profitableratecpmnetwork.com/kvvdkj2exw?key=420d97a4898f4ac72dbe933909150fbd' }
       ];
 
       const grid = document.getElementById('channelsGrid');
       const playerIframe = document.querySelector('.player-wrapper iframe');
+      const waOverlay = document.getElementById('waOverlay');
+
+      function showPopupWithDelay() {
+        setTimeout(function() {
+          waOverlay.classList.add('show');
+        }, 2000);
+      }
 
       function renderChannels(activeIndex) {
         grid.innerHTML = channels.map((ch, index) => `
           <div class="channel-card ${index === activeIndex ? 'active' : ''}" data-index="${index}">
-            <div class="icon">${ch.logo}</div>
-            <div class="name">${ch.name}</div>
-            <div class="badge">HD · Live</div>
+            <div class="channel-card-inner">
+              <span class="name">${ch.name}</span>
+            </div>
           </div>
         `).join('');
 
@@ -484,19 +486,29 @@
       function switchChannel(index) {
         const ch = channels[index];
         if (!ch) return;
+
+        // If advertisement clicked, open in new tab
+        if (ch.name === 'Advertisement') {
+          window.open(ch.url, '_blank');
+          return;
+        }
+
         playerIframe.src = ch.url;
+
+        // Move active rotating border beam animation state to clicked channel card
         grid.querySelectorAll('.channel-card').forEach(c => {
           c.classList.toggle('active', parseInt(c.dataset.index) === index);
         });
+
+        // Trigger WhatsApp Popup again on channel switch with 2s delay
+        showPopupWithDelay();
       }
 
+      // Initial channel render with index 0 active
       renderChannels(0);
 
-      // WhatsApp Modal Logic (Triggered in 2000ms / 2 seconds)
-      const waOverlay = document.getElementById('waOverlay');
-      setTimeout(function() {
-        waOverlay.classList.add('show');
-      }, 2000);
+      // Initial popup trigger (2 seconds)
+      showPopupWithDelay();
 
       // Dynamic Ad Injection Logic
       let adLoaded = false;
@@ -509,18 +521,17 @@
         document.body.appendChild(script);
       }
 
-      // Check if user previously clicked Already Joined
       if (sessionStorage.getItem('enable_site_ads') === 'true') {
         injectAdScript();
       }
 
-      // Join Now: Redirects directly to WhatsApp, NO ADS shown
+      // Join Now: Opens WhatsApp Channel, Closes Popup, NO ADS
       document.getElementById('joinNow').onclick = function() {
         window.open(WHATSAPP_LINK, '_blank');
         waOverlay.classList.remove('show');
       };
 
-      // Already Joined: Enables ads from now on upon interaction
+      // Already Joined: Closes Popup, Activates Ads
       document.getElementById('joinedBtn').onclick = function() {
         waOverlay.classList.remove('show');
         sessionStorage.setItem('enable_site_ads', 'true');
@@ -535,6 +546,5 @@
 
     })();
   </script>
-<script src="https://pl31630399.profitableratecpmnetwork.com/1e/ad/c3/1eadc3dd7604b2436ca0409b43cf0a34.js"></script>
 </body>
 </html>
