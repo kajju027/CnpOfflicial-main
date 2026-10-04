@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Watch live sports and real-time match scores on matchdekho. Follow football, cricket, and major sports events.">
+  <meta name="theme-color" content="#0b0d0f">
+  <title>matchdekho - Live Sports Streaming &amp; Scores</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://img.tod.tv">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/willow-live.css">
+  <link rel="stylesheet" href="css/world-sports.css">
+  <link rel="stylesheet" href="css/fancode.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body id="top">
+  <header>
+    <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a href="#top" class="logo" aria-label="matchdekho home"><span class="match">match</span><span class="dekho">dekho</span></a>
+    <nav class="header-nav" aria-label="Main navigation">
+      <a href="#top">Home</a>
+      <a href="#sports">Sports</a>
+      <a href="#worldSportsSection">Football</a>
+      <a href="#willow-live">Cricket</a>
+      <a href="#fancodeSection">UFC</a>
+      <a href="#sports" class="sign-in">Sign In</a>
+      <a href="#willow-live" class="subscribe">Watch Free</a>
+    </nav>
+  </header>
+
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+    <a href="#top">Home</a>
+    <a href="#sports">Sports</a>
+    <a href="#willow-live">Cricket</a>
+    <a href="#fancodeSection">Shows</a>
+    <a href="#worldSportsSection">TV</a>
+    <a href="#worldSportsSection">FIFA 2026</a>
+    <a href="#willow-live" class="subscribe-mobile">Watch Free</a>
+  </nav>
+
+  <div class="poster-wrapper" id="posterWrapper" aria-label="Featured matches">
+    <div id="heroSlides"></div>
+    <div class="slider-progress" id="sliderProgress" aria-hidden="true"></div>
+    <button class="slider-arrow arrow-left" id="arrowLeft" type="button" aria-label="Previous slide">&#10094;</button>
+    <button class="slider-arrow arrow-right" id="arrowRight" type="button" aria-label="Next slide">&#10095;</button>
+    <div class="scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+  </div>
+
+  <div class="glass-cloud cloud-1" aria-hidden="true"></div>
+  <div class="glass-cloud cloud-2" aria-hidden="true"></div>
+  <div class="glass-cloud cloud-3" aria-hidden="true"></div>
+  <div class="glass-cloud cloud-4" aria-hidden="true"></div>
+
+  <main id="sports" role="main">
+    <section class="willow-live-section" id="willow-live">
+      <div class="willow-live-header">
+        <h2 class="willow-live-title">Willow Live <span class="live-count-badge" id="liveCountBadge"></span></h2>
+      </div>
+      <div class="willow-live-carousel-wrapper">
+        <button class="carousel-arrow arrow-left" id="willowLiveArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
+        <div class="willow-live-track" id="willowLiveTrack"></div>
+        <button class="carousel-arrow arrow-right" id="willowLiveArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
+      </div>
+    </section>
+
+    <section class="fancode-section" id="fancodeSection">
+      <div class="fancode-header">
+        <h2 class="fancode-title">FanCode</h2>
+        <span class="fancode-badge">Live Sports</span>
+      </div>
+      <div class="fancode-carousel-wrapper">
+        <button class="fancode-arrow arrow-left" id="fancodeArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
+        <div class="fancode-track" id="fancodeTrack" tabindex="0"></div>
+        <button class="fancode-arrow arrow-right" id="fancodeArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
+      </div>
+    </section>
+
+    <section class="world-sports-section" id="worldSportsSection">
+      <div class="world-sports-header">
+        <h2 class="world-sports-title">World Sports</h2>
+        <span class="world-sports-badge">Live</span>
+      </div>
+      <div class="world-sports-carousel-wrapper">
+        <button class="world-sports-arrow arrow-left" id="worldSportsArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
+        <div class="world-sports-track" id="worldSportsTrack"></div>
+        <button class="world-sports-arrow arrow-right" id="worldSportsArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script/config.js"></script>
+  <script src="script/app.js"></script>
+  <script src="script/willow-live.js"></script>
+  <script src="script/fancode.js"></script>
+  <script src="script/world-sports.js"></script>
+</body>
+</html>
