@@ -1,347 +1,287 @@
-const WILLOW_API_URL = window.MATCHDEKHO_CONFIG.apis.willow;
+(function() {
+  'use strict';
 
-const willowTrack = document.getElementById('willowLiveTrack');
-const willowArrowLeft = document.getElementById('willowLiveArrowLeft');
-const willowArrowRight = document.getElementById('willowLiveArrowRight');
-const liveCountBadge = document.getElementById('liveCountBadge');
+  const config = window.MATCHDEKHO_CONFIG || {};
+  const API_URL = config.apis && config.apis.willow;
+  const PLAYER_ROUTE = config.routes && config.routes.willowPlayer || '/az/';
+  const SERVER_MAP = [
+    { id: 2, key: 'fastly_server1' },
+    { id: 1, key: 'akamai_server1' },
+    { id: 3, key: 'akamai_server2' }
+  ];
+  const track = document.getElementById('willowLiveTrack');
+  const arrowLeft = document.getElementById('willowLiveArrowLeft');
+  const arrowRight = document.getElementById('willowLiveArrowRight');
+  const liveCountBadge = document.getElementById('liveCountBadge');
+  const updatedLabel = document.getElementById('willowUpdated');
+  let isLoading = false;
+  let hasLoaded = false;
 
-let willowMatches = [];
-let liveMatches = [];
-let upcomingMatches = [];
-
-function getSafeStreamId(stream) {
-  return stream.tvgId || stream.tvgName || stream.title || stream.match_id || '';
-}
-
-function renderSkeletonLoader() {
-  if (!willowTrack) return;
-
-  const skeletonCount = 4;
-  let skeletons = '';
-
-  for (let i = 0; i < skeletonCount; i++) {
-    skeletons += `
-      <div class="willow-live-card willow-skeleton-card">
-        <div class="willow-live-thumb willow-skeleton-thumb">
-          <div class="willow-skeleton-shimmer"></div>
-        </div>
-        <div class="willow-live-info willow-skeleton-info">
-          <div class="willow-skeleton-line willow-skeleton-line-title"></div>
-          <div class="willow-skeleton-line willow-skeleton-line-subtitle"></div>
-        </div>
-      </div>
-    `;
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(character) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[character];
+    });
   }
 
-  willowTrack.innerHTML = skeletons;
-}
+  function safeHttpUrl(value) {
+    const url = String(value || '').trim();
+    if (!url) return '';
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? url : '';
+    } catch (error) {
+      return '';
+    }
+  }
 
-async function fetchWillowMatches() {
-  try {
+  function findUrl(value) {
+    if (typeof value === 'string') return safeHttpUrl(value);
+    if (!value || typeof value !== 'object') return '';
 
-    renderSkeletonLoader();
-
-    const response = await fetch(WILLOW_API_URL);
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+    const direct = value.url || value.src || value.link || value.stream_url || value.href;
+    if (direct) {
+      const directUrl = safeHttpUrl(direct);
+      if (directUrl) return directUrl;
     }
 
-    const data = await response.json();
-
-    if (data.error) {
-      throw new Error(data.message || 'Unknown error');
+    for (const nested of Object.values(value)) {
+      const nestedUrl = findUrl(nested);
+      if (nestedUrl) return nestedUrl;
     }
+
+    return '';
+  }
+
+  function getStreamCandidate(match) {
+    const sources = match.CnpTV && typeof match.CnpTV === 'object' ? match.CnpTV : {};
+
+    for (const server of SERVER_MAP) {
+      const value = sources[server.key];
+      const url = findUrl(value);
+      if (url) return { url: url, serverId: server.id, key: server.key };
+    }
+
+    return null;
+  }
+
+  function buildPlayerUrl(matchId, streamUrl) {
+    const params = new URLSearchParams();
+    params.set('id', String(matchId));
+    params.set('ser', streamUrl);
+    return `${PLAYER_ROUTE}?${params.toString()}`;
+  }
+
+  function getEventDetails(eventName) {
+    const title = String(eventName || 'Live Match').trim();
+    const segments = title.split(/\s+[-–—]\s+/).map(function(segment) {
+      return segment.trim();
+    }).filter(Boolean);
+    const matchupText = segments.length ? segments[segments.length - 1] : title;
+    const matchup = matchupText.match(/^(.+?)\s+(?:vs\.?|v\.?|versus)\s+(.+)$/i);
+    const competition = segments.length > 1 ? segments.slice(0, -1).join(' · ') : '';
+
+    if (matchup) {
+      return {
+        home: matchup[1].trim(),
+        away: matchup[2].trim(),
+        display: `${matchup[1].trim()} vs ${matchup[2].trim()}`,
+        competition: competition
+      };
+    }
+
+    return { home: '', away: '', display: title, competition: competition };
+  }
+
+  function statusInfo(value) {
+    const status = String(value || 'UPCOMING').toUpperCase();
+    if (status === 'LIVE') return { label: 'LIVE', className: 'live' };
+    if (['ENDED', 'FINISHED', 'COMPLETED'].includes(status)) return { label: 'ENDED', className: 'ended' };
+    if (['CANCELLED', 'CANCELED', 'POSTPONED'].includes(status)) return { label: status, className: 'ended' };
+    return { label: 'UPCOMING', className: 'upcoming' };
+  }
+
+  function renderSkeleton() {
+    if (!track) return;
+    track.innerHTML = Array.from({ length: 4 }, function() {
+      return `
+        <div class="willow-live-card willow-skeleton-card" aria-hidden="true">
+          <div class="willow-live-thumb willow-skeleton-thumb"><div class="willow-skeleton-shimmer"></div></div>
+          <div class="willow-live-info willow-skeleton-info">
+            <div class="willow-skeleton-line willow-skeleton-line-title"></div>
+            <div class="willow-skeleton-line willow-skeleton-line-subtitle"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function updateHeader(data, matches) {
+    const liveCount = matches.filter(function(match) {
+      return String(match.status || '').toUpperCase() === 'LIVE';
+    }).length;
+    const upcomingCount = matches.filter(function(match) {
+      return String(match.status || '').toUpperCase() === 'UPCOMING';
+    }).length;
 
     if (liveCountBadge) {
-      const liveCount = data.Stats?.LiveCount || data.liveCount || 0;
-      liveCountBadge.innerHTML = `
-        <span class="material-icons" style="font-size: 14px;">fiber_manual_record</span>
-        ${liveCount} LIVE
-      `;
+      liveCountBadge.textContent = `${liveCount} LIVE · ${upcomingCount} UPCOMING`;
+      liveCountBadge.classList.toggle('has-live', liveCount > 0);
+      liveCountBadge.classList.toggle('no-live', liveCount === 0);
     }
 
-    willowMatches = data.Matches || data.streams || [];
-
-    liveMatches = willowMatches.filter(m =>
-      m.status && m.status.toUpperCase() === 'LIVE'
-    );
-    upcomingMatches = willowMatches.filter(m =>
-      m.status && m.status.toUpperCase() === 'UPCOMING'
-    );
-
-    renderWillowMatches();
-
-  } catch (error) {
-    console.error('Willow fetch error:', error);
-    if (willowTrack) {
-      willowTrack.innerHTML = `
-        <div class="willow-error">
-          ❌ Failed to load matches<br>
-          <small>${error.message}</small><br>
-          <button onclick="fetchWillowMatches()">Retry</button>
-        </div>
-      `;
-    }
-  }
-}
-
-function extractTeams(title) {
-  if (!title) return 'Live Match';
-
-  let cleaned = title.replace(/^(Live:|LIVE:|HD:|Willow\s*)/i, '').trim();
-
-  const vsMatch = cleaned.match(/(.+?)\s*(?:vs|Vs|VS|v\.?)\s*(.+?)(?:\s*[-–]|$)/i);
-  if (vsMatch) {
-    let team1 = vsMatch[1].trim();
-    let team2 = vsMatch[2].trim();
-
-    const tournMatch = team1.match(/(?:Tour|Series|League|Cup|Trophy|Championship|Premier|World)\s+(?:of\s+)?(.+)$/i);
-    if (tournMatch) {
-      team1 = tournMatch[1].trim();
-    }
-
-    team1 = team1.split(' - ').pop() || team1;
-    team2 = team2.split(' - ')[0] || team2;
-
-    team1 = team1.replace(/\s*vs\s*.*$/i, '').trim();
-    team2 = team2.replace(/^\s*vs\s*/, '').trim();
-
-    return { team1, team2, display: `${team1} vs ${team2}` };
-  }
-
-  const vsMatch2 = cleaned.match(/(.+?)\s+vs\s+(.+?)(?:\s+[–-]|\s*$)/i);
-  if (vsMatch2) {
-    let team1 = vsMatch2[1].trim();
-    let team2 = vsMatch2[2].trim();
-
-    const tournMatch = team1.match(/(?:Tour|Series|League|Cup|Trophy|Championship|Premier|World)\s+(?:of\s+)?(.+)$/i);
-    if (tournMatch) {
-      team1 = tournMatch[1].trim();
-    }
-
-    return { team1, team2, display: `${team1} vs ${team2}` };
-  }
-
-  return { team1: cleaned, team2: '', display: cleaned };
-}
-
-function extractTournament(title) {
-  if (!title) return null;
-
-  const patterns = [
-    /^([^,–-]+?(?:League|Series|Tournament|Cup|Trophy|Championship|Premier League|World Cup|Hundred|Tour))/i,
-    /^([^,–-]+?(?:Tour|Series|League|Cup|Trophy|Championship|Premier|World))\s+(?:of\s+)?/i
-  ];
-
-  for (const pattern of patterns) {
-    const match = title.match(pattern);
-    if (match) {
-      return match[1].trim();
+    if (updatedLabel) {
+      updatedLabel.textContent = data.last_updated ? `Updated ${data.last_updated}` : '';
     }
   }
 
-  return null;
-}
-
-function getStreamUrlWithFallback(match) {
-
-  if (match.stream_url_alpha) {
-    if (typeof match.stream_url_alpha === 'string' && match.stream_url_alpha) {
-      return match.stream_url_alpha;
-    }
-    if (typeof match.stream_url_alpha === 'object') {
-
-      const servers = Object.values(match.stream_url_alpha);
-      for (const url of servers) {
-        if (url && typeof url === 'string' && url.startsWith('http')) {
-          return url;
-        }
-      }
-    }
+  function renderError(message) {
+    if (!track) return;
+    track.innerHTML = `
+      <div class="willow-error" role="status">
+        <strong>Unable to load Willow matches</strong>
+        <span>${escapeHtml(message || 'Please try again.')}</span>
+        <button class="willow-retry" type="button">Retry</button>
+      </div>
+    `;
+    const retry = track.querySelector('.willow-retry');
+    if (retry) retry.addEventListener('click', fetchWillowMatches);
   }
 
-  if (match.stream_url_bravo) {
-    if (typeof match.stream_url_bravo === 'string' && match.stream_url_bravo) {
-      return match.stream_url_bravo;
-    }
-    if (typeof match.stream_url_bravo === 'object') {
-      const servers = Object.values(match.stream_url_bravo);
-      for (const url of servers) {
-        if (url && typeof url === 'string' && url.startsWith('http')) {
-          return url;
-        }
-      }
-    }
-  }
+  function renderMatches(matches) {
+    if (!track) return;
 
-  return null;
-}
-
-function getDrmKey(match) {
-  if (match.drm_key) {
-    return match.drm_key;
-  }
-  return null;
-}
-
-function renderWillowMatches() {
-  if (!willowTrack) return;
-
-  const allMatches = [...liveMatches, ...upcomingMatches];
-
-  if (!allMatches || allMatches.length === 0) {
-    willowTrack.innerHTML = '<div class="willow-loading">No matches available</div>';
-    return;
-  }
-
-  willowTrack.innerHTML = '';
-
-  allMatches.forEach((match) => {
-    const title = match.title || match.tvgName || 'Unknown Match';
-    const status = match.status || 'UPCOMING';
-    const isLive = status.toUpperCase() === 'LIVE';
-
-    const teams = extractTeams(title);
-    const tournament = extractTournament(title);
-
-    let coverImage = match.cover_image || match.tvgLogo || 'https://via.placeholder.com/480x270/14181f/ffffff?text=Willow+Cricket';
-
-    if (coverImage && coverImage.includes('_UR1920,1080_')) {
-
-    }
-
-    const safeId = getSafeStreamId(match);
-
-    const streamUrl = isLive ? getStreamUrlWithFallback(match) : null;
-    const hasStream = isLive && streamUrl;
-
-    if (!safeId) {
-      console.warn('Skipping match with no usable id:', match);
+    if (!matches.length) {
+      track.innerHTML = '<div class="willow-loading" role="status">No Willow matches are available right now.</div>';
       return;
     }
 
-    const card = document.createElement('a');
-    card.className = `willow-live-card ${!isLive ? 'upcoming' : ''}`;
+    const sortedMatches = matches.slice().sort(function(first, second) {
+      const rank = function(match) {
+        const status = String(match.status || '').toUpperCase();
+        if (status === 'LIVE') return 0;
+        if (status === 'UPCOMING') return 1;
+        return 2;
+      };
+      return rank(first) - rank(second);
+    });
 
-    if (isLive && hasStream) {
-      card.href = `willow-player.html?id=${encodeURIComponent(safeId)}`;
-    } else {
+    track.innerHTML = '';
 
-      card.href = '#';
-      card.style.cursor = 'default';
-    }
+    sortedMatches.forEach(function(match) {
+      const id = String(match.id || '').trim();
+      const eventName = String(match.event_name || match.title || 'Live Match');
+      const details = getEventDetails(eventName);
+      const status = statusInfo(match.status);
+      const stream = getStreamCandidate(match);
+      const canWatch = Boolean(id && stream);
+      const image = safeHttpUrl(match.image);
+      const time = String(match.time || 'Time to be announced');
+      const competition = details.competition || String(match.tournament || 'Willow Cricket');
+      const teamMarkup = details.home && details.away
+        ? `<span class="willow-live-team">${escapeHtml(details.home)}</span><span class="willow-live-vs">VS</span><span class="willow-live-team">${escapeHtml(details.away)}</span>`
+        : `<span class="willow-live-team willow-live-team-full">${escapeHtml(details.display)}</span>`;
+      const statusMarkup = `<span class="willow-live-status ${status.className}">${status.label}</span>`;
+      const imageMarkup = image
+        ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(eventName)}" loading="lazy">`
+        : '';
+      const card = document.createElement(canWatch ? 'a' : 'article');
+      card.className = `willow-live-card${canWatch ? ' is-watchable' : ' is-unavailable'}`;
+      card.setAttribute('aria-label', `${eventName}${canWatch ? ', watch now' : ', stream not available yet'}`);
 
-    card.dataset.matchId = safeId;
-    card.dataset.status = status;
+      if (canWatch) {
+        card.href = buildPlayerUrl(id, stream.url);
+      } else {
+        card.setAttribute('aria-disabled', 'true');
+      }
 
-    let teamsHTML = '';
-    if (teams.team1 && teams.team2) {
-      teamsHTML = `
-        <span class="willow-live-team">${teams.team1}</span>
-        <span class="willow-live-vs">vs</span>
-        <span class="willow-live-team">${teams.team2}</span>
-      `;
-    } else {
-      teamsHTML = `<span class="willow-live-team">${teams.display}</span>`;
-    }
-
-    let statusBadge = '';
-    if (isLive) {
-      statusBadge = `
-        <div class="willow-live-badge-live">
-          <span class="material-icons" style="font-size: 10px;">fiber_manual_record</span>
-          LIVE
+      card.innerHTML = `
+        <div class="willow-live-thumb${image ? '' : ' no-image'}">
+          ${imageMarkup}
+          ${statusMarkup}
+          ${canWatch ? '<span class="willow-live-play-overlay"><span aria-hidden="true">▶</span> Watch Now</span>' : ''}
+        </div>
+        <div class="willow-live-info">
+          <div class="willow-live-match-title">${teamMarkup}</div>
+          <div class="willow-live-group">${escapeHtml(competition)}</div>
+          <div class="willow-live-footer">
+            <time class="willow-live-time">${escapeHtml(time)}</time>
+            <span class="willow-live-action${canWatch ? '' : ' unavailable'}">${canWatch ? 'Watch Now ↗' : 'Stream coming soon'}</span>
+          </div>
         </div>
       `;
-    } else {
 
-      const timeDisplay = match.time || 'Upcoming';
-      statusBadge = `
-        <div class="willow-live-badge-upcoming">
-          <span class="material-icons" style="font-size: 10px;">schedule</span>
-          ${timeDisplay}
-        </div>
-      `;
+      const cardImage = card.querySelector('.willow-live-thumb img');
+      if (cardImage) {
+        cardImage.addEventListener('error', function() {
+          cardImage.hidden = true;
+          cardImage.parentElement.classList.add('no-image');
+        });
+      }
+
+      track.appendChild(card);
+    });
+
+    track.scrollLeft = 0;
+  }
+
+  async function fetchWillowMatches() {
+    if (isLoading || !track || !API_URL) return;
+    isLoading = true;
+    if (!hasLoaded) renderSkeleton();
+
+    try {
+      const response = await fetch(API_URL, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      if (data.error) throw new Error(data.message || 'The feed returned an error.');
+      const matches = Array.isArray(data.Matches) ? data.Matches : Array.isArray(data.matches) ? data.matches : [];
+      updateHeader(data, matches);
+      renderMatches(matches);
+      hasLoaded = true;
+    } catch (error) {
+      renderError(error.message);
+      hasLoaded = true;
+    } finally {
+      isLoading = false;
     }
+  }
 
-    let playOverlay = '';
-    if (isLive && hasStream) {
-      playOverlay = `
-        <div class="willow-live-overlay">
-          <span class="willow-live-play-icon">
-            <span class="material-icons" style="font-size: 24px;">play_arrow</span>
-          </span>
-        </div>
-      `;
-    }
+  function scrollAmount() {
+    const card = track && track.querySelector('.willow-live-card');
+    if (!card) return 640;
+    const styles = getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || styles.gap || '20');
+    return (card.getBoundingClientRect().width + gap) * 2;
+  }
 
-    card.innerHTML = `
-      <div class="willow-live-thumb">
-        <img
-          src="${coverImage}"
-          alt="${title}"
-          loading="lazy"
-          onerror="this.src='https://via.placeholder.com/480x270/14181f/ffffff?text=Willow+Cricket'"
-        />
-        ${statusBadge}
-        ${playOverlay}
-      </div>
-      <div class="willow-live-info">
-        <div class="willow-live-match-title">
-          ${teamsHTML}
-        </div>
-        ${tournament ? `<div class="willow-live-group">${tournament}</div>` : ''}
-        ${!isLive ? `<div class="willow-live-upcoming-time">${match.time || 'Upcoming'}</div>` : ''}
-      </div>
-    `;
-
-    if (!isLive || !hasStream) {
-      card.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        if (!isLive) {
-          alert(`⏰ This match is upcoming: ${match.time || 'Check back later'}`);
-        } else {
-          alert('📡 Stream not yet available for this match');
-        }
+  function init() {
+    if (arrowRight) {
+      arrowRight.addEventListener('click', function(event) {
+        event.stopPropagation();
+        if (track) track.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
       });
     }
 
-    willowTrack.appendChild(card);
-  });
-
-  willowTrack.scrollLeft = 0;
-}
-
-function getWillowScrollAmount() {
-  if (!willowTrack) return 320;
-  const card = willowTrack.querySelector('.willow-live-card');
-  if (!card) return 320;
-  const trackStyles = getComputedStyle(willowTrack);
-  const gap = parseFloat(trackStyles.columnGap || trackStyles.gap || '20');
-  return (card.getBoundingClientRect().width + gap) * 2;
-}
-
-if (willowArrowRight) {
-  willowArrowRight.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (willowTrack) {
-      willowTrack.scrollBy({ left: getWillowScrollAmount(), behavior: 'smooth' });
+    if (arrowLeft) {
+      arrowLeft.addEventListener('click', function(event) {
+        event.stopPropagation();
+        if (track) track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+      });
     }
-  });
-}
 
-if (willowArrowLeft) {
-  willowArrowLeft.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (willowTrack) {
-      willowTrack.scrollBy({ left: -getWillowScrollAmount(), behavior: 'smooth' });
-    }
-  });
-}
+    fetchWillowMatches();
+    window.setInterval(fetchWillowMatches, 300000);
+  }
 
-renderSkeletonLoader();
-fetchWillowMatches();
-
-setInterval(fetchWillowMatches, 300000);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
