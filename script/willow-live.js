@@ -4,11 +4,7 @@
   const config = window.MATCHDEKHO_CONFIG || {};
   const API_URL = config.apis && config.apis.willow;
   const PLAYER_ROUTE = config.routes && config.routes.willowPlayer || '/az/';
-  const SERVER_MAP = [
-    { id: 2, key: 'fastly_server1' },
-    { id: 1, key: 'akamai_server1' },
-    { id: 3, key: 'akamai_server2' }
-  ];
+  const DEFAULT_SERVER_KEY = 'akamai_server1';
   const track = document.getElementById('willowLiveTrack');
   const arrowLeft = document.getElementById('willowLiveArrowLeft');
   const arrowRight = document.getElementById('willowLiveArrowRight');
@@ -58,22 +54,15 @@
     return '';
   }
 
-  function getStreamCandidate(match) {
+  function getDefaultStream(match) {
     const sources = match.CnpTV && typeof match.CnpTV === 'object' ? match.CnpTV : {};
-
-    for (const server of SERVER_MAP) {
-      const value = sources[server.key];
-      const url = findUrl(value);
-      if (url) return { url: url, serverId: server.id, key: server.key };
-    }
-
-    return null;
+    return findUrl(sources[DEFAULT_SERVER_KEY]);
   }
 
   function buildPlayerUrl(matchId, streamUrl) {
     const params = new URLSearchParams();
     params.set('id', String(matchId));
-    params.set('ser', streamUrl);
+    params.set('ser', streamUrl || '');
     return `${PLAYER_ROUTE}?${params.toString()}`;
   }
 
@@ -178,9 +167,6 @@
       const eventName = String(match.event_name || match.title || 'Live Match');
       const details = getEventDetails(eventName);
       const status = statusInfo(match.status);
-      const stream = getStreamCandidate(match);
-      const hasStream = Boolean(stream);
-      const canOpenPlayer = Boolean(id);
       const image = safeHttpUrl(match.image);
       const time = String(match.time || 'Time to be announced');
       const competition = details.competition || String(match.tournament || 'Willow Cricket');
@@ -191,28 +177,24 @@
       const imageMarkup = image
         ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(eventName)}" loading="lazy">`
         : '';
-      const card = document.createElement(canOpenPlayer ? 'a' : 'article');
-      card.className = `willow-live-card${canOpenPlayer ? ' is-watchable' : ' is-unavailable'}`;
-      card.setAttribute('aria-label', `${eventName}${canOpenPlayer ? ', open player' : ', player unavailable'}`);
-
-      if (canOpenPlayer) {
-        card.href = buildPlayerUrl(id, stream ? stream.url : '');
-      } else {
-        card.setAttribute('aria-disabled', 'true');
-      }
-
+      const streamUrl = getDefaultStream(match);
+      const watchMarkup = id
+        ? `<a class="willow-watch-button" href="${escapeHtml(buildPlayerUrl(id, streamUrl))}"><span aria-hidden="true">▶</span><span>Watch Now</span></a>`
+        : '<button class="willow-watch-button is-disabled" type="button" disabled>Watch Now</button>';
+      const card = document.createElement('article');
+      card.className = 'willow-live-card';
+      card.setAttribute('aria-label', `${eventName}, ${status.label}`);
       card.innerHTML = `
         <div class="willow-live-thumb${image ? '' : ' no-image'}">
           ${imageMarkup}
           ${statusMarkup}
-          ${canOpenPlayer ? `<span class="willow-live-play-overlay"><span aria-hidden="true">▶</span> ${hasStream ? 'Watch Now' : 'Open Player'}</span>` : ''}
         </div>
         <div class="willow-live-info">
           <div class="willow-live-match-title">${teamMarkup}</div>
           <div class="willow-live-group">${escapeHtml(competition)}</div>
           <div class="willow-live-footer">
             <time class="willow-live-time">${escapeHtml(time)}</time>
-            <span class="willow-live-action${canOpenPlayer ? '' : ' unavailable'}">${hasStream ? 'Watch Now ↗' : canOpenPlayer ? 'Open Player ↗' : 'Player unavailable'}</span>
+            ${watchMarkup}
           </div>
         </div>
       `;
@@ -255,7 +237,7 @@
 
   function scrollAmount() {
     const card = track && track.querySelector('.willow-live-card');
-    if (!card) return 640;
+    if (!card) return 560;
     const styles = getComputedStyle(track);
     const gap = parseFloat(styles.columnGap || styles.gap || '20');
     return (card.getBoundingClientRect().width + gap) * 2;
