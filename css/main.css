@@ -282,6 +282,13 @@ header {
   pointer-events: none;
 }
 
+.poster-section .match-info,
+.poster-section .badges,
+.poster-section .btn-mytod,
+.poster-section .vs-score {
+  display: none !important;
+}
+
 .match-title {
   margin: 0 0 10px;
   color: rgba(255, 255, 255, 0.7);
