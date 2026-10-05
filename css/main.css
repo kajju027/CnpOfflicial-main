@@ -51,14 +51,16 @@ header {
   width: 100%;
   min-height: 64px;
   padding: 12px clamp(16px, 4vw, 56px);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  column-gap: 20px;
   background: #0b0d0f;
 }
 
 .logo {
+  grid-column: 2;
+  justify-self: center;
   display: inline-flex;
   align-items: center;
   text-decoration: none;
@@ -82,6 +84,8 @@ header {
 }
 
 .header-nav {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: clamp(12px, 1.8vw, 26px);
@@ -124,6 +128,7 @@ header {
 }
 
 .hamburger {
+  grid-column: 1;
   display: none;
   width: 40px;
   height: 40px;
@@ -256,18 +261,18 @@ header {
   position: absolute;
   z-index: 1;
   inset: 0 auto 0 0;
-  width: 76%;
+  width: 72%;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(5, 8, 12, 0.94) 0%, rgba(5, 8, 12, 0.78) 35%, rgba(5, 8, 12, 0.36) 72%, transparent 100%);
+  background: linear-gradient(90deg, rgba(5, 8, 12, 0.60) 0%, rgba(5, 8, 12, 0.38) 38%, rgba(5, 8, 12, 0.10) 68%, transparent 100%);
 }
 
 .gradient-overlay {
   position: absolute;
   z-index: 1;
   inset: auto 0 0;
-  height: 68%;
+  height: 72%;
   pointer-events: none;
-  background: linear-gradient(0deg, rgba(5, 8, 12, 0.92) 0%, rgba(5, 8, 12, 0.55) 40%, transparent 100%);
+  background: linear-gradient(0deg, rgba(5, 8, 12, 0.86) 0%, rgba(5, 8, 12, 0.50) 30%, rgba(5, 8, 12, 0.08) 65%, transparent 100%);
 }
 
 .match-details {
@@ -386,21 +391,21 @@ header {
 .slider-progress {
   position: absolute;
   z-index: 10;
-  top: clamp(36px, 3.2vw, 48px);
+  top: clamp(10px, 1.4vw, 18px);
   left: clamp(18px, 5vw, 72px);
   right: clamp(18px, 5vw, 72px);
   display: flex;
-  gap: 8px;
+  gap: 6px;
   pointer-events: none;
 }
 
 .progress-track {
   position: relative;
   flex: 1 1 0;
-  height: 3px;
+  height: 2px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .progress-fill {
@@ -408,7 +413,7 @@ header {
   inset: 0 auto 0 0;
   width: 0;
   border-radius: inherit;
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .progress-fill.filling {
@@ -474,22 +479,29 @@ main {
 
 @media (max-width: 760px) {
   header {
+    display: flex;
     min-height: 52px;
     padding: 7px 12px;
     justify-content: center;
+    column-gap: 0;
   }
 
   .hamburger {
+    grid-column: unset;
     position: absolute;
     left: 8px;
     display: flex;
   }
 
   .logo {
+    grid-column: unset;
+    justify-self: unset;
     font-size: 1.1rem;
   }
 
   .header-nav {
+    grid-column: unset;
+    justify-self: unset;
     display: none;
   }
 
@@ -513,12 +525,12 @@ main {
 
   .gradient-left {
     width: 100%;
-    background: linear-gradient(90deg, rgba(5, 8, 12, 0.54), rgba(5, 8, 12, 0.06) 100%);
+    background: linear-gradient(90deg, rgba(5, 8, 12, 0.32), transparent 100%);
   }
 
   .gradient-overlay {
-    height: 78%;
-    background: linear-gradient(0deg, rgba(5, 8, 12, 0.96) 0%, rgba(5, 8, 12, 0.78) 45%, rgba(5, 8, 12, 0.08) 100%);
+    height: 80%;
+    background: linear-gradient(0deg, rgba(5, 8, 12, 0.88) 0%, rgba(5, 8, 12, 0.50) 36%, rgba(5, 8, 12, 0.04) 100%);
   }
 
   .match-details {
@@ -565,9 +577,9 @@ main {
   }
 
   .slider-progress {
-    top: 30px;
-    left: 18px;
-    right: 18px;
+    top: 8px;
+    left: 14px;
+    right: 14px;
     gap: 5px;
   }
 
