@@ -484,3 +484,322 @@
   border: none !important;
   box-shadow: none !important;
 }
+
+.fancode-title {
+  margin: 0;
+}
+
+.fancode-heading-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fancode-subtitle {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.72rem;
+  letter-spacing: 0.015em;
+}
+
+.fancode-heading-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.fancode-badge {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+}
+
+.fancode-badge.has-live {
+  border-color: rgba(255, 69, 69, 0.28);
+  background: rgba(255, 0, 0, 0.13);
+  color: #ff7777;
+}
+
+.fancode-updated {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
+
+.fancode-card {
+  width: clamp(275px, 31vw, 430px);
+  cursor: default;
+  border-color: rgba(255, 255, 255, 0.07);
+  background: linear-gradient(180deg, #17191d, #101114);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.fancode-card:hover {
+  border-color: rgba(245, 197, 24, 0.32);
+  box-shadow: 0 15px 38px rgba(0, 0, 0, 0.48), 0 0 22px rgba(245, 197, 24, 0.08);
+}
+
+.fancode-thumb.no-image {
+  background: radial-gradient(circle at 75% 25%, rgba(125, 255, 179, 0.16), transparent 34%), linear-gradient(135deg, #172437, #15100f 55%, #251c17);
+}
+
+.fancode-status-pill {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  display: inline-flex;
+  min-height: 25px;
+  align-items: center;
+  padding: 4px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(8, 10, 14, 0.76);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(8px);
+}
+
+.fancode-status-pill.live {
+  border-color: rgba(255, 64, 64, 0.42);
+  background: rgba(178, 24, 28, 0.92);
+  color: #ffffff;
+}
+
+.fancode-status-pill.upcoming {
+  border-color: rgba(245, 197, 24, 0.25);
+  color: #f5d366;
+}
+
+.fancode-status-pill.ended {
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.fancode-info {
+  min-height: 176px;
+  gap: 8px;
+  padding: 13px 15px 14px;
+  background: linear-gradient(180deg, #17191d, #111317);
+}
+
+.fancode-tournament {
+  margin: 0;
+  color: #f5c518;
+  font-size: 0.66rem;
+  letter-spacing: 0.075em;
+  line-height: 1.35;
+}
+
+.fancode-teams {
+  justify-content: flex-start;
+  min-height: 36px;
+  gap: 10px;
+  padding: 0;
+}
+
+.fancode-team-name {
+  min-width: 0;
+  max-width: calc(50% - 20px);
+  overflow: hidden;
+  color: #ffffff;
+  font-size: clamp(0.92rem, 1.35vw, 1.15rem);
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fancode-vs {
+  flex: 0 0 auto;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.fancode-event-title {
+  margin: 2px 0 0;
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.fancode-meta {
+  min-height: 31px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.fancode-status {
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+}
+
+.fancode-time {
+  color: rgba(255, 255, 255, 0.57);
+  font-size: 0.68rem;
+}
+
+.fancode-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.fancode-watch-button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid rgba(245, 197, 24, 0.32);
+  border-radius: 999px;
+  background: rgba(245, 197, 24, 0.11);
+  color: #ffe17a;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.fancode-watch-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(245, 197, 24, 0.68);
+  background: rgba(245, 197, 24, 0.2);
+}
+
+.fancode-watch-play {
+  color: #f5c518;
+  font-size: 0.66rem;
+}
+
+.fancode-watch-button strong {
+  color: #ffffff;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.fancode-watch-button.is-disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.fancode-language-alternates {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.fancode-language-alternates > span {
+  margin-right: 2px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.59rem;
+}
+
+.fancode-language-link {
+  display: inline-flex;
+  min-height: 27px;
+  align-items: center;
+  padding: 5px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.fancode-language-link:hover {
+  border-color: rgba(125, 255, 179, 0.42);
+  background: rgba(125, 255, 179, 0.08);
+  color: #aaffcd;
+}
+
+.fancode-error,
+.fancode-empty {
+  display: flex;
+  flex: 1 0 100%;
+  min-height: 170px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: #14161a;
+  color: rgba(255, 255, 255, 0.64);
+  text-align: center;
+}
+
+.fancode-error strong {
+  color: #ffffff;
+}
+
+.fancode-error span {
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 0.82rem;
+}
+
+.fancode-retry {
+  margin-top: 4px;
+  padding: 8px 15px;
+  border: 0;
+  border-radius: 999px;
+  background: #f5c518;
+  color: #111111;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.fancode-track:focus-visible {
+  outline: 2px solid rgba(245, 197, 24, 0.6);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .fancode-card {
+    width: clamp(260px, 80vw, 360px);
+  }
+
+  .fancode-info {
+    min-height: 168px;
+    padding: 12px;
+  }
+
+  .fancode-team-name {
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .fancode-heading-meta {
+    align-items: flex-end;
+  }
+
+  .fancode-updated {
+    display: none;
+  }
+
+  .fancode-language-alternates > span {
+    display: none;
+  }
+
+  .fancode-actions {
+    gap: 6px;
+  }
+}
