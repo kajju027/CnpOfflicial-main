@@ -179,7 +179,8 @@
       const details = getEventDetails(eventName);
       const status = statusInfo(match.status);
       const stream = getStreamCandidate(match);
-      const canWatch = Boolean(id && stream);
+      const hasStream = Boolean(stream);
+      const canOpenPlayer = Boolean(id);
       const image = safeHttpUrl(match.image);
       const time = String(match.time || 'Time to be announced');
       const competition = details.competition || String(match.tournament || 'Willow Cricket');
@@ -190,12 +191,12 @@
       const imageMarkup = image
         ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(eventName)}" loading="lazy">`
         : '';
-      const card = document.createElement(canWatch ? 'a' : 'article');
-      card.className = `willow-live-card${canWatch ? ' is-watchable' : ' is-unavailable'}`;
-      card.setAttribute('aria-label', `${eventName}${canWatch ? ', watch now' : ', stream not available yet'}`);
+      const card = document.createElement(canOpenPlayer ? 'a' : 'article');
+      card.className = `willow-live-card${canOpenPlayer ? ' is-watchable' : ' is-unavailable'}`;
+      card.setAttribute('aria-label', `${eventName}${canOpenPlayer ? ', open player' : ', player unavailable'}`);
 
-      if (canWatch) {
-        card.href = buildPlayerUrl(id, stream.url);
+      if (canOpenPlayer) {
+        card.href = buildPlayerUrl(id, stream ? stream.url : '');
       } else {
         card.setAttribute('aria-disabled', 'true');
       }
@@ -204,14 +205,14 @@
         <div class="willow-live-thumb${image ? '' : ' no-image'}">
           ${imageMarkup}
           ${statusMarkup}
-          ${canWatch ? '<span class="willow-live-play-overlay"><span aria-hidden="true">▶</span> Watch Now</span>' : ''}
+          ${canOpenPlayer ? `<span class="willow-live-play-overlay"><span aria-hidden="true">▶</span> ${hasStream ? 'Watch Now' : 'Open Player'}</span>` : ''}
         </div>
         <div class="willow-live-info">
           <div class="willow-live-match-title">${teamMarkup}</div>
           <div class="willow-live-group">${escapeHtml(competition)}</div>
           <div class="willow-live-footer">
             <time class="willow-live-time">${escapeHtml(time)}</time>
-            <span class="willow-live-action${canWatch ? '' : ' unavailable'}">${canWatch ? 'Watch Now ↗' : 'Stream coming soon'}</span>
+            <span class="willow-live-action${canOpenPlayer ? '' : ' unavailable'}">${hasStream ? 'Watch Now ↗' : canOpenPlayer ? 'Open Player ↗' : 'Player unavailable'}</span>
           </div>
         </div>
       `;
