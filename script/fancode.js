@@ -1,342 +1,357 @@
 (function() {
   'use strict';
 
-  const API_URL = window.MATCHDEKHO_CONFIG.apis.fancode;
-  const SKELETON_COUNT = 6;
-
+  const config = window.MATCHDEKHO_CONFIG || {};
+  const API_URL = config.apis && config.apis.fancode;
+  const PLAYER_ROUTE = config.routes && config.routes.fancodePlayer || '/fc/play/';
+  const LANGUAGE_MAP = {
+    eng: 'ENGLISH',
+    hin: 'HINDI',
+    bang: 'BANGLA',
+    ml: 'MALAYALAM',
+    tam: 'TAMIL',
+    tel: 'TELUGU',
+    kan: 'KANNADA',
+    mar: 'MARATHI',
+    guj: 'GUJARATI',
+    pun: 'PUNJABI',
+    ori: 'ODIA',
+    bho: 'BHOJPURI'
+  };
   const track = document.getElementById('fancodeTrack');
   const arrowLeft = document.getElementById('fancodeArrowLeft');
   const arrowRight = document.getElementById('fancodeArrowRight');
-
+  const summary = document.getElementById('fancodeSummary');
+  const updated = document.getElementById('fancodeUpdated');
+  const SKELETON_COUNT = 5;
   let isLoading = false;
-  let matches = [];
+  let hasLoaded = false;
 
-  function createSkeletonCards(count) {
-    let html = '';
-    for (let i = 0; i < count; i++) {
-      html += `
-        <div class="fancode-card fc-skeleton-card">
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(character) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[character];
+    });
+  }
+
+  function safeHttpUrl(value) {
+    const url = String(value || '').trim();
+    if (!url) return '';
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? url : '';
+    } catch (error) {
+      return '';
+    }
+  }
+
+  function getBaseMatchId(value) {
+    return String(value || '').trim().split('_')[0];
+  }
+
+  function resolveLanguage(value) {
+    const normalized = String(value || '').trim().replace(/^\[|\]$/g, '').toUpperCase();
+    if (!normalized) return null;
+
+    for (const [code, label] of Object.entries(LANGUAGE_MAP)) {
+      if (normalized === code.toUpperCase() || normalized === label) {
+        return { code: code, label: label };
+      }
+    }
+
+    return null;
+  }
+
+  function getLanguages(match) {
+    const values = [];
+    const autoStreams = match.auto_streams;
+
+    if (autoStreams && typeof autoStreams === 'object' && !Array.isArray(autoStreams)) {
+      values.push.apply(values, Object.keys(autoStreams));
+    }
+
+    const languages = match.languages || match.available_languages;
+    if (Array.isArray(languages)) {
+      values.push.apply(values, languages);
+    } else if (languages && typeof languages === 'object') {
+      values.push.apply(values, Object.keys(languages));
+      values.push.apply(values, Object.values(languages));
+    } else if (typeof languages === 'string') {
+      values.push.apply(values, languages.split(/[,|/]+/));
+    }
+
+    if (match.language) values.push(match.language);
+
+    const title = String(match.title || match.event_name || '');
+    const titleLanguage = title.match(/\[([^\]]+)\]\s*$/);
+    if (titleLanguage) values.push(titleLanguage[1]);
+
+    const options = [];
+    const seen = new Set();
+
+    values.forEach(function(value) {
+      const language = resolveLanguage(value);
+      if (language && !seen.has(language.code)) {
+        seen.add(language.code);
+        options.push(language);
+      }
+    });
+
+    if (!options.length) options.push({ code: 'eng', label: LANGUAGE_MAP.eng });
+    return options;
+  }
+
+  function getPrimaryLanguage(options, match) {
+    const declared = resolveLanguage(match.language);
+    if (declared) {
+      const exact = options.find(function(option) {
+        return option.code === declared.code;
+      });
+      if (exact) return exact;
+    }
+
+    return options.find(function(option) {
+      return option.code === 'eng';
+    }) || options[0];
+  }
+
+  function buildPlayerUrl(matchId, languageCode) {
+    const baseId = getBaseMatchId(matchId);
+    const params = new URLSearchParams();
+    params.set('id', `${baseId}_${languageCode}`);
+    params.set('s', '0');
+    return `${PLAYER_ROUTE}?${params.toString()}`;
+  }
+
+  function cleanTitle(match) {
+    return String(match.title || match.event_name || match.match_name || 'Live Match')
+      .replace(/\s*\[[^\]]+\]\s*$/, '')
+      .trim();
+  }
+
+  function getMatchup(title) {
+    const parts = String(title || '').split(/\s+-\s+/);
+    const candidate = parts[parts.length - 1];
+    const result = candidate.match(/^(.+?)\s+(?:vs\.?|v\.?|versus)\s+(.+)$/i);
+    if (!result) return null;
+    return { home: result[1].trim(), away: result[2].trim() };
+  }
+
+  function formatStartTime(value) {
+    const text = String(value || '').trim();
+    if (!text) return '';
+
+    const parts = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)\s+(\d{1,2})-(\d{1,2})-(\d{4})$/i);
+    if (parts) {
+      const day = Number(parts[4]);
+      const month = Number(parts[5]);
+      const year = Number(parts[6]);
+      const date = new Date(year, month - 1, day);
+      const dateLabel = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      return `${dateLabel} · ${parts[1]}:${parts[2]} ${parts[3].toUpperCase()}`;
+    }
+
+    return text.replace(/:00(?=\s*(?:AM|PM))/i, '');
+  }
+
+  function statusInfo(value) {
+    const status = String(value || 'UPCOMING').toUpperCase();
+    if (status === 'LIVE') return { label: 'LIVE', className: 'live' };
+    if (['ENDED', 'FINISHED', 'COMPLETED'].includes(status)) return { label: 'ENDED', className: 'ended' };
+    if (['CANCELLED', 'CANCELED', 'POSTPONED'].includes(status)) return { label: status, className: 'ended' };
+    return { label: 'UPCOMING', className: 'upcoming' };
+  }
+
+  function renderSkeletonCards() {
+    if (!track) return;
+    track.innerHTML = Array.from({ length: SKELETON_COUNT }, function() {
+      return `
+        <div class="fancode-card fc-skeleton-card" aria-hidden="true">
           <div class="fc-skeleton-thumb"></div>
           <div class="fc-skeleton-info">
             <div class="fc-skeleton-line short"></div>
             <div class="fc-skeleton-line medium"></div>
-            <div class="fc-skeleton-teams">
-              <div class="fc-skeleton-team-block">
-                <div class="fc-skeleton-flag"></div>
-                <div class="fc-skeleton-name"></div>
-              </div>
-              <span class="fc-skeleton-vs">VS</span>
-              <div class="fc-skeleton-team-block">
-                <div class="fc-skeleton-flag"></div>
-                <div class="fc-skeleton-name"></div>
-              </div>
-            </div>
-            <div class="fc-skeleton-meta">
-              <div class="fc-skeleton-badge"></div>
-              <div class="fc-skeleton-time"></div>
-            </div>
+            <div class="fc-skeleton-line long"></div>
           </div>
         </div>
       `;
-    }
-    return html;
+    }).join('');
   }
 
-  function getBaseMatchId(matchId) {
-    if (!matchId) return '';
-    let baseId = String(matchId);
+  function updateSummary(data, matches) {
+    const liveCount = matches.filter(function(match) {
+      return String(match.status || '').toUpperCase() === 'LIVE';
+    }).length;
+    const upcomingCount = matches.filter(function(match) {
+      return String(match.status || '').toUpperCase() === 'UPCOMING';
+    }).length;
 
-    if (baseId.includes('_')) {
-      baseId = baseId.split('_')[0];
+    if (summary) {
+      summary.textContent = `${liveCount} LIVE · ${upcomingCount} UPCOMING`;
+      summary.classList.toggle('has-live', liveCount > 0);
     }
-    return baseId;
+
+    if (updated) {
+      updated.textContent = data.updatedAt ? `Updated ${data.updatedAt}` : '';
+    }
+  }
+
+  function renderMatches(matches) {
+    if (!track) return;
+
+    if (!matches.length) {
+      track.innerHTML = '<div class="fancode-empty" role="status">No FanCode matches are available right now.</div>';
+      return;
+    }
+
+    const sortedMatches = matches.slice().sort(function(first, second) {
+      const rank = function(match) {
+        const status = String(match.status || '').toUpperCase();
+        if (status === 'LIVE') return 0;
+        if (status === 'UPCOMING') return 1;
+        return 2;
+      };
+      return rank(first) - rank(second);
+    });
+
+    track.innerHTML = sortedMatches.map(function(match) {
+      const id = getBaseMatchId(match.match_id || match.id);
+      const title = cleanTitle(match);
+      const matchup = getMatchup(title);
+      const tournament = String(match.tournament || match.category || 'FanCode');
+      const category = String(match.category || 'SPORTS');
+      const image = safeHttpUrl(match.image || match.src);
+      const time = formatStartTime(match.startTime || match.time);
+      const status = statusInfo(match.status);
+      const languages = getLanguages(match);
+      const primaryLanguage = getPrimaryLanguage(languages, match);
+      const primaryUrl = id ? buildPlayerUrl(id, primaryLanguage.code) : '';
+      const otherLanguages = languages.filter(function(language) {
+        return language.code !== primaryLanguage.code;
+      });
+      const matchupHtml = matchup
+        ? `<div class="fancode-teams"><span class="fancode-team-name">${escapeHtml(matchup.home)}</span><span class="fancode-vs">VS</span><span class="fancode-team-name">${escapeHtml(matchup.away)}</span></div>`
+        : `<h3 class="fancode-event-title">${escapeHtml(title)}</h3>`;
+      const otherLanguageHtml = otherLanguages.length
+        ? `<div class="fancode-language-alternates"><span>More audio</span>${otherLanguages.map(function(language) {
+            const href = buildPlayerUrl(id, language.code);
+            return `<a class="fancode-language-link" href="${escapeHtml(href)}" aria-label="Watch in ${escapeHtml(language.label)}">${escapeHtml(language.label)}</a>`;
+          }).join('')}</div>`
+        : '';
+      const actionHtml = primaryUrl
+        ? `<div class="fancode-actions"><a class="fancode-watch-button" href="${escapeHtml(primaryUrl)}"><span class="fancode-watch-play" aria-hidden="true">▶</span><span>Watch Now</span><strong>${escapeHtml(primaryLanguage.label)}</strong></a>${otherLanguageHtml}</div>`
+        : '<div class="fancode-actions"><span class="fancode-watch-button is-disabled">Player unavailable</span></div>';
+
+      return `
+        <article class="fancode-card">
+          <div class="fancode-thumb${image ? '' : ' no-image'}">
+            ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">` : ''}
+            <span class="fancode-category-tag">${escapeHtml(category)}</span>
+            <span class="fancode-status-pill ${status.className}">${status.label}</span>
+          </div>
+          <div class="fancode-info">
+            <div class="fancode-tournament">${escapeHtml(tournament)}</div>
+            ${matchupHtml}
+            <div class="fancode-meta">
+              <span class="fancode-status ${status.className}">${status.label}</span>
+              ${time ? `<time class="fancode-time">${escapeHtml(time)}</time>` : '<span class="fancode-time">Time TBA</span>'}
+            </div>
+            ${actionHtml}
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    track.querySelectorAll('.fancode-thumb img').forEach(function(image) {
+      image.addEventListener('error', function() {
+        image.hidden = true;
+        image.parentElement.classList.add('no-image');
+      });
+    });
+  }
+
+  function renderError(message) {
+    if (!track) return;
+    track.innerHTML = `
+      <div class="fancode-error" role="status">
+        <strong>Unable to load FanCode matches</strong>
+        <span>${escapeHtml(message || 'Please try again.')}</span>
+        <button class="fancode-retry" type="button">Retry</button>
+      </div>
+    `;
+    const retry = track.querySelector('.fancode-retry');
+    if (retry) retry.addEventListener('click', fetchFancodeData);
   }
 
   async function fetchFancodeData() {
-    if (isLoading) return;
+    if (isLoading || !track || !API_URL) return;
     isLoading = true;
 
+    if (!hasLoaded) renderSkeletonCards();
+
     try {
-      track.innerHTML = createSkeletonCards(SKELETON_COUNT);
-
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
+      const response = await fetch(API_URL, { cache: 'no-cache' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
-      const allMatches = data.matches || data || [];
-
-      console.log(`Found ${allMatches.length} matches`);
-
-      matches = allMatches.filter(m => {
-
-        if (!m.team_1 || !m.team_2) return false;
-        return true;
-      });
-
-      console.log(`Filtered to ${matches.length} matches with teams`);
-
-      matches.sort((a, b) => {
-
-        const getPriority = (status) => {
-          if (status === 'LIVE') return 0;
-          if (status === 'UPCOMING') return 1;
-          return 2;
-        };
-
-        const aPriority = getPriority(a.status);
-        const bPriority = getPriority(b.status);
-
-        if (aPriority !== bPriority) return aPriority - bPriority;
-
-        if (a.startTime && b.startTime) {
-          return new Date(a.startTime) - new Date(b.startTime);
-        }
-        return 0;
-      });
-
+      const matches = Array.isArray(data) ? data : Array.isArray(data.matches) ? data.matches : [];
+      updateSummary(data, matches);
       renderMatches(matches);
-
+      hasLoaded = true;
     } catch (error) {
-      console.error('FanCode fetch error:', error);
-      track.innerHTML = `
-        <div style="color: rgba(255,255,255,0.4); padding: 2rem; text-align: center; width: 100%;">
-          ⚠️ Failed to load matches: ${error.message}
-        </div>
-      `;
+      renderError(error.message);
+      hasLoaded = true;
     } finally {
       isLoading = false;
     }
   }
 
-  function renderMatches(matchData) {
-    if (!matchData || matchData.length === 0) {
-      track.innerHTML = `
-        <div style="color: rgba(255,255,255,0.3); padding: 2rem; text-align: center; width: 100%;">
-          No matches available
-        </div>
-      `;
-      return;
-    }
-
-    let html = '';
-    matchData.forEach(match => {
-
-      const team1Name = match.team_1 || 'Team 1';
-      const team2Name = match.team_2 || 'Team 2';
-
-      const imageUrl = match.src || '';
-
-      let statusText = match.status || 'UPCOMING';
-      const isLive = statusText === 'LIVE';
-      const isEnded = statusText === 'ENDED' || statusText === 'FINISHED' || statusText === 'COMPLETED';
-
-      statusText = statusText.replace(/_/g, ' ').toLowerCase();
-      statusText = statusText.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-
-      let statusClass = 'upcoming';
-      if (isLive) statusClass = 'live';
-      if (isEnded) statusClass = 'ended';
-
-      const streamUrl = match.dai_url || match.adfree_url || '';
-      const hasStream = !!streamUrl;
-
-      const baseMatchId = getBaseMatchId(match.match_id);
-
-      let formattedTime = match.startTime || '';
-      if (formattedTime) {
-        try {
-          const date = new Date(formattedTime);
-          if (!isNaN(date)) {
-            formattedTime = date.toLocaleString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            });
-          }
-        } catch (e) {
-
-        }
-      }
-
-      html += `
-        <div class="fancode-card" data-match-id="${baseMatchId}" data-full-match-id="${match.match_id || ''}" data-stream-url="${streamUrl}" data-title="${match.title || match.match_name || 'Live Match'}">
-          <div class="fancode-thumb">
-            <img
-              src="${imageUrl}"
-              alt="${team1Name} vs ${team2Name}"
-              loading="lazy"
-              onerror="this.src='https://via.placeholder.com/400x225/1a1c1e/555?text=No+Image'"
-            />
-            ${isLive ? '<span class="live-badge">● LIVE</span>' : ''}
-          </div>
-          <div class="fancode-info">
-            <div class="fancode-tournament">${match.event_name || match.title || 'Match'}</div>
-            <div class="fancode-teams">
-              <div class="fancode-team">
-                <span>${team1Name}</span>
-              </div>
-              <span class="fancode-vs">VS</span>
-              <div class="fancode-team">
-                <span>${team2Name}</span>
-              </div>
-            </div>
-            <div class="fancode-meta">
-              <div class="fancode-meta-left">
-                <span class="fancode-status ${statusClass}">${statusText}</span>
-              </div>
-              <span class="fancode-time">${formattedTime || match.startTime || ''}</span>
-            </div>
-            ${hasStream ? '<div class="stream-indicator available">▶ CLICK TO PLAY</div>' : '<div class="stream-indicator unavailable">NO STREAM</div>'}
-          </div>
-        </div>
-      `;
-    });
-
-    track.innerHTML = html;
-  }
-
-  async function playM3U8Stream(matchId, matchTitle, streamUrl) {
-    console.log('🔍 Playing stream for:', { matchId, matchTitle, streamUrl });
-
-    if (!matchId) {
-      alert('No match ID available');
-      return;
-    }
-
-    if (streamUrl && streamUrl.includes('m3u8')) {
-      console.log('✅ Using provided stream URL:', streamUrl);
-      const encodedUrl = encodeURIComponent(streamUrl);
-      const matchName = encodeURIComponent(matchTitle || 'Live Match');
-      window.location.href = `${window.MATCHDEKHO_CONFIG.routes.fancodePlayer}?url=${encodedUrl}&title=${matchName}&match_id=${matchId}`;
-      return;
-    }
-
-    try {
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-      const data = await response.json();
-      const allMatches = data.matches || data || [];
-
-      const baseMatchId = getBaseMatchId(matchId);
-      console.log(`🔍 Looking for match with base ID: ${baseMatchId}`);
-
-      let match = allMatches.find(m => {
-        const mBaseId = getBaseMatchId(m.match_id);
-        return mBaseId === baseMatchId;
-      });
-
-      if (match) {
-        console.log(`✅ Found match by ID: ${match.match_id}`);
-      } else {
-
-        console.log(`🔍 Trying to find by title: "${matchTitle}"`);
-        match = allMatches.find(m => {
-          const mTitle = (m.match_name || m.title || '').toLowerCase();
-          const searchTitle = (matchTitle || '').toLowerCase();
-          return mTitle.includes(searchTitle) || searchTitle.includes(mTitle);
-        });
-        if (match) {
-          console.log(`✅ Found match by title: ${match.match_name || match.title}`);
-        }
-      }
-
-      if (!match) {
-        console.error('❌ Match not found in JSON');
-        alert('Match data not found. Please try again.');
-        return;
-      }
-
-      const m3u8Url = match.dai_url || match.adfree_url || null;
-
-      if (!m3u8Url) {
-        console.error('❌ No stream URL found for match');
-        alert('No stream available for this match');
-        return;
-      }
-
-      console.log('✅ Found stream URL:', m3u8Url);
-      const encodedUrl = encodeURIComponent(m3u8Url);
-      const matchName = encodeURIComponent(matchTitle || match.match_name || 'Live Match');
-
-      window.location.href = `${window.MATCHDEKHO_CONFIG.routes.fancodePlayer}?url=${encodedUrl}&title=${matchName}&match_id=${matchId}`;
-
-    } catch (error) {
-      console.error('❌ Error playing stream:', error);
-      alert('Failed to load stream. Please try again.');
-    }
-  }
-
   function scrollAmount() {
-    const card = track.querySelector('.fancode-card, .fc-skeleton-card');
-    if (!card) return 280;
-    const cardWidth = card.getBoundingClientRect().width;
-    const gap = 20;
-    return (cardWidth + gap) * 2;
+    const card = track && track.querySelector('.fancode-card, .fc-skeleton-card');
+    if (!card) return 560;
+    const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '20');
+    return (card.getBoundingClientRect().width + gap) * 2;
   }
 
-  function scrollLeft() {
-    track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-  }
-
-  function scrollRight() {
-    track.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-  }
-
-  function handleCardClick(e) {
-    const card = e.target.closest('.fancode-card');
-    if (!card) return;
-
-    const matchId = card.dataset.matchId || card.dataset.fullMatchId;
-    const title = card.dataset.title || 'Live Match';
-    const streamUrl = card.dataset.streamUrl || '';
-
-    console.log('🖱️ Card clicked:', { matchId, title, streamUrl });
-
-    if (matchId) {
-      e.preventDefault();
-      e.stopPropagation();
-      playM3U8Stream(matchId, title, streamUrl);
-    } else {
-      e.preventDefault();
-      alert('Invalid match');
-    }
+  function scrollByDirection(direction) {
+    if (!track) return;
+    track.scrollBy({ left: direction * scrollAmount(), behavior: 'smooth' });
   }
 
   function initLazyLoad() {
     const section = document.getElementById('fancodeSection');
     if (!section) return;
 
-    const rect = section.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
+    if (section.getBoundingClientRect().top < window.innerHeight) {
       fetchFancodeData();
       return;
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
         if (entry.isIntersecting) {
           fetchFancodeData();
           observer.disconnect();
         }
       });
-    }, { rootMargin: '200px' });
+    }, { rootMargin: '240px' });
 
     observer.observe(section);
   }
 
-  function handleKeydown(e) {
-    if (e.key === 'ArrowLeft') scrollLeft();
-    if (e.key === 'ArrowRight') scrollRight();
-  }
-
   function init() {
-    if (arrowLeft) arrowLeft.addEventListener('click', scrollLeft);
-    if (arrowRight) arrowRight.addEventListener('click', scrollRight);
+    if (arrowLeft) arrowLeft.addEventListener('click', function() { scrollByDirection(-1); });
+    if (arrowRight) arrowRight.addEventListener('click', function() { scrollByDirection(1); });
+
     if (track) {
-      track.addEventListener('click', handleCardClick);
-      track.addEventListener('keydown', handleKeydown);
+      track.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowLeft') scrollByDirection(-1);
+        if (event.key === 'ArrowRight') scrollByDirection(1);
+      });
       track.setAttribute('tabindex', '0');
     }
 
@@ -348,5 +363,4 @@
   } else {
     init();
   }
-
 })();
