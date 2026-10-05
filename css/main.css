@@ -194,7 +194,7 @@ header {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  margin: clamp(20px, 2.2vw, 40px) auto clamp(20px, 2.5vw, 36px);
+  margin: clamp(48px, 4vw, 72px) auto clamp(20px, 2.5vw, 36px);
   overflow: hidden;
   isolation: isolate;
   background: #121720;
@@ -497,19 +497,20 @@ main {
 
   .poster-wrapper {
     width: 100%;
-    min-height: clamp(220px, 58vw, 360px);
-    margin: 52px auto 14px;
+    min-height: clamp(250px, 78vw, 380px);
+    margin: 64px auto 14px;
     border-radius: 0;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 3;
     box-shadow: none;
   }
 
   .poster-art {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 3;
   }
 
   .poster-image {
     object-fit: cover;
+    object-position: center 40%;
   }
 
   .gradient-left {
@@ -628,3 +629,4 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
+
