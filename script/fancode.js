@@ -143,20 +143,7 @@
   }
 
   function formatStartTime(value) {
-    const text = String(value || '').trim();
-    if (!text) return '';
-
-    const parts = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)\s+(\d{1,2})-(\d{1,2})-(\d{4})$/i);
-    if (parts) {
-      const day = Number(parts[4]);
-      const month = Number(parts[5]);
-      const year = Number(parts[6]);
-      const date = new Date(year, month - 1, day);
-      const dateLabel = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
-      return `${dateLabel} · ${parts[1]}:${parts[2]} ${parts[3].toUpperCase()}`;
-    }
-
-    return text.replace(/:00(?=\s*(?:AM|PM))/i, '');
+    return String(value || '').trim().replace(/\s+/g, ' ');
   }
 
   function statusInfo(value) {
@@ -246,9 +233,12 @@
       const actionHtml = primaryUrl
         ? `<div class="fancode-actions"><a class="fancode-watch-button" href="${escapeHtml(primaryUrl)}"><span class="fancode-watch-play" aria-hidden="true">▶</span><span>Watch Now</span><strong>${escapeHtml(primaryLanguage.label)}</strong></a>${otherLanguageHtml}</div>`
         : '<div class="fancode-actions"><span class="fancode-watch-button is-disabled">Player unavailable</span></div>';
+      const cardAttributes = primaryUrl
+        ? `data-player-url="${escapeHtml(primaryUrl)}" tabindex="0" role="link" aria-label="Open ${escapeHtml(title)} in ${escapeHtml(primaryLanguage.label)}"`
+        : '';
 
       return `
-        <article class="fancode-card">
+        <article class="fancode-card" ${cardAttributes}>
           <div class="fancode-thumb${image ? '' : ' no-image'}">
             ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">` : ''}
             <span class="fancode-category-tag">${escapeHtml(category)}</span>
@@ -258,7 +248,6 @@
             <div class="fancode-tournament">${escapeHtml(tournament)}</div>
             ${matchupHtml}
             <div class="fancode-meta">
-              <span class="fancode-status ${status.className}">${status.label}</span>
               ${time ? `<time class="fancode-time">${escapeHtml(time)}</time>` : '<span class="fancode-time">Time TBA</span>'}
             </div>
             ${actionHtml}
@@ -266,6 +255,25 @@
         </article>
       `;
     }).join('');
+
+    track.querySelectorAll('.fancode-card[data-player-url]').forEach(function(card) {
+      const openPlayer = function() {
+        window.location.href = card.dataset.playerUrl;
+      };
+
+      card.addEventListener('click', function(event) {
+        if (event.target.closest('a, button')) return;
+        openPlayer();
+      });
+
+      card.addEventListener('keydown', function(event) {
+        if (event.target !== card && event.target.closest('a, button')) return;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openPlayer();
+        }
+      });
+    });
 
     track.querySelectorAll('.fancode-thumb img').forEach(function(image) {
       image.addEventListener('error', function() {
