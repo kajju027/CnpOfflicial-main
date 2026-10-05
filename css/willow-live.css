@@ -472,7 +472,7 @@
 }
 
 .willow-live-card {
-  width: clamp(270px, 32vw, 440px);
+  width: clamp(320px, 35vw, 520px);
   border-color: rgba(255, 255, 255, 0.08);
   background: linear-gradient(180deg, #171b22, #111419);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
@@ -682,7 +682,7 @@
   }
 
   .willow-live-card {
-    width: clamp(250px, 78vw, 360px);
+    width: clamp(280px, 86vw, 420px);
   }
 
   .willow-live-info {
@@ -705,7 +705,7 @@
   }
 
   .willow-live-card {
-    width: min(82vw, 330px);
+    width: min(88vw, 380px);
   }
 
   .willow-live-info {
@@ -715,4 +715,19 @@
   .willow-live-team {
     max-width: 42%;
   }
+}
+
+.live-count-badge.has-live {
+  border-color: #83dfaa;
+  background: #b9f6d0;
+  color: #07351a;
+  box-shadow: 0 3px 12px rgba(117, 232, 160, 0.16);
+}
+
+.willow-live-status.live {
+  border-color: #83dfaa;
+  background: #b9f6d0;
+  color: #07351a;
+  animation: none;
+  box-shadow: 0 3px 12px rgba(117, 232, 160, 0.17);
 }
