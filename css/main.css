@@ -192,9 +192,9 @@ header {
 
 .poster-wrapper {
   position: relative;
-  width: min(100%, 1600px);
+  width: 100%;
   aspect-ratio: 16 / 9;
-  margin: 0 auto clamp(20px, 2.5vw, 36px);
+  margin: clamp(20px, 2.2vw, 40px) auto clamp(20px, 2.5vw, 36px);
   overflow: hidden;
   isolation: isolate;
   background: #121720;
@@ -497,7 +497,8 @@ main {
 
   .poster-wrapper {
     width: 100%;
-    margin-bottom: 14px;
+    min-height: clamp(220px, 58vw, 360px);
+    margin: 52px auto 14px;
     border-radius: 0;
     aspect-ratio: 16 / 9;
     box-shadow: none;
