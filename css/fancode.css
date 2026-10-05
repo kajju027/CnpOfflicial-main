@@ -495,12 +495,6 @@
   gap: 3px;
 }
 
-.fancode-subtitle {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.72rem;
-  letter-spacing: 0.015em;
-}
-
 .fancode-heading-meta {
   display: flex;
   flex-direction: column;
@@ -531,8 +525,8 @@
 }
 
 .fancode-card {
-  width: clamp(275px, 31vw, 430px);
-  cursor: default;
+  width: clamp(320px, 35vw, 520px);
+  cursor: pointer;
   border-color: rgba(255, 255, 255, 0.07);
   background: linear-gradient(180deg, #17191d, #101114);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -773,7 +767,7 @@
 
 @media (max-width: 760px) {
   .fancode-card {
-    width: clamp(260px, 80vw, 360px);
+    width: clamp(280px, 86vw, 420px);
   }
 
   .fancode-info {
@@ -802,4 +796,32 @@
   .fancode-actions {
     gap: 6px;
   }
+}
+
+.fancode-badge.has-live {
+  border-color: #83dfaa;
+  background: #b9f6d0;
+  color: #07351a;
+  box-shadow: 0 3px 12px rgba(117, 232, 160, 0.16);
+}
+
+.fancode-status-pill.live {
+  border-color: #83dfaa;
+  background: #b9f6d0;
+  color: #07351a;
+  animation: none;
+  box-shadow: 0 3px 12px rgba(117, 232, 160, 0.17);
+}
+
+.fancode-status.live {
+  border-color: rgba(131, 223, 170, 0.76);
+  background: rgba(185, 246, 208, 0.18);
+  color: #a8f5c6;
+  animation: none;
+}
+
+.fancode-card[role="link"]:focus-visible {
+  outline: 2px solid #b9f6d0;
+  outline-offset: 3px;
+  border-color: #83dfaa;
 }
