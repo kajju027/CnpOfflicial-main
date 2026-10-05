@@ -329,72 +329,12 @@ header {
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
 }
 
-.vs-score {
+.vs-label {
   flex: 0 0 auto;
-  color: var(--white);
-  font-size: clamp(1.35rem, 3vw, 2.4rem);
+  color: rgba(255, 255, 255, 0.56);
+  font-size: clamp(0.68rem, 1vw, 0.85rem);
   font-weight: 800;
-  line-height: 1;
-  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.72);
-}
-
-.match-info {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-  color: rgba(255, 255, 255, 0.76);
-  font-size: clamp(0.62rem, 0.95vw, 0.78rem);
-  font-weight: 500;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.78);
-}
-
-.match-info .tag {
-  color: #ff6666;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.match-info .separator {
-  color: rgba(255, 255, 255, 0.42);
-}
-
-.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 12px;
-}
-
-.badge {
-  padding: 5px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  background: rgba(10, 14, 19, 0.48);
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  backdrop-filter: blur(8px);
-}
-
-.badge-fulltime {
-  border-color: rgba(255, 58, 58, 0.4);
-  background: rgba(255, 58, 58, 0.16);
-  color: #ff8585;
-}
-
-.badge-4k,
-.badge-hdr {
-  color: #d8dce4;
-}
-
-.badge-fanzone {
-  border-color: rgba(125, 255, 179, 0.24);
-  color: var(--green);
+  letter-spacing: 0.12em;
 }
 
 .action-buttons {
@@ -436,30 +376,6 @@ header {
 .watch-btn .icon {
   font-size: 0.95rem;
   line-height: 1;
-}
-
-.btn-mytod {
-  display: inline-flex;
-  min-height: 42px;
-  align-items: center;
-  justify-content: center;
-  padding: 9px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 999px;
-  background: rgba(7, 10, 14, 0.34);
-  color: var(--white);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-.btn-mytod:hover {
-  border-color: rgba(255, 255, 255, 0.52);
-  background: rgba(255, 255, 255, 0.1);
 }
 
 .slider-progress {
@@ -629,26 +545,6 @@ main {
     font-size: clamp(0.68rem, 2.7vw, 0.86rem);
   }
 
-  .vs-score {
-    font-size: clamp(1.1rem, 5vw, 1.55rem);
-  }
-
-  .match-info {
-    gap: 5px;
-    margin-top: 7px;
-    font-size: clamp(0.52rem, 2vw, 0.66rem);
-  }
-
-  .badges {
-    gap: 4px;
-    margin-top: 6px;
-  }
-
-  .badge {
-    padding: 3px 6px;
-    font-size: 0.48rem;
-  }
-
   .action-buttons {
     gap: 7px;
     margin-top: 8px;
@@ -659,12 +555,6 @@ main {
     gap: 5px;
     padding: 7px 13px;
     font-size: 0.66rem;
-  }
-
-  .btn-mytod {
-    min-height: 32px;
-    padding: 6px 10px;
-    font-size: 0.56rem;
   }
 
   .slider-progress {
@@ -711,15 +601,6 @@ main {
 
   .team-name {
     font-size: 0.64rem;
-  }
-
-  .match-info {
-    margin-top: 5px;
-    font-size: 0.48rem;
-  }
-
-  .badges {
-    display: none;
   }
 
   .action-buttons {
