@@ -1,5 +1,6 @@
 (function() {
   const API_URL = window.MATCHDEKHO_CONFIG.apis.worldSports;
+  const fallbackImage = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540"><defs><linearGradient id="g" x1="0" x2="1" y1="1" y2="0"><stop offset="0" stop-color="#0b1723"/><stop offset="1" stop-color="#1b4636"/></linearGradient></defs><rect width="960" height="540" fill="url(#g)"/><circle cx="740" cy="160" r="180" fill="#7dffb3" opacity=".08"/><path d="M0 420h960" stroke="#f5c518" stroke-width="4" opacity=".45"/><text x="480" y="280" fill="#ffffff" font-family="Arial,sans-serif" font-size="42" font-weight="700" text-anchor="middle">LIVE SPORTS</text></svg>');
   const track = document.getElementById('worldSportsTrack');
   const arrowLeft = document.getElementById('worldSportsArrowLeft');
   const arrowRight = document.getElementById('worldSportsArrowRight');
@@ -36,7 +37,7 @@
     matches.forEach(match => {
       const statusClass = (match.status || '').toLowerCase();
       const statusDisplay = match.status_display || match.status || 'Upcoming';
-      const thumbnail = match.thumbnail || '';
+      const thumbnail = match.thumbnail || fallbackImage;
       const league = match.league || 'World Sports';
       const title = match.title || match.teams || 'Match';
       const dateTime = match.date || '';
@@ -45,7 +46,7 @@
       html += `
         <a href="${match.page_url || '#'}" class="world-sports-card" data-match-id="${match.match_id || ''}">
           <div class="world-sports-thumb">
-            <img src="${thumbnail}" alt="${title}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22480%22 height=%22270%22%3E%3Crect fill=%22%231a1c1e%22 width=%22480%22 height=%22270%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 font-family=%22Inter,sans-serif%22 font-size=%2220%22 fill=%22%23333%22 text-anchor=%22middle%22 dy=%22.3em%22%3ENo Image%3C/text%3E%3C/svg%3E'" />
+            <img src="${thumbnail}" alt="${title}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackImage}'" />
           </div>
           <div class="world-sports-info">
             <div class="world-sports-league">${league}</div>
