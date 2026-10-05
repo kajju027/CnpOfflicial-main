@@ -60,10 +60,7 @@
   }
 
   function buildPlayerUrl(matchId, streamUrl) {
-    const params = new URLSearchParams();
-    params.set('id', String(matchId));
-    params.set('ser', streamUrl || '');
-    return `${PLAYER_ROUTE}?${params.toString()}`;
+    return PLAYER_ROUTE + '?' + String(matchId) + '&ser=' + encodeURIComponent(streamUrl || '');
   }
 
   function getEventDetails(eventName) {
@@ -178,11 +175,12 @@
         ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(eventName)}" loading="lazy">`
         : '';
       const streamUrl = getDefaultStream(match);
-      const watchMarkup = id
+      const isUpcoming = status.className === 'upcoming';
+      const watchMarkup = (!isUpcoming && id)
         ? `<a class="willow-watch-button" href="${escapeHtml(buildPlayerUrl(id, streamUrl))}"><span aria-hidden="true">▶</span><span>Watch Now</span></a>`
-        : '<button class="willow-watch-button is-disabled" type="button" disabled>Watch Now</button>';
+        : '';
       const card = document.createElement('article');
-      card.className = 'willow-live-card';
+      card.className = 'willow-live-card willow-card-' + status.className;
       card.setAttribute('aria-label', `${eventName}, ${status.label}`);
       card.innerHTML = `
         <div class="willow-live-thumb${image ? '' : ' no-image'}">
