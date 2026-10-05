@@ -4,12 +4,13 @@ window.MATCHDEKHO_CONFIG = {
   maxHeroMatches: 8,
   heroFeedUrl: "",
   apis: {
-    willow: "https://willow-api.sayanwork-studioo.workers.dev/",
-    fancode: "https://raw.githubusercontent.com/drmlive/fancode-live-events/refs/heads/main/fancode.json",
+    willow: "https://sonujson-v5.pages.dev/Data/willow.json",
+    fancode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
     worldSports: "https://matchdekho.in/api/world-sports.json"
   },
   routes: {
-    fancodePlayer: "/fc-play.html"
+    willowPlayer: "/az/",
+    fancodePlayer: "/fc/play/"
   },
   heroMatches: [
     {
