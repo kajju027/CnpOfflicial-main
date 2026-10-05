@@ -46,26 +46,9 @@
         name: awayName,
         logo: teamValue(away, "logo") || teamValue(away, "flag") || item.away_logo || item.team_2_logo || ""
       },
-      score: item.score || item.result || "VS",
-      status: item.status_display || item.status || "LIVE",
-      date: item.date || "",
-      time: item.time || item.startTime || "",
-      venue: item.venue || "",
-      badges: Array.isArray(item.badges) ? item.badges : [],
       poster: item.poster || item.backgroundImage || item.thumbnail || item.cover_image || item.src || item.tvgLogo || "",
       watchUrl: item.watchUrl || item.page_url || item.watch_now || "#willow-live"
     };
-  }
-
-  function badgeClass(label) {
-    const key = String(label).toLowerCase();
-    const classes = {
-      live: "badge-fulltime",
-      "4k": "badge-4k",
-      hdr: "badge-hdr",
-      fanzone: "badge-fanzone"
-    };
-    return classes[key] || "";
   }
 
   function renderMatch(match, index) {
@@ -79,24 +62,9 @@
     const awayLogo = escapeHtml(away.logo);
     const poster = escapeHtml(normalized.poster);
     const watchUrl = escapeHtml(normalized.watchUrl);
-    const status = escapeHtml(normalized.status);
-    const info = [];
-
-    if (normalized.status) info.push(`<span class="tag">${status}</span>`);
-    if (normalized.date) info.push(`<span class="date">${escapeHtml(normalized.date)}</span>`);
-    if (normalized.time) info.push(`<span class="time">${escapeHtml(normalized.time)}</span>`);
-    if (normalized.venue) info.push(`<span class="venue">${escapeHtml(normalized.venue)}</span>`);
-
-    const matchInfo = info.map(function (item, itemIndex) {
-      return `${itemIndex ? '<span class="separator">•</span>' : ""}${item}`;
-    }).join("");
-
-    const badges = normalized.badges.map(function (badge) {
-      return `<span class="badge ${badgeClass(badge)}">${escapeHtml(badge)}</span>`;
-    }).join("");
 
     return `
-      <section class="poster-section${index === 0 ? " active" : ""}" data-slide="${index}" aria-label="${title}">
+      <section class="poster-section${index === 0 ? " active" : ""}" data-slide="${index}" aria-label="${title}: ${homeName} vs ${awayName}">
         <div class="poster-art">
           <picture>
             <img src="${poster}" alt="${homeName} vs ${awayName}" class="poster-image" loading="${index === 0 ? "eager" : "lazy"}">
@@ -111,17 +79,14 @@
               ${homeLogo ? `<img src="${homeLogo}" alt="" class="team-flag" loading="lazy">` : ""}
               <span class="team-name">${homeName}</span>
             </div>
-            <span class="vs-score">${escapeHtml(normalized.score || "VS")}</span>
+            <span class="vs-label" aria-hidden="true">VS</span>
             <div class="team">
               ${awayLogo ? `<img src="${awayLogo}" alt="" class="team-flag" loading="lazy">` : ""}
               <span class="team-name">${awayName}</span>
             </div>
           </div>
-          <div class="match-info">${matchInfo}</div>
-          <div class="badges">${badges}</div>
           <div class="action-buttons">
             <a href="${watchUrl}" class="watch-btn"><span class="icon">▶</span><span>Watch Now</span></a>
-            <button type="button" class="btn-mytod">+ My TOD</button>
           </div>
         </div>
       </section>
@@ -161,14 +126,6 @@
     currentIndex = 0;
     updateProgressBars();
     restartAutoplay();
-
-    slidesRoot.querySelectorAll(".btn-mytod").forEach(function (button) {
-      button.addEventListener("click", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        window.alert("Added to My TOD!");
-      });
-    });
   }
 
   function updateProgressBars() {
