@@ -85,11 +85,11 @@
       values.push.apply(values, languages.split(/[,|/]+/));
     }
 
-    if (match.language) values.push(match.language);
+    if (match.language) values.push.apply(values, String(match.language).split(/[,|/]+/));
 
     const title = String(match.title || match.event_name || '');
     const titleLanguage = title.match(/\[([^\]]+)\]\s*$/);
-    if (titleLanguage) values.push(titleLanguage[1]);
+    if (titleLanguage) values.push.apply(values, titleLanguage[1].split(/[,|/]+/));
 
     const options = [];
     const seen = new Set();
@@ -102,22 +102,7 @@
       }
     });
 
-    if (!options.length) options.push({ code: 'eng', label: LANGUAGE_MAP.eng });
     return options;
-  }
-
-  function getPrimaryLanguage(options, match) {
-    const declared = resolveLanguage(match.language);
-    if (declared) {
-      const exact = options.find(function(option) {
-        return option.code === declared.code;
-      });
-      if (exact) return exact;
-    }
-
-    return options.find(function(option) {
-      return option.code === 'eng';
-    }) || options[0];
   }
 
   function buildPlayerUrl(matchId, languageCode) {
@@ -142,8 +127,8 @@
     return { home: result[1].trim(), away: result[2].trim() };
   }
 
-  function formatStartTime(value) {
-    return String(value || '').trim().replace(/\s+/g, ' ');
+  function getSourceTime(value) {
+    return value == null ? '' : String(value);
   }
 
   function statusInfo(value) {
@@ -213,32 +198,21 @@
       const tournament = String(match.tournament || match.category || 'FanCode');
       const category = String(match.category || 'SPORTS');
       const image = safeHttpUrl(match.image || match.src);
-      const time = formatStartTime(match.startTime || match.time);
+      const time = getSourceTime(match.startTime || match.time);
       const status = statusInfo(match.status);
-      const languages = getLanguages(match);
-      const primaryLanguage = getPrimaryLanguage(languages, match);
-      const primaryUrl = id ? buildPlayerUrl(id, primaryLanguage.code) : '';
-      const otherLanguages = languages.filter(function(language) {
-        return language.code !== primaryLanguage.code;
-      });
+      const languages = status.className === 'live' ? getLanguages(match) : [];
       const matchupHtml = matchup
         ? `<div class="fancode-teams"><span class="fancode-team-name">${escapeHtml(matchup.home)}</span><span class="fancode-vs">VS</span><span class="fancode-team-name">${escapeHtml(matchup.away)}</span></div>`
         : `<h3 class="fancode-event-title">${escapeHtml(title)}</h3>`;
-      const otherLanguageHtml = otherLanguages.length
-        ? `<div class="fancode-language-alternates"><span>More audio</span>${otherLanguages.map(function(language) {
+      const watchButtons = status.className === 'live' && id && languages.length
+        ? `<div class="fancode-actions">${languages.map(function(language) {
             const href = buildPlayerUrl(id, language.code);
-            return `<a class="fancode-language-link" href="${escapeHtml(href)}" aria-label="Watch in ${escapeHtml(language.label)}">${escapeHtml(language.label)}</a>`;
+            return `<a class="fancode-watch-button" href="${escapeHtml(href)}" aria-label="Watch Now in ${escapeHtml(language.label)}"><span class="fancode-watch-play" aria-hidden="true">▶</span><span>Watch Now</span><strong>${escapeHtml(language.label)}</strong></a>`;
           }).join('')}</div>`
-        : '';
-      const actionHtml = primaryUrl
-        ? `<div class="fancode-actions"><a class="fancode-watch-button" href="${escapeHtml(primaryUrl)}"><span class="fancode-watch-play" aria-hidden="true">▶</span><span>Watch Now</span><strong>${escapeHtml(primaryLanguage.label)}</strong></a>${otherLanguageHtml}</div>`
-        : '<div class="fancode-actions"><span class="fancode-watch-button is-disabled">Player unavailable</span></div>';
-      const cardAttributes = primaryUrl
-        ? `data-player-url="${escapeHtml(primaryUrl)}" tabindex="0" role="link" aria-label="Open ${escapeHtml(title)} in ${escapeHtml(primaryLanguage.label)}"`
         : '';
 
       return `
-        <article class="fancode-card" ${cardAttributes}>
+        <article class="fancode-card ${status.className}">
           <div class="fancode-thumb${image ? '' : ' no-image'}">
             ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">` : ''}
             <span class="fancode-category-tag">${escapeHtml(category)}</span>
@@ -247,33 +221,12 @@
           <div class="fancode-info">
             <div class="fancode-tournament">${escapeHtml(tournament)}</div>
             ${matchupHtml}
-            <div class="fancode-meta">
-              ${time ? `<time class="fancode-time">${escapeHtml(time)}</time>` : '<span class="fancode-time">Time TBA</span>'}
-            </div>
-            ${actionHtml}
+            ${time ? `<div class="fancode-meta"><time class="fancode-time">${escapeHtml(time)}</time></div>` : ''}
+            ${watchButtons}
           </div>
         </article>
       `;
     }).join('');
-
-    track.querySelectorAll('.fancode-card[data-player-url]').forEach(function(card) {
-      const openPlayer = function() {
-        window.location.href = card.dataset.playerUrl;
-      };
-
-      card.addEventListener('click', function(event) {
-        if (event.target.closest('a, button')) return;
-        openPlayer();
-      });
-
-      card.addEventListener('keydown', function(event) {
-        if (event.target !== card && event.target.closest('a, button')) return;
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          openPlayer();
-        }
-      });
-    });
 
     track.querySelectorAll('.fancode-thumb img').forEach(function(image) {
       image.addEventListener('error', function() {
@@ -299,7 +252,6 @@
   async function fetchFancodeData() {
     if (isLoading || !track || !API_URL) return;
     isLoading = true;
-
     if (!hasLoaded) renderSkeletonCards();
 
     try {
@@ -333,7 +285,6 @@
   function initLazyLoad() {
     const section = document.getElementById('fancodeSection');
     if (!section) return;
-
     if (section.getBoundingClientRect().top < window.innerHeight) {
       fetchFancodeData();
       return;
