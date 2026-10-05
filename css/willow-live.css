@@ -20,14 +20,28 @@
 
 .willow-live-title {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: baseline;
+  gap: 0.4rem;
   margin: 0;
   color: #ffffff;
   font-family: Inter, system-ui, sans-serif;
   font-size: clamp(1.05rem, 2.2vw, 1.7rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.willow-title-brand {
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.willow-title-suffix {
+  color: rgba(125, 255, 179, 0.82);
+  font-weight: 600;
+  font-size: 0.78em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .willow-live-header-meta {
@@ -110,6 +124,36 @@
   transform: translateY(-2px);
   border-color: rgba(245, 197, 24, 0.42);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+}
+
+/* Live card — subtle green top accent */
+.willow-card-live {
+  border-color: rgba(125, 255, 179, 0.22);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(125, 255, 179, 0.08) inset;
+}
+
+.willow-card-live:hover {
+  border-color: rgba(125, 255, 179, 0.42);
+}
+
+/* Upcoming card — clean, compact, no watch button */
+.willow-card-upcoming {
+  opacity: 0.90;
+}
+
+.willow-card-upcoming:hover {
+  opacity: 1;
+  border-color: rgba(245, 197, 24, 0.28);
+}
+
+.willow-card-upcoming .willow-live-footer {
+  border-top: none;
+  padding-top: 2px;
+  justify-content: flex-start;
+}
+
+.willow-card-upcoming .willow-live-info {
+  min-height: 96px;
 }
 
 .willow-live-thumb {
