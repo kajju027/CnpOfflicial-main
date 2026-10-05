@@ -207,7 +207,7 @@
       const watchButtons = status.className === 'live' && id && languages.length
         ? `<div class="fancode-actions">${languages.map(function(language) {
             const href = buildPlayerUrl(id, language.code);
-            return `<a class="fancode-watch-button" href="${escapeHtml(href)}" aria-label="Watch Now in ${escapeHtml(language.label)}"><span class="fancode-watch-play" aria-hidden="true">▶</span><span>Watch Now</span><strong>${escapeHtml(language.label)}</strong></a>`;
+            return `<a class="fancode-watch-button" href="${escapeHtml(href)}" aria-label="Watch in ${escapeHtml(language.label)}"><span class="fc-btn-icon" aria-hidden="true">▶</span><span class="fc-btn-label">WATCH NOW <span class="fc-btn-sep" aria-hidden="true">•</span> ${escapeHtml(language.label)}</span></a>`;
           }).join('')}</div>`
         : '';
 
