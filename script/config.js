@@ -31,30 +31,17 @@ var CNPTV_CONF = {
 
   heroMatches: [
     {
-      tournament: "WI TOUR OF INDIA, 2026 - 1ST T20I",
+      tournament: "MESSI LAST DANCE - 2026",
       homeTeam: {
-        name: "India",
-        logo: "https://flagpedia.net/data/flags/w1160/in.webp"
+        name: "Argentina",
+        logo: "https://flagpedia.net/data/flags/w1160/ar.webp"
       },
       awayTeam: {
-        name: "West Indies",
-        logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Cricket_West_Indies_flag_2017.svg/1920px-Cricket_West_Indies_flag_2017.svg.png"
+        name: "Benin",
+        logo: "https://flagpedia.net/data/flags/w1160/bj.webp"
       },
-      poster: "https://img10.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/9280/1791259109280-i",
-      watchUrl: "home/live/ind-vs-wi.html"
-    },
-    {
-      tournament: "FIFA FRIENDLY 2026 - INDIA VS URUGUAY",
-      homeTeam: {
-        name: "India",
-        logo: "https://flagpedia.net/data/flags/w1160/in.webp"
-      },
-      awayTeam: {
-        name: "Uruguay",
-        logo: "https://flagpedia.net/data/flags/w1160/uy.webp"
-      },
-      poster: "https://origin-staticv2.sonyliv.com/videoasset_images/manage_file/1000025899/1791239612288660_IND_vs_URU_tonight_landscape_thumb.jpg",
-      watchUrl: "home/live/ind-vs-uru.html"
+      poster: "https://akamaividz2.zee5.com/image/upload/w_1280,h_720,c_scale,f_avif,q_auto:eco/resources/0-1-6z51074314/list/00000000019f374a24280a48a8b4ffd65cc5cf07ca.jpg",
+      watchUrl: "home/live/arg-vs-ben.html"
     }
   ]
 };
