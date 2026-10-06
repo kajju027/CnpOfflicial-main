@@ -54,7 +54,7 @@ var CNPTV_CONF = {
         logo: "https://flagpedia.net/data/flags/w1160/uy.webp"
       },
       poster: "https://origin-staticv2.sonyliv.com/videoasset_images/manage_file/1000025899/1791239612288660_IND_vs_URU_tonight_landscape_thumb.jpg",
-      watchUrl: "/live/ind-vs-uru.html"
+      watchUrl: "home/live/ind-vs-uru.html"
     }
   ]
 };
