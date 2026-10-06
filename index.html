@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="description" content="Watch live sports and real-time match scores on matchdekho. Follow football, cricket, and major sports events.">
   <meta name="theme-color" content="#0b0d0f">
+  <meta name="color-scheme" content="dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>matchdekho - Live Sports Streaming &amp; Scores</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
@@ -13,12 +15,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://img.tod.tv">
+  <!-- v3.1: warm up the match-feed and image hosts so cards appear faster -->
+  <link rel="preconnect" href="https://sonujson-v5.pages.dev" crossorigin>
+  <link rel="preconnect" href="https://matchdekho.in" crossorigin>
+  <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+  <link rel="dns-prefetch" href="https://m.media-amazon.com">
+  <link rel="dns-prefetch" href="https://www.fancode.com">
+  <link rel="dns-prefetch" href="https://images.fancode.com">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/willow-live.css">
-  <link rel="stylesheet" href="css/world-sports.css">
-  <link rel="stylesheet" href="css/fancode.css">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/willow-live.css?v=20261006-1">
+  <link rel="stylesheet" href="css/world-sports.css?v=20261006-1">
+  <link rel="stylesheet" href="css/fancode.css?v=20261006-1">
+  <link rel="stylesheet" href="css/main.css?v=20261006-1">
 </head>
 <body id="top">
   <header>
@@ -69,6 +78,7 @@
     <section class="willow-live-section" id="willow-live">
       <div class="section-hd">
         <h2 class="section-hd-title">Willow Cricket</h2>
+        <span class="section-hd-updated" id="willowLiveUpdated"></span>
       </div>
       <div class="willow-live-carousel-wrapper">
         <button class="carousel-arrow arrow-left" id="willowLiveArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
@@ -100,10 +110,11 @@
     </section>
   </main>
 
-  <script src="script/config.js"></script>
-  <script src="script/app.js"></script>
-  <script src="script/willow-live.js"></script>
-  <script src="script/fancode.js"></script>
-  <script src="script/world-sports.js"></script>
+  <script src="script/config.js?v=20261006-1"></script>
+  <script src="script/app.js?v=20261006-1"></script>
+  <script src="script/willow-live.js?v=20261006-1"></script>
+  <script src="script/fancode.js?v=20261006-1"></script>
+  <script src="script/world-sports.js?v=20261006-1"></script>
+  <script src="script/scroll-anim.js?v=20261006-1" defer></script>
 </body>
 </html>
