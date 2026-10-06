@@ -1,19 +1,12 @@
-/* ================================================
-   FanCode Section — layout & carousel only
-   Card styles live in main.css (.md-card system)
-   ================================================ */
-
 .fancode-section {
   padding: clamp(1.5rem, 3.5vw, 3.5rem) 0 clamp(1rem, 2.5vw, 2.5rem);
   background: linear-gradient(180deg, #0b0d0f 0%, #0d0f13 100%);
 }
 
-/* Section carousel wrapper */
 .fancode-carousel-wrapper {
   position: relative;
 }
 
-/* Horizontal scroll track */
 .fancode-track {
   display: flex;
   align-items: stretch;
@@ -31,7 +24,6 @@
   display: none;
 }
 
-/* Arrow navigation */
 .fancode-arrow {
   position: absolute;
   top: 50%;
@@ -69,7 +61,6 @@
 .fancode-arrow.arrow-left  { left: clamp(4px, 1vw, 10px); }
 .fancode-arrow.arrow-right { right: clamp(4px, 1vw, 10px); }
 
-/* Mobile */
 @media (max-width: 760px) {
   .fancode-arrow {
     opacity: 0.85;
