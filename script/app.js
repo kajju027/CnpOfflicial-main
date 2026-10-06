@@ -1,5 +1,5 @@
 (function () {
-  const config = window.CNPTV_CONFIG || {};
+  const config = window.CNPTV_CONFIG || window.MATCHDEKHO_CONFIG || {};
   let matches = Array.isArray(config.heroMatches) ? config.heroMatches.slice() : [];
   const slidesRoot = document.getElementById("heroSlides");
   const progressRoot = document.getElementById("sliderProgress");
