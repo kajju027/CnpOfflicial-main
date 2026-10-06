@@ -1,5 +1,8 @@
-window.CNPTV_CONFIG = {
+var CNPTV_CONF = {
   siteName: "CnpTV",
+
+  build: "7",
+  forceScrollAnimation: true,
 
   heroSlideDuration: 10000,
   maxHeroMatches: 8,
@@ -51,3 +54,6 @@ window.CNPTV_CONFIG = {
     }
   ]
 };
+
+window.CNPTV_CONFIG = CNPTV_CONF;
+window.MATCHDEKHO_CONFIG = CNPTV_CONF;
