@@ -27,7 +27,7 @@ var CNPTV_CONF = {
 
   heroMatches: [
     {
-      tournament: "WI TOUR OF INDIA, 2026 - 1ST T20I",
+      tournament: "WI TOUR OF INDIA, 2026 - 1ST T20!",
       homeTeam: {
         name: "India",
         logo: "https://flagpedia.net/data/flags/w1160/in.webp"
