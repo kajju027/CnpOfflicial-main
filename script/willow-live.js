@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var cfg          = window.CNPTV_CONFIG || {};
+  var cfg          = window.CNPTV_CONFIG || window.MATCHDEKHO_CONFIG || {};
   var apis         = cfg.apis || {};
   var API_URL      = apis.willowLive || apis.willow || '';
   var ROUTES       = cfg.routes || {};
