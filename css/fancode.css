@@ -1,449 +1,87 @@
+/* ================================================
+   FanCode Section — layout & carousel only
+   Card styles live in main.css (.md-card system)
+   ================================================ */
+
 .fancode-section {
-  position: relative;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: clamp(0.6rem, 1.5vw, 1.2rem) 0 clamp(1rem, 3vw, 2rem);
-  background: #0b0d0f;
+  padding: clamp(1.5rem, 3.5vw, 3.5rem) 0 clamp(1rem, 2.5vw, 2.5rem);
+  background: linear-gradient(180deg, #0b0d0f 0%, #0d0f13 100%);
 }
 
-.fancode-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: clamp(0.7rem, 1.8vw, 1.4rem);
-  padding: 0 clamp(1rem, 5vw, 3rem);
-}
-
-.fancode-heading-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.fancode-title {
-  margin: 0;
-  color: #ffffff;
-  font-size: clamp(1.05rem, 2.2vw, 1.7rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.fancode-heading-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 5px;
-}
-
-.fancode-badge {
-  display: inline-flex;
-  min-height: 28px;
-  align-items: center;
-  padding: 6px 11px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
-.fancode-badge.has-live {
-  border-color: #83dfaa;
-  background: #b9f6d0;
-  color: #07351a;
-  box-shadow: 0 3px 12px rgba(117, 232, 160, 0.16);
-}
-
-.fancode-updated {
-  color: rgba(255, 255, 255, 0.38);
-  font-size: 0.64rem;
-  white-space: nowrap;
-}
-
+/* Section carousel wrapper */
 .fancode-carousel-wrapper {
   position: relative;
-  width: 100%;
 }
 
+/* Horizontal scroll track */
 .fancode-track {
   display: flex;
-  gap: clamp(0.8rem, 1.8vw, 1.6rem);
+  align-items: stretch;
+  gap: clamp(0.75rem, 1.6vw, 1.3rem);
   overflow-x: auto;
   overflow-y: hidden;
-  padding: clamp(0.2rem, 0.4vw, 0.4rem) clamp(1rem, 5vw, 3rem) clamp(0.5rem, 1vw, 0.8rem);
+  padding: clamp(0.3rem, 0.5vw, 0.5rem) clamp(1rem, 5vw, 3rem) clamp(0.6rem, 1vw, 0.9rem);
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
+  outline: none;
 }
 
 .fancode-track::-webkit-scrollbar {
   display: none;
 }
 
-.fancode-card {
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  width: clamp(260px, 34vw, 480px);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: clamp(8px, 1vw, 14px);
-  background: #111214;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
-  color: #ffffff;
-  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
-}
-
-.fancode-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(245, 197, 24, 0.28);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.42);
-}
-
-.fancode-thumb {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: #1a1c1e;
-}
-
-.fancode-thumb img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform 0.3s ease;
-}
-
-.fancode-card:hover .fancode-thumb img {
-  transform: scale(1.035);
-}
-
-.fancode-thumb.no-image {
-  background: radial-gradient(circle at 75% 25%, rgba(125, 255, 179, 0.16), transparent 34%), linear-gradient(135deg, #172437, #15100f 55%, #251c17);
-}
-
-.fancode-category-tag {
-  position: absolute;
-  z-index: 2;
-  bottom: 9px;
-  left: 10px;
-  color: #ffffff;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-  text-transform: uppercase;
-}
-
-.fancode-status-pill {
-  position: absolute;
-  z-index: 3;
-  top: 10px;
-  right: 10px;
-  display: inline-flex;
-  min-height: 24px;
-  align-items: center;
-  padding: 4px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  background: rgba(8, 10, 14, 0.8);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  backdrop-filter: blur(8px);
-}
-
-.fancode-status-pill.live {
-  border-color: #83dfaa;
-  background: #b9f6d0;
-  color: #07351a;
-  box-shadow: 0 3px 12px rgba(117, 232, 160, 0.17);
-}
-
-.fancode-status-pill.upcoming {
-  border-color: rgba(245, 197, 24, 0.38);
-  background: rgba(20, 18, 10, 0.82);
-  color: #f5d366;
-}
-
-.fancode-status-pill.ended {
-  color: rgba(255, 255, 255, 0.68);
-}
-
-.fancode-info {
-  display: flex;
-  min-height: 94px;
-  flex-direction: column;
-  gap: 6px;
-  padding: 9px 12px 10px;
-  background: linear-gradient(180deg, #17191d, #111317);
-}
-
-.fancode-card.live .fancode-info {
-  min-height: 130px;
-}
-
-.fancode-tournament {
-  overflow: hidden;
-  color: #f5c518;
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  line-height: 1.35;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.fancode-teams {
-  display: flex;
-  min-height: 28px;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-}
-
-.fancode-team-name {
-  min-width: 0;
-  max-width: calc(50% - 18px);
-  overflow: hidden;
-  color: #ffffff;
-  font-size: clamp(0.82rem, 1.15vw, 1rem);
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.fancode-vs {
-  flex: 0 0 auto;
-  color: rgba(255, 255, 255, 0.48);
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-}
-
-.fancode-event-title {
-  margin: 0;
-  color: #ffffff;
-  font-size: 0.92rem;
-  line-height: 1.35;
-}
-
-.fancode-meta {
-  display: flex;
-  min-height: 21px;
-  align-items: center;
-  margin-top: auto;
-  padding-top: 5px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.fancode-time {
-  overflow: hidden;
-  color: rgba(255, 255, 255, 0.58);
-  font-size: 0.65rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.fancode-actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: auto;
-}
-
-.fancode-watch-button {
-  display: inline-flex;
-  min-height: 32px;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 6px 9px;
-  border: 1px solid rgba(245, 197, 24, 0.38);
-  border-radius: 999px;
-  background: linear-gradient(135deg, #ffe05c, #f5b900);
-  color: #111111;
-  font-size: 0.64rem;
-  font-weight: 850;
-  text-decoration: none;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(245, 197, 24, 0.12);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.fancode-watch-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 7px 18px rgba(245, 197, 24, 0.22);
-}
-
-.fc-btn-icon {
-  font-size: 0.50rem;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.fc-btn-label {
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.fc-btn-sep {
-  display: inline-block;
-  margin: 0 3px;
-  opacity: 0.50;
-  font-weight: 400;
-  font-size: 0.7em;
-  vertical-align: middle;
-}
-
-.fancode-empty,
-.fancode-error {
-  display: flex;
-  flex: 1 0 100%;
-  min-height: 160px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  background: #14161a;
-  color: rgba(255, 255, 255, 0.64);
-  text-align: center;
-}
-
-.fancode-error strong {
-  color: #ffffff;
-}
-
-.fancode-error span {
-  color: rgba(255, 255, 255, 0.46);
-  font-size: 0.82rem;
-}
-
-.fancode-retry {
-  margin-top: 4px;
-  padding: 8px 15px;
-  border: 0;
-  border-radius: 999px;
-  background: #f5c518;
-  color: #111111;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.fc-skeleton-card {
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  width: clamp(260px, 34vw, 480px);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.02);
-  border-radius: clamp(8px, 1vw, 14px);
-  background: #14161a;
-}
-
-.fc-skeleton-thumb {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: linear-gradient(90deg, #1a1c1e 25%, #23262c 50%, #1a1c1e 75%);
-  background-size: 200% 100%;
-  animation: fc-shimmer 1.5s ease-in-out infinite;
-}
-
-.fc-skeleton-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px;
-}
-
-.fc-skeleton-line {
-  height: 12px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #1a1c1e 25%, #23262c 50%, #1a1c1e 75%);
-  background-size: 200% 100%;
-  animation: fc-shimmer 1.5s ease-in-out infinite;
-}
-
-.fc-skeleton-line.short { width: 35%; }
-.fc-skeleton-line.medium { width: 60%; }
-.fc-skeleton-line.long { width: 80%; }
-
-@keyframes fc-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
+/* Arrow navigation */
 .fancode-arrow {
   position: absolute;
+  top: 50%;
   z-index: 10;
-  top: 42%;
+  transform: translateY(-50%);
   display: flex;
-  width: clamp(30px, 3.5vw, 46px);
-  height: clamp(30px, 3.5vw, 46px);
   align-items: center;
   justify-content: center;
-  transform: translateY(-50%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: clamp(32px, 3vw, 42px);
+  height: clamp(32px, 3vw, 42px);
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 50%;
-  background: rgba(11, 13, 15, 0.78);
-  color: #ffffff;
-  font-size: clamp(0.85rem, 1.5vw, 1.2rem);
+  background: rgba(12, 14, 18, 0.88);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(0.7rem, 1.1vw, 1rem);
   cursor: pointer;
   backdrop-filter: blur(8px);
-  transition: background 0.2s ease, transform 0.2s ease;
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fancode-carousel-wrapper:hover .fancode-arrow {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .fancode-arrow:hover {
-  transform: translateY(-50%) scale(1.06);
-  background: rgba(11, 13, 15, 0.95);
+  background: rgba(22, 25, 30, 0.96);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
-.fancode-arrow.arrow-left { left: clamp(0.2rem, 1.2vw, 0.8rem); }
-.fancode-arrow.arrow-right { right: clamp(0.2rem, 1.2vw, 0.8rem); }
+.fancode-arrow.arrow-left  { left: clamp(4px, 1vw, 10px); }
+.fancode-arrow.arrow-right { right: clamp(4px, 1vw, 10px); }
 
-@media (max-width: 640px) {
-  .fancode-header {
-    padding: 0 clamp(0.5rem, 3vw, 1rem);
+/* Mobile */
+@media (max-width: 760px) {
+  .fancode-arrow {
+    opacity: 0.85;
+    pointer-events: auto;
+    width: 30px;
+    height: 30px;
+    font-size: 0.68rem;
   }
 
   .fancode-track {
-    padding: clamp(0.15rem, 0.3vw, 0.3rem) clamp(0.5rem, 3vw, 1rem) clamp(0.4rem, 0.8vw, 0.6rem);
-  }
-
-  .fancode-title {
-    font-size: clamp(0.95rem, 4vw, 1.2rem);
-  }
-
-  .fancode-updated {
-    display: none;
-  }
-
-  .fancode-arrow {
-    width: clamp(26px, 8vw, 34px);
-    height: clamp(26px, 8vw, 34px);
-    font-size: clamp(0.7rem, 3vw, 0.9rem);
-  }
-
-  .fancode-category-tag {
-    bottom: 6px;
-    left: 7px;
-    font-size: 0.54rem;
+    padding-left: clamp(0.75rem, 4vw, 1.5rem);
+    padding-right: clamp(0.75rem, 4vw, 1.5rem);
+    gap: 0.65rem;
   }
 }
