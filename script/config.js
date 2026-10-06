@@ -1,7 +1,7 @@
 var CNPTV_CONF = {
   siteName: "CnpTV",
 
-  build: "8",
+  build: "9",
   forceScrollAnimation: true,
 
   heroSlideDuration: 10000,
@@ -11,9 +11,13 @@ var CNPTV_CONF = {
   apis: {
     willow: "https://sonujson-v5.pages.dev/Data/willow.json",
     willowLive: "https://sonujson-v5.pages.dev/Data/willow.json",
+    willowSnapshot: "api/willow.json",
     fancode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
     fanCode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
-    worldSports: "https://matchdekho.in/api/world-sports.json"
+    fancodeSnapshot: "api/fancode.json",
+    fanCodeSnapshot: "api/fancode.json",
+    worldSports: "https://matchdekho.in/api/world-sports.json",
+    worldSportsSnapshot: "api/world-sports.json"
   },
 
   playerBase: "",
@@ -27,7 +31,7 @@ var CNPTV_CONF = {
 
   heroMatches: [
     {
-      tournament: "WI TOUR OF INDIA, 2026 - 1ST T20!",
+      tournament: "WI TOUR OF INDIA, 2026 - 1ST T20I",
       homeTeam: {
         name: "India",
         logo: "https://flagpedia.net/data/flags/w1160/in.webp"
