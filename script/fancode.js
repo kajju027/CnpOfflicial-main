@@ -289,6 +289,20 @@
     track.innerHTML = html;
   }
 
+  var STAMP = String(Date.now());
+  var SNAPSHOT_URL = apis.fanCodeSnapshot || apis.fancodeSnapshot || 'api/fancode.json';
+
+  function stamp(url) {
+    return url + (url.indexOf('?') > -1 ? '&' : '?') + 't=' + STAMP;
+  }
+
+  function getJSON(url) {
+    return fetch(stamp(url), { cache: 'no-store' }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    });
+  }
+
   function fetchFancode() {
     if (!API_URL) {
       console.error('[FanCode] No API URL configured (cfg.apis.fancode / fanCode).');
@@ -298,11 +312,8 @@
 
     renderSkeletons(6);
 
-    fetch(API_URL, { cache: 'no-store' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
+    getJSON(API_URL)
+      .catch(function () { return getJSON(SNAPSHOT_URL); })
       .then(function (data) {
         var all = extractMatches(data);
 
