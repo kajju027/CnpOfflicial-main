@@ -57,6 +57,8 @@
         logo: teamValue(away, "logo") || teamValue(away, "flag") || item.away_logo || item.team_2_logo || ""
       },
       poster: item.poster || item.backgroundImage || item.thumbnail || item.cover_image || item.src || item.tvgLogo || "",
+      posterPosition: item.posterPosition || "",
+      posterPositionMobile: item.posterPositionMobile || "",
       watchUrl: item.watchUrl || item.page_url || item.watch_now || "#willow-live"
     };
   }
@@ -73,11 +75,20 @@
     const poster = escapeHtml(normalized.poster);
     const watchUrl = escapeHtml(normalized.watchUrl);
 
+    /* Per-poster crop focus — lets a portrait poster (e.g. the India–Uruguay
+       FIFA one) sit on the faces instead of the middle. Desktop and mobile
+       can point at different heights. */
+    const posDesktop = escapeHtml(normalized.posterPosition);
+    const posMobile = escapeHtml(normalized.posterPositionMobile);
+    const posterStyle = (posDesktop || posMobile)
+      ? ` style="--poster-pos:${posDesktop || "center 25%"};--poster-pos-m:${posMobile || posDesktop || "center 40%"};"`
+      : "";
+
     return `
       <section class="poster-section${index === 0 ? " active" : ""}" data-slide="${index}" aria-label="${title}: ${homeName} vs ${awayName}">
         <div class="poster-art">
           <picture>
-            <img src="${poster}" alt="${homeName} vs ${awayName}" class="poster-image" loading="eager" decoding="async" ${index === 0 ? 'fetchpriority="high"' : ''}>
+            <img src="${poster}" alt="${homeName} vs ${awayName}" class="poster-image" loading="eager" decoding="async" ${index === 0 ? 'fetchpriority="high"' : ''}${posterStyle}>
           </picture>
           <div class="gradient-left"></div>
           <div class="gradient-overlay"></div>
