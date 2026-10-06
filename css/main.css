@@ -246,12 +246,12 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  height: 42%;
+  height: 26%;                      /* was 42% — the poster top stays open */
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(180deg,
-    rgba(5, 8, 12, 0.62) 0%,
-    rgba(5, 8, 12, 0.22) 42%,
+    rgba(5, 8, 12, 0.34) 0%,         /* was 0.62 — much lighter */
+    rgba(5, 8, 12, 0.10) 45%,
     transparent 100%);
 }
 
@@ -262,7 +262,10 @@ header {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 25%;
+  /* Crop focus is per poster (config.js → posterPosition).
+     The variable holds the full value, e.g. "center 20%".
+     (A three-value "center var(--x)" is invalid CSS and gets dropped.) */
+  object-position: var(--poster-pos, center 25%);
   aspect-ratio: 16 / 9;
 }
 
@@ -277,18 +280,18 @@ header {
   position: absolute;
   z-index: 1;
   inset: 0 auto 0 0;
-  width: 72%;
+  width: 62%;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(5, 8, 12, 0.60) 0%, rgba(5, 8, 12, 0.38) 38%, rgba(5, 8, 12, 0.10) 68%, transparent 100%);
+  background: linear-gradient(90deg, rgba(5, 8, 12, 0.46) 0%, rgba(5, 8, 12, 0.24) 40%, rgba(5, 8, 12, 0.06) 70%, transparent 100%);
 }
 
 .gradient-overlay {
   position: absolute;
   z-index: 1;
   inset: auto 0 0;
-  height: 72%;
+  height: 64%;
   pointer-events: none;
-  background: linear-gradient(0deg, rgba(5, 8, 12, 0.86) 0%, rgba(5, 8, 12, 0.50) 30%, rgba(5, 8, 12, 0.08) 65%, transparent 100%);
+  background: linear-gradient(0deg, rgba(5, 8, 12, 0.70) 0%, rgba(5, 8, 12, 0.34) 32%, rgba(5, 8, 12, 0.04) 62%, transparent 100%);
 }
 
 .match-details {
@@ -297,6 +300,8 @@ header {
   left: clamp(22px, 5.2vw, 78px);
   bottom: clamp(28px, 6vw, 72px);
   width: min(620px, 55%);
+  /* Text carries its own shadow now, so the poster can stay bright. */
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.62), 0 1px 3px rgba(0, 0, 0, 0.45);
   color: var(--white);
   pointer-events: none;
 }
@@ -421,7 +426,7 @@ header {
   height: 2px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.09);   /* was 0.18 — soft, not in the way */
 }
 
 .progress-fill {
@@ -429,7 +434,7 @@ header {
   inset: 0 auto 0 0;
   width: 0;
   border-radius: inherit;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.36);   /* was 0.72 — a whisper now */
 }
 
 .progress-fill.filling {
@@ -438,6 +443,7 @@ header {
 
 .progress-fill.filled {
   width: 100%;
+  background: rgba(255, 255, 255, 0.18);   /* finished slides even quieter */
 }
 
 @keyframes fillProgress {
@@ -536,17 +542,17 @@ main {
 
   .poster-image {
     object-fit: cover;
-    object-position: center 40%;
+    object-position: var(--poster-pos-m, center 40%);
   }
 
   .gradient-left {
     width: 100%;
-    background: linear-gradient(90deg, rgba(5, 8, 12, 0.32), transparent 100%);
+    background: linear-gradient(90deg, rgba(5, 8, 12, 0.24), transparent 100%);
   }
 
   .gradient-overlay {
-    height: 80%;
-    background: linear-gradient(0deg, rgba(5, 8, 12, 0.88) 0%, rgba(5, 8, 12, 0.50) 36%, rgba(5, 8, 12, 0.04) 100%);
+    height: 70%;
+    background: linear-gradient(0deg, rgba(5, 8, 12, 0.72) 0%, rgba(5, 8, 12, 0.32) 36%, rgba(5, 8, 12, 0.02) 100%);
   }
 
   .match-details {
@@ -769,16 +775,16 @@ main {
   z-index: 3;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
-  background: rgba(6, 8, 12, 0.84);
-  color: rgba(255, 255, 255, 0.82);
+  background: rgba(6, 8, 12, 0.86);
+  color: rgba(255, 255, 255, 0.86);
   font-family: Inter, system-ui, sans-serif;
-  font-size: 0.58rem;
+  font-size: 0.62rem;                 /* was 0.58 — read from arm's length */
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -804,9 +810,22 @@ main {
 }
 
 .md-status.md-upcoming {
-  border-color: rgba(245, 197, 24, 0.36);
-  background: rgba(12, 10, 2, 0.86);
-  color: #f5c518;
+  border-color: rgba(245, 197, 24, 0.62);
+  background: rgba(20, 15, 2, 0.92);
+  color: #ffd75e;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* Upcoming match = the "when", not a play button. Make the time line easy
+   to read so the status is understood at a glance. */
+.md-card.md-upcoming .md-time {
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.md-card.md-upcoming .md-footer {
+  border-top: 1px solid rgba(245, 197, 24, 0.10);
 }
 
 .md-status.md-ended {
