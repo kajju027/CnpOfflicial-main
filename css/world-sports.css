@@ -1,19 +1,12 @@
-/* ================================================
-   World Sports Section — layout & carousel only
-   Card styles live in main.css (.md-card system)
-   ================================================ */
-
 .world-sports-section {
   padding: clamp(1.5rem, 3.5vw, 3.5rem) 0 clamp(2rem, 4vw, 4.5rem);
   background: linear-gradient(180deg, #0d0f13 0%, #0b0d0f 100%);
 }
 
-/* Section carousel wrapper */
 .world-sports-carousel-wrapper {
   position: relative;
 }
 
-/* Horizontal scroll track */
 .world-sports-track {
   display: flex;
   align-items: stretch;
@@ -30,7 +23,6 @@
   display: none;
 }
 
-/* Arrow navigation */
 .world-sports-arrow {
   position: absolute;
   top: 50%;
@@ -68,7 +60,6 @@
 .world-sports-arrow.arrow-left  { left: clamp(4px, 1vw, 10px); }
 .world-sports-arrow.arrow-right { right: clamp(4px, 1vw, 10px); }
 
-/* Mobile */
 @media (max-width: 760px) {
   .world-sports-arrow {
     opacity: 0.85;
