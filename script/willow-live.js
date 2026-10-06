@@ -12,7 +12,10 @@
    4. "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
       used to produce a 40-character "team name". The series part is now
       moved to the tournament line and only the real teams stay.
-   5. Watch link now follows the documented format
+   5. A Watch button is shown ONLY for matches whose status is LIVE.
+      Upcoming matches show the UPCOMING badge + their time instead — no
+      play button before the stream is actually up.
+   6. Watch link follows the documented format
       /az/?id=<id>&ser=<akamai_server1 url>  (switchable in config.js).
    6. First 5 cards load eagerly, feed is fetched with cache:"no-store"
       so scores never stay stale in the browser.
@@ -35,7 +38,6 @@
   var track      = document.getElementById('willowLiveTrack');
   var arrowLeft  = document.getElementById('willowLiveArrowLeft');
   var arrowRight = document.getElementById('willowLiveArrowRight');
-  var updatedEl  = document.getElementById('willowLiveUpdated');
 
   if (!track) return;
 
@@ -243,7 +245,7 @@
       var m = matches[i];
 
       var status     = statusInfo(pick(m, ['status', 'matchStatus', 'state', 'status_display']));
-      var isEnded    = status.className === 'ended';
+      var isLive     = status.className === 'live';
 
       var id         = String(pick(m, ['id', 'matchId', 'match_id', 'matchID', 'stream_id']));
       var streamUrl  = getStreamUrl(m);
@@ -254,9 +256,10 @@
       var imgAlt     = escapeHtml(rawTitle || 'Cricket match');
       var time       = escapeHtml(pick(m, ['time', 'startTime', 'date', 'matchTime', 'scheduled_time', 'start_time']));
 
-      // Watch button — every match that is not ended and has an id
+      /* Watch button — LIVE matches only.
+         Not live yet → no button, just the status + time. */
       var watchHtml = '';
-      if (!isEnded && id) {
+      if (isLive && id) {
         watchHtml = '<div class="md-actions">' +
           '<a class="md-watch-btn" href="' + escapeHtml(buildPlayerUrl(id, streamUrl)) + '" aria-label="Watch ' + imgAlt + '">' +
           '<span class="md-watch-btn-icon" aria-hidden="true">&#9654;</span>WATCH NOW</a></div>';
@@ -314,10 +317,6 @@
       .then(function (data) {
         var matches = extractMatches(data).slice(0, 20);
         renderMatches(matches);
-        if (updatedEl) {
-          var upd = pick(data, ['last_updated', 'updated', 'timestamp']);
-          updatedEl.textContent = upd ? 'Updated ' + String(upd) : '';
-        }
       })
       .catch(function (err) {
         console.error('[Willow] fetch error:', err);
