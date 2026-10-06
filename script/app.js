@@ -1,15 +1,5 @@
-/* =====================================================================
-   Hero slider / header menu  —  v3.1 (fixed)
-   ---------------------------------------------------------------------
-   * Hero posters are the first thing a visitor sees, so they are now
-     loaded eagerly with fetchpriority="high" (before: slide 2+ used
-     loading="lazy" and stayed blank until after the slide changed).
-   * The autoplay timer no longer advances the slider while the tab is
-     in the background, so the first slide is always the one on screen
-     when the visitor comes back.
-   ===================================================================== */
 (function () {
-  const config = window.MATCHDEKHO_CONFIG || {};
+  const config = window.CNPTV_CONFIG || {};
   let matches = Array.isArray(config.heroMatches) ? config.heroMatches.slice() : [];
   const slidesRoot = document.getElementById("heroSlides");
   const progressRoot = document.getElementById("sliderProgress");
@@ -75,9 +65,6 @@
     const poster = escapeHtml(normalized.poster);
     const watchUrl = escapeHtml(normalized.watchUrl);
 
-    /* Per-poster crop focus — lets a portrait poster (e.g. the India–Uruguay
-       FIFA one) sit on the faces instead of the middle. Desktop and mobile
-       can point at different heights. */
     const posDesktop = escapeHtml(normalized.posterPosition);
     const posMobile = escapeHtml(normalized.posterPositionMobile);
     const posterStyle = (posDesktop || posMobile)
@@ -107,7 +94,7 @@
             </div>
           </div>
           <div class="action-buttons">
-            <a href="${watchUrl}" class="watch-btn"><span class="icon">▶</span><span>Watch Now</span></a>
+            <a href="${watchUrl}" class="watch-btn"><span class="icon">&#9654;</span><span>Watch Now</span></a>
           </div>
         </div>
       </section>
@@ -183,8 +170,6 @@
     }
   }
 
-  /* Coming back to the tab → restart the timer so the visitor always sees
-     a full slide instead of a half-finished one. */
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
       if (autoplayTimer) window.clearTimeout(autoplayTimer);
