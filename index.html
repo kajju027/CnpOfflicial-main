@@ -22,12 +22,39 @@
   <link rel="dns-prefetch" href="https://m.media-amazon.com">
   <link rel="dns-prefetch" href="https://www.fancode.com">
   <link rel="dns-prefetch" href="https://images.fancode.com">
+  <meta name="cnptv-build" content="10">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/willow-live.css?v=8">
-  <link rel="stylesheet" href="css/world-sports.css?v=8">
-  <link rel="stylesheet" href="css/fancode.css?v=8">
-  <link rel="stylesheet" href="css/main.css?v=8">
+  <style>
+    .section-hd-title { margin: 0 !important; }
+    .section-hd { margin-bottom: clamp(1.15rem, 2.6vw, 2rem) !important; }
+    .section-hd-rule {
+      display: block !important;
+      width: 30px !important;
+      height: 3px !important;
+      margin-top: 9px !important;
+      border-radius: 999px !important;
+      background: #f5c518 !important;
+      background: linear-gradient(90deg, #f5c518, rgba(245, 197, 24, 0.15)) !important;
+    }
+  </style>
+  <script data-cfasync="false">
+    (function () {
+      var v = Date.now();
+      var files = ["css/willow-live.css", "css/world-sports.css", "css/fancode.css", "css/main.css"];
+      var html = "";
+      for (var i = 0; i < files.length; i++) {
+        html += '<link rel="stylesheet" href="' + files[i] + "?t=" + v + '">';
+      }
+      document.write(html);
+    })();
+  </script>
+  <noscript>
+    <link rel="stylesheet" href="css/willow-live.css?v=10">
+    <link rel="stylesheet" href="css/world-sports.css?v=10">
+    <link rel="stylesheet" href="css/fancode.css?v=10">
+    <link rel="stylesheet" href="css/main.css?v=10">
+  </noscript>
 </head>
 <body id="top">
   <header>
@@ -77,6 +104,7 @@
     <section class="willow-live-section" id="willow-live">
       <div class="section-hd">
         <h2 class="section-hd-title">Willow Cricket</h2>
+        <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
       </div>
       <div class="willow-live-carousel-wrapper">
         <button class="carousel-arrow arrow-left" id="willowLiveArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
@@ -88,6 +116,7 @@
     <section class="fancode-section" id="fancodeSection">
       <div class="section-hd">
         <h2 class="section-hd-title">FanCode</h2>
+        <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
       </div>
       <div class="fancode-carousel-wrapper">
         <button class="fancode-arrow arrow-left" id="fancodeArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
@@ -99,6 +128,7 @@
     <section class="world-sports-section" id="worldSportsSection">
       <div class="section-hd">
         <h2 class="section-hd-title">World Sports</h2>
+        <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
       </div>
       <div class="world-sports-carousel-wrapper">
         <button class="world-sports-arrow arrow-left" id="worldSportsArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
@@ -108,15 +138,6 @@
     </section>
   </main>
 
-  <script src="script/config.js"></script>
-  <script>
-    window.MATCHDEKHO_CONFIG = window.MATCHDEKHO_CONFIG || window.CNPTV_CONFIG;
-    window.CNPTV_CONFIG = window.CNPTV_CONFIG || window.MATCHDEKHO_CONFIG;
-  </script>
-  <script src="script/app.js?v=8"></script>
-  <script src="script/willow-live.js?v=8"></script>
-  <script src="script/fancode.js?v=8"></script>
-  <script src="script/world-sports.js?v=8"></script>
-  <script src="script/scroll-anim.js?v=8" defer></script>
+  <script src="script/boot.js?v=10" data-cfasync="false"></script>
 </body>
 </html>
