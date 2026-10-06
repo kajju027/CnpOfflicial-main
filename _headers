@@ -1,20 +1,3 @@
-# =====================================================================
-# Cloudflare Pages headers  —  v3.1
-# ---------------------------------------------------------------------
-# WHY THIS FILE EXISTS
-# Custom domains sit behind the Cloudflare zone cache. During testing,
-# sayan.info was serving css/main.css and script/*.js with
-#   cache-control: public, max-age=14400   +  cf-cache-status: HIT
-# while the same deploy on wwwsayan.pages.dev served them with
-#   cache-control: public, max-age=3600    (no edge cache).
-# Result: right after an upload the custom domain kept OLD css/js for up
-# to 4 hours while the HTML was already new → half the page looked broken
-# (missing scroll animation, cards unstyled) only on sayan.info.
-#
-# This file makes the HTML/CSS/JS always revalidate, so an upload is
-# visible immediately on every domain. Images stay cached.
-# =====================================================================
-
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
