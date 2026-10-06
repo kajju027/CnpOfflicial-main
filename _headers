@@ -8,6 +8,10 @@
 /css/*
   Cache-Control: public, max-age=0, must-revalidate
 
+/script/config.js
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
+
 /script/*
   Cache-Control: public, max-age=0, must-revalidate
 
