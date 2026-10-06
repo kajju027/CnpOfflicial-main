@@ -1,31 +1,7 @@
-/* =====================================================================
-   Willow Cricket section  —  v3.1 (fixed)
-   ---------------------------------------------------------------------
-   FIXES in this file:
-   1. API key fell back to nothing (cfg.apis.willowLive was undefined) →
-      now: cfg.apis.willowLive || cfg.apis.willow  (and warns loudly).
-   2. The feed wraps the list in "Matches" (capital M). The old extractor
-      only looked for "matches", so it always rendered "No matches".
-      Now the lookup is case-insensitive.
-   3. Titles: the feed uses "event_name" — it was not in the title list,
-      so every card fell back to "Match".
-   4. "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
-      used to produce a 40-character "team name". The series part is now
-      moved to the tournament line and only the real teams stay.
-   5. A Watch button is shown ONLY for matches whose status is LIVE.
-      Upcoming matches show the UPCOMING badge + their time instead — no
-      play button before the stream is actually up.
-   6. Watch link follows the documented format
-      /az/?id=<id>&ser=<akamai_server1 url>  (switchable in config.js).
-   6. First 5 cards load eagerly, feed is fetched with cache:"no-store"
-      so scores never stay stale in the browser.
-   7. Feed "last_updated" is shown under the section title.
-   ===================================================================== */
-
 (function () {
   'use strict';
 
-  var cfg          = window.MATCHDEKHO_CONFIG || {};
+  var cfg          = window.CNPTV_CONFIG || {};
   var apis         = cfg.apis || {};
   var API_URL      = apis.willowLive || apis.willow || '';
   var ROUTES       = cfg.routes || {};
@@ -41,17 +17,12 @@
 
   if (!track) return;
 
-  /* ---------------------------------------------------------------------
-   * Helpers
-   * ------------------------------------------------------------------ */
-
   function escapeHtml(str) {
     return String(str == null ? '' : str)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  /** First non-empty value of the given keys (case-insensitive). */
   function pick(obj, names) {
     if (!obj || typeof obj !== 'object') return '';
     var lower = {};
@@ -65,21 +36,15 @@
     return '';
   }
 
-  /**
-   * Walk common API wrappers and return the matches array.
-   * Case-insensitive, so {"Matches":[...]} works exactly like {"matches":[...]}.
-   */
   function extractMatches(raw) {
     if (Array.isArray(raw)) return raw;
     if (!raw || typeof raw !== 'object') return [];
 
     var wanted = ['matches', 'events', 'data', 'results', 'list', 'items', 'content', 'response', 'streams', 'live'];
 
-    // direct (case-insensitive) hit on the top level
     var top = pick(raw, wanted);
     if (Array.isArray(top)) return top;
 
-    // one level deeper: {data:{matches:[...]}} etc.
     for (var key in raw) {
       var v = raw[key];
       if (v && typeof v === 'object' && !Array.isArray(v)) {
@@ -90,7 +55,6 @@
     return [];
   }
 
-  /** Raw match title from any of the shapes the feeds use. */
   function buildTitle(m) {
     var flat = pick(m, ['event_name', 'title', 'name', 'event', 'event_title', 'match_name', 'match_title', 'teams', 'description']);
     if (flat) return String(flat);
@@ -103,17 +67,6 @@
     return hn || an || '';
   }
 
-  /**
-   * Split a title into { home, away }.
-   * "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
-   *   → { home: "India", away: "West Indies" }
-   * "World Championship of Legends 2026 - 2nd Match -Pakistan Champions vs Bangladesh Champions"
-   *   → { home: "Pakistan Champions", away: "Bangladesh Champions" }
-   * "Afghanistan vs Bangladesh in UAE 2026 - One-off Test - Afghanistan vs Bangladesh"
-   *   → { home: "Afghanistan", away: "Bangladesh" }
-   * Hyphens inside a name (U-19, Sri-Lanka) are kept: only a hyphen with a
-   * space on at least one side counts as a separator.
-   */
   function splitSeries(part) {
     return String(part == null ? '' : part)
       .split(/\s+[-\u2013\u2014]\s*|\s*[-\u2013\u2014]\s+/)
@@ -131,12 +84,9 @@
     var parts = t.split(/\s+vs\.?\s+/i);
     if (parts.length < 2) return null;
 
-    /* When the title repeats the fixture ("A vs B - round - A vs B"),
-       the real pairing is the LAST "vs". */
     var homePart = parts.length > 2 ? parts[parts.length - 2] : parts[0];
     var awayPart = parts[parts.length - 1];
 
-    /* Series text sits BEFORE the home team and AFTER the away team. */
     var homeSegs = splitSeries(homePart);
     var awaySegs = splitSeries(awayPart);
 
@@ -147,14 +97,11 @@
     return { home: home, away: away };
   }
 
-  /** Competition / tournament line. */
   function tournamentOf(m, rawTitle) {
     var direct = pick(m, ['tournament', 'competition', 'series', 'league', 'category', 'sport', 'sport_display']);
     if (direct) return String(direct);
 
-    // Fall back to the leading part of the event name:
-    // "WI tour of India 2026 - 1st T20I - India vs West Indies" → "WI tour of India 2026 - 1st T20I"
-    var chunks = String(rawTitle || '').split(/\s+[-–—]\s+/);
+    var chunks = String(rawTitle || '').split(/\s+[---]\s+/);
     if (chunks.length > 1 && /vs\.?\s/i.test(chunks[chunks.length - 1])) {
       chunks.pop();
       var derived = chunks.join(' - ').trim();
@@ -163,19 +110,16 @@
     return '';
   }
 
-  /** Find the playable stream URL inside CnpTV (any casing). */
   function getStreamUrl(m) {
     var cnp = m.CnpTV || m.cnptv || m.cnpTV || m.cnp_tv || m.servers || {};
     if (!cnp || typeof cnp !== 'object' || Array.isArray(cnp)) return '';
 
     if (cnp[PRIMARY_KEY]) return String(cnp[PRIMARY_KEY]);
 
-    // any other akamai_serverN
     var akamai = Object.keys(cnp).filter(function (k) { return /^akamai_server\d+$/i.test(k) && cnp[k]; })
       .sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
     if (akamai.length) return String(cnp[akamai[0]]);
 
-    // last resort: the first non-empty string value
     var keys = Object.keys(cnp);
     for (var i = 0; i < keys.length; i++) {
       if (typeof cnp[keys[i]] === 'string' && cnp[keys[i]]) return cnp[keys[i]];
@@ -183,7 +127,6 @@
     return '';
   }
 
-  /** Build the /az/ player link. */
   function buildPlayerUrl(matchId, streamUrl) {
     var base = PLAYER_BASE ? String(PLAYER_BASE).replace(/\/+$/, '') : '';
     var route = PLAYER_ROUTE.charAt(0) === '/' ? PLAYER_ROUTE : '/' + PLAYER_ROUTE;
@@ -194,7 +137,6 @@
     return base + route + '?id=' + encodeURIComponent(matchId) + '&ser=' + encodeURIComponent(streamUrl || '');
   }
 
-  /** Normalise raw status → { label, className }. */
   function statusInfo(raw) {
     var s = String(raw || 'UPCOMING').trim().toUpperCase();
     if (s === 'LIVE' || s === 'LIVE NOW' || s === 'IN PLAY')       return { label: 'LIVE',  className: 'live' };
@@ -203,9 +145,6 @@
     return { label: 'UPCOMING', className: 'upcoming' };
   }
 
-  /* ---------------------------------------------------------------------
-   * Skeletons
-   * ------------------------------------------------------------------ */
   function renderSkeletons(n) {
     var html = '';
     for (var i = 0; i < n; i++) {
@@ -220,9 +159,6 @@
     track.innerHTML = html;
   }
 
-  /* ---------------------------------------------------------------------
-   * Cards
-   * ------------------------------------------------------------------ */
   var FALLBACK = 'data:image/svg+xml,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">' +
     '<defs><linearGradient id="g" x1="0" x2="1" y1="1" y2="0">' +
@@ -256,8 +192,6 @@
       var imgAlt     = escapeHtml(rawTitle || 'Cricket match');
       var time       = escapeHtml(pick(m, ['time', 'startTime', 'date', 'matchTime', 'scheduled_time', 'start_time']));
 
-      /* Watch button — LIVE matches only.
-         Not live yet → no button, just the status + time. */
       var watchHtml = '';
       if (isLive && id) {
         watchHtml = '<div class="md-actions">' +
@@ -297,9 +231,6 @@
     track.innerHTML = html;
   }
 
-  /* ---------------------------------------------------------------------
-   * Fetch
-   * ------------------------------------------------------------------ */
   function fetchMatches() {
     if (!API_URL) {
       console.error('[Willow] No API URL configured (cfgs.apis.willow / willowLive).');
@@ -324,9 +255,6 @@
       });
   }
 
-  /* ---------------------------------------------------------------------
-   * Arrows
-   * ------------------------------------------------------------------ */
   function scrollAmt() {
     var c = track.querySelector('.md-card,.md-skeleton');
     if (!c) return 320;
@@ -335,9 +263,6 @@
   if (arrowLeft)  arrowLeft.addEventListener('click',  function (e) { e.stopPropagation(); track.scrollBy({ left: -scrollAmt(), behavior: 'smooth' }); });
   if (arrowRight) arrowRight.addEventListener('click', function (e) { e.stopPropagation(); track.scrollBy({ left:  scrollAmt(), behavior: 'smooth' }); });
 
-  /* ---------------------------------------------------------------------
-   * Lazy-load the section, then refresh every 60s while live
-   * ------------------------------------------------------------------ */
   var section = document.getElementById('willow-live');
   var loaded = false;
   var timer = null;
