@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const CFG      = window.CNPTV_CONFIG || {};
+  const CFG      = window.CNPTV_CONFIG || window.MATCHDEKHO_CONFIG || {};
   const APIS     = CFG.apis || {};
   const API_URL  = APIS.worldSports || APIS.world_sports || '';
 
