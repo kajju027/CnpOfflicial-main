@@ -231,6 +231,20 @@
     track.innerHTML = html;
   }
 
+  var STAMP = String(Date.now());
+  var SNAPSHOT_URL = apis.willowSnapshot || 'api/willow.json';
+
+  function stamp(url) {
+    return url + (url.indexOf('?') > -1 ? '&' : '?') + 't=' + STAMP;
+  }
+
+  function getJSON(url) {
+    return fetch(stamp(url), { cache: 'no-store' }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    });
+  }
+
   function fetchMatches() {
     if (!API_URL) {
       console.error('[Willow] No API URL configured (cfgs.apis.willow / willowLive).');
@@ -240,11 +254,8 @@
 
     renderSkeletons(6);
 
-    fetch(API_URL, { cache: 'no-store' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
+    getJSON(API_URL)
+      .catch(function () { return getJSON(SNAPSHOT_URL); })
       .then(function (data) {
         var matches = extractMatches(data).slice(0, 20);
         renderMatches(matches);
