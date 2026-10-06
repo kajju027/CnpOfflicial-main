@@ -3,23 +3,32 @@
   Referrer-Policy: strict-origin-when-cross-origin
 
 /*.html
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
+  Expires: Thu, 01 Jan 1970 00:00:00 GMT
 
 /css/*
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
+  Expires: Thu, 01 Jan 1970 00:00:00 GMT
 
-/script/config.js
+/script/*
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
+  Expires: Thu, 01 Jan 1970 00:00:00 GMT
+
+/api/*
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
+  Expires: Thu, 01 Jan 1970 00:00:00 GMT
+
+/manifest.json
   Cache-Control: no-store, no-cache, must-revalidate
   Pragma: no-cache
 
-/script/*
-  Cache-Control: public, max-age=0, must-revalidate
-
-/manifest.json
-  Cache-Control: public, max-age=300
-
 /site.webmanifest
-  Cache-Control: public, max-age=300
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
 
 /assets/*
   Cache-Control: public, max-age=604800, immutable
