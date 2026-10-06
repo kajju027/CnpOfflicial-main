@@ -1,19 +1,12 @@
-/* ================================================
-   Willow Cricket Section — layout & carousel only
-   Card styles live in main.css (.md-card system)
-   ================================================ */
-
 .willow-live-section {
   padding: clamp(1.5rem, 3.5vw, 3.5rem) 0 clamp(1rem, 2.5vw, 2.5rem);
   background: linear-gradient(180deg, #0d0f13 0%, #0b0d0f 100%);
 }
 
-/* Section carousel wrapper */
 .willow-live-carousel-wrapper {
   position: relative;
 }
 
-/* Horizontal scroll track */
 .willow-live-track {
   display: flex;
   align-items: stretch;
@@ -30,7 +23,6 @@
   display: none;
 }
 
-/* Arrow navigation */
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -68,7 +60,6 @@
 .carousel-arrow.arrow-left  { left: clamp(4px, 1vw, 10px); }
 .carousel-arrow.arrow-right { right: clamp(4px, 1vw, 10px); }
 
-/* Mobile — always show arrows */
 @media (max-width: 760px) {
   .carousel-arrow {
     opacity: 0.85;
