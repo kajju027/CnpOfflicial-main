@@ -75,11 +75,11 @@ header {
   transform: scale(1.03);
 }
 
-.logo .match {
+.logo .cnp {
   color: var(--green);
 }
 
-.logo .dekho {
+.logo .tv {
   color: var(--white);
 }
 
@@ -239,18 +239,17 @@ header {
   background: linear-gradient(135deg, #172437, #15100f 55%, #251c17);
 }
 
-/* Top-to-transparent gradient — blends the poster into the dark header */
 .poster-art::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 26%;                      /* was 42% — the poster top stays open */
+  height: 26%;                      
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(180deg,
-    rgba(5, 8, 12, 0.34) 0%,         /* was 0.62 — much lighter */
+    rgba(5, 8, 12, 0.34) 0%,         
     rgba(5, 8, 12, 0.10) 45%,
     transparent 100%);
 }
@@ -262,9 +261,7 @@ header {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Crop focus is per poster (config.js → posterPosition).
-     The variable holds the full value, e.g. "center 20%".
-     (A three-value "center var(--x)" is invalid CSS and gets dropped.) */
+
   object-position: var(--poster-pos, center 25%);
   aspect-ratio: 16 / 9;
 }
@@ -300,7 +297,7 @@ header {
   left: clamp(22px, 5.2vw, 78px);
   bottom: clamp(28px, 6vw, 72px);
   width: min(620px, 55%);
-  /* Text carries its own shadow now, so the poster can stay bright. */
+
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.62), 0 1px 3px rgba(0, 0, 0, 0.45);
   color: var(--white);
   pointer-events: none;
@@ -426,7 +423,7 @@ header {
   height: 2px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.09);   /* was 0.18 — soft, not in the way */
+  background: rgba(255, 255, 255, 0.09);   
 }
 
 .progress-fill {
@@ -434,7 +431,7 @@ header {
   inset: 0 auto 0 0;
   width: 0;
   border-radius: inherit;
-  background: rgba(255, 255, 255, 0.36);   /* was 0.72 — a whisper now */
+  background: rgba(255, 255, 255, 0.36);   
 }
 
 .progress-fill.filling {
@@ -443,7 +440,7 @@ header {
 
 .progress-fill.filled {
   width: 100%;
-  background: rgba(255, 255, 255, 0.18);   /* finished slides even quieter */
+  background: rgba(255, 255, 255, 0.18);   
 }
 
 @keyframes fillProgress {
@@ -662,9 +659,6 @@ main {
   }
 }
 
-/* ================================================
-   Medium-desktop nav fix — prevent wrapping
-   ================================================ */
 @media (min-width: 761px) and (max-width: 1120px) {
   .header-nav {
     gap: 10px;
@@ -682,9 +676,6 @@ main {
   }
 }
 
-/* ================================================
-   Unified section header (all three sections)
-   ================================================ */
 .section-hd {
   padding: 0 clamp(1rem, 5vw, 3rem);
   margin-bottom: clamp(0.65rem, 1.5vw, 1.2rem);
@@ -699,12 +690,6 @@ main {
   letter-spacing: -0.02em;
 }
 
-/* ================================================
-   Unified Match Card — md-card system
-   Used by: Willow Cricket, FanCode, World Sports
-   ================================================ */
-
-/* Card container */
 .md-card {
   position: relative;
   display: flex;
@@ -744,7 +729,6 @@ main {
   border-color: rgba(245, 197, 24, 0.18);
 }
 
-/* Thumbnail area */
 .md-thumb {
   position: relative;
   width: 100%;
@@ -767,7 +751,6 @@ main {
   transform: scale(1.04);
 }
 
-/* Status badge — top-right of thumb */
 .md-status {
   position: absolute;
   top: 9px;
@@ -782,7 +765,7 @@ main {
   background: rgba(6, 8, 12, 0.86);
   color: rgba(255, 255, 255, 0.86);
   font-family: Inter, system-ui, sans-serif;
-  font-size: 0.62rem;                 /* was 0.58 — read from arm's length */
+  font-size: 0.62rem;                 
   font-weight: 800;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -797,7 +780,6 @@ main {
   color: #34d399;
 }
 
-/* Animated live dot */
 .md-status.md-live::before {
   content: '';
   display: inline-block;
@@ -816,8 +798,6 @@ main {
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.45);
 }
 
-/* Upcoming match = the "when", not a play button. Make the time line easy
-   to read so the status is understood at a glance. */
 .md-card.md-upcoming .md-time {
   color: rgba(255, 255, 255, 0.78);
   font-weight: 700;
@@ -837,7 +817,6 @@ main {
   50%       { opacity: 0.35; transform: scale(0.7); }
 }
 
-/* Info section */
 .md-info {
   display: flex;
   flex: 1;
@@ -848,7 +827,6 @@ main {
   min-height: 88px;
 }
 
-/* Tournament / league name */
 .md-tournament {
   overflow: hidden;
   color: #f5c518;
@@ -862,7 +840,6 @@ main {
   white-space: nowrap;
 }
 
-/* Teams row */
 .md-matchup {
   display: flex;
   align-items: center;
@@ -897,7 +874,6 @@ main {
   letter-spacing: 0.07em;
 }
 
-/* Single event title (when no team vs team) */
 .md-event-title {
   color: #ffffff;
   font-family: Inter, system-ui, sans-serif;
@@ -910,7 +886,6 @@ main {
   -webkit-box-orient: vertical;
 }
 
-/* Footer — time left, watch button right */
 .md-footer {
   display: flex;
   align-items: center;
@@ -939,7 +914,6 @@ main {
   white-space: nowrap;
 }
 
-/* Actions — wraps one or more watch buttons */
 .md-actions {
   display: flex;
   flex: 0 0 auto;
@@ -948,7 +922,6 @@ main {
   justify-content: flex-end;
 }
 
-/* Watch Now button */
 .md-watch-btn {
   display: inline-flex;
   align-items: center;
@@ -992,9 +965,6 @@ main {
   font-size: 0.65em;
 }
 
-/* ================================================
-   Unified skeleton loader cards
-   ================================================ */
 .md-skeleton {
   flex: 0 0 auto;
   width: clamp(260px, 34vw, 460px);
@@ -1028,7 +998,6 @@ main {
 .md-skeleton-line.lg  { width: 82%; }
 .md-skeleton-line.full { width: 100%; }
 
-/* Shimmer animation applied to thumb and lines */
 .md-skeleton-thumb,
 .md-skeleton-line {
   background: linear-gradient(90deg,
@@ -1045,9 +1014,6 @@ main {
   100% { background-position:  200% 0; }
 }
 
-/* ================================================
-   Unified error / empty states
-   ================================================ */
 .md-error,
 .md-empty {
   display: flex;
@@ -1073,9 +1039,6 @@ main {
   font-size: 0.95rem;
 }
 
-/* ================================================
-   Responsive — mobile card width adjustments
-   ================================================ */
 @media (max-width: 640px) {
   .md-card,
   .md-skeleton {
@@ -1099,9 +1062,6 @@ main {
   }
 }
 
-/* ================================================
-   Scroll-down hint indicator (below poster)
-   ================================================ */
 .scroll-hint {
   display: flex;
   flex-direction: column;
@@ -1140,39 +1100,28 @@ main {
   .scroll-hint svg { width: 17px; height: 17px; }
 }
 
-/* ================================================
-   v3.1 — Scroll animations
-   (reveal on scroll + scroll-hint behaviour)
-   -------------------------------------------------
-   Only active when script/scroll-anim.js has added
-   the .md-anim class to <html>. Without JavaScript,
-   or with "reduce motion" enabled, nothing is hidden.
-   ================================================ */
-
 .md-anim .md-reveal {
   opacity: 0;
-  /* Individual "translate" property is used on purpose: it does not clash
-     with the hover transform on .md-card. */
-  translate: 0 26px;
+  translate: 0 44px;
+  scale: 0.982;
   transition:
-    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
-    translate 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
-  will-change: opacity, translate;
+    opacity 0.85s cubic-bezier(0.16, 0.84, 0.28, 1),
+    translate 0.85s cubic-bezier(0.16, 0.84, 0.28, 1),
+    scale 0.85s cubic-bezier(0.16, 0.84, 0.28, 1);
+  will-change: opacity, translate, scale;
 }
 
 .md-anim .md-reveal.md-in {
   opacity: 1;
-  translate: none;
+  translate: 0 0;
+  scale: 1;
   will-change: auto;
 }
 
-/* Section headers rise a little less than cards */
-.md-anim .section-hd.md-reveal { translate: 0 16px; }
+.md-anim .section-hd.md-reveal { translate: 0 28px; }
 
-/* Hero fades in on first paint instead of sliding far */
-.md-anim .poster-wrapper.md-reveal { translate: 0 10px; }
+.md-anim .poster-wrapper.md-reveal { translate: 0 16px; }
 
-/* Scroll-down hint: bounces (CSS keyframes) and slides away once you scroll */
 .scroll-hint {
   transition: opacity 0.35s ease, transform 0.35s ease;
 }
@@ -1183,7 +1132,6 @@ main {
   transform: translateY(-10px) !important;
 }
 
-/* "Starts soon" pill on upcoming FanCode cards */
 .md-soon {
   display: inline-flex;
   align-items: center;
@@ -1201,7 +1149,6 @@ main {
   white-space: nowrap;
 }
 
-/* Feed "updated" line under a section title */
 .section-hd-updated {
   display: block;
   margin-top: 3px;
@@ -1213,12 +1160,12 @@ main {
   text-transform: uppercase;
 }
 
-/* Accessibility: never hide content for users who asked for less motion */
 @media (prefers-reduced-motion: reduce) {
   .md-anim .md-reveal,
   .md-anim .md-reveal.md-in {
     opacity: 1 !important;
-    translate: none !important;
+    translate: 0 0 !important;
+    scale: 1 !important;
     transition: none !important;
   }
 }
