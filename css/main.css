@@ -202,7 +202,7 @@ header {
   isolation: isolate;
   background: #121720;
   border-radius: 0 0 18px 18px;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.20);
 }
 
 #heroSlides {
@@ -298,7 +298,7 @@ header {
   bottom: clamp(28px, 6vw, 72px);
   width: min(620px, 55%);
 
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.62), 0 1px 3px rgba(0, 0, 0, 0.45);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
   color: var(--white);
   pointer-events: none;
 }
@@ -343,7 +343,7 @@ header {
   object-fit: cover;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 4px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
 }
 
 .team-name {
@@ -385,20 +385,22 @@ header {
   overflow: hidden;
   border: 1px solid rgba(255, 232, 140, 0.65);
   border-radius: 999px;
-  background: linear-gradient(135deg, #ffe05c, #f5b900);
-  color: #101010;
+  background: linear-gradient(140deg, #ffdf5e 0%, #f7c11b 58%, #e9aa00 100%);
+  border: 1px solid rgba(255, 226, 120, 0.55);
+  color: #0c0c0c;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 900;
   letter-spacing: 0.035em;
   text-transform: uppercase;
-  box-shadow: 0 8px 24px rgba(245, 197, 24, 0.22);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.30), inset 0 -1px 0 rgba(0, 0, 0, 0.16);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .watch-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(245, 197, 24, 0.3);
+  background: linear-gradient(140deg, #ffe784 0%, #ffcb2c 58%, #f0b100 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.34), inset 0 -1px 0 rgba(0, 0, 0, 0.16);
 }
 
 .watch-btn .icon {
@@ -678,7 +680,17 @@ main {
 
 .section-hd {
   padding: 0 clamp(1rem, 5vw, 3rem);
-  margin-bottom: clamp(0.65rem, 1.5vw, 1.2rem);
+  margin-bottom: clamp(1.15rem, 2.6vw, 2rem);
+}
+
+.section-hd-title::after {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 3px;
+  margin-top: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f5c518, rgba(245, 197, 24, 0.15));
 }
 
 .section-hd-title {
@@ -700,7 +712,7 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: clamp(8px, 1vw, 14px);
   background: #111214;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.20);
   color: #ffffff;
   text-decoration: none;
   transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
@@ -709,7 +721,7 @@ main {
 
 .md-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.44);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
 }
 
 .md-card.md-live {
@@ -795,7 +807,7 @@ main {
   border-color: rgba(245, 197, 24, 0.62);
   background: rgba(20, 15, 2, 0.92);
   color: #ffd75e;
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
 }
 
 .md-card.md-upcoming .md-time {
@@ -855,9 +867,11 @@ main {
   color: #ffffff;
   font-family: Inter, system-ui, sans-serif;
   font-size: clamp(0.82rem, 1.2vw, 0.97rem);
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.005em;
   line-height: 1.2;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   white-space: nowrap;
 }
 
@@ -867,11 +881,16 @@ main {
 
 .md-vs {
   flex: 0 0 auto;
-  color: rgba(245, 197, 24, 0.70);
+  padding: 2px 7px;
+  border: 1px solid rgba(245, 197, 24, 0.34);
+  border-radius: 999px;
+  background: rgba(245, 197, 24, 0.10);
+  color: #f7cd2b;
   font-family: Inter, system-ui, sans-serif;
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.07em;
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
 }
 
 .md-event-title {
@@ -906,7 +925,7 @@ main {
   flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
-  color: rgba(255, 255, 255, 0.48);
+  color: rgba(255, 255, 255, 0.62);
   font-family: Inter, system-ui, sans-serif;
   font-size: 0.62rem;
   line-height: 1.4;
@@ -926,35 +945,41 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  min-height: 30px;
-  padding: 5px 11px;
-  border: none;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 13px;
+  border: 1px solid rgba(255, 226, 120, 0.55);
   border-radius: 999px;
-  background: linear-gradient(135deg, #ffe05c, #f5b900);
-  color: #111111;
+  background: linear-gradient(140deg, #ffdf5e 0%, #f7c11b 58%, #e9aa00 100%);
+  color: #0c0c0c;
   font-family: Inter, system-ui, sans-serif;
-  font-size: 0.59rem;
+  font-size: 0.61rem;
   font-weight: 900;
-  letter-spacing: 0.045em;
+  letter-spacing: 0.055em;
   line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
   white-space: nowrap;
-  box-shadow: 0 3px 12px rgba(245, 197, 24, 0.16);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.30), inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   cursor: pointer;
 }
 
 .md-watch-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(245, 197, 24, 0.28);
+  background: linear-gradient(140deg, #ffe784 0%, #ffcb2c 58%, #f0b100 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.34), inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+}
+
+.md-watch-btn:active {
+  transform: translateY(0);
 }
 
 .md-watch-btn-icon {
-  font-size: 0.48rem;
+  font-size: 0.5rem;
   line-height: 1;
   flex-shrink: 0;
+  color: #0c0c0c;
 }
 
 .md-watch-btn-sep {
