@@ -239,6 +239,22 @@ header {
   background: linear-gradient(135deg, #172437, #15100f 55%, #251c17);
 }
 
+/* Top-to-transparent gradient — blends the poster into the dark header */
+.poster-art::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 42%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(5, 8, 12, 0.62) 0%,
+    rgba(5, 8, 12, 0.22) 42%,
+    transparent 100%);
+}
+
 .poster-image {
   position: absolute;
   inset: 0;
@@ -246,7 +262,7 @@ header {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 25%;
   aspect-ratio: 16 / 9;
 }
 
@@ -1062,4 +1078,45 @@ main {
   .md-time {
     font-size: 0.59rem;
   }
+}
+
+/* ================================================
+   Scroll-down hint indicator (below poster)
+   ================================================ */
+.scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  margin: -18px auto clamp(12px, 2vw, 22px);
+  padding: 6px 10px;
+  color: rgba(255, 255, 255, 0.32);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  user-select: none;
+  pointer-events: none;
+  animation: scroll-hint-bob 2s ease-in-out infinite;
+}
+
+.scroll-hint svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+@keyframes scroll-hint-bob {
+  0%, 100% { transform: translateY(0);   opacity: 0.32; }
+  50%       { transform: translateY(5px); opacity: 0.52; }
+}
+
+@media (max-width: 760px) {
+  .scroll-hint {
+    margin-top: -12px;
+    font-size: 0.52rem;
+  }
+  .scroll-hint svg { width: 17px; height: 17px; }
 }
