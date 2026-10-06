@@ -1,17 +1,55 @@
+/* =====================================================================
+   matchdekho — site config
+   ---------------------------------------------------------------------
+   IMPORTANT (v3.1 fix):
+   The section scripts read  cfg.apis.willowLive / cfg.apis.fanCode.
+   The old config file only had  willow / fancode, so those two keys
+   were "undefined" and the Willow + FanCode sections could never load.
+   Both spellings are now kept in sync below, so no script can break.
+   ===================================================================== */
+
 window.MATCHDEKHO_CONFIG = {
   siteName: "matchdekho",
+
+  /* Bump this whenever you upload new css/js (see index.html ?v=...).
+     It is only documentation — the real cache-buster is the ?v= string
+     on the <link>/<script> tags in index.html. */
+  assetVersion: "2026-10-06-1",
+
   heroSlideDuration: 10000,
   maxHeroMatches: 8,
   heroFeedUrl: "",
+
   apis: {
+    /* Willow Cricket feed */
     willow: "https://sonujson-v5.pages.dev/Data/willow.json",
+    willowLive: "https://sonujson-v5.pages.dev/Data/willow.json",
+
+    /* FanCode feed */
     fancode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
+    fanCode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
+
+    /* World Sports feed */
     worldSports: "https://matchdekho.in/api/world-sports.json"
   },
+
+  /* Where the video player pages live.
+     Leave empty ("") when the player is on THIS same site (/az/, /fc/play/).
+     Put a full origin (e.g. "https://matchdekho.in") when the players live
+     on another domain — then links become https://matchdekho.in/az/?... */
+  playerBase: "",
+
   routes: {
     willowPlayer: "/az/",
     fancodePlayer: "/fc/play/"
   },
+
+  /* Willow watch-link format (pick ONE):
+     "stream" → /az/?id=<match-id>&ser=<akamai_server1 stream url>   (v3 documented format)
+     "index"  → /az/?<match-id>&ser=1                                (older build behaviour)
+     If your /az/ player expects the other one, just change this word. */
+  willowPlayerMode: "stream",
+
   heroMatches: [
     {
       tournament: "UEFA NATIONS LEAGUE, 2026",

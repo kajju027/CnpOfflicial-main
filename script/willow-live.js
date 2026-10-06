@@ -1,20 +1,47 @@
+/* =====================================================================
+   Willow Cricket section  —  v3.1 (fixed)
+   ---------------------------------------------------------------------
+   FIXES in this file:
+   1. API key fell back to nothing (cfg.apis.willowLive was undefined) →
+      now: cfg.apis.willowLive || cfg.apis.willow  (and warns loudly).
+   2. The feed wraps the list in "Matches" (capital M). The old extractor
+      only looked for "matches", so it always rendered "No matches".
+      Now the lookup is case-insensitive.
+   3. Titles: the feed uses "event_name" — it was not in the title list,
+      so every card fell back to "Match".
+   4. "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
+      used to produce a 40-character "team name". The series part is now
+      moved to the tournament line and only the real teams stay.
+   5. Watch link now follows the documented format
+      /az/?id=<id>&ser=<akamai_server1 url>  (switchable in config.js).
+   6. First 5 cards load eagerly, feed is fetched with cache:"no-store"
+      so scores never stay stale in the browser.
+   7. Feed "last_updated" is shown under the section title.
+   ===================================================================== */
+
 (function () {
   'use strict';
 
-  var cfg          = window.MATCHDEKHO_CONFIG;
-  var API_URL      = cfg.apis.willowLive;
-  var PLAYER_ROUTE = cfg.routes.willowPlayer; // "/az/"
+  var cfg          = window.MATCHDEKHO_CONFIG || {};
+  var apis         = cfg.apis || {};
+  var API_URL      = apis.willowLive || apis.willow || '';
+  var ROUTES       = cfg.routes || {};
+  var PLAYER_ROUTE = ROUTES.willowPlayer || '/az/';
+  var PLAYER_BASE  = cfg.playerBase || '';
+  var PLAYER_MODE  = cfg.willowPlayerMode === 'index' ? 'index' : 'stream';
   var PRIMARY_KEY  = 'akamai_server1';
+  var EAGER_CARDS  = 5;
 
   var track      = document.getElementById('willowLiveTrack');
   var arrowLeft  = document.getElementById('willowLiveArrowLeft');
   var arrowRight = document.getElementById('willowLiveArrowRight');
+  var updatedEl  = document.getElementById('willowLiveUpdated');
 
   if (!track) return;
 
-  /* -------------------------------------------------------------------------
+  /* ---------------------------------------------------------------------
    * Helpers
-   * ---------------------------------------------------------------------- */
+   * ------------------------------------------------------------------ */
 
   function escapeHtml(str) {
     return String(str == null ? '' : str)
@@ -22,36 +49,50 @@
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  /** First non-empty value of the given keys (case-insensitive). */
+  function pick(obj, names) {
+    if (!obj || typeof obj !== 'object') return '';
+    var lower = {};
+    for (var k in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, k)) lower[String(k).toLowerCase()] = obj[k];
+    }
+    for (var i = 0; i < names.length; i++) {
+      var v = lower[String(names[i]).toLowerCase()];
+      if (v !== undefined && v !== null && v !== '') return v;
+    }
+    return '';
+  }
+
   /**
-   * Walk common API response wrappers and return the matches array.
-   * Handles: plain array, {matches:[...]}, {data:[...]}, {events:[...]},
-   *          {data:{matches:[...]}}, {response:{matches:[...]}}, etc.
+   * Walk common API wrappers and return the matches array.
+   * Case-insensitive, so {"Matches":[...]} works exactly like {"matches":[...]}.
    */
   function extractMatches(raw) {
     if (Array.isArray(raw)) return raw;
     if (!raw || typeof raw !== 'object') return [];
-    var keys = ['matches','events','data','results','list','items','content','response'];
-    for (var i = 0; i < keys.length; i++) {
-      var v = raw[keys[i]];
-      if (Array.isArray(v)) return v;
-      if (v && typeof v === 'object') {
-        for (var j = 0; j < keys.length; j++) {
-          if (Array.isArray(v[keys[j]])) return v[keys[j]];
-        }
+
+    var wanted = ['matches', 'events', 'data', 'results', 'list', 'items', 'content', 'response', 'streams', 'live'];
+
+    // direct (case-insensitive) hit on the top level
+    var top = pick(raw, wanted);
+    if (Array.isArray(top)) return top;
+
+    // one level deeper: {data:{matches:[...]}} etc.
+    for (var key in raw) {
+      var v = raw[key];
+      if (v && typeof v === 'object' && !Array.isArray(v)) {
+        var inner = pick(v, wanted);
+        if (Array.isArray(inner)) return inner;
       }
     }
     return [];
   }
 
-  /**
-   * Build a "Home vs Away" title string from any of the field formats APIs use.
-   */
+  /** Raw match title from any of the shapes the feeds use. */
   function buildTitle(m) {
-    // Flat title field
-    var flat = m.title || m.name || m.event || m.match_name || m.teams || '';
+    var flat = pick(m, ['event_name', 'title', 'name', 'event', 'event_title', 'match_name', 'match_title', 'teams', 'description']);
     if (flat) return String(flat);
 
-    // Nested homeTeam / awayTeam objects
     var home = m.homeTeam || m.team1 || m.home_team || {};
     var away = m.awayTeam || m.team2 || m.away_team || {};
     var hn = (typeof home === 'object' ? home.name || home.shortName || home.abbr : home) || m.team_1 || m.home || '';
@@ -61,53 +102,108 @@
   }
 
   /**
-   * Split "Team A vs Team B" into home/away.
+   * Split a title into { home, away }.
+   * "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
+   *   → { home: "India", away: "West Indies" }
+   * "World Championship of Legends 2026 - 2nd Match -Pakistan Champions vs Bangladesh Champions"
+   *   → { home: "Pakistan Champions", away: "Bangladesh Champions" }
+   * "Afghanistan vs Bangladesh in UAE 2026 - One-off Test - Afghanistan vs Bangladesh"
+   *   → { home: "Afghanistan", away: "Bangladesh" }
+   * Hyphens inside a name (U-19, Sri-Lanka) are kept: only a hyphen with a
+   * space on at least one side counts as a separator.
    */
-  function parseMatchup(title) {
-    if (!title) return null;
-    var parts = String(title).split(/\s+vs\.?\s+|\s+v\s+/i);
-    if (parts.length >= 2) return { home: parts[0].trim(), away: parts[parts.length - 1].trim() };
-    return null;
+  function splitSeries(part) {
+    return String(part == null ? '' : part)
+      .split(/\s+[-\u2013\u2014]\s*|\s*[-\u2013\u2014]\s+/)
+      .map(function (s) { return s.trim(); })
+      .filter(Boolean);
   }
 
-  /**
-   * Determine the ser parameter value for the player redirect.
-   * ser=1 → akamai_server1 present (primary)
-   * ser=0 → another server key present
-   * ser=-1 → no server found (no watch button)
-   */
-  function getServerNumber(m) {
-    // Check all common casing variants of the CnpTV field
-    var cnp = m.CnpTV || m.cnpTV || m.cnptv || m.cnp_tv || m.streams || {};
-    if (!cnp || typeof cnp !== 'object') return -1;
-    if (cnp[PRIMARY_KEY]) return 1;
+  function parseMatchup(title) {
+    var t = String(title == null ? '' : title)
+      .replace(/\s*\[[^\]]*\]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!t) return null;
+
+    var parts = t.split(/\s+vs\.?\s+/i);
+    if (parts.length < 2) return null;
+
+    /* When the title repeats the fixture ("A vs B - round - A vs B"),
+       the real pairing is the LAST "vs". */
+    var homePart = parts.length > 2 ? parts[parts.length - 2] : parts[0];
+    var awayPart = parts[parts.length - 1];
+
+    /* Series text sits BEFORE the home team and AFTER the away team. */
+    var homeSegs = splitSeries(homePart);
+    var awaySegs = splitSeries(awayPart);
+
+    var home = homeSegs.length ? homeSegs[homeSegs.length - 1] : String(homePart).trim();
+    var away = awaySegs.length ? awaySegs[0] : String(awayPart).trim();
+
+    if (!home || !away || home.length < 2 || away.length < 2) return null;
+    return { home: home, away: away };
+  }
+
+  /** Competition / tournament line. */
+  function tournamentOf(m, rawTitle) {
+    var direct = pick(m, ['tournament', 'competition', 'series', 'league', 'category', 'sport', 'sport_display']);
+    if (direct) return String(direct);
+
+    // Fall back to the leading part of the event name:
+    // "WI tour of India 2026 - 1st T20I - India vs West Indies" → "WI tour of India 2026 - 1st T20I"
+    var chunks = String(rawTitle || '').split(/\s+[-–—]\s+/);
+    if (chunks.length > 1 && /vs\.?\s/i.test(chunks[chunks.length - 1])) {
+      chunks.pop();
+      var derived = chunks.join(' - ').trim();
+      if (derived) return derived;
+    }
+    return '';
+  }
+
+  /** Find the playable stream URL inside CnpTV (any casing). */
+  function getStreamUrl(m) {
+    var cnp = m.CnpTV || m.cnptv || m.cnpTV || m.cnp_tv || m.servers || {};
+    if (!cnp || typeof cnp !== 'object' || Array.isArray(cnp)) return '';
+
+    if (cnp[PRIMARY_KEY]) return String(cnp[PRIMARY_KEY]);
+
+    // any other akamai_serverN
+    var akamai = Object.keys(cnp).filter(function (k) { return /^akamai_server\d+$/i.test(k) && cnp[k]; })
+      .sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+    if (akamai.length) return String(cnp[akamai[0]]);
+
+    // last resort: the first non-empty string value
     var keys = Object.keys(cnp);
     for (var i = 0; i < keys.length; i++) {
-      if (cnp[keys[i]]) return 0;
+      if (typeof cnp[keys[i]] === 'string' && cnp[keys[i]]) return cnp[keys[i]];
     }
-    return -1;
+    return '';
   }
 
-  /**
-   * Build the player redirect URL.
-   * Format: /az/?<MATCH_ID>&ser=<0|1>
-   */
-  function buildPlayerUrl(matchId, ser) {
-    return PLAYER_ROUTE + '?' + String(matchId) + '&ser=' + ser;
+  /** Build the /az/ player link. */
+  function buildPlayerUrl(matchId, streamUrl) {
+    var base = PLAYER_BASE ? String(PLAYER_BASE).replace(/\/+$/, '') : '';
+    var route = PLAYER_ROUTE.charAt(0) === '/' ? PLAYER_ROUTE : '/' + PLAYER_ROUTE;
+
+    if (PLAYER_MODE === 'index') {
+      return base + route + '?' + encodeURIComponent(matchId) + '&ser=1';
+    }
+    return base + route + '?id=' + encodeURIComponent(matchId) + '&ser=' + encodeURIComponent(streamUrl || '');
   }
 
   /** Normalise raw status → { label, className }. */
   function statusInfo(raw) {
-    var s = String(raw || 'UPCOMING').toUpperCase();
-    if (s === 'LIVE')                                    return { label: 'LIVE',     className: 'live'     };
-    if (['ENDED','FINISHED','COMPLETED'].indexOf(s) > -1) return { label: 'ENDED',    className: 'ended'    };
-    if (['CANCELLED','CANCELED','POSTPONED'].indexOf(s) > -1) return { label: s,     className: 'ended'    };
+    var s = String(raw || 'UPCOMING').trim().toUpperCase();
+    if (s === 'LIVE' || s === 'LIVE NOW' || s === 'IN PLAY')       return { label: 'LIVE',  className: 'live' };
+    if (['ENDED', 'FINISHED', 'COMPLETED', 'RESULT'].indexOf(s) > -1) return { label: 'ENDED', className: 'ended' };
+    if (['CANCELLED', 'CANCELED', 'POSTPONED', 'ABANDONED'].indexOf(s) > -1) return { label: s, className: 'ended' };
     return { label: 'UPCOMING', className: 'upcoming' };
   }
 
-  /* -------------------------------------------------------------------------
-   * Skeleton placeholders
-   * ---------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+   * Skeletons
+   * ------------------------------------------------------------------ */
   function renderSkeletons(n) {
     var html = '';
     for (var i = 0; i < n; i++) {
@@ -122,9 +218,9 @@
     track.innerHTML = html;
   }
 
-  /* -------------------------------------------------------------------------
-   * Render cards using the unified md-card system
-   * ---------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+   * Cards
+   * ------------------------------------------------------------------ */
   var FALLBACK = 'data:image/svg+xml,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">' +
     '<defs><linearGradient id="g" x1="0" x2="1" y1="1" y2="0">' +
@@ -146,31 +242,26 @@
     for (var i = 0; i < matches.length; i++) {
       var m = matches[i];
 
-      var status     = statusInfo(m.status || m.matchStatus || m.state);
-      var isUpcoming = status.className === 'upcoming';
+      var status     = statusInfo(pick(m, ['status', 'matchStatus', 'state', 'status_display']));
       var isEnded    = status.className === 'ended';
 
-      var id = String(m.id || m.matchId || m.match_id || m.matchID || '');
-      var ser = getServerNumber(m);
-      var hasStream = id && ser >= 0;
-
+      var id         = String(pick(m, ['id', 'matchId', 'match_id', 'matchID', 'stream_id']));
+      var streamUrl  = getStreamUrl(m);
       var rawTitle   = buildTitle(m);
       var matchup    = parseMatchup(rawTitle);
-      var tournament = escapeHtml(m.tournament || m.competition || m.series || m.league || m.category || m.sport || '');
-      var imgSrc     = escapeHtml(m.poster || m.image || m.thumbnail || m.cover || m.tvgLogo || FALLBACK);
-      var imgAlt     = escapeHtml(rawTitle || 'Match');
-      var time       = escapeHtml(m.time || m.startTime || m.date || m.matchTime || m.scheduled_time || '');
+      var tournament = escapeHtml(tournamentOf(m, rawTitle));
+      var imgSrc     = escapeHtml(pick(m, ['poster', 'image', 'thumbnail', 'cover', 'tvgLogo']) || FALLBACK);
+      var imgAlt     = escapeHtml(rawTitle || 'Cricket match');
+      var time       = escapeHtml(pick(m, ['time', 'startTime', 'date', 'matchTime', 'scheduled_time', 'start_time']));
 
-      // Watch button — live only
+      // Watch button — every match that is not ended and has an id
       var watchHtml = '';
-      if (!isUpcoming && !isEnded && hasStream) {
-        var href = escapeHtml(buildPlayerUrl(id, ser));
+      if (!isEnded && id) {
         watchHtml = '<div class="md-actions">' +
-          '<a class="md-watch-btn" href="' + href + '" aria-label="Watch ' + imgAlt + '">' +
+          '<a class="md-watch-btn" href="' + escapeHtml(buildPlayerUrl(id, streamUrl)) + '" aria-label="Watch ' + imgAlt + '">' +
           '<span class="md-watch-btn-icon" aria-hidden="true">&#9654;</span>WATCH NOW</a></div>';
       }
 
-      // Teams or event title
       var matchupHtml = '';
       if (matchup) {
         matchupHtml = '<div class="md-matchup">' +
@@ -184,8 +275,9 @@
 
       html += '<article class="md-card md-' + status.className + '" data-match-id="' + escapeHtml(id) + '">' +
         '<div class="md-thumb">' +
-          '<img src="' + imgSrc + '" alt="' + imgAlt + '" loading="lazy" ' +
-               'onerror="this.onerror=null;this.src=\'' + FALLBACK.replace(/'/g,'\\x27') + '\'">' +
+          '<img src="' + imgSrc + '" alt="' + imgAlt + '" ' +
+               (i < EAGER_CARDS ? 'loading="eager"' : 'loading="lazy"') + ' decoding="async" ' +
+               'onerror="this.onerror=null;this.src=\'' + FALLBACK.replace(/'/g, '\\x27') + '\'">' +
           '<span class="md-status md-' + status.className + '">' + escapeHtml(status.label) + '</span>' +
         '</div>' +
         '<div class="md-info">' +
@@ -202,12 +294,19 @@
     track.innerHTML = html;
   }
 
-  /* -------------------------------------------------------------------------
+  /* ---------------------------------------------------------------------
    * Fetch
-   * ---------------------------------------------------------------------- */
+   * ------------------------------------------------------------------ */
   function fetchMatches() {
+    if (!API_URL) {
+      console.error('[Willow] No API URL configured (cfgs.apis.willow / willowLive).');
+      track.innerHTML = '<div class="md-error"><strong>Willow feed is not configured</strong>Check script/config.js</div>';
+      return;
+    }
+
     renderSkeletons(6);
-    fetch(API_URL)
+
+    fetch(API_URL, { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -215,16 +314,20 @@
       .then(function (data) {
         var matches = extractMatches(data).slice(0, 20);
         renderMatches(matches);
+        if (updatedEl) {
+          var upd = pick(data, ['last_updated', 'updated', 'timestamp']);
+          updatedEl.textContent = upd ? 'Updated ' + String(upd) : '';
+        }
       })
       .catch(function (err) {
         console.error('[Willow] fetch error:', err);
-        track.innerHTML = '<div class="md-error"><strong>Could not load matches</strong></div>';
+        track.innerHTML = '<div class="md-error"><strong>Could not load matches</strong>Please refresh in a moment.</div>';
       });
   }
 
-  /* -------------------------------------------------------------------------
+  /* ---------------------------------------------------------------------
    * Arrows
-   * ---------------------------------------------------------------------- */
+   * ------------------------------------------------------------------ */
   function scrollAmt() {
     var c = track.querySelector('.md-card,.md-skeleton');
     if (!c) return 320;
@@ -233,16 +336,30 @@
   if (arrowLeft)  arrowLeft.addEventListener('click',  function (e) { e.stopPropagation(); track.scrollBy({ left: -scrollAmt(), behavior: 'smooth' }); });
   if (arrowRight) arrowRight.addEventListener('click', function (e) { e.stopPropagation(); track.scrollBy({ left:  scrollAmt(), behavior: 'smooth' }); });
 
-  /* -------------------------------------------------------------------------
-   * Lazy-load via IntersectionObserver
-   * ---------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+   * Lazy-load the section, then refresh every 60s while live
+   * ------------------------------------------------------------------ */
   var section = document.getElementById('willow-live');
+  var loaded = false;
+  var timer = null;
+
+  function load() {
+    if (loaded) return;
+    loaded = true;
+    fetchMatches();
+    timer = window.setInterval(function () {
+      if (!document.hidden) fetchMatches();
+    }, 60000);
+  }
+
   if ('IntersectionObserver' in window && section) {
     var obs = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) { fetchMatches(); obs.disconnect(); }
+      if (entries[0].isIntersecting) { load(); obs.disconnect(); }
     }, { rootMargin: '200px' });
     obs.observe(section);
   } else {
-    fetchMatches();
+    load();
   }
+
+  window.addEventListener('beforeunload', function () { if (timer) window.clearInterval(timer); });
 })();

@@ -1,3 +1,13 @@
+/* =====================================================================
+   Hero slider / header menu  —  v3.1 (fixed)
+   ---------------------------------------------------------------------
+   * Hero posters are the first thing a visitor sees, so they are now
+     loaded eagerly with fetchpriority="high" (before: slide 2+ used
+     loading="lazy" and stayed blank until after the slide changed).
+   * The autoplay timer no longer advances the slider while the tab is
+     in the background, so the first slide is always the one on screen
+     when the visitor comes back.
+   ===================================================================== */
 (function () {
   const config = window.MATCHDEKHO_CONFIG || {};
   let matches = Array.isArray(config.heroMatches) ? config.heroMatches.slice() : [];
@@ -67,7 +77,7 @@
       <section class="poster-section${index === 0 ? " active" : ""}" data-slide="${index}" aria-label="${title}: ${homeName} vs ${awayName}">
         <div class="poster-art">
           <picture>
-            <img src="${poster}" alt="${homeName} vs ${awayName}" class="poster-image" loading="${index === 0 ? "eager" : "lazy"}">
+            <img src="${poster}" alt="${homeName} vs ${awayName}" class="poster-image" loading="eager" decoding="async" ${index === 0 ? 'fetchpriority="high"' : ''}>
           </picture>
           <div class="gradient-left"></div>
           <div class="gradient-overlay"></div>
@@ -76,12 +86,12 @@
           <div class="match-title">${title}</div>
           <div class="teams-row">
             <div class="team">
-              ${homeLogo ? `<img src="${homeLogo}" alt="" class="team-flag" loading="lazy">` : ""}
+              ${homeLogo ? `<img src="${homeLogo}" alt="" class="team-flag" loading="${index === 0 ? "eager" : "lazy"}" decoding="async">` : ""}
               <span class="team-name">${homeName}</span>
             </div>
             <span class="vs-label" aria-hidden="true">VS</span>
             <div class="team">
-              ${awayLogo ? `<img src="${awayLogo}" alt="" class="team-flag" loading="lazy">` : ""}
+              ${awayLogo ? `<img src="${awayLogo}" alt="" class="team-flag" loading="${index === 0 ? "eager" : "lazy"}" decoding="async">` : ""}
               <span class="team-name">${awayName}</span>
             </div>
           </div>
@@ -154,12 +164,24 @@
 
   function restartAutoplay() {
     if (autoplayTimer) window.clearTimeout(autoplayTimer);
+    if (document.hidden) return;
     if (matches.length > 1) {
       autoplayTimer = window.setTimeout(function () {
         goToSlide(currentIndex + 1);
       }, slideDuration);
     }
   }
+
+  /* Coming back to the tab → restart the timer so the visitor always sees
+     a full slide instead of a half-finished one. */
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      if (autoplayTimer) window.clearTimeout(autoplayTimer);
+    } else {
+      updateProgressBars();
+      restartAutoplay();
+    }
+  });
 
   async function loadRemoteHeroFeed() {
     const feedUrl = config.heroFeedUrl;

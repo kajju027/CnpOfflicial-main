@@ -1,10 +1,22 @@
 (function () {
   'use strict';
 
+  /* ===========================================================================
+     World Sports section — v3.1
+     This file was the only one whose config key was correct, so it already
+     worked. Small fixes here: null-safe escaping, single click listener,
+     eager first 5 thumbs, cache:"no-store" + 60 s refresh, optional
+     playerBase support for page_url links.
+     =========================================================================== */
   // ---------------------------------------------------------------------------
   // Config
   // ---------------------------------------------------------------------------
-  const API_URL = window.MATCHDEKHO_CONFIG.apis.worldSports;
+  const CFG      = window.MATCHDEKHO_CONFIG || {};
+  const APIS     = CFG.apis || {};
+  const API_URL  = APIS.worldSports || APIS.world_sports || '';
+
+  /* v3.1 fix: the card click handler used to be re-attached on every
+     render. It is now attached once, outside renderMatches(). */
 
   const track      = document.getElementById('worldSportsTrack');
   const arrowLeft  = document.getElementById('worldSportsArrowLeft');
@@ -16,7 +28,7 @@
   // Helpers
   // ---------------------------------------------------------------------------
   function escapeHtml(str) {
-    return String(str)
+    return String(str == null ? '' : str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -33,14 +45,48 @@
     return { label: 'UPCOMING', className: 'upcoming' };
   }
 
-  /** Parse "Team A vs Team B" into home/away parts. */
+  /**
+   * Split a title into { home, away }.
+   * "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
+   *   → { home: "India", away: "West Indies" }
+   * "World Championship of Legends 2026 - 2nd Match -Pakistan Champions vs Bangladesh Champions"
+   *   → { home: "Pakistan Champions", away: "Bangladesh Champions" }
+   * "Afghanistan vs Bangladesh in UAE 2026 - One-off Test - Afghanistan vs Bangladesh"
+   *   → { home: "Afghanistan", away: "Bangladesh" }
+   * Hyphens inside a name (U-19, Sri-Lanka) are kept: only a hyphen with a
+   * space on at least one side counts as a separator.
+   */
+  function splitSeries(part) {
+    return String(part == null ? '' : part)
+      .split(/\s+[-\u2013\u2014]\s*|\s*[-\u2013\u2014]\s+/)
+      .map(function (s) { return s.trim(); })
+      .filter(Boolean);
+  }
+
   function parseMatchup(title) {
-    if (!title) return null;
-    const parts = String(title).split(/\s+vs\.?\s+|\s+v\s+/i);
-    if (parts.length >= 2) {
-      return { home: parts[0].trim(), away: parts[parts.length - 1].trim() };
-    }
-    return null;
+    var t = String(title == null ? '' : title)
+      .replace(/\s*\[[^\]]*\]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!t) return null;
+
+    var parts = t.split(/\s+vs\.?\s+/i);
+    if (parts.length < 2) return null;
+
+    /* When the title repeats the fixture ("A vs B - round - A vs B"),
+       the real pairing is the LAST "vs". */
+    var homePart = parts.length > 2 ? parts[parts.length - 2] : parts[0];
+    var awayPart = parts[parts.length - 1];
+
+    /* Series text sits BEFORE the home team and AFTER the away team. */
+    var homeSegs = splitSeries(homePart);
+    var awaySegs = splitSeries(awayPart);
+
+    var home = homeSegs.length ? homeSegs[homeSegs.length - 1] : String(homePart).trim();
+    var away = awaySegs.length ? awaySegs[0] : String(awayPart).trim();
+
+    if (!home || !away || home.length < 2 || away.length < 2) return null;
+    return { home: home, away: away };
   }
 
   // ---------------------------------------------------------------------------
@@ -84,12 +130,16 @@
 
     let html = '';
 
-    matches.forEach(function (match) {
+    matches.forEach(function (match, cardIndex) {
       const status     = statusInfo(match.status);
       const isLive     = status.className === 'live';
       const isUpcoming = status.className === 'upcoming';
       const isEnded    = status.className === 'ended';
-      const pageUrl    = match.page_url || '';
+      const rawPageUrl = match.page_url || '';
+      const pageUrl    = rawPageUrl
+        ? ((CFG.playerBase ? String(CFG.playerBase).replace(/\/+$/, '') : '') +
+           (rawPageUrl.charAt(0) === '/' ? rawPageUrl : '/' + rawPageUrl))
+        : '';
 
       const rawTitle   = match.title || match.teams || 'Event';
       const matchup    = parseMatchup(rawTitle);
@@ -123,7 +173,7 @@
         <article class="md-card md-${status.className}" data-href="${safeUrl}"
                  style="${pageUrl ? 'cursor:pointer' : ''}">
           <div class="md-thumb">
-            <img src="${imgSrc}" alt="${imgAlt}" loading="lazy"
+            <img src="${imgSrc}" alt="${imgAlt}" ${cardIndex < 5 ? 'loading="eager"' : 'loading="lazy"'} decoding="async"
                  onerror="this.onerror=null;this.src='${fallbackImg}'">
             <span class="md-status md-${status.className}">${escapeHtml(status.label)}</span>
           </div>
@@ -139,24 +189,30 @@
     });
 
     track.innerHTML = html;
-
-    // Card-level click-through — navigate unless the click was on a button/link
-    track.addEventListener('click', function (e) {
-      const card = e.target.closest('.md-card');
-      if (!card) return;
-      if (e.target.closest('a, button')) return; // let the element handle it
-      const href = card.dataset.href;
-      if (href && href !== '#') window.location.href = href;
-    });
   }
+
+  // Card-level click-through — attached ONCE (was re-attached on every render before)
+  track.addEventListener('click', function (e) {
+    const card = e.target.closest('.md-card');
+    if (!card) return;
+    if (e.target.closest('a, button')) return; // let the element handle it
+    const href = card.dataset.href;
+    if (href && href !== '#') window.location.href = href;
+  });
 
   // ---------------------------------------------------------------------------
   // Fetch data
   // ---------------------------------------------------------------------------
   function fetchWorldSports() {
+    if (!API_URL) {
+      console.error('[WorldSports] No API URL configured (cfg.apis.worldSports).');
+      track.innerHTML = '<div class="md-error"><strong>World Sports feed is not configured</strong>Check script/config.js</div>';
+      return;
+    }
+
     renderSkeletons(6);
 
-    fetch(API_URL)
+    fetch(API_URL, { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -189,12 +245,26 @@
   // Lazy-load
   // ---------------------------------------------------------------------------
   const section = document.getElementById('worldSportsSection');
+  let loaded = false;
+  let timer  = null;
+
+  function load() {
+    if (loaded) return;
+    loaded = true;
+    fetchWorldSports();
+    timer = window.setInterval(function () {
+      if (!document.hidden) fetchWorldSports();
+    }, 60000);
+  }
+
   if ('IntersectionObserver' in window && section) {
     const obs = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) { fetchWorldSports(); obs.disconnect(); }
+      if (entries[0].isIntersecting) { load(); obs.disconnect(); }
     }, { rootMargin: '200px' });
     obs.observe(section);
   } else {
-    fetchWorldSports();
+    load();
   }
+
+  window.addEventListener('beforeunload', function () { if (timer) window.clearInterval(timer); });
 })();

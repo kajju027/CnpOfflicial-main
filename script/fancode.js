@@ -1,9 +1,30 @@
+/* =====================================================================
+   FanCode section  —  v3.1 (fixed)
+   ---------------------------------------------------------------------
+   FIXES in this file:
+   1. API key fell back to nothing (cfg.apis.fanCode was undefined) →
+      now: cfg.apis.fanCode || cfg.apis.fancode  (and warns loudly).
+   2. Language buttons were built from m.streams, and the live feed's
+      m.streams only holds quality/CDN keys (primary, fancode_cdn,
+      fancode_bd_cdn, backup ...). That produced nonsense buttons like
+      "WATCH NOW • FANCODE_BD_CDN". Languages are now read from
+      m.auto_streams / m.language (real feed: "ENGLISH", "HINDI", ...).
+   3. Player link ids are normalised: /fc/play/?id=<match_id>_<language>&s=0
+      (language lowercase, e.g. 4250053_english).
+   4. First 5 thumbs eager, feed fetched with cache:"no-store",
+      auto-refresh every 60 s while the tab is visible.
+   ===================================================================== */
+
 (function () {
   'use strict';
 
-  var cfg         = window.MATCHDEKHO_CONFIG;
-  var API_URL     = cfg.apis.fanCode;
-  var PLAYER_ROUTE = cfg.routes.fancodePlayer; // "/fc/play/"
+  var cfg          = window.MATCHDEKHO_CONFIG || {};
+  var apis         = cfg.apis || {};
+  var API_URL      = apis.fanCode || apis.fancode || '';
+  var ROUTES       = cfg.routes || {};
+  var PLAYER_ROUTE = ROUTES.fancodePlayer || '/fc/play/';
+  var PLAYER_BASE  = cfg.playerBase || '';
+  var EAGER_CARDS  = 5;
 
   var track      = document.getElementById('fancodeTrack');
   var arrowLeft  = document.getElementById('fancodeArrowLeft');
@@ -11,9 +32,9 @@
 
   if (!track) return;
 
-  /* -------------------------------------------------------------------------
+  /* ---------------------------------------------------------------------
    * Helpers
-   * ---------------------------------------------------------------------- */
+   * ------------------------------------------------------------------ */
 
   function escapeHtml(str) {
     return String(str == null ? '' : str)
@@ -21,18 +42,32 @@
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  /** Extract matches array from any common API response wrapper. */
+  function pick(obj, names) {
+    if (!obj || typeof obj !== 'object') return '';
+    var lower = {};
+    for (var k in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, k)) lower[String(k).toLowerCase()] = obj[k];
+    }
+    for (var i = 0; i < names.length; i++) {
+      var v = lower[String(names[i]).toLowerCase()];
+      if (v !== undefined && v !== null && v !== '') return v;
+    }
+    return '';
+  }
+
   function extractMatches(raw) {
     if (Array.isArray(raw)) return raw;
     if (!raw || typeof raw !== 'object') return [];
-    var keys = ['matches','events','data','results','list','items','content','response'];
-    for (var i = 0; i < keys.length; i++) {
-      var v = raw[keys[i]];
-      if (Array.isArray(v)) return v;
-      if (v && typeof v === 'object') {
-        for (var j = 0; j < keys.length; j++) {
-          if (Array.isArray(v[keys[j]])) return v[keys[j]];
-        }
+
+    var wanted = ['matches', 'events', 'data', 'results', 'list', 'items', 'content', 'response'];
+    var top = pick(raw, wanted);
+    if (Array.isArray(top)) return top;
+
+    for (var key in raw) {
+      var v = raw[key];
+      if (v && typeof v === 'object' && !Array.isArray(v)) {
+        var inner = pick(v, wanted);
+        if (Array.isArray(inner)) return inner;
       }
     }
     return [];
@@ -40,107 +75,177 @@
 
   /** Strip language suffix from a match ID: "12345_eng" → "12345". */
   function baseId(val) {
-    return String(val || '').replace(/_[a-z]{2,4}$/i, '');
+    return String(val || '').replace(/_[a-z]{2,12}$/i, '');
   }
 
-  /** Map a language code/string to a clean uppercase display label. */
   var LANG_MAP = {
-    eng:'ENGLISH', en:'ENGLISH', english:'ENGLISH',
-    hin:'HINDI',   hi:'HINDI',   hindi:'HINDI',
-    tam:'TAMIL',   ta:'TAMIL',   tamil:'TAMIL',
-    tel:'TELUGU',  te:'TELUGU',  telugu:'TELUGU',
-    kan:'KANNADA', kn:'KANNADA', kannada:'KANNADA',
-    mal:'MALAYALAM', ml:'MALAYALAM', malayalam:'MALAYALAM',
-    ben:'BENGALI', bn:'BENGALI', bengali:'BENGALI',
+    eng: 'ENGLISH', en: 'ENGLISH', english: 'ENGLISH',
+    hin: 'HINDI',   hi: 'HINDI',   hindi: 'HINDI',
+    tam: 'TAMIL',   ta: 'TAMIL',   tamil: 'TAMIL',
+    tel: 'TELUGU',  te: 'TELUGU',  telugu: 'TELUGU',
+    kan: 'KANNADA', kn: 'KANNADA', kannada: 'KANNADA',
+    mal: 'MALAYALAM', ml: 'MALAYALAM', malayalam: 'MALAYALAM',
+    ben: 'BENGALI', bn: 'BENGALI', bengali: 'BENGALI',
+    mar: 'MARATHI', mr: 'MARATHI', marathi: 'MARATHI',
+    guj: 'GUJARATI', gu: 'GUJARATI', gujarati: 'GUJARATI'
   };
 
-  function langLabel(code) {
-    return LANG_MAP[String(code).toLowerCase().trim()] || String(code).toUpperCase();
+  /* Keys that live inside the stream object but are NOT languages. */
+  var NOT_A_LANGUAGE = ['primary', 'backup', 'default', 'main', 'auto', 'hls', 'dash', 'mpd',
+    'cdn', 'link', 'links', 'stream', 'streams', 'url', 'server', 'servers'];
+
+  function langLabel(value) {
+    var key = String(value == null ? '' : value).toLowerCase().trim();
+    return LANG_MAP[key] || key.toUpperCase();
+  }
+
+  /** "ENGLISH" → "english", " Hindi " → "hindi", "eng" → "eng" */
+  function langCode(value) {
+    return String(value == null ? '' : value).toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+  }
+
+  function looksLikeLanguage(key) {
+    var k = langCode(key);
+    if (!k) return false;
+    if (NOT_A_LANGUAGE.indexOf(k) > -1) return false;
+    if (LANG_MAP[k]) return true;
+    if (/_/.test(String(key))) return false;              // fancode_bd_cdn etc.
+    return k.length >= 2 && k.length <= 12 && /^[a-z]+$/.test(k);
   }
 
   /**
-   * Determine the available language streams for a FanCode match.
-   * Returns [{code, label}, ...].
+   * Languages offered for a match → [{ code, label }, ...]
+   * Real feed shapes supported:
+   *   m.auto_streams = { "ENGLISH": {...}, "HINDI": {...} }
+   *   m.language     = "ENGLISH"
+   *   m.languages    = [{code,label}, ...] | ["English","Hindi"]
    */
   function getLanguages(m) {
-    // Format A: m.languages = [{code, label}, ...]
-    if (Array.isArray(m.languages) && m.languages.length) {
-      return m.languages.map(function (l) {
-        var code  = String(l.code || l.key || l.lang || '').toLowerCase();
-        var label = langLabel(l.label || l.name || code);
-        return { code: code, label: label };
-      }).filter(function (l) { return l.code; });
+    var out = [];
+    var seen = {};
+
+    function add(value) {
+      var code = langCode(value);
+      if (!code || seen[code]) return;
+      seen[code] = true;
+      out.push({ code: code, label: langLabel(value) });
     }
 
-    // Format B: m.streams = {eng: '...', hin: '...'} (object with language keys)
-    if (m.streams && typeof m.streams === 'object' && !Array.isArray(m.streams)) {
-      return Object.keys(m.streams).map(function (code) {
-        return { code: code.toLowerCase(), label: langLabel(code) };
+    var auto = pick(m, ['auto_streams', 'autoStreams']);
+    if (auto && typeof auto === 'object' && !Array.isArray(auto)) {
+      Object.keys(auto).forEach(function (k) { if (looksLikeLanguage(k)) add(k); });
+    }
+
+    var langs = m.languages || m.audio_languages;
+    if (!out.length && Array.isArray(langs)) {
+      langs.forEach(function (l) {
+        if (typeof l === 'string') { add(l); return; }
+        var v = l && (l.code || l.key || l.lang || l.label || l.name);
+        if (v) add(v);
       });
     }
 
-    // Format C: ID has language suffix — single stream
-    var id = String(m.id || m.matchId || m.match_id || '');
-    var match = id.match(/_([a-z]{2,4})$/i);
-    if (match) return [{ code: match[1].toLowerCase(), label: langLabel(match[1]) }];
-
-    // Format D: m.audio_languages = ['English', 'Hindi']
-    if (Array.isArray(m.audio_languages) && m.audio_languages.length) {
-      return m.audio_languages.map(function (lang) {
-        var key = String(lang).toLowerCase().substring(0,3);
-        return { code: key, label: langLabel(lang) };
-      });
+    if (!out.length) {
+      var single = pick(m, ['language', 'lang', 'audio', 'audio_language']);
+      if (single) add(single);
     }
 
-    // Default: single stream, assume English
-    return [{ code: '', label: 'ENGLISH' }];
+    /* Only if nothing else is known: a plain streams map whose keys look
+       like languages (older feed shape). */
+    if (!out.length && m.streams && typeof m.streams === 'object' && !Array.isArray(m.streams)) {
+      Object.keys(m.streams).forEach(function (k) { if (looksLikeLanguage(k)) add(k); });
+    }
+
+    if (!out.length) {
+      var m2 = String(pick(m, ['id', 'matchId', 'match_id']) || '').match(/_([a-z]{2,12})$/i);
+      if (m2) add(m2[1]);
+    }
+
+    if (!out.length) add('english');
+    return out;
   }
 
   /**
-   * Build the FanCode player redirect URL.
-   * Format: /fc/play/?id=<baseId>_<languageCode>&s=0
-   * THIS FORMAT MUST NOT CHANGE.
+   * Build the player link:  /fc/play/?id=<match_id>_<language>&s=0
    */
-  function buildPlayerUrl(matchId, langCode) {
+  function buildPlayerUrl(matchId, languageCode) {
     var bid = baseId(matchId);
-    var params = new URLSearchParams();
-    params.set('id', langCode ? bid + '_' + langCode : bid);
-    params.set('s', '0');
-    return PLAYER_ROUTE + '?' + params.toString();
+    var params = [];
+    params.push('id=' + encodeURIComponent(languageCode ? bid + '_' + languageCode : bid));
+    params.push('s=0');
+    var base = PLAYER_BASE ? String(PLAYER_BASE).replace(/\/+$/, '') : '';
+    var route = PLAYER_ROUTE.charAt(0) === '/' ? PLAYER_ROUTE : '/' + PLAYER_ROUTE;
+    return base + route + '?' + params.join('&');
   }
 
-  /** Build a display title from any common field format. */
   function buildTitle(m) {
-    var flat = m.title || m.name || m.event || m.match_name || m.teams || '';
+    var flat = pick(m, ['title', 'name', 'event', 'event_name', 'match_name', 'match_title', 'teams']);
     if (flat) return String(flat);
+
     var home = m.homeTeam || m.team1 || m.home_team || {};
     var away = m.awayTeam || m.team2 || m.away_team || {};
-    var hn = (typeof home === 'object' ? home.name || home.shortName || '' : home) || m.team_1 || '';
-    var an = (typeof away === 'object' ? away.name || away.shortName || '' : away) || m.team_2 || '';
+    var hn = (typeof home === 'object' ? home.name || home.shortName : home) || m.team_1 || '';
+    var an = (typeof away === 'object' ? away.name || away.shortName : away) || m.team_2 || '';
     if (hn && an) return hn + ' vs ' + an;
     return hn || an || '';
   }
 
-  /** Split "Team A vs Team B" into home/away. */
+  /**
+   * Split a title into { home, away }.
+   * "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
+   *   → { home: "India", away: "West Indies" }
+   * "World Championship of Legends 2026 - 2nd Match -Pakistan Champions vs Bangladesh Champions"
+   *   → { home: "Pakistan Champions", away: "Bangladesh Champions" }
+   * "Afghanistan vs Bangladesh in UAE 2026 - One-off Test - Afghanistan vs Bangladesh"
+   *   → { home: "Afghanistan", away: "Bangladesh" }
+   * Hyphens inside a name (U-19, Sri-Lanka) are kept: only a hyphen with a
+   * space on at least one side counts as a separator.
+   */
+  function splitSeries(part) {
+    return String(part == null ? '' : part)
+      .split(/\s+[-\u2013\u2014]\s*|\s*[-\u2013\u2014]\s+/)
+      .map(function (s) { return s.trim(); })
+      .filter(Boolean);
+  }
+
   function parseMatchup(title) {
-    if (!title) return null;
-    var parts = String(title).split(/\s+vs\.?\s+|\s+v\s+/i);
-    if (parts.length >= 2) return { home: parts[0].trim(), away: parts[parts.length - 1].trim() };
-    return null;
+    var t = String(title == null ? '' : title)
+      .replace(/\s*\[[^\]]*\]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!t) return null;
+
+    var parts = t.split(/\s+vs\.?\s+/i);
+    if (parts.length < 2) return null;
+
+    /* When the title repeats the fixture ("A vs B - round - A vs B"),
+       the real pairing is the LAST "vs". */
+    var homePart = parts.length > 2 ? parts[parts.length - 2] : parts[0];
+    var awayPart = parts[parts.length - 1];
+
+    /* Series text sits BEFORE the home team and AFTER the away team. */
+    var homeSegs = splitSeries(homePart);
+    var awaySegs = splitSeries(awayPart);
+
+    var home = homeSegs.length ? homeSegs[homeSegs.length - 1] : String(homePart).trim();
+    var away = awaySegs.length ? awaySegs[0] : String(awayPart).trim();
+
+    if (!home || !away || home.length < 2 || away.length < 2) return null;
+    return { home: home, away: away };
   }
 
   /** Normalise raw status → { label, className }. */
   function statusInfo(raw) {
-    var s = String(raw || 'UPCOMING').toUpperCase();
-    if (s === 'LIVE')                                      return { label: 'LIVE',    className: 'live'    };
-    if (['ENDED','FINISHED','COMPLETED'].indexOf(s) > -1)  return { label: 'ENDED',   className: 'ended'   };
-    if (['CANCELLED','CANCELED','POSTPONED'].indexOf(s) > -1) return { label: s,      className: 'ended'   };
+    var s = String(raw == null ? 'UPCOMING' : raw).trim().toUpperCase();
+    if (s === 'LIVE' || s === 'LIVE NOW' || s === 'IN PLAY')          return { label: 'LIVE',  className: 'live' };
+    if (['ENDED', 'FINISHED', 'COMPLETED', 'RESULT'].indexOf(s) > -1) return { label: 'ENDED', className: 'ended' };
+    if (['CANCELLED', 'CANCELED', 'POSTPONED', 'ABANDONED'].indexOf(s) > -1) return { label: s, className: 'ended' };
     return { label: 'UPCOMING', className: 'upcoming' };
   }
 
-  /* -------------------------------------------------------------------------
-   * Skeleton placeholders
-   * ---------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+   * Skeletons
+   * ------------------------------------------------------------------ */
   function renderSkeletons(n) {
     var html = '';
     for (var i = 0; i < n; i++) {
@@ -155,9 +260,9 @@
     track.innerHTML = html;
   }
 
-  /* -------------------------------------------------------------------------
-   * Render cards using the unified md-card system
-   * ---------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+   * Cards
+   * ------------------------------------------------------------------ */
   var FALLBACK = 'data:image/svg+xml,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">' +
     '<defs><linearGradient id="g" x1="0" x2="1" y1="1" y2="0">' +
@@ -179,39 +284,38 @@
     for (var i = 0; i < matches.length; i++) {
       var m = matches[i];
 
-      var status     = statusInfo(m.status || m.matchStatus || m.state);
+      var status     = statusInfo(pick(m, ['status', 'matchStatus', 'state', 'status_display']));
       var isLive     = status.className === 'live';
-      var isUpcoming = status.className === 'upcoming';
       var isEnded    = status.className === 'ended';
 
-      var id = String(m.id || m.matchId || m.match_id || m.matchID || '');
-
+      var id         = String(pick(m, ['match_id', 'id', 'matchId', 'matchID', 'stream_id']));
       var rawTitle   = buildTitle(m);
       var matchup    = parseMatchup(rawTitle);
-      var tournament = escapeHtml(m.tournament || m.competition || m.sport || m.series || m.league || m.category || '');
-      var imgSrc     = escapeHtml(m.poster || m.image || m.thumbnail || m.cover || m.tvgLogo || FALLBACK);
+      var tournament = escapeHtml(pick(m, ['tournament', 'competition', 'series', 'league', 'sport', 'category']));
+      var imgSrc     = escapeHtml(pick(m, ['image', 'poster', 'thumbnail', 'cover', 'tvgLogo']) || FALLBACK);
       var imgAlt     = escapeHtml(rawTitle || 'FanCode match');
-      var time       = escapeHtml(m.time || m.startTime || m.date || m.matchTime || m.scheduled_time || '');
+      var time       = escapeHtml(pick(m, ['startTime', 'time', 'date', 'matchTime', 'scheduled_time', 'start_time']));
 
-      // Watch buttons — live matches only, one per language
+      /* Watch buttons — live matches only, one per language */
       var watchHtml = '';
       if (isLive && id) {
-        var langs   = getLanguages(m);
+        var langs = getLanguages(m);
         var buttons = '';
         for (var j = 0; j < langs.length; j++) {
           var lang = langs[j];
           var href = escapeHtml(buildPlayerUrl(id, lang.code));
           var lbl  = escapeHtml(lang.label);
           buttons += '<a class="md-watch-btn" href="' + href + '" aria-label="Watch in ' + lbl + '">' +
-            '<span class="md-watch-btn-icon" aria-hidden="true">&#9654;</span>' +
-            'WATCH NOW' +
-            '<span class="md-watch-btn-sep" aria-hidden="true"> &bull; </span>' +
-            lbl + '</a>';
+            '<span class="md-watch-btn-icon" aria-hidden="true">&#9654;</span>WATCH NOW' +
+            '<span class="md-watch-btn-sep" aria-hidden="true"> &bull; </span>' + lbl + '</a>';
         }
         if (buttons) watchHtml = '<div class="md-actions">' + buttons + '</div>';
       }
+      if (!isLive && !isEnded && !watchHtml) {
+        // Result / reminder link so the card is never a dead end
+        watchHtml = '<div class="md-actions"><span class="md-soon">Starts soon</span></div>';
+      }
 
-      // Teams row or event title
       var matchupHtml = '';
       if (matchup) {
         matchupHtml = '<div class="md-matchup">' +
@@ -225,8 +329,9 @@
 
       html += '<article class="md-card md-' + status.className + '" data-match-id="' + escapeHtml(id) + '">' +
         '<div class="md-thumb">' +
-          '<img src="' + imgSrc + '" alt="' + imgAlt + '" loading="lazy" ' +
-               'onerror="this.onerror=null;this.src=\'' + FALLBACK.replace(/'/g,'\\x27') + '\'">' +
+          '<img src="' + imgSrc + '" alt="' + imgAlt + '" ' +
+               (i < EAGER_CARDS ? 'loading="eager"' : 'loading="lazy"') + ' decoding="async" ' +
+               'onerror="this.onerror=null;this.src=\'' + FALLBACK.replace(/'/g, '\\x27') + '\'">' +
           '<span class="md-status md-' + status.className + '">' + escapeHtml(status.label) + '</span>' +
         '</div>' +
         '<div class="md-info">' +
@@ -243,29 +348,39 @@
     track.innerHTML = html;
   }
 
-  /* -------------------------------------------------------------------------
+  /* ---------------------------------------------------------------------
    * Fetch
-   * ---------------------------------------------------------------------- */
+   * ------------------------------------------------------------------ */
   function fetchFancode() {
+    if (!API_URL) {
+      console.error('[FanCode] No API URL configured (cfg.apis.fancode / fanCode).');
+      track.innerHTML = '<div class="md-error"><strong>FanCode feed is not configured</strong>Check script/config.js</div>';
+      return;
+    }
+
     renderSkeletons(6);
-    fetch(API_URL)
+
+    fetch(API_URL, { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
       .then(function (data) {
-        var matches = extractMatches(data).slice(0, 20);
-        renderMatches(matches);
+        var all = extractMatches(data);
+        /* Live matches first, then upcoming — same as the section title implies. */
+        var live = all.filter(function (m) { return statusInfo(pick(m, ['status', 'state'])).className === 'live'; });
+        var rest = all.filter(function (m) { return statusInfo(pick(m, ['status', 'state'])).className !== 'live'; });
+        renderMatches(live.concat(rest).slice(0, 20));
       })
       .catch(function (err) {
         console.error('[FanCode] fetch error:', err);
-        track.innerHTML = '<div class="md-error"><strong>Could not load FanCode matches</strong></div>';
+        track.innerHTML = '<div class="md-error"><strong>Could not load FanCode matches</strong>Please refresh in a moment.</div>';
       });
   }
 
-  /* -------------------------------------------------------------------------
+  /* ---------------------------------------------------------------------
    * Arrows
-   * ---------------------------------------------------------------------- */
+   * ------------------------------------------------------------------ */
   function scrollAmt() {
     var c = track.querySelector('.md-card,.md-skeleton');
     if (!c) return 320;
@@ -274,16 +389,30 @@
   if (arrowLeft)  arrowLeft.addEventListener('click',  function (e) { e.stopPropagation(); track.scrollBy({ left: -scrollAmt(), behavior: 'smooth' }); });
   if (arrowRight) arrowRight.addEventListener('click', function (e) { e.stopPropagation(); track.scrollBy({ left:  scrollAmt(), behavior: 'smooth' }); });
 
-  /* -------------------------------------------------------------------------
-   * Lazy-load
-   * ---------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+   * Lazy-load + 60 s refresh
+   * ------------------------------------------------------------------ */
   var section = document.getElementById('fancodeSection');
+  var loaded = false;
+  var timer = null;
+
+  function load() {
+    if (loaded) return;
+    loaded = true;
+    fetchFancode();
+    timer = window.setInterval(function () {
+      if (!document.hidden) fetchFancode();
+    }, 60000);
+  }
+
   if ('IntersectionObserver' in window && section) {
     var obs = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) { fetchFancode(); obs.disconnect(); }
+      if (entries[0].isIntersecting) { load(); obs.disconnect(); }
     }, { rootMargin: '200px' });
     obs.observe(section);
   } else {
-    fetchFancode();
+    load();
   }
+
+  window.addEventListener('beforeunload', function () { if (timer) window.clearInterval(timer); });
 })();
