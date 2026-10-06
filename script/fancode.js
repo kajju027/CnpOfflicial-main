@@ -1,325 +1,266 @@
-(function() {
+(function () {
   'use strict';
 
-  const config = window.MATCHDEKHO_CONFIG || {};
-  const API_URL = config.apis && config.apis.fancode;
-  const PLAYER_ROUTE = config.routes && config.routes.fancodePlayer || '/fc/play/';
-  const LANGUAGE_MAP = {
-    eng: 'ENGLISH',
-    hin: 'HINDI',
-    bang: 'BANGLA',
-    ml: 'MALAYALAM',
-    tam: 'TAMIL',
-    tel: 'TELUGU',
-    kan: 'KANNADA',
-    mar: 'MARATHI',
-    guj: 'GUJARATI',
-    pun: 'PUNJABI',
-    ori: 'ODIA',
-    bho: 'BHOJPURI'
-  };
-  const track = document.getElementById('fancodeTrack');
-  const arrowLeft = document.getElementById('fancodeArrowLeft');
+  // ---------------------------------------------------------------------------
+  // Config
+  // ---------------------------------------------------------------------------
+  const API_URL      = window.MATCHDEKHO_CONFIG.apis.fanCode;
+  const PLAYER_ROUTE = window.MATCHDEKHO_CONFIG.routes.fancodePlayer; // "/fc/play/"
+
+  const track      = document.getElementById('fancodeTrack');
+  const arrowLeft  = document.getElementById('fancodeArrowLeft');
   const arrowRight = document.getElementById('fancodeArrowRight');
-  const summary = document.getElementById('fancodeSummary');
-  const updated = document.getElementById('fancodeUpdated');
-  const SKELETON_COUNT = 5;
-  let isLoading = false;
-  let hasLoaded = false;
 
-  function escapeHtml(value) {
-    return String(value == null ? '' : value).replace(/[&<>"']/g, function(character) {
-      return {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      }[character];
-    });
+  if (!track) return;
+
+  // ---------------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------------
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
-  function safeHttpUrl(value) {
-    const url = String(value || '').trim();
-    if (!url) return '';
-    try {
-      const parsed = new URL(url);
-      return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? url : '';
-    } catch (error) {
-      return '';
-    }
-  }
-
+  /** Strip language suffix from a match ID (e.g. "12345_eng" → "12345"). */
   function getBaseMatchId(value) {
-    return String(value || '').trim().split('_')[0];
+    return String(value || '').replace(/_[a-z]{2,4}$/i, '');
   }
 
-  function resolveLanguage(value) {
-    const normalized = String(value || '').trim().replace(/^\[|\]$/g, '').toUpperCase();
-    if (!normalized) return null;
+  /** Normalise a language code/label. */
+  const LANG_MAP = {
+    eng: 'ENGLISH', en: 'ENGLISH', english: 'ENGLISH',
+    hin: 'HINDI',   hi: 'HINDI',   hindi:   'HINDI',
+    tam: 'TAMIL',   ta: 'TAMIL',   tamil:   'TAMIL',
+    tel: 'TELUGU',  te: 'TELUGU',  telugu:  'TELUGU',
+    kan: 'KANNADA', kn: 'KANNADA', kannada: 'KANNADA',
+    mal: 'MALAYALAM', ml: 'MALAYALAM', malayalam: 'MALAYALAM',
+  };
 
-    for (const [code, label] of Object.entries(LANGUAGE_MAP)) {
-      if (normalized === code.toUpperCase() || normalized === label) {
-        return { code: code, label: label };
-      }
-    }
-
-    return null;
+  function resolveLanguage(raw) {
+    const key = String(raw || '').toLowerCase().trim();
+    return LANG_MAP[key] || String(raw || '').toUpperCase();
   }
 
+  /**
+   * Extract available language streams from a FanCode match object.
+   * Returns array of { code, label } objects.
+   */
   function getLanguages(match) {
-    const values = [];
-    const autoStreams = match.auto_streams;
-
-    if (autoStreams && typeof autoStreams === 'object' && !Array.isArray(autoStreams)) {
-      values.push.apply(values, Object.keys(autoStreams));
+    // Format A: match.languages = [{code:'eng', label:'English'}, ...]
+    if (Array.isArray(match.languages)) {
+      return match.languages.map(function (l) {
+        const code  = String(l.code  || l.key   || l.lang || '');
+        const label = resolveLanguage(l.label || l.name || code);
+        return { code, label };
+      }).filter(function (l) { return l.code; });
     }
 
-    const languages = match.languages || match.available_languages;
-    if (Array.isArray(languages)) {
-      values.push.apply(values, languages);
-    } else if (languages && typeof languages === 'object') {
-      values.push.apply(values, Object.keys(languages));
-      values.push.apply(values, Object.values(languages));
-    } else if (typeof languages === 'string') {
-      values.push.apply(values, languages.split(/[,|/]+/));
+    // Format B: match.streams = {eng: 'url', hin: 'url'}
+    if (match.streams && typeof match.streams === 'object') {
+      return Object.keys(match.streams).map(function (code) {
+        return { code, label: resolveLanguage(code) };
+      });
     }
 
-    if (match.language) values.push.apply(values, String(match.language).split(/[,|/]+/));
+    // Format C: match.id ends with _eng / _hin suffix — single stream
+    const id = String(match.id || match.matchId || '');
+    const suffix = id.match(/_([a-z]{2,4})$/i);
+    if (suffix) {
+      return [{ code: suffix[1].toLowerCase(), label: resolveLanguage(suffix[1]) }];
+    }
 
-    const title = String(match.title || match.event_name || '');
-    const titleLanguage = title.match(/\[([^\]]+)\]\s*$/);
-    if (titleLanguage) values.push.apply(values, titleLanguage[1].split(/[,|/]+/));
-
-    const options = [];
-    const seen = new Set();
-
-    values.forEach(function(value) {
-      const language = resolveLanguage(value);
-      if (language && !seen.has(language.code)) {
-        seen.add(language.code);
-        options.push(language);
-      }
-    });
-
-    return options;
+    // Default: single English stream with no code suffix
+    return [{ code: '', label: 'ENGLISH' }];
   }
 
+  /**
+   * Build the FanCode player redirect URL.
+   * Format: /fc/play/?id=<baseId>_<languageCode>&s=0
+   * IMPORTANT: this format must NOT change.
+   */
   function buildPlayerUrl(matchId, languageCode) {
     const baseId = getBaseMatchId(matchId);
     const params = new URLSearchParams();
-    params.set('id', `${baseId}_${languageCode}`);
+    params.set('id', languageCode ? baseId + '_' + languageCode : baseId);
     params.set('s', '0');
-    return `${PLAYER_ROUTE}?${params.toString()}`;
+    return PLAYER_ROUTE + '?' + params.toString();
   }
 
-  function cleanTitle(match) {
-    return String(match.title || match.event_name || match.match_name || 'Live Match')
-      .replace(/\s*\[[^\]]+\]\s*$/, '')
-      .trim();
+  /**
+   * Parse "Team A vs Team B" into home/away parts.
+   */
+  function parseMatchup(title) {
+    if (!title) return null;
+    const parts = String(title).split(/\s+vs\.?\s+|\s+v\s+/i);
+    if (parts.length >= 2) {
+      return { home: parts[0].trim(), away: parts[parts.length - 1].trim() };
+    }
+    return null;
   }
 
-  function getMatchup(title) {
-    const parts = String(title || '').split(/\s+-\s+/);
-    const candidate = parts[parts.length - 1];
-    const result = candidate.match(/^(.+?)\s+(?:vs\.?|v\.?|versus)\s+(.+)$/i);
-    if (!result) return null;
-    return { home: result[1].trim(), away: result[2].trim() };
-  }
-
-  function getSourceTime(value) {
-    return value == null ? '' : String(value);
-  }
-
-  function statusInfo(value) {
-    const status = String(value || 'UPCOMING').toUpperCase();
-    if (status === 'LIVE') return { label: 'LIVE', className: 'live' };
-    if (['ENDED', 'FINISHED', 'COMPLETED'].includes(status)) return { label: 'ENDED', className: 'ended' };
-    if (['CANCELLED', 'CANCELED', 'POSTPONED'].includes(status)) return { label: status, className: 'ended' };
+  /**
+   * Normalise raw status into { label, className }.
+   */
+  function statusInfo(raw) {
+    const s = String(raw || 'UPCOMING').toUpperCase();
+    if (s === 'LIVE') return { label: 'LIVE', className: 'live' };
+    if (['ENDED', 'FINISHED', 'COMPLETED'].includes(s)) return { label: 'ENDED', className: 'ended' };
+    if (['CANCELLED', 'CANCELED', 'POSTPONED'].includes(s)) return { label: s, className: 'ended' };
     return { label: 'UPCOMING', className: 'upcoming' };
   }
 
-  function renderSkeletonCards() {
-    if (!track) return;
-    track.innerHTML = Array.from({ length: SKELETON_COUNT }, function() {
-      return `
-        <div class="fancode-card fc-skeleton-card" aria-hidden="true">
-          <div class="fc-skeleton-thumb"></div>
-          <div class="fc-skeleton-info">
-            <div class="fc-skeleton-line short"></div>
-            <div class="fc-skeleton-line medium"></div>
-            <div class="fc-skeleton-line long"></div>
+  // ---------------------------------------------------------------------------
+  // Skeleton placeholders
+  // ---------------------------------------------------------------------------
+  function renderSkeletons(n) {
+    let html = '';
+    for (let i = 0; i < n; i++) {
+      html += `
+        <div class="md-skeleton" aria-hidden="true">
+          <div class="md-skeleton-thumb"></div>
+          <div class="md-skeleton-info">
+            <div class="md-skeleton-line sm"></div>
+            <div class="md-skeleton-line lg"></div>
+            <div class="md-skeleton-line md"></div>
           </div>
-        </div>
-      `;
-    }).join('');
+        </div>`;
+    }
+    track.innerHTML = html;
   }
 
-  function updateSummary(data, matches) {
-    const liveCount = matches.filter(function(match) {
-      return String(match.status || '').toUpperCase() === 'LIVE';
-    }).length;
-    const upcomingCount = matches.filter(function(match) {
-      return String(match.status || '').toUpperCase() === 'UPCOMING';
-    }).length;
-
-    if (summary) {
-      summary.textContent = `${liveCount} LIVE · ${upcomingCount} UPCOMING`;
-      summary.classList.toggle('has-live', liveCount > 0);
-    }
-
-    if (updated) {
-      updated.textContent = data.updatedAt ? `Updated ${data.updatedAt}` : '';
-    }
-  }
-
+  // ---------------------------------------------------------------------------
+  // Render match cards using the unified md-card system
+  // ---------------------------------------------------------------------------
   function renderMatches(matches) {
-    if (!track) return;
-
-    if (!matches.length) {
-      track.innerHTML = '<div class="fancode-empty" role="status">No FanCode matches are available right now.</div>';
+    if (!matches || matches.length === 0) {
+      track.innerHTML = '<div class="md-empty"><strong>No FanCode matches right now</strong>Check back soon.</div>';
       return;
     }
 
-    const sortedMatches = matches.slice().sort(function(first, second) {
-      const rank = function(match) {
-        const status = String(match.status || '').toUpperCase();
-        if (status === 'LIVE') return 0;
-        if (status === 'UPCOMING') return 1;
-        return 2;
-      };
-      return rank(first) - rank(second);
-    });
+    const fallbackImg = 'data:image/svg+xml,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">' +
+      '<defs><linearGradient id="g" x1="0" x2="1" y1="1" y2="0">' +
+      '<stop offset="0" stop-color="#0a0e1a"/><stop offset="1" stop-color="#11203a"/>' +
+      '</linearGradient></defs>' +
+      '<rect width="960" height="540" fill="url(#g)"/>' +
+      '<text x="480" y="288" fill="#fff" font-family="Arial,sans-serif" font-size="40" font-weight="700" text-anchor="middle">FANCODE</text>' +
+      '</svg>'
+    );
 
-    track.innerHTML = sortedMatches.map(function(match) {
-      const id = getBaseMatchId(match.match_id || match.id);
-      const title = cleanTitle(match);
-      const matchup = getMatchup(title);
-      const tournament = String(match.tournament || match.category || 'FanCode');
-      const category = String(match.category || 'SPORTS');
-      const image = safeHttpUrl(match.image || match.src);
-      const time = getSourceTime(match.startTime || match.time);
-      const status = statusInfo(match.status);
-      const languages = status.className === 'live' ? getLanguages(match) : [];
-      const matchupHtml = matchup
-        ? `<div class="fancode-teams"><span class="fancode-team-name">${escapeHtml(matchup.home)}</span><span class="fancode-vs">VS</span><span class="fancode-team-name">${escapeHtml(matchup.away)}</span></div>`
-        : `<h3 class="fancode-event-title">${escapeHtml(title)}</h3>`;
-      const watchButtons = status.className === 'live' && id && languages.length
-        ? `<div class="fancode-actions">${languages.map(function(language) {
-            const href = buildPlayerUrl(id, language.code);
-            return `<a class="fancode-watch-button" href="${escapeHtml(href)}" aria-label="Watch in ${escapeHtml(language.label)}"><span class="fc-btn-icon" aria-hidden="true">▶</span><span class="fc-btn-label">WATCH NOW <span class="fc-btn-sep" aria-hidden="true">•</span> ${escapeHtml(language.label)}</span></a>`;
-          }).join('')}</div>`
-        : '';
+    let html = '';
 
-      return `
-        <article class="fancode-card ${status.className}">
-          <div class="fancode-thumb${image ? '' : ' no-image'}">
-            ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" loading="lazy">` : ''}
-            <span class="fancode-category-tag">${escapeHtml(category)}</span>
-            <span class="fancode-status-pill ${status.className}">${status.label}</span>
+    matches.forEach(function (match) {
+      const status     = statusInfo(match.status);
+      const isLive     = status.className === 'live';
+      const isUpcoming = status.className === 'upcoming';
+      const isEnded    = status.className === 'ended';
+      const id         = String(match.id || match.matchId || match.match_id || '');
+
+      const rawTitle   = match.title || match.name || match.event || match.teams || '';
+      const matchup    = parseMatchup(rawTitle);
+      const tournament = escapeHtml(match.tournament || match.competition || match.sport || '');
+      const imgSrc     = escapeHtml(match.poster || match.image || match.thumbnail || fallbackImg);
+      const imgAlt     = escapeHtml(rawTitle || 'FanCode match');
+      const time       = escapeHtml(match.time || match.date || match.startTime || '');
+
+      // Build watch buttons — only for live matches
+      let watchMarkup = '';
+      if (isLive && id) {
+        const langs    = getLanguages(match);
+        const buttons  = langs.map(function (lang) {
+          const href  = escapeHtml(buildPlayerUrl(id, lang.code));
+          const label = escapeHtml(lang.label);
+          return `<a class="md-watch-btn" href="${href}" aria-label="Watch in ${label}">` +
+            `<span class="md-watch-btn-icon" aria-hidden="true">&#9654;</span>` +
+            `WATCH NOW` +
+            `<span class="md-watch-btn-sep" aria-hidden="true">&#8226;</span>` +
+            `${label}</a>`;
+        }).join('');
+        if (buttons) watchMarkup = buttons;
+      }
+
+      // Matchup HTML
+      let matchupHtml = '';
+      if (matchup) {
+        matchupHtml = `<div class="md-matchup">` +
+          `<span class="md-team">${escapeHtml(matchup.home)}</span>` +
+          `<span class="md-vs">VS</span>` +
+          `<span class="md-team away">${escapeHtml(matchup.away)}</span>` +
+          `</div>`;
+      } else if (rawTitle) {
+        matchupHtml = `<div class="md-event-title">${escapeHtml(rawTitle)}</div>`;
+      }
+
+      html += `
+        <article class="md-card md-${status.className}" data-match-id="${escapeHtml(id)}">
+          <div class="md-thumb">
+            <img src="${imgSrc}" alt="${imgAlt}" loading="lazy"
+                 onerror="this.onerror=null;this.src='${fallbackImg}'">
+            <span class="md-status md-${status.className}">${escapeHtml(status.label)}</span>
           </div>
-          <div class="fancode-info">
-            <div class="fancode-tournament">${escapeHtml(tournament)}</div>
+          <div class="md-info">
+            ${tournament ? `<div class="md-tournament">${tournament}</div>` : ''}
             ${matchupHtml}
-            ${time ? `<div class="fancode-meta"><time class="fancode-time">${escapeHtml(time)}</time></div>` : ''}
-            ${watchButtons}
+            <div class="md-footer">
+              ${time ? `<time class="md-time">${time}</time>` : '<span class="md-time"></span>'}
+              ${watchMarkup ? `<div class="md-actions">${watchMarkup}</div>` : ''}
+            </div>
           </div>
-        </article>
-      `;
-    }).join('');
-
-    track.querySelectorAll('.fancode-thumb img').forEach(function(image) {
-      image.addEventListener('error', function() {
-        image.hidden = true;
-        image.parentElement.classList.add('no-image');
-      });
+        </article>`;
     });
+
+    track.innerHTML = html;
   }
 
-  function renderError(message) {
-    if (!track) return;
-    track.innerHTML = `
-      <div class="fancode-error" role="status">
-        <strong>Unable to load FanCode matches</strong>
-        <span>${escapeHtml(message || 'Please try again.')}</span>
-        <button class="fancode-retry" type="button">Retry</button>
-      </div>
-    `;
-    const retry = track.querySelector('.fancode-retry');
-    if (retry) retry.addEventListener('click', fetchFancodeData);
+  // ---------------------------------------------------------------------------
+  // Fetch data
+  // ---------------------------------------------------------------------------
+  function fetchFancode() {
+    renderSkeletons(6);
+
+    fetch(API_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        const raw     = data.matches || data.events || data || [];
+        const matches = (Array.isArray(raw) ? raw : []).slice(0, 20);
+        renderMatches(matches);
+      })
+      .catch(function (err) {
+        console.error('[FanCode] fetch error:', err);
+        track.innerHTML = '<div class="md-error"><strong>Failed to load FanCode matches</strong></div>';
+      });
   }
 
-  async function fetchFancodeData() {
-    if (isLoading || !track || !API_URL) return;
-    isLoading = true;
-    if (!hasLoaded) renderSkeletonCards();
-
-    try {
-      const response = await fetch(API_URL, { cache: 'no-cache' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      const matches = Array.isArray(data) ? data : Array.isArray(data.matches) ? data.matches : [];
-      updateSummary(data, matches);
-      renderMatches(matches);
-      hasLoaded = true;
-    } catch (error) {
-      renderError(error.message);
-      hasLoaded = true;
-    } finally {
-      isLoading = false;
-    }
-  }
-
+  // ---------------------------------------------------------------------------
+  // Arrow scroll
+  // ---------------------------------------------------------------------------
   function scrollAmount() {
-    const card = track && track.querySelector('.fancode-card, .fc-skeleton-card');
-    if (!card) return 560;
-    const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '20');
+    const card = track.querySelector('.md-card, .md-skeleton');
+    if (!card) return 320;
+    const gap = parseFloat(getComputedStyle(track).gap || '20');
     return (card.getBoundingClientRect().width + gap) * 2;
   }
 
-  function scrollByDirection(direction) {
-    if (!track) return;
-    track.scrollBy({ left: direction * scrollAmount(), behavior: 'smooth' });
-  }
+  if (arrowLeft)  arrowLeft.addEventListener('click',  function (e) { e.stopPropagation(); track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }); });
+  if (arrowRight) arrowRight.addEventListener('click', function (e) { e.stopPropagation(); track.scrollBy({ left:  scrollAmount(), behavior: 'smooth' }); });
 
-  function initLazyLoad() {
-    const section = document.getElementById('fancodeSection');
-    if (!section) return;
-    if (section.getBoundingClientRect().top < window.innerHeight) {
-      fetchFancodeData();
-      return;
-    }
-
-    const observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          fetchFancodeData();
-          observer.disconnect();
-        }
-      });
-    }, { rootMargin: '240px' });
-
-    observer.observe(section);
-  }
-
-  function init() {
-    if (arrowLeft) arrowLeft.addEventListener('click', function() { scrollByDirection(-1); });
-    if (arrowRight) arrowRight.addEventListener('click', function() { scrollByDirection(1); });
-
-    if (track) {
-      track.addEventListener('keydown', function(event) {
-        if (event.key === 'ArrowLeft') scrollByDirection(-1);
-        if (event.key === 'ArrowRight') scrollByDirection(1);
-      });
-      track.setAttribute('tabindex', '0');
-    }
-
-    initLazyLoad();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+  // ---------------------------------------------------------------------------
+  // Lazy-load
+  // ---------------------------------------------------------------------------
+  const section = document.getElementById('fancodeSection');
+  if ('IntersectionObserver' in window && section) {
+    const obs = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) { fetchFancode(); obs.disconnect(); }
+    }, { rootMargin: '200px' });
+    obs.observe(section);
   } else {
-    init();
+    fetchFancode();
   }
 })();
