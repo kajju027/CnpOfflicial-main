@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>404 – Page Not Found · matchdekho</title>
+  <title>404 - Page Not Found | CnpTV</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -33,7 +33,6 @@
       overflow: hidden;
     }
 
-    /* Subtle grid background */
     body::before {
       content: '';
       position: fixed;
@@ -45,7 +44,6 @@
       pointer-events: none;
     }
 
-    /* Radial glow — top centre */
     body::after {
       content: '';
       position: fixed;
@@ -60,7 +58,9 @@
       pointer-events: none;
     }
 
-    /* Brand mark at top */
+    .brand .cnp { color: #7dffb3; }
+    .brand .tv  { color: #ffffff; }
+
     .brand {
       position: fixed;
       top: clamp(16px, 3vw, 28px);
@@ -76,10 +76,6 @@
       z-index: 10;
     }
 
-    .brand .m  { color: #7dffb3; }
-    .brand .dk { color: #ffffff; }
-
-    /* Centred content card */
     .card {
       position: relative;
       z-index: 5;
@@ -91,7 +87,6 @@
       width: 100%;
     }
 
-    /* 404 number */
     .code {
       font-size: clamp(6rem, 21vw, 13rem);
       font-weight: 900;
@@ -101,7 +96,7 @@
       background: linear-gradient(160deg, #ffffff 18%, rgba(255, 255, 255, 0.38) 100%);
       -webkit-background-clip: text;
       background-clip: text;
-      /* Layered shadow for depth */
+
       filter:
         drop-shadow(0 0 48px rgba(52, 211, 153, 0.20))
         drop-shadow(0 24px 52px rgba(0, 0, 0, 0.72));
@@ -109,7 +104,6 @@
       margin-bottom: 0.18em;
     }
 
-    /* Golden rule */
     .rule {
       width: 52px;
       height: 3px;
@@ -119,7 +113,6 @@
       margin: 0 auto 1.25rem;
     }
 
-    /* Heading */
     .heading {
       font-size: clamp(1.1rem, 3.2vw, 1.55rem);
       font-weight: 700;
@@ -128,7 +121,6 @@
       margin-bottom: 0.55rem;
     }
 
-    /* Sub message */
     .message {
       font-size: clamp(0.82rem, 2vw, 0.98rem);
       color: rgba(255, 255, 255, 0.46);
@@ -137,7 +129,6 @@
       margin: 0 auto 2rem;
     }
 
-    /* Action buttons */
     .actions {
       display: flex;
       gap: 10px;
@@ -145,7 +136,6 @@
       flex-wrap: wrap;
     }
 
-    /* Primary — golden */
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -174,7 +164,6 @@
         0 4px 10px rgba(0, 0, 0, 0.46);
     }
 
-    /* Secondary — ghost */
     .btn-secondary {
       display: inline-flex;
       align-items: center;
@@ -200,7 +189,6 @@
       color: rgba(255, 255, 255, 0.92);
     }
 
-    /* Bottom hint */
     .hint {
       position: fixed;
       bottom: clamp(16px, 3vw, 26px);
@@ -223,8 +211,8 @@
 </head>
 <body>
 
-  <a href="/" class="brand" aria-label="matchdekho home">
-    <span class="m">match</span><span class="dk">dekho</span>
+  <a href="/" class="brand" aria-label="CnpTV home">
+    <span class="cnp">Cnp</span><span class="tv">TV</span>
   </a>
 
   <div class="card" role="main">
@@ -232,7 +220,7 @@
     <div class="rule" aria-hidden="true"></div>
     <h1 class="heading">Page Not Found</h1>
     <p class="message">
-      The page you're looking for has moved, been removed, or never existed.
+      The page you are looking for has moved, been removed, or never existed.
       Head back and catch something live.
     </p>
     <div class="actions">
@@ -241,7 +229,7 @@
     </div>
   </div>
 
-  <p class="hint" aria-hidden="true">matchdekho &mdash; 2026</p>
+  <p class="hint" aria-hidden="true">CnpTV - 2026</p>
 
 </body>
 </html>
