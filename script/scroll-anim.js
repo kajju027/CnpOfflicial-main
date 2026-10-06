@@ -1,21 +1,3 @@
-/* =====================================================================
-   matchdekho — scroll animations  (v3.1, new file)
-   ---------------------------------------------------------------------
-   What it does
-   1. Reveals sections and match cards with a soft fade + rise as they
-      scroll into view (cards inside a row are staggered).
-   2. Fades the "SCROLL" hint away as soon as the visitor scrolls.
-   3. Slides the hero poster slightly while the top of the page scrolls.
-
-   Safety rules
-   * Everything starts hidden only AFTER this file adds .md-anim to <html>.
-     If JavaScript is blocked/off, or the file is not loaded, all content
-     is visible — the page can never end up blank.
-   * If the visitor has "reduce motion" enabled, the file does nothing.
-   * Newly injected cards (the three sections render after their feed
-     arrives) are picked up by a MutationObserver.
-   ===================================================================== */
-
 (function () {
   'use strict';
 
@@ -29,10 +11,6 @@
     }
   }
 
-  /* ---------------------------------------------------------------
-   * Scroll hint: hide once the page is scrolled (works everywhere,
-   * even in old browsers / reduced motion).
-   * ------------------------------------------------------------ */
   var hint = document.querySelector('.scroll-hint');
   var lastKnownScroll = 0;
   var ticking = false;
@@ -55,8 +33,6 @@
 
   updateHint();
 
-  /* No IntersectionObserver or reduced motion → stop here.
-     (No element ever gets hidden, so the page stays fully visible.) */
   if (!('IntersectionObserver' in window) || prefersReducedMotion()) return;
 
   root.classList.add('md-anim');
@@ -78,23 +54,21 @@
       var el    = entry.target;
       var delay = 0;
 
-      /* Stagger the cards of a row: 0 ms, 70 ms, 140 ms ... */
       if (el.classList.contains('md-card') && el.parentElement) {
         var index = Array.prototype.indexOf.call(el.parentElement.children, el);
-        delay = Math.min(index, 6) * 70;
+        delay = Math.min(index, 6) * 90;
       }
 
       el.style.transitionDelay = delay + 'ms';
       el.classList.add('md-in');
 
-      /* clear the delay afterwards so hover transitions stay snappy */
       window.setTimeout(function (node) {
         return function () { node.style.transitionDelay = ''; };
       }(el), delay + 900);
 
       io.unobserve(el);
     }
-  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
 
   function register(el) {
     if (!el || el.nodeType !== 1) return;
@@ -113,7 +87,6 @@
 
   scan(document.body || root);
 
-  /* Cards arrive later (feeds are fetched with fetch()). Watch the tracks. */
   ['willowLiveTrack', 'fancodeTrack', 'worldSportsTrack'].forEach(function (id) {
     var track = document.getElementById(id);
     if (!track || !window.MutationObserver) return;
@@ -124,13 +97,8 @@
     }).observe(track, { childList: true });
   });
 
-  /* The three sections are lazy-loaded when they scroll into view, so
-     their skeletons also arrive late — one extra scan covers them. */
   window.setTimeout(function () { scan(document.body || root); }, 1200);
 
-  /* ---------------------------------------------------------------
-   * Very light hero parallax (max 14 px, disabled on small screens)
-   * ------------------------------------------------------------ */
   var posterArt = document.querySelector('.poster-art');
   var hero = document.getElementById('posterWrapper');
 
