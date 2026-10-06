@@ -50,22 +50,17 @@ window.MATCHDEKHO_CONFIG = {
      If your /az/ player expects the other one, just change this word. */
   willowPlayerMode: "stream",
 
+  /* -------------------------------------------------------------------
+     HERO POSTERS  (slide 1 … slide n)
+     Optional per-poster fields:
+       posterPosition        -> desktop crop focus, e.g. "center 20%"
+       posterPositionMobile  -> mobile crop focus   (hero is 4:3 on phones)
+     Portrait posters (like the India-Uruguay FIFA one) only need a focus
+     point; the image itself can stay portrait.
+     ------------------------------------------------------------------- */
   heroMatches: [
     {
-      tournament: "UEFA NATIONS LEAGUE, 2026",
-      homeTeam: {
-        name: "Portugal",
-        logo: "https://flagpedia.net/data/flags/w1160/pt.webp"
-      },
-      awayTeam: {
-        name: "Norway",
-        logo: "https://flagpedia.net/data/flags/w1160/no.webp"
-      },
-      poster: "https://img.tod.tv/resources/images/link/192e0c70-8f63-37a6-82cd-4b8bf2d188a4/6060b852-c1ae-5aac-985e-64478041ec5e/639267051693920000/0:0:1912:1080/1920x1080/3739d37e-1d96-4213-bf70-b7a1b0c68037_wallpaper-169-en.webp",
-      watchUrl: "/live/nations-league.html"
-    },
-    {
-      tournament: "WI TOUR OF INDIA, 2026",
+      tournament: "WI TOUR OF INDIA, 2026 \u00b7 1ST T20I",
       homeTeam: {
         name: "India",
         logo: "https://flagpedia.net/data/flags/w1160/in.webp"
@@ -74,8 +69,26 @@ window.MATCHDEKHO_CONFIG = {
         name: "West Indies",
         logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Cricket_West_Indies_flag_2017.svg/1920px-Cricket_West_Indies_flag_2017.svg.png"
       },
-      poster: "https://img10.hotstar.com/image/upload/f_auto,q_90/sources/r1/cms/prod/3888/1790435993888-i",
+      poster: "https://img10.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/9280/1791259109280-i",
+      posterPosition: "center 25%",
       watchUrl: "/live/ind-vs-wi.html"
+    },
+    {
+      tournament: "FIFA FRIENDLY 2026 \u00b7 INDIA VS URUGUAY",
+      homeTeam: {
+        name: "India",
+        logo: "https://flagpedia.net/data/flags/w1160/in.webp"
+      },
+      awayTeam: {
+        name: "Uruguay",
+        logo: "https://flagpedia.net/data/flags/w1160/uy.webp"
+      },
+      /* Portrait poster - the hero window is 16:9, so it is cropped on the
+         faces instead of the middle. */
+      poster: "https://images.slivcdn.com/videoasset_images/manage_file/1000025899/1791239662533660_IND_vs_URU_tonight_portrait_thumb.jpg",
+      posterPosition: "center 0%",
+      posterPositionMobile: "center 18%",
+      watchUrl: "/live/ind-vs-uru.html"
     }
   ]
 };
