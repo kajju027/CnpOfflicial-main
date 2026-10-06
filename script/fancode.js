@@ -1,24 +1,7 @@
-/* =====================================================================
-   FanCode section  —  v3.1 (fixed)
-   ---------------------------------------------------------------------
-   FIXES in this file:
-   1. API key fell back to nothing (cfg.apis.fanCode was undefined) →
-      now: cfg.apis.fanCode || cfg.apis.fancode  (and warns loudly).
-   2. Language buttons were built from m.streams, and the live feed's
-      m.streams only holds quality/CDN keys (primary, fancode_cdn,
-      fancode_bd_cdn, backup ...). That produced nonsense buttons like
-      "WATCH NOW • FANCODE_BD_CDN". Languages are now read from
-      m.auto_streams / m.language (real feed: "ENGLISH", "HINDI", ...).
-   3. Player link ids are normalised: /fc/play/?id=<match_id>_<language>&s=0
-      (language lowercase, e.g. 4250053_english).
-   4. First 5 thumbs eager, feed fetched with cache:"no-store",
-      auto-refresh every 60 s while the tab is visible.
-   ===================================================================== */
-
 (function () {
   'use strict';
 
-  var cfg          = window.MATCHDEKHO_CONFIG || {};
+  var cfg          = window.CNPTV_CONFIG || {};
   var apis         = cfg.apis || {};
   var API_URL      = apis.fanCode || apis.fancode || '';
   var ROUTES       = cfg.routes || {};
@@ -31,10 +14,6 @@
   var arrowRight = document.getElementById('fancodeArrowRight');
 
   if (!track) return;
-
-  /* ---------------------------------------------------------------------
-   * Helpers
-   * ------------------------------------------------------------------ */
 
   function escapeHtml(str) {
     return String(str == null ? '' : str)
@@ -73,7 +52,6 @@
     return [];
   }
 
-  /** Strip language suffix from a match ID: "12345_eng" → "12345". */
   function baseId(val) {
     return String(val || '').replace(/_[a-z]{2,12}$/i, '');
   }
@@ -90,7 +68,6 @@
     guj: 'GUJARATI', gu: 'GUJARATI', gujarati: 'GUJARATI'
   };
 
-  /* Keys that live inside the stream object but are NOT languages. */
   var NOT_A_LANGUAGE = ['primary', 'backup', 'default', 'main', 'auto', 'hls', 'dash', 'mpd',
     'cdn', 'link', 'links', 'stream', 'streams', 'url', 'server', 'servers'];
 
@@ -99,7 +76,6 @@
     return LANG_MAP[key] || key.toUpperCase();
   }
 
-  /** "ENGLISH" → "english", " Hindi " → "hindi", "eng" → "eng" */
   function langCode(value) {
     return String(value == null ? '' : value).toLowerCase().trim().replace(/[^a-z0-9]/g, '');
   }
@@ -109,17 +85,10 @@
     if (!k) return false;
     if (NOT_A_LANGUAGE.indexOf(k) > -1) return false;
     if (LANG_MAP[k]) return true;
-    if (/_/.test(String(key))) return false;              // fancode_bd_cdn etc.
+    if (/_/.test(String(key))) return false;
     return k.length >= 2 && k.length <= 12 && /^[a-z]+$/.test(k);
   }
 
-  /**
-   * Languages offered for a match → [{ code, label }, ...]
-   * Real feed shapes supported:
-   *   m.auto_streams = { "ENGLISH": {...}, "HINDI": {...} }
-   *   m.language     = "ENGLISH"
-   *   m.languages    = [{code,label}, ...] | ["English","Hindi"]
-   */
   function getLanguages(m) {
     var out = [];
     var seen = {};
@@ -150,8 +119,6 @@
       if (single) add(single);
     }
 
-    /* Only if nothing else is known: a plain streams map whose keys look
-       like languages (older feed shape). */
     if (!out.length && m.streams && typeof m.streams === 'object' && !Array.isArray(m.streams)) {
       Object.keys(m.streams).forEach(function (k) { if (looksLikeLanguage(k)) add(k); });
     }
@@ -165,9 +132,6 @@
     return out;
   }
 
-  /**
-   * Build the player link:  /fc/play/?id=<match_id>_<language>&s=0
-   */
   function buildPlayerUrl(matchId, languageCode) {
     var bid = baseId(matchId);
     var params = [];
@@ -190,17 +154,6 @@
     return hn || an || '';
   }
 
-  /**
-   * Split a title into { home, away }.
-   * "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
-   *   → { home: "India", away: "West Indies" }
-   * "World Championship of Legends 2026 - 2nd Match -Pakistan Champions vs Bangladesh Champions"
-   *   → { home: "Pakistan Champions", away: "Bangladesh Champions" }
-   * "Afghanistan vs Bangladesh in UAE 2026 - One-off Test - Afghanistan vs Bangladesh"
-   *   → { home: "Afghanistan", away: "Bangladesh" }
-   * Hyphens inside a name (U-19, Sri-Lanka) are kept: only a hyphen with a
-   * space on at least one side counts as a separator.
-   */
   function splitSeries(part) {
     return String(part == null ? '' : part)
       .split(/\s+[-\u2013\u2014]\s*|\s*[-\u2013\u2014]\s+/)
@@ -218,12 +171,9 @@
     var parts = t.split(/\s+vs\.?\s+/i);
     if (parts.length < 2) return null;
 
-    /* When the title repeats the fixture ("A vs B - round - A vs B"),
-       the real pairing is the LAST "vs". */
     var homePart = parts.length > 2 ? parts[parts.length - 2] : parts[0];
     var awayPart = parts[parts.length - 1];
 
-    /* Series text sits BEFORE the home team and AFTER the away team. */
     var homeSegs = splitSeries(homePart);
     var awaySegs = splitSeries(awayPart);
 
@@ -234,7 +184,6 @@
     return { home: home, away: away };
   }
 
-  /** Normalise raw status → { label, className }. */
   function statusInfo(raw) {
     var s = String(raw == null ? 'UPCOMING' : raw).trim().toUpperCase();
     if (s === 'LIVE' || s === 'LIVE NOW' || s === 'IN PLAY')          return { label: 'LIVE',  className: 'live' };
@@ -243,9 +192,6 @@
     return { label: 'UPCOMING', className: 'upcoming' };
   }
 
-  /* ---------------------------------------------------------------------
-   * Skeletons
-   * ------------------------------------------------------------------ */
   function renderSkeletons(n) {
     var html = '';
     for (var i = 0; i < n; i++) {
@@ -260,9 +206,6 @@
     track.innerHTML = html;
   }
 
-  /* ---------------------------------------------------------------------
-   * Cards
-   * ------------------------------------------------------------------ */
   var FALLBACK = 'data:image/svg+xml,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">' +
     '<defs><linearGradient id="g" x1="0" x2="1" y1="1" y2="0">' +
@@ -296,7 +239,6 @@
       var imgAlt     = escapeHtml(rawTitle || 'FanCode match');
       var time       = escapeHtml(pick(m, ['startTime', 'time', 'date', 'matchTime', 'scheduled_time', 'start_time']));
 
-      /* Watch buttons — live matches only, one per language */
       var watchHtml = '';
       if (isLive && id) {
         var langs = getLanguages(m);
@@ -312,7 +254,6 @@
         if (buttons) watchHtml = '<div class="md-actions">' + buttons + '</div>';
       }
       if (!isLive && !isEnded && !watchHtml) {
-        // Result / reminder link so the card is never a dead end
         watchHtml = '<div class="md-actions"><span class="md-soon">Starts soon</span></div>';
       }
 
@@ -348,9 +289,6 @@
     track.innerHTML = html;
   }
 
-  /* ---------------------------------------------------------------------
-   * Fetch
-   * ------------------------------------------------------------------ */
   function fetchFancode() {
     if (!API_URL) {
       console.error('[FanCode] No API URL configured (cfg.apis.fancode / fanCode).');
@@ -367,7 +305,7 @@
       })
       .then(function (data) {
         var all = extractMatches(data);
-        /* Live matches first, then upcoming — same as the section title implies. */
+
         var live = all.filter(function (m) { return statusInfo(pick(m, ['status', 'state'])).className === 'live'; });
         var rest = all.filter(function (m) { return statusInfo(pick(m, ['status', 'state'])).className !== 'live'; });
         renderMatches(live.concat(rest).slice(0, 20));
@@ -378,9 +316,6 @@
       });
   }
 
-  /* ---------------------------------------------------------------------
-   * Arrows
-   * ------------------------------------------------------------------ */
   function scrollAmt() {
     var c = track.querySelector('.md-card,.md-skeleton');
     if (!c) return 320;
@@ -389,9 +324,6 @@
   if (arrowLeft)  arrowLeft.addEventListener('click',  function (e) { e.stopPropagation(); track.scrollBy({ left: -scrollAmt(), behavior: 'smooth' }); });
   if (arrowRight) arrowRight.addEventListener('click', function (e) { e.stopPropagation(); track.scrollBy({ left:  scrollAmt(), behavior: 'smooth' }); });
 
-  /* ---------------------------------------------------------------------
-   * Lazy-load + 60 s refresh
-   * ------------------------------------------------------------------ */
   var section = document.getElementById('fancodeSection');
   var loaded = false;
   var timer = null;
