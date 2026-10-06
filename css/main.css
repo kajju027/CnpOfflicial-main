@@ -683,13 +683,13 @@ main {
   margin-bottom: clamp(1.15rem, 2.6vw, 2rem);
 }
 
-.section-hd-title::after {
-  content: "";
+.section-hd-rule {
   display: block;
   width: 30px;
   height: 3px;
   margin-top: 9px;
   border-radius: 999px;
+  background: #f5c518;
   background: linear-gradient(90deg, #f5c518, rgba(245, 197, 24, 0.15));
 }
 
