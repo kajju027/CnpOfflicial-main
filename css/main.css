@@ -1120,3 +1120,86 @@ main {
   }
   .scroll-hint svg { width: 17px; height: 17px; }
 }
+
+/* ================================================
+   v3.1 — Scroll animations
+   (reveal on scroll + scroll-hint behaviour)
+   -------------------------------------------------
+   Only active when script/scroll-anim.js has added
+   the .md-anim class to <html>. Without JavaScript,
+   or with "reduce motion" enabled, nothing is hidden.
+   ================================================ */
+
+.md-anim .md-reveal {
+  opacity: 0;
+  /* Individual "translate" property is used on purpose: it does not clash
+     with the hover transform on .md-card. */
+  translate: 0 26px;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    translate 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, translate;
+}
+
+.md-anim .md-reveal.md-in {
+  opacity: 1;
+  translate: none;
+  will-change: auto;
+}
+
+/* Section headers rise a little less than cards */
+.md-anim .section-hd.md-reveal { translate: 0 16px; }
+
+/* Hero fades in on first paint instead of sliding far */
+.md-anim .poster-wrapper.md-reveal { translate: 0 10px; }
+
+/* Scroll-down hint: bounces (CSS keyframes) and slides away once you scroll */
+.scroll-hint {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.scroll-hint.md-hint-out {
+  animation: none !important;
+  opacity: 0 !important;
+  transform: translateY(-10px) !important;
+}
+
+/* "Starts soon" pill on upcoming FanCode cards */
+.md-soon {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 10px;
+  border: 1px solid rgba(245, 197, 24, 0.26);
+  border-radius: 999px;
+  background: rgba(245, 197, 24, 0.08);
+  color: rgba(245, 197, 24, 0.92);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Feed "updated" line under a section title */
+.section-hd-updated {
+  display: block;
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.34);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Accessibility: never hide content for users who asked for less motion */
+@media (prefers-reduced-motion: reduce) {
+  .md-anim .md-reveal,
+  .md-anim .md-reveal.md-in {
+    opacity: 1 !important;
+    translate: none !important;
+    transition: none !important;
+  }
+}
