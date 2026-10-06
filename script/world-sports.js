@@ -1,22 +1,9 @@
 (function () {
   'use strict';
 
-  /* ===========================================================================
-     World Sports section — v3.1
-     This file was the only one whose config key was correct, so it already
-     worked. Small fixes here: null-safe escaping, single click listener,
-     eager first 5 thumbs, cache:"no-store" + 60 s refresh, optional
-     playerBase support for page_url links.
-     =========================================================================== */
-  // ---------------------------------------------------------------------------
-  // Config
-  // ---------------------------------------------------------------------------
-  const CFG      = window.MATCHDEKHO_CONFIG || {};
+  const CFG      = window.CNPTV_CONFIG || {};
   const APIS     = CFG.apis || {};
   const API_URL  = APIS.worldSports || APIS.world_sports || '';
-
-  /* v3.1 fix: the card click handler used to be re-attached on every
-     render. It is now attached once, outside renderMatches(). */
 
   const track      = document.getElementById('worldSportsTrack');
   const arrowLeft  = document.getElementById('worldSportsArrowLeft');
@@ -24,9 +11,6 @@
 
   if (!track) return;
 
-  // ---------------------------------------------------------------------------
-  // Helpers
-  // ---------------------------------------------------------------------------
   function escapeHtml(str) {
     return String(str == null ? '' : str)
       .replace(/&/g, '&amp;')
@@ -36,7 +20,6 @@
       .replace(/'/g, '&#39;');
   }
 
-  /** Normalise raw status → { label, className }. */
   function statusInfo(raw) {
     const s = String(raw || 'UPCOMING').toUpperCase();
     if (s === 'LIVE') return { label: 'LIVE', className: 'live' };
@@ -45,17 +28,6 @@
     return { label: 'UPCOMING', className: 'upcoming' };
   }
 
-  /**
-   * Split a title into { home, away }.
-   * "West Indies tour of India 2026 - 1st T20I - India vs West Indies"
-   *   → { home: "India", away: "West Indies" }
-   * "World Championship of Legends 2026 - 2nd Match -Pakistan Champions vs Bangladesh Champions"
-   *   → { home: "Pakistan Champions", away: "Bangladesh Champions" }
-   * "Afghanistan vs Bangladesh in UAE 2026 - One-off Test - Afghanistan vs Bangladesh"
-   *   → { home: "Afghanistan", away: "Bangladesh" }
-   * Hyphens inside a name (U-19, Sri-Lanka) are kept: only a hyphen with a
-   * space on at least one side counts as a separator.
-   */
   function splitSeries(part) {
     return String(part == null ? '' : part)
       .split(/\s+[-\u2013\u2014]\s*|\s*[-\u2013\u2014]\s+/)
@@ -73,12 +45,9 @@
     var parts = t.split(/\s+vs\.?\s+/i);
     if (parts.length < 2) return null;
 
-    /* When the title repeats the fixture ("A vs B - round - A vs B"),
-       the real pairing is the LAST "vs". */
     var homePart = parts.length > 2 ? parts[parts.length - 2] : parts[0];
     var awayPart = parts[parts.length - 1];
 
-    /* Series text sits BEFORE the home team and AFTER the away team. */
     var homeSegs = splitSeries(homePart);
     var awaySegs = splitSeries(awayPart);
 
@@ -89,9 +58,6 @@
     return { home: home, away: away };
   }
 
-  // ---------------------------------------------------------------------------
-  // Skeleton placeholders
-  // ---------------------------------------------------------------------------
   function renderSkeletons(n) {
     let html = '';
     for (let i = 0; i < n; i++) {
@@ -108,10 +74,6 @@
     track.innerHTML = html;
   }
 
-  // ---------------------------------------------------------------------------
-  // Render match cards using the unified md-card system.
-  // World Sports cards are navigatable via the Watch button or the card itself.
-  // ---------------------------------------------------------------------------
   function renderMatches(matches) {
     if (!matches || matches.length === 0) {
       track.innerHTML = '<div class="md-empty"><strong>No events right now</strong>Check back soon.</div>';
@@ -149,14 +111,12 @@
       const time       = escapeHtml(match.date || match.time || '');
       const safeUrl    = escapeHtml(pageUrl);
 
-      // Watch button — live events with a page URL
       let watchMarkup = '';
       if (!isUpcoming && !isEnded && pageUrl) {
         watchMarkup = `<a class="md-watch-btn" href="${safeUrl}" aria-label="Watch ${imgAlt}">` +
           `<span class="md-watch-btn-icon" aria-hidden="true">&#9654;</span>WATCH NOW</a>`;
       }
 
-      // Matchup or event title
       let matchupHtml = '';
       if (matchup) {
         matchupHtml = `<div class="md-matchup">` +
@@ -168,7 +128,6 @@
         matchupHtml = `<div class="md-event-title">${escapeHtml(rawTitle)}</div>`;
       }
 
-      // Card is navigatable even when not live (whole card click via JS below)
       html += `
         <article class="md-card md-${status.className}" data-href="${safeUrl}"
                  style="${pageUrl ? 'cursor:pointer' : ''}">
@@ -191,18 +150,14 @@
     track.innerHTML = html;
   }
 
-  // Card-level click-through — attached ONCE (was re-attached on every render before)
   track.addEventListener('click', function (e) {
     const card = e.target.closest('.md-card');
     if (!card) return;
-    if (e.target.closest('a, button')) return; // let the element handle it
+    if (e.target.closest('a, button')) return;
     const href = card.dataset.href;
     if (href && href !== '#') window.location.href = href;
   });
 
-  // ---------------------------------------------------------------------------
-  // Fetch data
-  // ---------------------------------------------------------------------------
   function fetchWorldSports() {
     if (!API_URL) {
       console.error('[WorldSports] No API URL configured (cfg.apis.worldSports).');
@@ -228,9 +183,6 @@
       });
   }
 
-  // ---------------------------------------------------------------------------
-  // Arrow scroll
-  // ---------------------------------------------------------------------------
   function scrollAmount() {
     const card = track.querySelector('.md-card, .md-skeleton');
     if (!card) return 320;
@@ -241,9 +193,6 @@
   if (arrowLeft)  arrowLeft.addEventListener('click',  function (e) { e.stopPropagation(); track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }); });
   if (arrowRight) arrowRight.addEventListener('click', function (e) { e.stopPropagation(); track.scrollBy({ left:  scrollAmount(), behavior: 'smooth' }); });
 
-  // ---------------------------------------------------------------------------
-  // Lazy-load
-  // ---------------------------------------------------------------------------
   const section = document.getElementById('worldSportsSection');
   let loaded = false;
   let timer  = null;
