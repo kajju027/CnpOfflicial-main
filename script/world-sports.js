@@ -158,6 +158,20 @@
     if (href && href !== '#') window.location.href = href;
   });
 
+  var STAMP = String(Date.now());
+  var SNAPSHOT_URL = APIS.worldSportsSnapshot || 'api/world-sports.json';
+
+  function stamp(url) {
+    return url + (url.indexOf('?') > -1 ? '&' : '?') + 't=' + STAMP;
+  }
+
+  function getJSON(url) {
+    return fetch(stamp(url), { cache: 'no-store' }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    });
+  }
+
   function fetchWorldSports() {
     if (!API_URL) {
       console.error('[WorldSports] No API URL configured (cfg.apis.worldSports).');
@@ -167,11 +181,8 @@
 
     renderSkeletons(6);
 
-    fetch(API_URL, { cache: 'no-store' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
+    getJSON(API_URL)
+      .catch(function () { return getJSON(SNAPSHOT_URL); })
       .then(function (data) {
         const raw     = data.matches || data.events || data || [];
         const matches = (Array.isArray(raw) ? raw : []).slice(0, 20);
