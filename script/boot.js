@@ -3,7 +3,7 @@
 
   var STAMP = String(Date.now());
   var FILE_MODE = location.protocol === "file:";
-  var FILES = ["app.js", "willow-live.js", "fancode.js", "world-sports.js", "scroll-anim.js"];
+  var FILES = ["app.js", "willow-live.js", "sony-liv.js", "fancode.js", "world-sports.js", "scroll-anim.js"];
   var STARTED = false;
 
   var FALLBACK = {
@@ -14,18 +14,21 @@
     apis: {
       willow: "https://sonujson-v5.pages.dev/Data/willow.json",
       willowLive: "https://sonujson-v5.pages.dev/Data/willow.json",
-      willowSnapshot: "api/willow.json",
+      willowSnapshot: "",
       fancode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
       fanCode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
-      fancodeSnapshot: "api/fancode.json",
-      fanCodeSnapshot: "api/fancode.json",
+      fancodeSnapshot: "",
+      fanCodeSnapshot: "",
       worldSports: "https://matchdekho.in/api/world-sports.json",
-      worldSportsSnapshot: "api/world-sports.json"
+      worldSportsSnapshot: "",
+      sonyLiv: "https://raw.githubusercontent.com/kajju027/SonyLiv-Events-Json/refs/heads/main/sonyliv.json",
+      sony: "https://raw.githubusercontent.com/kajju027/SonyLiv-Events-Json/refs/heads/main/sonyliv.json"
     },
     playerBase: "",
     routes: {
       willowPlayer: "/az/",
-      fancodePlayer: "/fc/play/"
+      fancodePlayer: "/fc/play/",
+      sonyPlayer: "/player/sony"
     },
     willowPlayerMode: "stream",
     heroMatches: []
