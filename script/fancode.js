@@ -290,7 +290,7 @@
   }
 
   var STAMP = String(Date.now());
-  var SNAPSHOT_URL = apis.fanCodeSnapshot || apis.fancodeSnapshot || 'api/fancode.json';
+  var SNAPSHOT_URL = apis.fanCodeSnapshot || apis.fancodeSnapshot || "";
 
   function stamp(url) {
     return url + (url.indexOf('?') > -1 ? '&' : '?') + 't=' + STAMP;
@@ -313,7 +313,10 @@
     renderSkeletons(6);
 
     getJSON(API_URL)
-      .catch(function () { return getJSON(SNAPSHOT_URL); })
+      .catch(function () {
+        if (!SNAPSHOT_URL) throw new Error("no snapshot");
+        return getJSON(SNAPSHOT_URL);
+      })
       .then(function (data) {
         var all = extractMatches(data);
 
