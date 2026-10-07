@@ -47,6 +47,7 @@
     ".poster-wrapper",
     ".section-hd",
     ".willow-live-section",
+    ".sony-liv-section",
     ".fancode-section",
     ".world-sports-section",
     ".md-card"
@@ -117,7 +118,7 @@
 
   scan(document.body || root);
 
-  ["willowLiveTrack", "fancodeTrack", "worldSportsTrack"].forEach(function (id) {
+  ["willowLiveTrack", "sonyLivTrack", "fancodeTrack", "worldSportsTrack"].forEach(function (id) {
     var track = document.getElementById(id);
     if (!track || !window.MutationObserver) return;
     new MutationObserver(function (mutations) {
