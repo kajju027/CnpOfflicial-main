@@ -1313,3 +1313,52 @@ main {
     text-align: left;
   }
 }
+
+.sony-liv-section {
+  padding: clamp(1.5rem, 3.5vw, 3.5rem) 0 clamp(1rem, 2.5vw, 2.5rem);
+  background: #0b0d0f;
+}
+
+.sony-liv-carousel-wrapper { position: relative; }
+
+.sony-liv-track {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(0.75rem, 1.6vw, 1.3rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px clamp(1rem, 5vw, 3rem) 12px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.sony-liv-track::-webkit-scrollbar { display: none; }
+
+.sony-liv-arrow {
+  position: absolute;
+  top: 42%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background: rgba(12, 14, 18, 0.9);
+  color: #fff;
+  cursor: pointer;
+}
+
+.sony-liv-arrow.arrow-left { left: 6px; }
+.sony-liv-arrow.arrow-right { right: 6px; }
+
+.site-foot,
+.site-foot p,
+.site-foot a,
+.site-foot span {
+  background-color: #0b0d0f;
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+}
