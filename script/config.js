@@ -1,7 +1,7 @@
 var CNPTV_CONF = {
   siteName: "CnpTV",
 
-  build: "9",
+  build: "12",
   forceScrollAnimation: true,
 
   heroSlideDuration: 10000,
@@ -11,20 +11,23 @@ var CNPTV_CONF = {
   apis: {
     willow: "https://sonujson-v5.pages.dev/Data/willow.json",
     willowLive: "https://sonujson-v5.pages.dev/Data/willow.json",
-    willowSnapshot: "api/willow.json",
+    willowSnapshot: "",
     fancode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
     fanCode: "https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json",
-    fancodeSnapshot: "api/fancode.json",
-    fanCodeSnapshot: "api/fancode.json",
+    fancodeSnapshot: "",
+    fanCodeSnapshot: "",
     worldSports: "https://matchdekho.in/api/world-sports.json",
-    worldSportsSnapshot: "api/world-sports.json"
+    worldSportsSnapshot: "",
+    sonyLiv: "https://raw.githubusercontent.com/kajju027/SonyLiv-Events-Json/refs/heads/main/sonyliv.json",
+    sony: "https://raw.githubusercontent.com/kajju027/SonyLiv-Events-Json/refs/heads/main/sonyliv.json"
   },
 
   playerBase: "",
 
   routes: {
     willowPlayer: "/az/",
-    fancodePlayer: "/fc/play/"
+    fancodePlayer: "/fc/play/",
+    sonyPlayer: "/player/sony"
   },
 
   willowPlayerMode: "stream",
