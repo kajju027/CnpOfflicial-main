@@ -53,10 +53,11 @@
   <link rel="dns-prefetch" href="https://www.fancode.com">
   <link rel="dns-prefetch" href="https://images.fancode.com">
   <link rel="dns-prefetch" href="https://origin-staticv2.sonyliv.com">
-  <meta name="cnptv-build" content="13">
+  <meta name="cnptv-build" content="14">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    html, body { background: #0b0d0f !important; color: #fff !important; }
     .section-hd-title { margin: 0 !important; }
     .section-hd { margin-bottom: clamp(1.15rem, 2.6vw, 2rem) !important; }
     .section-hd-rule {
@@ -68,6 +69,38 @@
       background: #f5c518 !important;
       background: linear-gradient(90deg, #f5c518, rgba(245, 197, 24, 0.15)) !important;
     }
+    .sony-liv-carousel-wrapper { position: relative; }
+    .sony-liv-track {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 8px 16px 12px;
+      scrollbar-width: none;
+    }
+    .sony-liv-arrow {
+      position: absolute;
+      top: 42%;
+      z-index: 5;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(12, 14, 18, 0.9);
+      color: #fff;
+    }
+    .sony-liv-arrow.arrow-left { left: 6px; }
+    .sony-liv-arrow.arrow-right { right: 6px; }
+    .site-foot {
+      background: #0b0d0f !important;
+      color: rgba(255, 255, 255, 0.72) !important;
+      padding: 28px 16px 40px;
+    }
+    .site-foot a, .site-foot p, .site-foot span {
+      color: rgba(255, 255, 255, 0.78) !important;
+      text-decoration: none !important;
+    }
+    .site-foot-nav { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+    .site-foot .cnp { color: #7dffb3 !important; }
   </style>
   <script data-cfasync="false">
     (function () {
@@ -98,11 +131,10 @@
     <a href="#top" class="logo" aria-label="CnpTV home"><span class="cnp">Cnp</span><span class="tv">TV</span></a>
     <nav class="header-nav" aria-label="Main navigation">
       <a href="#top">Home</a>
-      <a href="#sports" class="nav-compact">Sports</a>
-      <a href="#worldSportsSection">Football</a>
-      <a href="#willow-live">Cricket</a>
+      <a href="#fancodeSection">FanCode</a>
       <a href="#sonyLivSection">Sony</a>
-      <a href="#fancodeSection">UFC</a>
+      <a href="#willow-live">Willow</a>
+      <a href="#worldSportsSection">Sports</a>
       <a href="https://t.me/Cnp_action_bot" class="sign-in" target="_blank" rel="noopener noreferrer">Contact</a>
       <a href="#willow-live" class="subscribe">Watch Free</a>
     </nav>
@@ -110,10 +142,9 @@
 
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
     <a href="#top">Home</a>
-    <a href="#sports">Sports</a>
-    <a href="#willow-live">Cricket</a>
+    <a href="#fancodeSection">FanCode</a>
     <a href="#sonyLivSection">Sony Liv</a>
-    <a href="#fancodeSection">Shows</a>
+    <a href="#willow-live">Willow</a>
     <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Contact Us</a>
     <a href="#worldSportsSection">TV</a>
     <a href="#worldSportsSection">FIFA 2026</a>
@@ -135,15 +166,15 @@
   </div>
 
   <main id="sports" role="main">
-    <section class="willow-live-section" id="willow-live">
+    <section class="fancode-section" id="fancodeSection">
       <div class="section-hd">
-        <h2 class="section-hd-title">Willow Cricket</h2>
+        <h2 class="section-hd-title">FanCode</h2>
         <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
       </div>
-      <div class="willow-live-carousel-wrapper">
-        <button class="carousel-arrow arrow-left" id="willowLiveArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
-        <div class="willow-live-track" id="willowLiveTrack"></div>
-        <button class="carousel-arrow arrow-right" id="willowLiveArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
+      <div class="fancode-carousel-wrapper">
+        <button class="fancode-arrow arrow-left" id="fancodeArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
+        <div class="fancode-track" id="fancodeTrack" tabindex="0"></div>
+        <button class="fancode-arrow arrow-right" id="fancodeArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
       </div>
     </section>
 
@@ -159,15 +190,15 @@
       </div>
     </section>
 
-    <section class="fancode-section" id="fancodeSection">
+    <section class="willow-live-section" id="willow-live">
       <div class="section-hd">
-        <h2 class="section-hd-title">FanCode</h2>
+        <h2 class="section-hd-title">Willow Cricket</h2>
         <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
       </div>
-      <div class="fancode-carousel-wrapper">
-        <button class="fancode-arrow arrow-left" id="fancodeArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
-        <div class="fancode-track" id="fancodeTrack" tabindex="0"></div>
-        <button class="fancode-arrow arrow-right" id="fancodeArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
+      <div class="willow-live-carousel-wrapper">
+        <button class="carousel-arrow arrow-left" id="willowLiveArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
+        <div class="willow-live-track" id="willowLiveTrack"></div>
+        <button class="carousel-arrow arrow-right" id="willowLiveArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
       </div>
     </section>
 
