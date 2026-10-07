@@ -1,6 +1,10 @@
 {
   "name": "CnpTV",
   "short_name": "CnpTV",
+  "description": "Live cricket, Sony Liv, FanCode and world sports.",
+  "lang": "en",
+  "id": "/",
+  "scope": "/",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0b0d0f",
