@@ -1,0 +1,29 @@
+name: Daily freshness
+
+on:
+  schedule:
+    - cron: "30 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  stamp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write the daily stamp
+        run: date -u +"freshness %Y-%m-%dT%H:%M:%SZ" > freshness.txt
+
+      - name: Commit when the stamp changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add freshness.txt
+          if ! git diff --staged --quiet; then
+            git commit -m "Daily freshness"
+            git push
+          fi
