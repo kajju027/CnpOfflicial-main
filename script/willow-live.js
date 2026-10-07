@@ -232,7 +232,7 @@
   }
 
   var STAMP = String(Date.now());
-  var SNAPSHOT_URL = apis.willowSnapshot || 'api/willow.json';
+  var SNAPSHOT_URL = apis.willowSnapshot || "";
 
   function stamp(url) {
     return url + (url.indexOf('?') > -1 ? '&' : '?') + 't=' + STAMP;
@@ -255,7 +255,10 @@
     renderSkeletons(6);
 
     getJSON(API_URL)
-      .catch(function () { return getJSON(SNAPSHOT_URL); })
+      .catch(function () {
+        if (!SNAPSHOT_URL) throw new Error("no snapshot");
+        return getJSON(SNAPSHOT_URL);
+      })
       .then(function (data) {
         var matches = extractMatches(data).slice(0, 20);
         renderMatches(matches);
