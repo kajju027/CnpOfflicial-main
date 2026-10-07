@@ -1,34 +1,6 @@
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-
-/*.html
   Cache-Control: no-store, no-cache, must-revalidate
   Pragma: no-cache
   Expires: Thu, 01 Jan 1970 00:00:00 GMT
-
-/css/*
-  Cache-Control: no-store, no-cache, must-revalidate
-  Pragma: no-cache
-  Expires: Thu, 01 Jan 1970 00:00:00 GMT
-
-/script/*
-  Cache-Control: no-store, no-cache, must-revalidate
-  Pragma: no-cache
-  Expires: Thu, 01 Jan 1970 00:00:00 GMT
-
-/api/*
-  Cache-Control: no-store, no-cache, must-revalidate
-  Pragma: no-cache
-  Expires: Thu, 01 Jan 1970 00:00:00 GMT
-
-/manifest.json
-  Cache-Control: no-store, no-cache, must-revalidate
-  Pragma: no-cache
-
-/site.webmanifest
-  Cache-Control: no-store, no-cache, must-revalidate
-  Pragma: no-cache
-
-/assets/*
-  Cache-Control: public, max-age=604800, immutable
