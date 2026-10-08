@@ -2,7 +2,7 @@ name: Daily Site Maintenance
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * *"  # প্রতিদিন মধ্যরাতে
   workflow_dispatch:
 
 permissions:
