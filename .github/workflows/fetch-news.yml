@@ -21,7 +21,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install feedparser requests
+        run: pip install feedparser
 
       - name: Fetch and compile news
         run: |
@@ -31,7 +31,6 @@ jobs:
           import os
           import re
           from datetime import datetime
-          import requests
 
           feeds = [
               {"url": "https://www.indiatoday.in/rss/1206550", "source": "India Today"},
@@ -44,25 +43,13 @@ jobs:
           news_items = []
           default_image = "https://sayan.info/assets/android-chrome-512x512.png"
 
-          def is_image_valid(url):
-              """Check if image URL is valid and accessible"""
-              if not url or url == default_image:
-                  return False
-              try:
-                  # Check if URL is accessible (head request for speed)
-                  response = requests.head(url, timeout=3, allow_redirects=True)
-                  content_type = response.headers.get('content-type', '')
-                  return response.status_code == 200 and 'image' in content_type
-              except:
-                  return False
-
           for feed_info in feeds:
               try:
                   feed = feedparser.parse(feed_info["url"])
                   for entry in feed.entries:
                       image = None
                       
-                      # Extract image from various RSS formats
+                      # Robust image extraction
                       if hasattr(entry, 'media_content') and len(entry.media_content) > 0:
                           image = entry.media_content[0].get('url')
                       elif hasattr(entry, 'media_thumbnail') and len(entry.media_thumbnail) > 0:
@@ -72,30 +59,32 @@ jobs:
                               if link.get('rel') == 'enclosure' and 'image' in link.get('type', ''):
                                   image = link.get('href')
                                   break
-                      elif hasattr(entry, 'image'):
-                          image = entry.image.get('href')
                       
-                      # Skip if no image found
-                      if not image or image == default_image:
-                          continue
-                      
-                      # Validate image URL
-                      if not is_image_valid(image):
+                      # Skip if no valid image found at backend
+                      if not image or image == default_image or len(image) < 10:
                           continue
 
-                      # Clean description
-                      raw_desc = entry.get('description', entry.get('summary', entry.get('content', [{'value': ''}])[0].get('value', 'No description available.')))
+                      # Safe description extraction
+                      raw_desc = "No description available."
+                      if hasattr(entry, 'summary'):
+                          raw_desc = entry.summary
+                      elif hasattr(entry, 'description'):
+                          raw_desc = entry.description
+                      elif hasattr(entry, 'content') and len(entry.content) > 0:
+                          raw_desc = entry.content[0].value
+
+                      # Clean HTML tags and extra spaces
                       clean_desc = re.sub(r'<[^>]+>', '', str(raw_desc)).strip()
                       clean_desc = re.sub(r'\s+', ' ', clean_desc)
-                      if len(clean_desc) > 250:
-                          clean_desc = clean_desc[:250] + "..."
+                      if len(clean_desc) > 220:
+                          clean_desc = clean_desc[:220] + "..."
 
-                      # Identify cricket news for prioritization
-                      text_to_check = (entry.get('title', '') + ' ' + feed_info['source'] + ' ' + clean_desc).lower()
-                      is_cricket = 'cricket' in text_to_check or 'ipl' in text_to_check or 'wc' in text_to_check or 't20' in text_to_check
+                      # Cricket prioritization logic
+                      text_to_check = (entry.get('title', '') + ' ' + clean_desc).lower()
+                      is_cricket = any(word in text_to_check for word in ['cricket', 'ipl', 't20', 'world cup', 'kohli', 'rohit', 'dhoni'])
 
                       news_items.append({
-                          "title": entry.get('title', 'No Title'),
+                          "title": entry.get('title', 'Sports Update'),
                           "link": entry.get('link', '#'),
                           "description": clean_desc,
                           "image": image,
@@ -107,7 +96,7 @@ jobs:
                   print(f"Error fetching {feed_info['source']}: {e}")
                   continue
 
-          # Robust date parsing for sorting
+          # Date parsing for sorting
           def parse_date(date_str):
               try:
                   if isinstance(date_str, tuple):
@@ -116,14 +105,13 @@ jobs:
               except:
                   return datetime.min
 
-          # Sort 1: By Date (Newest first)
+          # Sort: 1. Cricket first, 2. Newest first
           news_items.sort(key=lambda x: parse_date(x['pubDate']), reverse=True)
-          # Sort 2: Stable sort to put Cricket (True) at the very top
           news_items.sort(key=lambda x: x['_is_cricket'], reverse=True)
 
-          # Remove internal flag and limit to 150
+          # Remove internal flag, keep ALL valid items (no arbitrary limit)
           final_items = []
-          for item in news_items[:150]:
+          for item in news_items:
               del item['_is_cricket']
               final_items.append(item)
 
@@ -131,7 +119,7 @@ jobs:
           with open('news/data.json', 'w', encoding='utf-8') as f:
               json.dump({"last_updated": datetime.now().isoformat(), "articles": final_items}, f, indent=2)
           
-          print(f"Successfully fetched {len(final_items)} articles with valid images")
+          print(f"Successfully compiled {len(final_items)} news articles.")
           EOF
 
       - name: Commit and push if changes exist
@@ -140,6 +128,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add news/data.json
           if ! git diff --staged --quiet; then
-            git commit -m "chore: update sports news feed (filtered valid images only)"
+            git commit -m "chore: update comprehensive sports news feed"
             git push
           fi
