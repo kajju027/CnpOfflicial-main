@@ -118,456 +118,141 @@
   <link rel="dns-prefetch" href="https://images.fancode.com">
   <link rel="dns-prefetch" href="https://origin-staticv2.sonyliv.com">
   
-  <meta name="cnptv-build" content="16">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
-    html, body { background: #0b0d0f !important; color: #fff !important; }
-    .section-hd-title { margin: 0 !important; }
-    .section-hd { margin-bottom: clamp(1.15rem, 2.6vw, 2rem) !important; }
+    html, body { background: #0b0d0f !important; color: #fff !important; font-family: 'Inter', sans-serif; }
+    .section-hd-title { margin: 0 !important; font-size: 1.5rem; font-weight: 700; }
+    .section-hd { margin-bottom: clamp(1.15rem, 2.6vw, 2rem) !important; display: flex; align-items: center; gap: 12px; }
     .section-hd-rule {
       display: block !important;
       width: 30px !important;
       height: 3px !important;
-      margin-top: 9px !important;
       border-radius: 999px !important;
-      background: #f5c518 !important;
       background: linear-gradient(90deg, #f5c518, rgba(245, 197, 24, 0.15)) !important;
     }
-    .sony-liv-carousel-wrapper { position: relative; }
-    .sony-liv-track {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 8px 16px 12px;
-      scrollbar-width: none;
-    }
-    .sony-liv-arrow {
-      position: absolute;
-      top: 42%;
-      z-index: 5;
-      width: 34px;
-      height: 34px;
-      border: 0;
-      border-radius: 50%;
-      background: rgba(12, 14, 18, 0.9);
-      color: #fff;
-    }
-    .sony-liv-arrow.arrow-left { left: 6px; }
-    .sony-liv-arrow.arrow-right { right: 6px; }
     
+    /* News Section Specific Styles */
+    .news-section { margin-bottom: clamp(2rem, 4vw, 3rem); padding: 0 16px; }
+    .news-track {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .news-card-landing {
+      background: #13161a;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card-landing:hover {
+      transform: translateY(-4px);
+      border-color: #7dffb3;
+    }
+    .news-card-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      background: #1a1d21;
+    }
+    .news-card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+    .news-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .news-card-time {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .news-read-more {
+      background: rgba(125, 255, 179, 0.08);
+      border: 1px dashed rgba(125, 255, 179, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      min-height: 250px;
+    }
+    .news-read-more:hover {
+      background: rgba(125, 255, 179, 0.15);
+      border-color: #7dffb3;
+    }
+    .news-read-more span {
+      color: #7dffb3;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .news-read-more p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+    }
+
+    /* Footer Styles */
     .site-foot {
       background: #0b0d0f !important;
       color: rgba(255, 255, 255, 0.72) !important;
-      padding: 60px 16px 30px;
+      padding: 40px 16px 24px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 40px;
     }
     .site-foot-container {
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr;
-      gap: 40px;
-    }
-    @media (min-width: 768px) {
-      .site-foot-container {
-        grid-template-columns: 1.5fr 2fr;
-      }
-    }
-    .site-foot-brand {
-      font-size: 2rem;
-      font-weight: 800;
-      text-decoration: none;
-      display: inline-block;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-    }
-    .site-foot .cnp { color: #7dffb3 !important; }
-    .site-foot .tv { color: #ffffff !important; }
-    .site-foot-desc {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 20px;
-      max-width: 320px;
-      color: rgba(255, 255, 255, 0.7) !important;
-    }
-    .site-foot-social {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    .site-foot-social a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      color: rgba(255, 255, 255, 0.8) !important;
-      transition: all 0.3s ease;
-    }
-    .site-foot-social a:hover {
-      background: #7dffb3 !important;
-      color: #0b0d0f !important;
-      transform: translateY(-2px);
-    }
-    .site-foot-updated {
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.5) !important;
-      margin-top: 20px;
-    }
-    .site-foot-nav {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
       gap: 32px;
     }
     @media (min-width: 768px) {
-      .site-foot-nav {
-        grid-template-columns: repeat(4, 1fr);
-      }
+      .site-foot-container { grid-template-columns: 1.5fr 2fr; }
     }
+    .site-foot-brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .site-foot .cnp { color: #7dffb3 !important; }
+    .site-foot .tv { color: #ffffff !important; }
+    .site-foot-desc { font-size: 0.9rem; line-height: 1.5; margin-bottom: 16px; max-width: 320px; }
+    .site-foot-nav { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    @media (min-width: 768px) { .site-foot-nav { grid-template-columns: repeat(4, 1fr); } }
     .foot-nav-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #ffffff !important;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin: 0 0 16px 0;
+      font-size: 0.85rem; font-weight: 700; color: #ffffff !important;
+      text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 12px 0;
     }
     .site-foot-nav a {
-      display: block;
-      color: rgba(255, 255, 255, 0.7) !important;
-      text-decoration: none !important;
-      font-size: 0.9rem;
-      padding: 6px 0;
-      transition: all 0.2s ease;
-    }
-    .site-foot-nav a:hover, .site-foot-nav a:focus {
-      color: #7dffb3 !important;
-      padding-left: 4px;
-    }
-    .site-foot-bottom {
-      max-width: 1200px;
-      margin: 40px auto 0;
-      padding-top: 30px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      text-align: center;
-    }
-    .site-foot-copy {
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.5) !important;
-      margin: 0 0 12px 0;
-    }
-    .site-foot-legal {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .site-foot-legal a {
-      color: rgba(255, 255, 255, 0.6) !important;
-      text-decoration: none !important;
-      font-size: 0.85rem;
+      display: block; color: rgba(255, 255, 255, 0.7) !important;
+      text-decoration: none !important; font-size: 0.9rem; padding: 4px 0;
       transition: color 0.2s ease;
     }
-    .site-foot-legal a:hover {
-      color: #7dffb3 !important;
+    .site-foot-nav a:hover { color: #7dffb3 !important; }
+    .site-foot-bottom {
+      max-width: 1200px; margin: 32px auto 0; padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;
     }
-
-    /* ============ NEWS SECTION ============ */
-    .news-section {
-      margin-bottom: clamp(2rem, 4vw, 3rem);
-    }
-
-    .news-carousel-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .news-track {
-      --news-gap: 16px;
-      flex: 1 1 auto;
-      min-width: 0;
-      display: flex;
-      align-items: stretch;
-      gap: var(--news-gap);
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: 8px 4px 12px;
-      scroll-behavior: smooth;
-      scroll-snap-type: x proximity;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      overscroll-behavior-x: contain;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .news-track::-webkit-scrollbar {
-      display: none;
-    }
-
-    .news-card-home {
-      position: relative;
-      flex: 0 0 clamp(260px, 31vw, 320px);
-      min-width: 0;
-      min-height: 280px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      scroll-snap-align: start;
-      background: var(--surface, #101216);
-      border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
-      border-radius: 12px;
-      text-decoration: none;
-      color: inherit;
-      isolation: isolate;
-      transition:
-        transform 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-      animation: newsCardIn 0.45s ease both;
-    }
-
-    .news-card-home:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent-line, rgba(125, 255, 179, 0.28));
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-    }
-
-    .news-card-home:focus-visible {
-      outline: 2px solid var(--accent, #7dffb3);
-      outline-offset: 3px;
-    }
-
-    @keyframes newsCardIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    .news-card-img {
-      display: block;
-      width: 100%;
-      height: 160px;
-      flex: 0 0 160px;
-      object-fit: cover;
-      background: linear-gradient(135deg, #14181e, #0c0e11);
-    }
-
-    .news-card-body {
-      padding: 14px 16px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    .news-card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      line-height: 1.4;
-      color: var(--text, #ffffff);
-      margin: 0 0 10px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .news-card-time {
-      margin-top: auto;
-      font-size: 0.75rem;
-      color: var(--text-3, rgba(255, 255, 255, 0.48));
-      font-weight: 500;
-    }
-
-    .news-card-source {
-      margin-top: 7px;
-      font-size: 0.7rem;
-      color: var(--accent, #7dffb3);
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .news-arrow {
-      flex: 0 0 auto;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(16, 18, 22, 0.92);
-      border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
-      color: var(--text-2, rgba(255, 255, 255, 0.74));
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
-      z-index: 2;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .news-arrow:hover:not(:disabled) {
-      background: var(--accent, #7dffb3);
-      color: #0b0d0f;
-      border-color: var(--accent, #7dffb3);
-      transform: translateY(-1px);
-    }
-
-    .news-arrow:active:not(:disabled) {
-      transform: scale(0.96);
-    }
-
-    .news-arrow:disabled {
-      opacity: 0.32;
-      cursor: default;
-    }
-
-    .news-load-more {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .news-load-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      background: transparent;
-      border: 1px solid var(--accent-line, rgba(125, 255, 179, 0.28));
-      color: var(--accent, #7dffb3);
-      font-size: 0.9rem;
-      font-weight: 600;
-      border-radius: 999px;
-      text-decoration: none;
-      transition:
-        background 0.3s ease,
-        transform 0.3s ease,
-        border-color 0.3s ease;
-    }
-
-    .news-load-btn:hover {
-      background: var(--accent-soft, rgba(125, 255, 179, 0.12));
-      border-color: var(--accent, #7dffb3);
-      transform: translateY(-2px);
-    }
-
-    .news-load-btn:focus-visible {
-      outline: 2px solid var(--accent, #7dffb3);
-      outline-offset: 3px;
-    }
-
-    .news-empty {
-      width: 100%;
-      padding: 26px 20px;
-      border: 1px dashed var(--line, rgba(255, 255, 255, 0.07));
-      border-radius: 12px;
-      color: var(--text-3, rgba(255, 255, 255, 0.48));
-      text-align: center;
-      font-size: 0.9rem;
-    }
-
-    /* Skeleton loading */
-    .news-skeleton {
-      flex: 0 0 clamp(260px, 31vw, 320px);
-      min-height: 280px;
-      overflow: hidden;
-      background: var(--surface, #101216);
-      border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
-      border-radius: 12px;
-    }
-
-    .news-skeleton-img {
-      width: 100%;
-      height: 160px;
-      background: linear-gradient(90deg, #14181e 25%, #1d2229 50%, #14181e 75%);
-      background-size: 200% 100%;
-      animation: newsShimmer 1.6s linear infinite;
-    }
-
-    .news-skeleton-content {
-      padding: 14px 16px;
-    }
-
-    .news-skeleton-title,
-    .news-skeleton-time {
-      border-radius: 6px;
-      background: linear-gradient(90deg, #14181e 25%, #1d2229 50%, #14181e 75%);
-      background-size: 200% 100%;
-      animation: newsShimmer 1.6s linear infinite;
-    }
-
-    .news-skeleton-title {
-      width: 90%;
-      height: 16px;
-      margin-bottom: 10px;
-    }
-
-    .news-skeleton-time {
-      width: 40%;
-      height: 12px;
-      border-radius: 4px;
-    }
-
-    @keyframes newsShimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    @media (max-width: 768px) {
-      .news-carousel-wrapper {
-        gap: 6px;
-      }
-
-      .news-track {
-        --news-gap: 12px;
-        padding-left: 2px;
-        padding-right: 2px;
-      }
-
-      .news-card-home,
-      .news-skeleton {
-        flex-basis: min(78vw, 310px);
-      }
-
-      .news-arrow {
-        width: 36px;
-        height: 36px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .news-card-home,
-      .news-skeleton {
-        flex-basis: 82vw;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .news-card-home {
-        animation: none;
-      }
-
-      .news-track {
-        scroll-behavior: auto;
-      }
-    }
-
+    .site-foot-copy { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5) !important; margin: 0; }
   </style>
   
   <script data-cfasync="false">
@@ -581,28 +266,20 @@
       document.write(html);
     })();
   </script>
-  <noscript>
-    <link rel="stylesheet" href="css/willow-live.css?v=16">
-    <link rel="stylesheet" href="css/sony-liv.css?v=16">
-    <link rel="stylesheet" href="css/world-sports.css?v=16">
-    <link rel="stylesheet" href="css/fancode.css?v=16">
-    <link rel="stylesheet" href="css/main.css?v=16">
-  </noscript>
 </head>
 <body id="top">
   <header>
     <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
     <a href="#top" class="logo" aria-label="CnpTV home"><span class="cnp">Cnp</span><span class="tv">TV</span></a>
     <nav class="header-nav" aria-label="Main navigation">
       <a href="#top">Home</a>
       <a href="#fancodeSection">FanCode</a>
+      <a href="#worldSportsSection">Sports</a>
+      <a href="#newsSection">News</a>
       <a href="#sonyLivSection">Sony</a>
       <a href="#willow-live">Willow</a>
-      <a href="#worldSportsSection">Sports</a>
       <a href="https://t.me/Cnp_action_bot" class="sign-in" target="_blank" rel="noopener noreferrer">Contact</a>
       <a href="#willow-live" class="subscribe">Watch Free</a>
     </nav>
@@ -611,11 +288,11 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
     <a href="#top">Home</a>
     <a href="#fancodeSection">FanCode</a>
+    <a href="#worldSportsSection">Sports</a>
+    <a href="#newsSection">News</a>
     <a href="#sonyLivSection">Sony Liv</a>
     <a href="#willow-live">Willow</a>
     <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Contact Us</a>
-    <a href="#worldSportsSection">TV</a>
-    <a href="#worldSportsSection">FIFA 2026</a>
     <a href="#willow-live" class="subscribe-mobile">Watch Free</a>
   </nav>
 
@@ -623,7 +300,7 @@
     <div id="heroSlides"></div>
     <div class="slider-progress" id="sliderProgress" aria-hidden="true"></div>
     <button class="slider-arrow arrow-left" id="arrowLeft" type="button" aria-label="Previous slide">&#10094;</button>
-    <button class="slider-arrow arrow-right" id="arrowRight" type="button" aria-label="Next slide">&#10095;</button>
+    <button class="slider-arrow arrow-right" id="arrowRight" type="button" aria-label="Next slide">&#10095;</button
   </div>
 
   <div class="scroll-hint" aria-hidden="true">
@@ -634,6 +311,7 @@
   </div>
 
   <main id="sports" role="main">
+    <!-- 1. FanCode -->
     <section class="fancode-section" id="fancodeSection">
       <div class="section-hd">
         <h2 class="section-hd-title">FanCode</h2>
@@ -643,33 +321,10 @@
         <button class="fancode-arrow arrow-left" id="fancodeArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
         <div class="fancode-track" id="fancodeTrack" tabindex="0"></div>
         <button class="fancode-arrow arrow-right" id="fancodeArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
-      </div>
+      </div
     </section>
 
-    <section class="sony-liv-section" id="sonyLivSection">
-      <div class="section-hd">
-        <h2 class="section-hd-title">Sony Liv Events</h2>
-        <span class="section-hd-rule" aria-hidden="true"></span>
-      </div>
-      <div class="sony-liv-carousel-wrapper">
-        <button class="sony-liv-arrow arrow-left" id="sonyLivArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
-        <div class="sony-liv-track" id="sonyLivTrack"></div>
-        <button class="sony-liv-arrow arrow-right" id="sonyLivArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
-      </div>
-    </section>
-
-    <section class="willow-live-section" id="willow-live">
-      <div class="section-hd">
-        <h2 class="section-hd-title">Willow Cricket</h2>
-        <span class="section-hd-rule" aria-hidden="true"></span>
-      </div>
-      <div class="willow-live-carousel-wrapper">
-        <button class="carousel-arrow arrow-left" id="willowLiveArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
-        <div class="willow-live-track" id="willowLiveTrack"></div>
-        <button class="carousel-arrow arrow-right" id="willowLiveArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
-      </div>
-    </section>
-
+    <!-- 2. World Sports -->
     <section class="world-sports-section" id="worldSportsSection">
       <div class="section-hd">
         <h2 class="section-hd-title">World Sports</h2>
@@ -682,423 +337,26 @@
       </div>
     </section>
 
-    <!-- NEWS SECTION -->
-    <section class="news-section" id="newsSection" aria-labelledby="newsSectionTitle">
+    <!-- 3. News Section (New) -->
+    <section class="news-section" id="newsSection">
       <div class="section-hd">
-        <h2 class="section-hd-title" id="newsSectionTitle">Latest Sports News</h2>
+        <h2 class="section-hd-title">Latest Sports News</h2>
         <span class="section-hd-rule" aria-hidden="true"></span>
       </div>
-
-      <div class="news-carousel-wrapper">
-        <button class="news-arrow arrow-left" id="newsArrowLeft" type="button" aria-label="Scroll news left">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M15 18l-6-6 6-6"/>
-          </svg>
-        </button>
-
-        <div class="news-track" id="newsTrack" tabindex="0" aria-live="polite" aria-busy="true">
-          <div class="news-skeleton" aria-hidden="true">
-            <div class="news-skeleton-img"></div>
-            <div class="news-skeleton-content">
-              <div class="news-skeleton-title"></div>
-              <div class="news-skeleton-time"></div>
-            </div>
-          </div>
-          <div class="news-skeleton" aria-hidden="true">
-            <div class="news-skeleton-img"></div>
-            <div class="news-skeleton-content">
-              <div class="news-skeleton-title"></div>
-              <div class="news-skeleton-time"></div>
-            </div>
-          </div>
-          <div class="news-skeleton" aria-hidden="true">
-            <div class="news-skeleton-img"></div>
-            <div class="news-skeleton-content">
-              <div class="news-skeleton-title"></div>
-              <div class="news-skeleton-time"></div>
-            </div>
-          </div>
-        </div>
-
-        <button class="news-arrow arrow-right" id="newsArrowRight" type="button" aria-label="Scroll news right">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="news-load-more">
-        <a href="/news/" class="news-load-btn" aria-label="View all sports news">
-          <span>View All News</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M7 17L17 7M9 7h8v8"/>
-          </svg>
-        </a>
+      <div class="news-track" id="landingNewsTrack">
+        <!-- Skeleton Loaders -->
+        <div class="news-card-landing" style="height: 250px; background: linear-gradient(90deg, #13161a 25%, #1a1d21 50%, #13161a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite;"></div>
+        <div class="news-card-landing" style="height: 250px; background: linear-gradient(90deg, #13161a 25%, #1a1d21 50%, #13161a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite;"></div>
+        <div class="news-card-landing" style="height: 250px; background: linear-gradient(90deg, #13161a 25%, #1a1d21 50%, #13161a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite;"></div>
+        <div class="news-card-landing" style="height: 250px; background: linear-gradient(90deg, #13161a 25%, #1a1d21 50%, #13161a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite;"></div>
       </div>
     </section>
 
-  </main>
-
-  <footer class="site-foot">
-    <div class="site-foot-container">
-      <div class="site-foot-brand-section">
-        <a href="#top" class="site-foot-brand" aria-label="CnpTV home">
-          <span class="cnp">Cnp</span><span class="tv">TV</span>
-        </a>
-        <p class="site-foot-desc">Your ultimate destination for live sports streaming. Watch cricket, football, and major sports events free on CnpTV.</p>
-        <div class="site-foot-social">
-          <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          </a>
-        </div>
-        <p class="site-foot-updated">Last Updated: <time id="last-updated-time" datetime="">Loading...</time></p>
+    <!-- 4. Sony Liv -->
+    <section class="sony-liv-section" id="sonyLivSection">
+      <div class="section-hd">
+        <h2 class="section-hd-title">Sony Liv Events</h2>
+        <span class="section-hd-rule" aria-hidden="true"></span>
       </div>
-      <nav class="site-foot-nav" aria-label="Footer navigation">
-        <div class="foot-nav-col">
-          <h3 class="foot-nav-title">Live Sports</h3>
-          <a href="#willow-live">Willow Cricket</a>
-          <a href="#sonyLivSection">Sony Liv</a>
-          <a href="#fancodeSection">FanCode</a>
-          <a href="#worldSportsSection">World Sports</a>
-        </div>
-        <div class="foot-nav-col">
-          <h3 class="foot-nav-title">Platforms</h3>
-          <a href="/Willow/">Willow TV</a>
-          <a href="/player/sony">Sony Player</a>
-          <a href="/Hotstar/">Hotstar</a>
-          <a href="/Fox/">Fox Sports</a>
-        </div>
-        <div class="foot-nav-col">
-          <h3 class="foot-nav-title">Languages</h3>
-          <a href="/English/">English</a>
-          <a href="/Hindi/">Hindi</a>
-          <a href="/Bangla/">Bangla</a>
-          <a href="/Tamil/">Tamil</a>
-          <a href="/Telugu/">Telugu</a>
-          <a href="/Kannada/">Kannada</a>
-        </div>
-        <div class="foot-nav-col">
-          <h3 class="foot-nav-title">Legal</h3>
-          <a href="/terms.html">Terms of Service</a>
-          <a href="/privacy.html">Privacy Policy</a>
-          <a href="/disclaimer.html">Disclaimer</a>
-          <a href="/dmca.html">DMCA</a>
-          <a href="/Feedback/">Contact Us</a>
-        </div>
-      </nav>
-    </div>
-    <div class="site-foot-bottom">
-      <p class="site-foot-copy">&copy; <span id="current-year"></span> CnpTV (sayan.info). All rights reserved.</p>
-      <div class="site-foot-legal">
-        <a href="/terms.html">Terms</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/disclaimer.html">Disclaimer</a>
-      </div>
-    </div>
-  </footer>
-
-  <script data-cfasync="false">
-    document.write('<script src="script/boot.js?t=' + Date.now() + '"><\/script>');
-  </script>
-  
-  <script>
-    // Update current year
-    const yearEl = document.getElementById('current-year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-    // Fetch last updated timestamp from centralized source
-    fetch('/freshness.txt', { cache: 'no-cache' })
-      .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        return response.text();
-      })
-      .then(text => {
-        const match = text.match(/last_updated:\s*(.+)/);
-        if (match) {
-          const date = new Date(match[1].trim());
-          const timeEl = document.getElementById('last-updated-time');
-          if (timeEl && !isNaN(date.getTime())) {
-            timeEl.setAttribute('datetime', date.toISOString());
-            timeEl.textContent = date.toLocaleDateString('en-US', { 
-              year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
-            });
-          }
-        }
-      })
-      .catch(() => {
-        const timeEl = document.getElementById('last-updated-time');
-        if (timeEl) timeEl.textContent = 'Recently';
-      });
-  </script>
-
-  <script>
-    /* ============ HOME NEWS SECTION ============ */
-    (() => {
-      'use strict';
-
-      const NEWS_DATA_URL = '/news/data.json';
-      const NEWS_LIMIT = 10;
-      const NEWS_FALLBACK_IMAGE = 'https://sayan.info/assets/android-chrome-512x512.png';
-
-      function newsEscapeHtml(value) {
-        if (value === null || value === undefined) return '';
-        return String(value)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function newsGetTimeLabel(pubDate) {
-        const date = new Date(pubDate);
-        if (Number.isNaN(date.getTime())) return 'Recently';
-
-        const diffSeconds = Math.floor((Date.now() - date.getTime()) / 1000);
-
-        if (diffSeconds < 45) return 'Just now';
-
-        if (diffSeconds < 3600) {
-          const minutes = Math.floor(diffSeconds / 60);
-          return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
-        }
-
-        if (diffSeconds < 86400) {
-          const hours = Math.floor(diffSeconds / 3600);
-          return `${hours} hour${hours === 1 ? '' : 's'} ago`;
-        }
-
-        if (diffSeconds < 604800) {
-          const days = Math.floor(diffSeconds / 86400);
-          return `${days} day${days === 1 ? '' : 's'} ago`;
-        }
-
-        return date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric'
-        });
-      }
-
-      function newsGetDateTime(pubDate) {
-        const date = new Date(pubDate);
-        return Number.isNaN(date.getTime()) ? '' : date.toISOString();
-      }
-
-      function createNewsCard(article, index) {
-        const title = String(article?.title || 'Untitled story').trim();
-        const link = String(article?.link || '').trim();
-        const source = String(article?.source || 'Sports').trim();
-        const image = String(article?.image || NEWS_FALLBACK_IMAGE).trim();
-        const pubDate = String(article?.pubDate || '').trim();
-
-        if (!link) return null;
-
-        const card = document.createElement('a');
-        card.className = 'news-card-home';
-        card.href = link;
-        card.target = '_blank';
-        card.rel = 'noopener noreferrer';
-        card.style.animationDelay = `${Math.min(index * 45, 450)}ms`;
-
-        const safeTitle = newsEscapeHtml(title);
-        const safeSource = newsEscapeHtml(source);
-        const safeImage = newsEscapeHtml(image);
-        const timeLabel = newsEscapeHtml(newsGetTimeLabel(pubDate));
-        const dateTime = newsGetDateTime(pubDate);
-
-        card.innerHTML = `
-          <img
-            class="news-card-img"
-            src="${safeImage}"
-            alt="${safeTitle}"
-            loading="lazy"
-            decoding="async"
-            referrerpolicy="no-referrer"
-          >
-          <div class="news-card-body">
-            <h3 class="news-card-title">${safeTitle}</h3>
-            <time class="news-card-time"${dateTime ? ` datetime="${dateTime}"` : ''}>${timeLabel}</time>
-            <div class="news-card-source">${safeSource}</div>
-          </div>
-        `;
-
-        const img = card.querySelector('.news-card-img');
-
-        img.addEventListener('error', () => {
-          if (img.dataset.fallbackApplied === '1') {
-            card.remove();
-            newsUpdateArrowState();
-            return;
-          }
-
-          img.dataset.fallbackApplied = '1';
-          img.src = NEWS_FALLBACK_IMAGE;
-        }, { once: false });
-
-        return card;
-      }
-
-      function newsGetScrollAmount(track) {
-        const card = track.querySelector('.news-card-home');
-        if (!card) return Math.max(track.clientWidth * 0.8, 280);
-
-        const styles = window.getComputedStyle(track);
-        const gap = parseFloat(styles.columnGap || styles.gap || '16') || 16;
-
-        return card.getBoundingClientRect().width + gap;
-      }
-
-      function newsUpdateArrowState() {
-        const track = document.getElementById('newsTrack');
-        const leftArrow = document.getElementById('newsArrowLeft');
-        const rightArrow = document.getElementById('newsArrowRight');
-
-        if (!track || !leftArrow || !rightArrow) return;
-
-        const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
-        const atStart = track.scrollLeft <= 2;
-        const atEnd = track.scrollLeft >= maxScrollLeft - 2;
-
-        leftArrow.disabled = atStart;
-        rightArrow.disabled = maxScrollLeft <= 2 || atEnd;
-
-        const hasOverflow = maxScrollLeft > 2;
-        leftArrow.style.visibility = hasOverflow ? 'visible' : 'hidden';
-        rightArrow.style.visibility = hasOverflow ? 'visible' : 'hidden';
-      }
-
-      function setupNewsCarousel() {
-        const track = document.getElementById('newsTrack');
-        const leftArrow = document.getElementById('newsArrowLeft');
-        const rightArrow = document.getElementById('newsArrowRight');
-
-        if (!track || !leftArrow || !rightArrow) return;
-
-        if (track.dataset.carouselReady === '1') {
-          newsUpdateArrowState();
-          return;
-        }
-
-        track.dataset.carouselReady = '1';
-
-        leftArrow.addEventListener('click', () => {
-          track.scrollBy({
-            left: -newsGetScrollAmount(track),
-            behavior: 'smooth'
-          });
-        });
-
-        rightArrow.addEventListener('click', () => {
-          track.scrollBy({
-            left: newsGetScrollAmount(track),
-            behavior: 'smooth'
-          });
-        });
-
-        track.addEventListener('scroll', newsUpdateArrowState, { passive: true });
-
-        window.addEventListener('resize', newsUpdateArrowState, { passive: true });
-
-        track.addEventListener('keydown', (event) => {
-          if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            track.scrollBy({
-              left: -newsGetScrollAmount(track),
-              behavior: 'smooth'
-            });
-          } else if (event.key === 'ArrowRight') {
-            event.preventDefault();
-            track.scrollBy({
-              left: newsGetScrollAmount(track),
-              behavior: 'smooth'
-            });
-          }
-        });
-
-        newsUpdateArrowState();
-      }
-
-      async function loadNewsSection() {
-        const track = document.getElementById('newsTrack');
-        if (!track) return;
-
-        track.setAttribute('aria-busy', 'true');
-
-        try {
-          const response = await fetch(NEWS_DATA_URL, {
-            cache: 'no-cache',
-            headers: { 'Accept': 'application/json' }
-          });
-
-          if (!response.ok) {
-            throw new Error(`News request failed with status ${response.status}`);
-          }
-
-          const data = await response.json();
-          const articles = Array.isArray(data?.articles)
-            ? data.articles.slice(0, NEWS_LIMIT)
-            : [];
-
-          if (articles.length === 0) {
-            throw new Error('No news articles found');
-          }
-
-          const fragment = document.createDocumentFragment();
-          let validCards = 0;
-
-          articles.forEach((article, index) => {
-            const card = createNewsCard(article, index);
-            if (card) {
-              fragment.appendChild(card);
-              validCards += 1;
-            }
-          });
-
-          if (validCards === 0) {
-            throw new Error('No valid news articles available');
-          }
-
-          track.replaceChildren(fragment);
-          track.setAttribute('aria-busy', 'false');
-          setupNewsCarousel();
-
-          requestAnimationFrame(newsUpdateArrowState);
-        } catch (error) {
-          console.error('News section error:', error);
-
-          track.replaceChildren();
-
-          const emptyState = document.createElement('p');
-          emptyState.className = 'news-empty';
-          emptyState.textContent = 'News is temporarily unavailable. Please try again later.';
-
-          track.appendChild(emptyState);
-          track.setAttribute('aria-busy', 'false');
-
-          const leftArrow = document.getElementById('newsArrowLeft');
-          const rightArrow = document.getElementById('newsArrowRight');
-          if (leftArrow) leftArrow.style.visibility = 'hidden';
-          if (rightArrow) rightArrow.style.visibility = 'hidden';
-        }
-      }
-
-      function initNewsSection() {
-        if (!document.getElementById('newsTrack')) return;
-        setupNewsCarousel();
-        loadNewsSection();
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initNewsSection, { once: true });
-      } else {
-        initNewsSection();
-      }
-    })();
-  </script>
-
-</body>
-</html>
+      <div class="sony-liv-carousel-wrapper">
+        <button class="sony-liv-arrow arrow-left" id="sony
