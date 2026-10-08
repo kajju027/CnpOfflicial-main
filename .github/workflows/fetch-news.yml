@@ -2,7 +2,7 @@ name: Fetch Sports News
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */2 * * *' # প্রতি ২ ঘন্টা অন্তর
   workflow_dispatch:
 
 permissions:
@@ -33,8 +33,10 @@ jobs:
           from datetime import datetime
 
           feeds = [
-              {"url": "http://www.espncricinfo.com/rss/content/story/feeds/0.xml", "source": "ESPN Cricinfo"},
-              {"url": "https://timesofindia.indiatimes.com/rssfeeds/4719148.cms", "source": "Times of India"},
+              {"url": "https://www.indiatoday.in/rss/1206550", "source": "India Today"},
+              {"url": "https://www.hindustantimes.com/feeds/rss/cricket/rssfeed.xml", "source": "HT Cricket"},
+              {"url": "https://www.hindustantimes.com/feeds/rss/sports/football/rssfeed.xml", "source": "HT Football"},
+              {"url": "https://www.hindustantimes.com/feeds/rss/sports/rssfeed.xml", "source": "HT Sports"},
               {"url": "https://api.foxsports.com/v2/content/optimized-rss?partnerKey=MB0Wehpmuj2lUhuRhQaafhBjAJqaPU244mlTDK1i&aggregateId=7f83e8ca-6701-5ea0-96ee-072636b67336", "source": "Fox Sports"}
           ]
 
@@ -44,7 +46,7 @@ jobs:
           for feed_info in feeds:
               try:
                   feed = feedparser.parse(feed_info["url"])
-                  for entry in feed.entries[:15]:
+                  for entry in feed.entries:
                       image = default_image
                       if hasattr(entry, 'media_content') and len(entry.media_content) > 0:
                           image = entry.media_content[0].get('url', default_image)
@@ -53,11 +55,17 @@ jobs:
                               if link.get('rel') == 'enclosure' and 'image' in link.get('type', ''):
                                   image = link.get('href')
                                   break
+                      
+                      # Clean description: remove all HTML tags (fixes duplicate image issue)
+                      raw_desc = entry.get('description', entry.get('summary', entry.get('content', [{'value': ''}])[0].get('value', 'No description available.')))
+                      clean_desc = re.sub(r'<[^>]+>', '', str(raw_desc)).strip()
+                      clean_desc = re.sub(r'\s+', ' ', clean_desc)
+                      if len(clean_desc) > 250:
+                          clean_desc = clean_desc[:250] + "..."
 
-                      raw_desc = entry.get('description', entry.get('summary', 'No description available.'))
-                      clean_desc = re.sub('<[^<]+>', '', raw_desc).strip()
-                      if len(clean_desc) > 220:
-                          clean_desc = clean_desc[:220] + "..."
+                      # Identify cricket news for prioritization
+                      text_to_check = (entry.get('title', '') + ' ' + feed_info['source'] + ' ' + clean_desc).lower()
+                      is_cricket = 'cricket' in text_to_check or 'ipl' in text_to_check or 'wc' in text_to_check or 't20' in text_to_check
 
                       news_items.append({
                           "title": entry.get('title', 'No Title'),
@@ -65,16 +73,36 @@ jobs:
                           "description": clean_desc,
                           "image": image,
                           "pubDate": entry.get('published', entry.get('updated', datetime.now().isoformat())),
-                          "source": feed_info["source"]
+                          "source": feed_info["source"],
+                          "_is_cricket": is_cricket
                       })
-              except Exception:
+              except Exception as e:
+                  print(f"Error fetching {feed_info['source']}: {e}")
                   continue
 
-          news_items.sort(key=lambda x: x['pubDate'], reverse=True)
-          
+          # Robust date parsing for sorting
+          def parse_date(date_str):
+              try:
+                  if isinstance(date_str, tuple): # feedparser parsed time
+                      return datetime(*date_str[:6])
+                  return datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S %Z")
+              except:
+                  return datetime.min
+
+          # Sort 1: By Date (Newest first)
+          news_items.sort(key=lambda x: parse_date(x['pubDate']), reverse=True)
+          # Sort 2: Stable sort to put Cricket (True) at the very top
+          news_items.sort(key=lambda x: x['_is_cricket'], reverse=True)
+
+          # Remove internal flag and cap at 150 to prevent massive JSON file size (browser performance)
+          final_items = []
+          for item in news_items[:150]:
+              del item['_is_cricket']
+              final_items.append(item)
+
           os.makedirs('news', exist_ok=True)
           with open('news/data.json', 'w', encoding='utf-8') as f:
-              json.dump({"last_updated": datetime.now().isoformat(), "articles": news_items[:30]}, f, indent=2)
+              json.dump({"last_updated": datetime.now().isoformat(), "articles": final_items}, f, indent=2)
           EOF
 
       - name: Commit and push if changes exist
@@ -83,6 +111,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add news/data.json
           if ! git diff --staged --quiet; then
-            git commit -m "chore: update sports news feed"
+            git commit -m "chore: update sports news feed (2hr interval)"
             git push
           fi
