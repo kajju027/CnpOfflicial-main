@@ -1,0 +1,82 @@
+name: Fetch Sports News
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install feedparser
+
+      - name: Fetch and compile news
+        run: |
+          python3 << 'EOF'
+          import feedparser
+          import json
+          import os
+          from datetime import datetime
+
+          feeds = [
+              {"url": "http://www.espncricinfo.com/rss/content/story/feeds/0.xml", "source": "ESPN Cricinfo"},
+              {"url": "https://timesofindia.indiatimes.com/rssfeeds/4719148.cms", "source": "Times of India Sports"},
+              {"url": "http://feeds.bbci.co.uk/sport/rss.xml", "source": "BBC Sport"}
+          ]
+
+          news_items = []
+          default_image = "https://sayan.info/assets/android-chrome-512x512.png"
+
+          for feed_info in feeds:
+              try:
+                  feed = feedparser.parse(feed_info["url"])
+                  for entry in feed.entries[:10]:
+                      image = default_image
+                      if hasattr(entry, 'media_content') and len(entry.media_content) > 0:
+                          image = entry.media_content[0].get('url', default_image)
+                      elif hasattr(entry, 'links'):
+                          for link in entry.links:
+                              if link.get('rel') == 'enclosure' and 'image' in link.get('type', ''):
+                                  image = link.get('href')
+                                  break
+
+                      news_items.append({
+                          "title": entry.get('title', 'No Title'),
+                          "link": entry.get('link', '#'),
+                          "description": entry.get('description', entry.get('summary', 'No description available.'))[:200] + "...",
+                          "image": image,
+                          "pubDate": entry.get('published', entry.get('updated', datetime.now().isoformat())),
+                          "source": feed_info["source"]
+                      })
+              except Exception:
+                  continue
+
+          news_items.sort(key=lambda x: x['pubDate'], reverse=True)
+          
+          os.makedirs('news', exist_ok=True)
+          with open('news/data.json', 'w', encoding='utf-8') as f:
+              json.dump({"last_updated": datetime.now().isoformat(), "articles": news_items[:30]}, f, indent=2)
+          EOF
+
+      - name: Commit and push if changes exist
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add news/data.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update sports news feed"
+            git push
+          fi
