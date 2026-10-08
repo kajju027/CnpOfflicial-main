@@ -117,30 +117,64 @@
   <link rel="dns-prefetch" href="https://www.fancode.com">
   <link rel="dns-prefetch" href="https://images.fancode.com">
   <link rel="dns-prefetch" href="https://origin-staticv2.sonyliv.com">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
-    html, body { background: #0b0d0f !important; color: #fff !important; font-family: 'Inter', sans-serif; }
-    .section-hd-title { margin: 0 !important; font-size: 1.5rem; font-weight: 700; }
-    .section-hd { margin-bottom: clamp(1.15rem, 2.6vw, 2rem) !important; display: flex; align-items: center; gap: 12px; }
+    html, body { background: #0b0d0f !important; color: #fff !important; }
+    .section-hd-title { margin: 0 !important; }
+    .section-hd { margin-bottom: clamp(1.15rem, 2.6vw, 2rem) !important; }
     .section-hd-rule {
       display: block !important;
       width: 30px !important;
       height: 3px !important;
+      margin-top: 9px !important;
       border-radius: 999px !important;
+      background: #f5c518 !important;
       background: linear-gradient(90deg, #f5c518, rgba(245, 197, 24, 0.15)) !important;
     }
+    .sony-liv-carousel-wrapper { position: relative; }
+    .sony-liv-track {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 8px 16px 12px;
+      scrollbar-width: none;
+    }
+    .sony-liv-arrow {
+      position: absolute;
+      top: 42%;
+      z-index: 5;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(12, 14, 18, 0.9);
+      color: #fff;
+    }
+    .sony-liv-arrow.arrow-left { left: 6px; }
+    .sony-liv-arrow.arrow-right { right: 6px; }
+    .site-foot {
+      background: #0b0d0f !important;
+      color: rgba(255, 255, 255, 0.72) !important;
+      padding: 28px 16px 40px;
+    }
+    .site-foot a, .site-foot p, .site-foot span {
+      color: rgba(255, 255, 255, 0.78) !important;
+      text-decoration: none !important;
+    }
+    .site-foot-nav { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+    .site-foot .cnp { color: #7dffb3 !important; }
     
-    /* News Section Specific Styles */
-    .news-section { margin-bottom: clamp(2rem, 4vw, 3rem); padding: 0 16px; }
+    /* News Section Styles - Minimal and Safe */
+    .news-section { margin-bottom: clamp(2rem, 4vw, 3rem); }
     .news-track {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 16px;
+      padding: 0 16px;
     }
     .news-card-landing {
       background: #13161a;
@@ -173,6 +207,7 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      color: #fff;
     }
     .news-card-time {
       font-size: 0.75rem;
@@ -207,52 +242,7 @@
       color: rgba(255,255,255,0.6);
       font-size: 0.85rem;
     }
-
-    /* Footer Styles */
-    .site-foot {
-      background: #0b0d0f !important;
-      color: rgba(255, 255, 255, 0.72) !important;
-      padding: 40px 16px 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      margin-top: 40px;
-    }
-    .site-foot-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-    @media (min-width: 768px) {
-      .site-foot-container { grid-template-columns: 1.5fr 2fr; }
-    }
-    .site-foot-brand {
-      font-size: 1.5rem;
-      font-weight: 800;
-      text-decoration: none;
-      display: inline-block;
-      margin-bottom: 12px;
-    }
-    .site-foot .cnp { color: #7dffb3 !important; }
-    .site-foot .tv { color: #ffffff !important; }
-    .site-foot-desc { font-size: 0.9rem; line-height: 1.5; margin-bottom: 16px; max-width: 320px; }
-    .site-foot-nav { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    @media (min-width: 768px) { .site-foot-nav { grid-template-columns: repeat(4, 1fr); } }
-    .foot-nav-title {
-      font-size: 0.85rem; font-weight: 700; color: #ffffff !important;
-      text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 12px 0;
-    }
-    .site-foot-nav a {
-      display: block; color: rgba(255, 255, 255, 0.7) !important;
-      text-decoration: none !important; font-size: 0.9rem; padding: 4px 0;
-      transition: color 0.2s ease;
-    }
-    .site-foot-nav a:hover { color: #7dffb3 !important; }
-    .site-foot-bottom {
-      max-width: 1200px; margin: 32px auto 0; padding-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;
-    }
-    .site-foot-copy { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5) !important; margin: 0; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
   </style>
   
   <script data-cfasync="false">
@@ -266,20 +256,28 @@
       document.write(html);
     })();
   </script>
+  <noscript>
+    <link rel="stylesheet" href="css/willow-live.css?v=12">
+    <link rel="stylesheet" href="css/sony-liv.css?v=12">
+    <link rel="stylesheet" href="css/world-sports.css?v=12">
+    <link rel="stylesheet" href="css/fancode.css?v=12">
+    <link rel="stylesheet" href="css/main.css?v=12">
+  </noscript>
 </head>
 <body id="top">
   <header>
     <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
     <a href="#top" class="logo" aria-label="CnpTV home"><span class="cnp">Cnp</span><span class="tv">TV</span></a>
     <nav class="header-nav" aria-label="Main navigation">
       <a href="#top">Home</a>
       <a href="#fancodeSection">FanCode</a>
-      <a href="#worldSportsSection">Sports</a>
-      <a href="#newsSection">News</a>
       <a href="#sonyLivSection">Sony</a>
       <a href="#willow-live">Willow</a>
+      <a href="#worldSportsSection">Sports</a>
       <a href="https://t.me/Cnp_action_bot" class="sign-in" target="_blank" rel="noopener noreferrer">Contact</a>
       <a href="#willow-live" class="subscribe">Watch Free</a>
     </nav>
@@ -288,11 +286,11 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
     <a href="#top">Home</a>
     <a href="#fancodeSection">FanCode</a>
-    <a href="#worldSportsSection">Sports</a>
-    <a href="#newsSection">News</a>
     <a href="#sonyLivSection">Sony Liv</a>
     <a href="#willow-live">Willow</a>
     <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Contact Us</a>
+    <a href="#worldSportsSection">TV</a>
+    <a href="#worldSportsSection">FIFA 2026</a>
     <a href="#willow-live" class="subscribe-mobile">Watch Free</a>
   </nav>
 
@@ -300,7 +298,7 @@
     <div id="heroSlides"></div>
     <div class="slider-progress" id="sliderProgress" aria-hidden="true"></div>
     <button class="slider-arrow arrow-left" id="arrowLeft" type="button" aria-label="Previous slide">&#10094;</button>
-    <button class="slider-arrow arrow-right" id="arrowRight" type="button" aria-label="Next slide">&#10095;</button
+    <button class="slider-arrow arrow-right" id="arrowRight" type="button" aria-label="Next slide">&#10095;</button>
   </div>
 
   <div class="scroll-hint" aria-hidden="true">
@@ -311,7 +309,7 @@
   </div>
 
   <main id="sports" role="main">
-    <!-- 1. FanCode -->
+    <!-- 1. FanCode Section - ORIGINAL STRUCTURE -->
     <section class="fancode-section" id="fancodeSection">
       <div class="section-hd">
         <h2 class="section-hd-title">FanCode</h2>
@@ -321,10 +319,10 @@
         <button class="fancode-arrow arrow-left" id="fancodeArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
         <div class="fancode-track" id="fancodeTrack" tabindex="0"></div>
         <button class="fancode-arrow arrow-right" id="fancodeArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
-      </div
+      </div>
     </section>
 
-    <!-- 2. World Sports -->
+    <!-- 2. World Sports Section - ORIGINAL STRUCTURE -->
     <section class="world-sports-section" id="worldSportsSection">
       <div class="section-hd">
         <h2 class="section-hd-title">World Sports</h2>
@@ -337,14 +335,13 @@
       </div>
     </section>
 
-    <!-- 3. News Section (New) -->
+    <!-- 3. News Section - NEW ADDITION -->
     <section class="news-section" id="newsSection">
       <div class="section-hd">
         <h2 class="section-hd-title">Latest Sports News</h2>
         <span class="section-hd-rule" aria-hidden="true"></span>
       </div>
       <div class="news-track" id="landingNewsTrack">
-        <!-- Skeleton Loaders -->
         <div class="news-card-landing" style="height: 250px; background: linear-gradient(90deg, #13161a 25%, #1a1d21 50%, #13161a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite;"></div>
         <div class="news-card-landing" style="height: 250px; background: linear-gradient(90deg, #13161a 25%, #1a1d21 50%, #13161a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite;"></div>
         <div class="news-card-landing" style="height: 250px; background: linear-gradient(90deg, #13161a 25%, #1a1d21 50%, #13161a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite;"></div>
@@ -352,11 +349,126 @@
       </div>
     </section>
 
-    <!-- 4. Sony Liv -->
+    <!-- 4. Sony Liv Section - ORIGINAL STRUCTURE -->
     <section class="sony-liv-section" id="sonyLivSection">
       <div class="section-hd">
         <h2 class="section-hd-title">Sony Liv Events</h2>
         <span class="section-hd-rule" aria-hidden="true"></span>
       </div>
       <div class="sony-liv-carousel-wrapper">
-        <button class="sony-liv-arrow arrow-left" id="sony
+        <button class="sony-liv-arrow arrow-left" id="sonyLivArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
+        <div class="sony-liv-track" id="sonyLivTrack"></div>
+        <button class="sony-liv-arrow arrow-right" id="sonyLivArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- 5. Willow Cricket Section - ORIGINAL STRUCTURE -->
+    <section class="willow-live-section" id="willow-live">
+      <div class="section-hd">
+        <h2 class="section-hd-title">Willow Cricket</h2>
+        <span class="section-hd-rule" aria-hidden="true"></span>
+      </div>
+      <div class="willow-live-carousel-wrapper">
+        <button class="carousel-arrow arrow-left" id="willowLiveArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
+        <div class="willow-live-track" id="willowLiveTrack"></div>
+        <button class="carousel-arrow arrow-right" id="willowLiveArrowRight" type="button" aria-label="Scroll right">&#10095;</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="site-foot-top">
+      <a href="#top" class="site-foot-brand" aria-label="CnpTV home"><span class="cnp">Cnp</span><span class="tv">TV</span></a>
+      <p>Live cricket, Sony Liv, FanCode and world sports. Watch free on CnpTV.</p>
+    </div>
+    <nav class="site-foot-nav" aria-label="Footer">
+      <a href="#willow-live">Willow Cricket</a>
+      <a href="#sonyLivSection">Sony Liv</a>
+      <a href="#fancodeSection">FanCode</a>
+      <a href="#worldSportsSection">World Sports</a>
+      <a href="/news/">Latest News</a>
+      <a href="/Willow/">Willow</a>
+      <a href="/player/sony">Sony Player</a>
+      <a href="/Hotstar/">Hotstar</a>
+      <a href="/English/">English</a>
+      <a href="/Hindi/">Hindi</a>
+      <a href="/Bangla/">Bangla</a>
+    </nav>
+    <p class="site-foot-copy">CnpTV · sayan.info</p>
+  </footer>
+
+  <script data-cfasync="false">
+    document.write('<script src="script/boot.js?t=' + Date.now() + '"><\/script>');
+  </script>
+  
+  <script>
+    // Safe News Loader - Won't break anything if it fails
+    (function() {
+      async function loadLandingNews() {
+        try {
+          const track = document.getElementById('landingNewsTrack');
+          if (!track) return;
+          
+          const response = await fetch('/news/data.json', { cache: 'no-cache' });
+          if (!response.ok) return;
+          
+          const data = await response.json();
+          const articles = data.articles || [];
+          if (articles.length === 0) return;
+          
+          track.innerHTML = '';
+          let validCount = 0;
+          const maxItems = 10;
+          
+          for (let i = 0; i < articles.length && validCount < maxItems; i++) {
+            const article = articles[i];
+            const date = new Date(article.pubDate);
+            const exactTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            
+            const card = document.createElement('a');
+            card.className = 'news-card-landing';
+            card.href = article.link;
+            card.target = '_blank';
+            card.rel = 'noopener noreferrer';
+            
+            card.innerHTML = `
+              <img class="news-card-img" src="${article.image}" alt="" loading="lazy">
+              <div class="news-card-body">
+                <h3 class="news-card-title">${article.title}</h3>
+                <div class="news-card-time">${exactTime}</div>
+              </div>
+            `;
+            
+            const img = card.querySelector('.news-card-img');
+            img.addEventListener('error', function() { card.remove(); });
+            
+            track.appendChild(card);
+            validCount++;
+          }
+          
+          if (validCount > 0) {
+            const readMoreCard = document.createElement('a');
+            readMoreCard.className = 'news-card-landing news-read-more';
+            readMoreCard.href = '/news/';
+            readMoreCard.innerHTML = `
+              <span>Read More News</span>
+              <p>Explore hundreds of latest sports updates</p>
+            `;
+            track.appendChild(readMoreCard);
+          }
+        } catch (error) {
+          // Silently fail - don't break the page
+          console.log('News section: failed to load');
+        }
+      }
+      
+      // Load after everything else is ready
+      if (document.readyState === 'complete') {
+        loadLandingNews();
+      } else {
+        window.addEventListener('load', loadLandingNews);
+      }
+    })();
+  </script>
+</body>
+</html>
