@@ -2,7 +2,7 @@ name: Fetch Sports News
 
 on:
   schedule:
-    - cron: '0 */2 * * *' # প্রতি ২ ঘন্টা অন্তর
+    - cron: '0 */2 * * *'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +21,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install feedparser
+        run: pip install feedparser requests
 
       - name: Fetch and compile news
         run: |
@@ -31,6 +31,7 @@ jobs:
           import os
           import re
           from datetime import datetime
+          import requests
 
           feeds = [
               {"url": "https://www.indiatoday.in/rss/1206550", "source": "India Today"},
@@ -43,20 +44,46 @@ jobs:
           news_items = []
           default_image = "https://sayan.info/assets/android-chrome-512x512.png"
 
+          def is_image_valid(url):
+              """Check if image URL is valid and accessible"""
+              if not url or url == default_image:
+                  return False
+              try:
+                  # Check if URL is accessible (head request for speed)
+                  response = requests.head(url, timeout=3, allow_redirects=True)
+                  content_type = response.headers.get('content-type', '')
+                  return response.status_code == 200 and 'image' in content_type
+              except:
+                  return False
+
           for feed_info in feeds:
               try:
                   feed = feedparser.parse(feed_info["url"])
                   for entry in feed.entries:
-                      image = default_image
+                      image = None
+                      
+                      # Extract image from various RSS formats
                       if hasattr(entry, 'media_content') and len(entry.media_content) > 0:
-                          image = entry.media_content[0].get('url', default_image)
+                          image = entry.media_content[0].get('url')
+                      elif hasattr(entry, 'media_thumbnail') and len(entry.media_thumbnail) > 0:
+                          image = entry.media_thumbnail[0].get('url')
                       elif hasattr(entry, 'links'):
                           for link in entry.links:
                               if link.get('rel') == 'enclosure' and 'image' in link.get('type', ''):
                                   image = link.get('href')
                                   break
+                      elif hasattr(entry, 'image'):
+                          image = entry.image.get('href')
                       
-                      # Clean description: remove all HTML tags (fixes duplicate image issue)
+                      # Skip if no image found
+                      if not image or image == default_image:
+                          continue
+                      
+                      # Validate image URL
+                      if not is_image_valid(image):
+                          continue
+
+                      # Clean description
                       raw_desc = entry.get('description', entry.get('summary', entry.get('content', [{'value': ''}])[0].get('value', 'No description available.')))
                       clean_desc = re.sub(r'<[^>]+>', '', str(raw_desc)).strip()
                       clean_desc = re.sub(r'\s+', ' ', clean_desc)
@@ -83,7 +110,7 @@ jobs:
           # Robust date parsing for sorting
           def parse_date(date_str):
               try:
-                  if isinstance(date_str, tuple): # feedparser parsed time
+                  if isinstance(date_str, tuple):
                       return datetime(*date_str[:6])
                   return datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S %Z")
               except:
@@ -94,7 +121,7 @@ jobs:
           # Sort 2: Stable sort to put Cricket (True) at the very top
           news_items.sort(key=lambda x: x['_is_cricket'], reverse=True)
 
-          # Remove internal flag and cap at 150 to prevent massive JSON file size (browser performance)
+          # Remove internal flag and limit to 150
           final_items = []
           for item in news_items[:150]:
               del item['_is_cricket']
@@ -103,6 +130,8 @@ jobs:
           os.makedirs('news', exist_ok=True)
           with open('news/data.json', 'w', encoding='utf-8') as f:
               json.dump({"last_updated": datetime.now().isoformat(), "articles": final_items}, f, indent=2)
+          
+          print(f"Successfully fetched {len(final_items)} articles with valid images")
           EOF
 
       - name: Commit and push if changes exist
@@ -111,6 +140,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add news/data.json
           if ! git diff --staged --quiet; then
-            git commit -m "chore: update sports news feed (2hr interval)"
+            git commit -m "chore: update sports news feed (filtered valid images only)"
             git push
           fi
