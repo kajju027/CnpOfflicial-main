@@ -1,0 +1,85 @@
+name: Daily Site Maintenance
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update freshness timestamp
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "last_updated: $TIMESTAMP" > freshness.txt
+
+      - name: Update sitemap.xml
+        run: |
+          python3 << 'EOF'
+          import xml.etree.ElementTree as ET
+          from datetime import datetime, timezone
+          import xml.dom.minidom
+
+          try:
+              tree = ET.parse('sitemap.xml')
+              root = tree.getroot()
+          except Exception as e:
+              print(f"Error parsing sitemap.xml: {e}")
+              exit(1)
+
+          today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+          legacy_date = '2025-11-29'
+
+          ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+
+          for url in root.findall('sm:url', ns):
+              loc_elem = url.find('sm:loc', ns)
+              if loc_elem is None or loc_elem.text is None:
+                  continue
+              loc = loc_elem.text
+              
+              # Fix Channel URLs to include .html extension
+              if '/Channel-' in loc and not loc.endswith('.html'):
+                  loc_elem.text = loc + '.html'
+                  loc = loc_elem.text
+              
+              # Clean up existing optional tags
+              for child in list(url):
+                  tag_name = child.tag.split('}')[-1]
+                  if tag_name in ['lastmod', 'changefreq', 'priority']:
+                      url.remove(child)
+              
+              # Add new lastmod
+              lastmod = ET.SubElement(url, '{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod')
+              if '/Channel-' in loc and loc.endswith('.html'):
+                  lastmod.text = legacy_date
+              else:
+                  lastmod.text = today
+
+          # Format and write
+          xmlstr = xml.dom.minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
+          lines = xmlstr.split('\n')
+          if lines[0].startswith('<?xml'):
+              lines = lines[1:]
+
+          with open('sitemap.xml', 'w', encoding='utf-8') as f:
+              f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+              f.write('\n'.join(lines))
+          EOF
+
+      - name: Commit changes if any
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add freshness.txt sitemap.xml
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: daily site maintenance and sitemap update"
+            git push
+          fi
