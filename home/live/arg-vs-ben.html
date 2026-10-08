@@ -265,10 +265,11 @@
 
     .match-card {
       margin-top: 22px;
+      margin-bottom: 32px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 18px clamp(16px, 3vw, 28px);
+      padding: 22px clamp(16px, 3vw, 28px);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -338,12 +339,13 @@
     }
 
     .mc-desc {
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       color: var(--text-2);
-      line-height: 1.4;
-      margin-top: 2px;
-      max-width: 160px;
+      line-height: 1.5;
+      margin-top: 4px;
+      max-width: 180px;
       text-align: center;
+      font-weight: 500;
     }
 
     @media (max-width: 540px) {
@@ -521,6 +523,70 @@
 
     @keyframes rotateConic {
       to { transform: rotate(360deg); }
+    }
+
+    /* ═══════════════════════════════ MATCH INFO (open layout) ═══════════════════════════════ */
+    .match-info-section {
+      padding: 6px 0 36px;
+    }
+
+    .mi-teams {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 28px 0 24px;
+    }
+
+    .mi-team {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mi-logo {
+      width: clamp(64px, 11vw, 96px);
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+      display: block;
+    }
+
+    .mi-name {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.8vw, 1.45rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .mi-vs {
+      flex-shrink: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 900;
+      color: var(--orange);
+      letter-spacing: 0.14em;
+      text-shadow: 0 0 32px var(--orange-glow);
+      line-height: 1;
+    }
+
+    .mi-desc-block {
+      border-top: 1px solid var(--border);
+      padding-top: 22px;
+    }
+
+    .mi-desc-text {
+      font-size: clamp(0.85rem, 1.8vw, 0.96rem);
+      color: var(--text-2);
+      line-height: 1.75;
+      font-weight: 400;
+      max-width: 680px;
     }
 
     /* ═══════════════════════════════ FOOTER ═══════════════════════════════ */
@@ -796,30 +862,21 @@
 
   <!-- ═════════════════════════════ HEADER ═════════════════════════════ -->
   <header class="site-header">
-    <!-- Back link -->
+    <!-- Home link -->
     <a href="../../" class="header-back" aria-label="Back to home">
-      <span class="material-icons-round">chevron_left</span>
+      <span class="material-icons-round">home</span>
       <span>Home</span>
     </a>
 
-    <!-- Scoreboard -->
+    <!-- Scoreboard: names only -->
     <div class="scoreboard" role="heading" aria-level="1">
-      <div class="sb-team home">
-        <img class="sb-flag" id="hdrHomeFlag" src="https://flagcdn.com/w40/ar.png" alt="Argentina" loading="eager" />
-        <span class="sb-name" id="hdrHomeName">ARGENTINA</span>
-      </div>
-      <div class="sb-divider">
-        <div class="live-pill"><span class="live-dot" aria-hidden="true"></span>LIVE</div>
-        <span class="vs-word">VS</span>
-      </div>
-      <div class="sb-team away">
-        <img class="sb-flag" id="hdrAwayFlag" src="https://flagcdn.com/w40/bj.png" alt="Benin" loading="eager" />
-        <span class="sb-name" id="hdrAwayName">BENIN</span>
-      </div>
+      <span class="sb-name" id="hdrHomeName">ARGENTINA</span>
+      <span class="vs-word">VS</span>
+      <span class="sb-name" id="hdrAwayName">BENIN</span>
     </div>
 
-    <!-- Quality badge -->
-    <div class="quality-badge" aria-label="Stream quality: 4K HD">4K</div>
+    <!-- Spacer to balance the grid -->
+    <div style="width:56px; flex-shrink:0;"></div>
   </header>
 
   <!-- ═══════════════════════════ PAGE BODY ═══════════════════════════ -->
@@ -837,34 +894,8 @@
       ></iframe>
     </div>
 
-    <!-- ── MATCH INFO CARD ── -->
+    <!-- ── STREAM CHANNELS + MATCH INFO ── -->
     <div class="inner-wrap">
-      <div class="match-card" id="matchCard">
-        <!-- Home team -->
-        <div class="mc-team home">
-          <img class="mc-flag" id="mcHomeFlag" src="https://flagcdn.com/w80/ar.png" alt="Argentina" loading="lazy" />
-          <div>
-            <div class="mc-team-name" id="mcHomeName">Argentina</div>
-            <div class="mc-team-sub" id="mcHomeSub">Home Team</div>
-          </div>
-        </div>
-
-        <!-- Center -->
-        <div class="mc-center">
-          <div class="mc-competition" id="mcCompetition">International Football</div>
-          <div class="mc-vs-line">VS</div>
-          <div class="mc-desc" id="mcDesc">Live Match · HD 4K Stream</div>
-        </div>
-
-        <!-- Away team -->
-        <div class="mc-team away">
-          <div style="text-align:right">
-            <div class="mc-team-name" id="mcAwayName">Benin</div>
-            <div class="mc-team-sub" id="mcAwaySub">Away Team</div>
-          </div>
-          <img class="mc-flag" id="mcAwayFlag" src="https://flagcdn.com/w80/bj.png" alt="Benin" loading="lazy" />
-        </div>
-      </div>
 
       <!-- ── STREAM CHANNELS ── -->
       <div class="section-divider" role="separator">
@@ -876,6 +907,44 @@
       </div>
 
       <div class="channels-grid" id="channelsGrid" role="list"></div>
+
+      <!-- ── MATCH INFORMATION ── -->
+      <div class="section-divider" role="separator">
+        <div class="section-label">
+          <span class="material-icons-round" aria-hidden="true">info</span>
+          <span class="section-label-text">Match Information</span>
+        </div>
+      </div>
+
+      <div class="match-info-section">
+
+        <!-- Teams row: Logo + Name | VS | Logo + Name -->
+        <div class="mi-teams">
+          <div class="mi-team">
+            <img class="mi-logo" id="mcHomeFlag" src="https://flagcdn.com/w80/ar.png" alt="Argentina" loading="lazy" />
+            <div class="mi-name" id="mcHomeName">Argentina</div>
+          </div>
+
+          <div class="mi-vs">VS</div>
+
+          <div class="mi-team">
+            <img class="mi-logo" id="mcAwayFlag" src="https://flagcdn.com/w80/bj.png" alt="Benin" loading="lazy" />
+            <div class="mi-name" id="mcAwayName">Benin</div>
+          </div>
+        </div>
+
+        <!-- ════ MATCH DESCRIPTION ════
+             Edit the text below directly in this file.
+             This section is NOT pulled from config — update it manually per match.
+        ════════════════════════════════ -->
+        <div class="mi-desc-block">
+          <p class="mi-desc-text" id="matchDescription">
+            Argentina face Benin in an international football friendly. South American champions Argentina, led by Lionel Messi, go up against the Squirrels of Benin in what promises to be an exciting encounter. Watch live in full HD — multiple language streams available above.
+          </p>
+        </div>
+
+      </div>
+
     </div><!-- /inner-wrap -->
 
     <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
@@ -991,15 +1060,11 @@
 
       const { home, away, competition, description, channels } = matchData;
 
-      /* ── Populate header scoreboard ── */
+      /* ── Populate header scoreboard (names only) ── */
       function setHeaderTeams() {
-        const hf = document.getElementById('hdrHomeFlag');
         const hn = document.getElementById('hdrHomeName');
-        const af = document.getElementById('hdrAwayFlag');
         const an = document.getElementById('hdrAwayName');
-        if (hf) { hf.src = FLAG_CDN + home.code + '.png'; hf.alt = home.name; }
         if (hn) hn.textContent = home.name.toUpperCase();
-        if (af) { af.src = FLAG_CDN + away.code + '.png'; af.alt = away.name; }
         if (an) an.textContent = away.name.toUpperCase();
       }
 
@@ -1104,9 +1169,7 @@
         overlay.classList.remove('show');
       };
 
-      overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) overlay.classList.remove('show');
-      });
+      /* Backdrop click disabled — only buttons close this modal */
 
     })();
   </script>
