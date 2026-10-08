@@ -5,31 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
+  <!-- Primary Meta Tags (Adapted for News Page) -->
   <title>Latest Sports News & Updates | CnpTV</title>
-  <meta name="description" content="Stay updated with the latest live sports news, cricket updates, football highlights, and real-time scores from top global sources on CnpTV.">
-  <meta name="keywords" content="sports news, cricket news, football updates, live scores, CnpTV news">
+  <meta name="description" content="Stay updated with the latest live sports news, cricket updates, football highlights, and real-time scores from top global sources like India Today, HT, and Fox Sports on CnpTV.">
+  <meta name="keywords" content="sports news, cricket news, football updates, live scores, India Today sports, HT cricket, Fox Sports, CnpTV news">
   <meta name="author" content="CnpTV">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  
   <link rel="canonical" href="https://sayan.info/news/">
   
-  <meta property="og:locale" content="en_IN">
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://sayan.info/news/">
   <meta property="og:title" content="Latest Sports News & Updates | CnpTV">
   <meta property="og:description" content="Stay updated with the latest live sports news, cricket updates, and football highlights from top global sources.">
   <meta property="og:image" content="https://sayan.info/assets/android-chrome-512x512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
   <meta property="og:site_name" content="CnpTV">
+  <meta property="og:locale" content="en_IN">
   
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Latest Sports News & Updates | CnpTV">
-  <meta name="twitter:description" content="Stay updated with the latest live sports news, cricket updates, and football highlights.">
-  <meta name="twitter:image" content="https://sayan.info/assets/android-chrome-512x512.png">
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://sayan.info/news/">
+  <meta property="twitter:title" content="Latest Sports News & Updates | CnpTV">
+  <meta property="twitter:description" content="Stay updated with the latest live sports news, cricket updates, and football highlights.">
+  <meta property="twitter:image" content="https://sayan.info/assets/android-chrome-512x512.png">
+  <meta property="twitter:site" content="@CnpTV">
+  <meta property="twitter:creator" content="@CnpTV">
   
-  <meta name="theme-color" content="#08090b">
-  <meta name="color-scheme" content="dark">
+  <!-- Additional SEO -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow, max-image-preview:large">
+  <meta name="bingbot" content="index, follow">
+  <link rel="alternate" hreflang="en" href="https://sayan.info/news/">
+  <link rel="alternate" hreflang="en-IN" href="https://sayan.info/news/">
+  <link rel="alternate" hreflang="x-default" href="https://sayan.info/news/">
+  
+  <!-- Security & Theme -->
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#0b0d0f">
+  <meta name="color-scheme" content="dark">
   
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -40,7 +57,18 @@
     "isPartOf": { "@type": "WebSite", "name": "CnpTV", "url": "https://sayan.info/" }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sayan.info/" },
+      { "@type": "ListItem", "position": 2, "name": "Sports News", "item": "https://sayan.info/news/" }
+    ]
+  }
+  </script>
 
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BSW772KQX6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -49,7 +77,13 @@
     gtag('config', 'G-BSW772KQX6');
   </script>
 
+  <!-- Assets -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
@@ -134,6 +168,16 @@
     .foot-copy { font-size: 0.78rem; color: var(--text-3); padding-top: 22px; border-top: 1px solid var(--line); }
     .foot-copy a { color: var(--text-2); text-decoration: none; }
     .foot-copy a:hover { color: var(--accent); }
+
+    /* Skeleton */
+    .skeleton-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .sk-media { width: 100%; aspect-ratio: 16/9; background: linear-gradient(90deg, #14181e 25%, #1d2229 50%, #14181e 75%); background-size: 200% 100%; animation: shimmer 1.6s linear infinite; }
+    .sk-body { padding: 18px 16px 20px; }
+    .sk-line { border-radius: 6px; background: linear-gradient(90deg, #14181e 25%, #1d2229 50%, #14181e 75%); background-size: 200% 100%; animation: shimmer 1.6s linear infinite; margin-bottom: 10px; }
+    .sk-kicker { width: 34%; height: 10px; margin-bottom: 14px; }
+    .sk-title { width: 92%; height: 18px; }
+    .sk-text { width: 100%; height: 11px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
   </style>
 </head>
 <body>
@@ -154,7 +198,11 @@
     </div>
 
     <div id="news-container" class="news-grid" aria-live="polite" aria-busy="true">
-      <!-- Skeletons will be here initially -->
+      <!-- Skeletons -->
+      <div class="skeleton-card"><div class="sk-media"></div><div class="sk-body"><div class="sk-line sk-kicker"></div><div class="sk-line sk-title"></div><div class="sk-line sk-text"></div></div></div>
+      <div class="skeleton-card"><div class="sk-media"></div><div class="sk-body"><div class="sk-line sk-kicker"></div><div class="sk-line sk-title"></div><div class="sk-line sk-text"></div></div></div>
+      <div class="skeleton-card"><div class="sk-media"></div><div class="sk-body"><div class="sk-line sk-kicker"></div><div class="sk-line sk-title"></div><div class="sk-line sk-text"></div></div></div>
+      <div class="skeleton-card"><div class="sk-media"></div><div class="sk-body"><div class="sk-line sk-kicker"></div><div class="sk-line sk-title"></div><div class="sk-line sk-text"></div></div></div>
     </div>
   </main>
 
@@ -167,93 +215,6 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    async function loadNews() {
-      const container = document.getElementById('news-container');
-      try {
-        const response = await fetch('/news/data.json', { cache: 'no-cache' });
-        if (!response.ok) throw new Error('Network response was not ok');
-
-        const data = await response.json();
-        const articles = Array.isArray(data.articles) ? data.articles : [];
-
-        if (articles.length === 0) throw new Error('No articles found');
-
-        const frag = document.createDocumentFragment();
-        let validCount = 0;
-
-        for (let i = 0; i < articles.length; i++) {
-          const article = articles[i];
-          const card = buildCard(article, validCount);
-          
-          // Frontend Validation: Wait for image to load before adding to DOM
-          const img = card.querySelector('.news-img');
-          try {
-            await new Promise((resolve, reject) => {
-              img.onload = resolve;
-              img.onerror = reject;
-              setTimeout(reject, 4000); // 4 second timeout
-            });
-            frag.appendChild(card);
-            validCount++;
-          } catch (e) {
-            // Silently skip this card if image fails to load
-            console.log(`Skipped: ${article.title} (Image failed)`);
-          }
-        }
-
-        if (validCount === 0) throw new Error('No valid articles with images');
-
-        container.innerHTML = '';
-        container.appendChild(frag);
-        container.setAttribute('aria-busy', 'false');
-
-      } catch (err) {
-        container.setAttribute('aria-busy', 'false');
-        container.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-3);">
-            <h3 style="color: var(--text); margin-bottom: 8px;">Unable to load the news feed</h3>
-            <p>Please check your connection and try again in a moment.</p>
-          </div>
-        `;
-      }
-    }
-
-    function buildCard(article, index) {
-      const date = new Date(article.pubDate);
-      const validDate = !isNaN(date.getTime());
-      const timeAgo = validDate ? getTimeAgo(date) : 'Recently';
-
-      const card = document.createElement('a');
-      card.className = 'news-card';
-      card.href = article.link || '#';
-      card.target = '_blank';
-      card.rel = 'noopener noreferrer';
-      card.style.animationDelay = Math.min(index * 55, 500) + 'ms';
-
-      const source  = escapeHtml(article.source || 'Sports');
-      const title   = escapeHtml(article.title || 'Untitled story');
-      const desc    = escapeHtml(article.description || '');
-      const imgSrc  = escapeHtml(article.image || 'https://sayan.info/assets/android-chrome-512x512.png').trim();
-
-      card.innerHTML = `
-        <div class="news-media">
-          <img class="news-img" src="${imgSrc}" alt="${title}" loading="lazy" decoding="async">
-        </div>
-        <div class="news-body">
-          <div class="news-kicker">
-            <span class="news-source">${source}</span>
-            <span class="news-time">${timeAgo}</span>
-          </div>
-          <h2 class="news-title">${title}</h2>
-          ${desc ? `<p class="news-desc">${desc}</p>` : ''}
-          <div class="news-foot">
-            <span class="read-more">Read Story →</span>
-          </div>
-        </div>
-      `;
-      return card;
-    }
 
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';
@@ -269,6 +230,74 @@
         if (val >= 1) return val + ' ' + name + (val > 1 ? 's' : '') + ' ago';
       }
       return 'Just now';
+    }
+
+    async function loadNews() {
+      const container = document.getElementById('news-container');
+      container.innerHTML = ''; // Clear skeletons immediately
+      
+      try {
+        const response = await fetch('/news/data.json', { cache: 'no-cache' });
+        if (!response.ok) throw new Error('Failed to fetch');
+        const data = await response.json();
+        const articles = Array.isArray(data.articles) ? data.articles : [];
+        
+        if (articles.length === 0) throw new Error('No articles');
+
+        let loadedCount = 0;
+        const fallbackImg = 'https://sayan.info/assets/android-chrome-512x512.png';
+
+        articles.forEach(article => {
+          const img = new Image();
+          img.src = article.image || fallbackImg;
+          
+          img.onload = () => {
+            loadedCount++;
+            const card = document.createElement('a');
+            card.className = 'news-card';
+            card.href = article.link;
+            card.target = '_blank';
+            card.rel = 'noopener noreferrer';
+            
+            const date = new Date(article.pubDate);
+            const timeAgo = getTimeAgo(date);
+            
+            card.innerHTML = `
+              <div class="news-media">
+                <img class="news-img" src="${img.src}" alt="${escapeHtml(article.title)}" loading="lazy">
+              </div>
+              <div class="news-body">
+                <div class="news-kicker">
+                  <span class="news-source">${escapeHtml(article.source)}</span>
+                  <span class="news-time">${timeAgo}</span>
+                </div>
+                <h2 class="news-title">${escapeHtml(article.title)}</h2>
+                <p class="news-desc">${escapeHtml(article.description)}</p>
+                <div class="news-foot"><span class="read-more">Read Story →</span></div>
+              </div>
+            `;
+            container.appendChild(card);
+          };
+          
+          img.onerror = () => {
+            if (img.src !== fallbackImg) {
+              img.src = fallbackImg; // Try fallback once
+            }
+            // If fallback also fails, silently skip (card is not created)
+          };
+        });
+
+        // Fallback message if absolutely nothing loads after a timeout
+        setTimeout(() => {
+          if (loadedCount === 0 && container.children.length === 0) {
+            container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--text-3);"><h3 style="color:var(--text); margin-bottom:8px;">Unable to load the news feed</h3><p>Please check your connection and try again later.</p></div>`;
+          }
+        }, 5000);
+
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--text-3);"><h3 style="color:var(--text); margin-bottom:8px;">Unable to load the news feed</h3><p>Please check your connection and try again later.</p></div>`;
+      }
     }
 
     loadNews();
