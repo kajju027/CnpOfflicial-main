@@ -1,47 +1,214 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Main Pages -->
-  <url><loc>https://sayan.info/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/player/sony</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Willow/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Hotstar/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Fox/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Cricbuzz/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Scorecard/</loc><lastmod>2026-10-08</lastmod></url>
+<ns0:urlset xmlns:ns0="http://www.sitemaps.org/schemas/sitemap/0.9">
   
-  <!-- Language Pages -->
-  <url><loc>https://sayan.info/English/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Hindi/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Bangla/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Tamil/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Telugu/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Kannada/</loc><lastmod>2026-10-08</lastmod></url>
   
-  <!-- Home Sections -->
-  <url><loc>https://sayan.info/home/sony-sports-events/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/home/buzz/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/home/live/arg-vs-ben</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/home/live/ind-vs-wi</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/home/live/ind-vs-pak</loc><lastmod>2026-10-08</lastmod></url>
   
-  <!-- Legacy Channel Pages -->
-  <url><loc>https://sayan.info/Channel-1.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-2.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-3.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-4.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-5.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-6.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-7.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-8.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-9.html</loc><lastmod>2025-11-29</lastmod></url>
-  <url><loc>https://sayan.info/Channel-10.html</loc><lastmod>2025-11-29</lastmod></url>
+  <ns0:url>
+    <ns0:loc>https://sayan.info/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
   
-  <!-- Legal Pages -->
-  <url><loc>https://sayan.info/terms.html</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/privacy.html</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/disclaimer.html</loc><lastmod>2026-10-08</lastmod></url>
   
-  <!-- Support Pages -->
-  <url><loc>https://sayan.info/Feedback/</loc><lastmod>2026-10-08</lastmod></url>
-  <url><loc>https://sayan.info/Sec/</loc><lastmod>2026-10-08</lastmod></url>
-</urlset>
+  <ns0:url>
+    <ns0:loc>https://sayan.info/player/sony</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Willow/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Hotstar/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Fox/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Cricbuzz/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Scorecard/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/English/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Hindi/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Bangla/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Tamil/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Telugu/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Kannada/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/home/sony-sports-events/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/home/buzz/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/home/live/arg-vs-ben</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/home/live/ind-vs-wi</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/home/live/ind-vs-pak</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-1.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-2.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-3.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-4.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-5.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-6.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-7.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-8.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-9.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Channel-10.html</ns0:loc>
+    <ns0:lastmod>2025-11-29</ns0:lastmod>
+  </ns0:url>
+  
+  
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/terms.html</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/privacy.html</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/disclaimer.html</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Feedback/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+  
+  <ns0:url>
+    <ns0:loc>https://sayan.info/Sec/</ns0:loc>
+    <ns0:lastmod>2026-10-08</ns0:lastmod>
+  </ns0:url>
+  
+
+</ns0:urlset>
