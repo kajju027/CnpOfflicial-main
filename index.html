@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>CnpTV | Live Cricket, Sony Liv, FanCode and World Sports</title>
   <meta name="description" content="Watch live cricket on Willow, Sony Liv events, FanCode and world sports on CnpTV. Free match cards, live scores and Watch Now when a match is live.">
-  <meta name="keywords" content="CnpTV, sayan.info, live sports, live cricket, Willow cricket, Sony Liv events, Sony Liv live, FanCode live, world sports, football live, UFC live, free sports stream, live match scores, India cricket, FIFA 2026, watch free cricket, live sports streaming">
-  <meta name="author" content="CnpTV">
+  <meta name="author" content="sayan">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="googlebot" content="index, follow, max-image-preview:large">
   <meta name="bingbot" content="index, follow">
   <link rel="canonical" href="https://sayan.info/">
+  
   <meta property="og:locale" content="en_IN">
   <meta property="og:site_name" content="CnpTV">
   <meta property="og:type" content="website">
@@ -21,13 +21,16 @@
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
   <meta property="og:image:alt" content="CnpTV">
+  
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="CnpTV | Live Cricket, Sony Liv, FanCode and World Sports">
   <meta name="twitter:description" content="Watch live cricket, Sony Liv events, FanCode and world sports free on CnpTV.">
   <meta name="twitter:image" content="https://sayan.info/assets/android-chrome-512x512.png">
+  
   <meta name="theme-color" content="#0b0d0f">
   <meta name="color-scheme" content="dark">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -38,14 +41,24 @@
       "description": "Live cricket, Sony Liv events, FanCode and world sports on CnpTV."
     }
   </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BSW772KQX6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BSW772KQX6');
+  </script>
+
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://img.tod.tv">
-
   <link rel="preconnect" href="https://sonujson-v5.pages.dev" crossorigin>
   <link rel="preconnect" href="https://matchdekho.in" crossorigin>
   <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
@@ -53,9 +66,11 @@
   <link rel="dns-prefetch" href="https://www.fancode.com">
   <link rel="dns-prefetch" href="https://images.fancode.com">
   <link rel="dns-prefetch" href="https://origin-staticv2.sonyliv.com">
-  <meta name="cnptv-build" content="14">
+  
+  <meta name="cnptv-build" content="15">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
     html, body { background: #0b0d0f !important; color: #fff !important; }
     .section-hd-title { margin: 0 !important; }
@@ -90,18 +105,87 @@
     }
     .sony-liv-arrow.arrow-left { left: 6px; }
     .sony-liv-arrow.arrow-right { right: 6px; }
+    
     .site-foot {
       background: #0b0d0f !important;
       color: rgba(255, 255, 255, 0.72) !important;
-      padding: 28px 16px 40px;
+      padding: 40px 16px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .site-foot a, .site-foot p, .site-foot span {
-      color: rgba(255, 255, 255, 0.78) !important;
-      text-decoration: none !important;
+    .site-foot-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
     }
-    .site-foot-nav { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+    @media (min-width: 768px) {
+      .site-foot-container {
+        grid-template-columns: 1.5fr 2fr;
+      }
+    }
+    .site-foot-brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
     .site-foot .cnp { color: #7dffb3 !important; }
+    .site-foot .tv { color: #ffffff !important; }
+    .site-foot-desc {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      max-width: 320px;
+    }
+    .site-foot-updated {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .site-foot-nav {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .site-foot-nav {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .foot-nav-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0 0 12px 0;
+    }
+    .site-foot-nav a {
+      display: block;
+      color: rgba(255, 255, 255, 0.7) !important;
+      text-decoration: none !important;
+      font-size: 0.9rem;
+      padding: 4px 0;
+      transition: color 0.2s ease;
+    }
+    .site-foot-nav a:hover, .site-foot-nav a:focus {
+      color: #7dffb3 !important;
+    }
+    .site-foot-bottom {
+      max-width: 1200px;
+      margin: 32px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+    .site-foot-copy {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5) !important;
+      margin: 0;
+    }
   </style>
+  
   <script data-cfasync="false">
     (function () {
       var v = Date.now();
@@ -114,11 +198,11 @@
     })();
   </script>
   <noscript>
-    <link rel="stylesheet" href="css/willow-live.css?v=12">
-    <link rel="stylesheet" href="css/sony-liv.css?v=12">
-    <link rel="stylesheet" href="css/world-sports.css?v=12">
-    <link rel="stylesheet" href="css/fancode.css?v=12">
-    <link rel="stylesheet" href="css/main.css?v=12">
+    <link rel="stylesheet" href="css/willow-live.css?v=15">
+    <link rel="stylesheet" href="css/sony-liv.css?v=15">
+    <link rel="stylesheet" href="css/world-sports.css?v=15">
+    <link rel="stylesheet" href="css/fancode.css?v=15">
+    <link rel="stylesheet" href="css/main.css?v=15">
   </noscript>
 </head>
 <body id="top">
@@ -169,7 +253,7 @@
     <section class="fancode-section" id="fancodeSection">
       <div class="section-hd">
         <h2 class="section-hd-title">FanCode</h2>
-        <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
+        <span class="section-hd-rule" aria-hidden="true"></span>
       </div>
       <div class="fancode-carousel-wrapper">
         <button class="fancode-arrow arrow-left" id="fancodeArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
@@ -181,7 +265,7 @@
     <section class="sony-liv-section" id="sonyLivSection">
       <div class="section-hd">
         <h2 class="section-hd-title">Sony Liv Events</h2>
-        <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
+        <span class="section-hd-rule" aria-hidden="true"></span>
       </div>
       <div class="sony-liv-carousel-wrapper">
         <button class="sony-liv-arrow arrow-left" id="sonyLivArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
@@ -193,7 +277,7 @@
     <section class="willow-live-section" id="willow-live">
       <div class="section-hd">
         <h2 class="section-hd-title">Willow Cricket</h2>
-        <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
+        <span class="section-hd-rule" aria-hidden="true"></span>
       </div>
       <div class="willow-live-carousel-wrapper">
         <button class="carousel-arrow arrow-left" id="willowLiveArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
@@ -205,7 +289,7 @@
     <section class="world-sports-section" id="worldSportsSection">
       <div class="section-hd">
         <h2 class="section-hd-title">World Sports</h2>
-        <span class="section-hd-rule" aria-hidden="true" style="display:block;width:30px;height:3px;margin-top:9px;border-radius:999px;background:#f5c518;background:linear-gradient(90deg,#f5c518,rgba(245,197,24,0.15));"></span>
+        <span class="section-hd-rule" aria-hidden="true"></span>
       </div>
       <div class="world-sports-carousel-wrapper">
         <button class="world-sports-arrow arrow-left" id="worldSportsArrowLeft" type="button" aria-label="Scroll left">&#10094;</button>
@@ -216,27 +300,81 @@
   </main>
 
   <footer class="site-foot">
-    <div class="site-foot-top">
-      <a href="#top" class="site-foot-brand" aria-label="CnpTV home"><span class="cnp">Cnp</span><span class="tv">TV</span></a>
-      <p>Live cricket, Sony Liv, FanCode and world sports. Watch free on CnpTV.</p>
+    <div class="site-foot-container">
+      <div class="site-foot-brand-section">
+        <a href="#top" class="site-foot-brand" aria-label="CnpTV home">
+          <span class="cnp">Cnp</span><span class="tv">TV</span>
+        </a>
+        <p class="site-foot-desc">Live cricket, Sony Liv, FanCode and world sports. Watch free on CnpTV.</p>
+        <p class="site-foot-updated">Last Updated: <time id="last-updated-time" datetime="">Loading...</time></p>
+      </div>
+      <nav class="site-foot-nav" aria-label="Footer navigation">
+        <div class="foot-nav-col">
+          <h3 class="foot-nav-title">Live Sports</h3>
+          <a href="#willow-live">Willow Cricket</a>
+          <a href="#sonyLivSection">Sony Liv</a>
+          <a href="#fancodeSection">FanCode</a>
+          <a href="#worldSportsSection">World Sports</a>
+        </div>
+        <div class="foot-nav-col">
+          <h3 class="foot-nav-title">Platforms</h3>
+          <a href="/Willow/">Willow</a>
+          <a href="/player/sony">Sony Player</a>
+          <a href="/Hotstar/">Hotstar</a>
+        </div>
+        <div class="foot-nav-col">
+          <h3 class="foot-nav-title">Languages</h3>
+          <a href="/English/">English</a>
+          <a href="/Hindi/">Hindi</a>
+          <a href="/Bangla/">Bangla</a>
+          <a href="/Tamil/">Tamil</a>
+          <a href="/Telugu/">Telugu</a>
+        </div>
+        <div class="foot-nav-col">
+          <h3 class="foot-nav-title">Support</h3>
+          <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Contact Us</a>
+          <a href="/Feedback/">Feedback</a>
+          <a href="/Sec/">Security</a>
+        </div>
+      </nav>
     </div>
-    <nav class="site-foot-nav" aria-label="Footer">
-      <a href="#willow-live">Willow Cricket</a>
-      <a href="#sonyLivSection">Sony Liv</a>
-      <a href="#fancodeSection">FanCode</a>
-      <a href="#worldSportsSection">World Sports</a>
-      <a href="/Willow/">Willow</a>
-      <a href="/player/sony">Sony Player</a>
-      <a href="/Hotstar/">Hotstar</a>
-      <a href="/English/">English</a>
-      <a href="/Hindi/">Hindi</a>
-      <a href="/Bangla/">Bangla</a>
-    </nav>
-    <p class="site-foot-copy">CnpTV · sayan.info</p>
+    <div class="site-foot-bottom">
+      <p class="site-foot-copy">&copy; <span id="current-year"></span> CnpTV · sayan.info • All Rights Reserved.</p>
+    </div>
   </footer>
 
   <script data-cfasync="false">
     document.write('<script src="script/boot.js?t=' + Date.now() + '"><\/script>');
+  </script>
+  
+  <script>
+    // Update current year
+    const yearEl = document.getElementById('current-year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Fetch last updated timestamp from centralized source
+    fetch('/freshness.txt', { cache: 'no-cache' })
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.text();
+      })
+      .then(text => {
+        const match = text.match(/last_updated:\s*(.+)/);
+        if (match) {
+          const date = new Date(match[1].trim());
+          const timeEl = document.getElementById('last-updated-time');
+          if (timeEl && !isNaN(date.getTime())) {
+            timeEl.setAttribute('datetime', date.toISOString());
+            timeEl.textContent = date.toLocaleDateString('en-US', { 
+              year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+            });
+          }
+        }
+      })
+      .catch(() => {
+        const timeEl = document.getElementById('last-updated-time');
+        if (timeEl) timeEl.textContent = 'Recently';
+      });
   </script>
 </body>
 </html>
