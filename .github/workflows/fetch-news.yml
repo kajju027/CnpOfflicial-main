@@ -35,7 +35,7 @@ jobs:
           feeds = [
               {"url": "http://www.espncricinfo.com/rss/content/story/feeds/0.xml", "source": "ESPN Cricinfo"},
               {"url": "https://timesofindia.indiatimes.com/rssfeeds/4719148.cms", "source": "Times of India"},
-              {"url": "https://feeds.foxsports.com.au/foxsports/fox-sports-news", "source": "Fox Sports"}
+              {"url": "https://api.foxsports.com/v2/content/optimized-rss?partnerKey=MB0Wehpmuj2lUhuRhQaafhBjAJqaPU244mlTDK1i&aggregateId=7f83e8ca-6701-5ea0-96ee-072636b67336", "source": "Fox Sports"}
           ]
 
           news_items = []
