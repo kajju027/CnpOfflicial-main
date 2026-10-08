@@ -1,10 +1,27 @@
 User-agent: *
 Allow: /
 
-User-agent: Googlebot
-Allow: /
+# Block admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
 
-User-agent: Bingbot
-Allow: /
+# Allow all bots to crawl important pages
+Allow: /*.html$
+Allow: /home/
+Allow: /player/
+Allow: /Willow/
+Allow: /Hotstar/
+Allow: /Fox/
+Allow: /English/
+Allow: /Hindi/
+Allow: /Bangla/
+Allow: /Tamil/
+Allow: /Telugu/
+Allow: /Kannada/
 
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Sitemap location
 Sitemap: https://sayan.info/sitemap.xml
