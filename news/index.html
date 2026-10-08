@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Latest Sports News & Updates | CnpTV</title>
+  <meta name="description" content="Stay updated with the latest live sports news, cricket updates, football highlights, and real-time scores from top global sources like Times of India, ESPN, and BBC on CnpTV.">
+  <meta name="keywords" content="sports news, cricket news, football updates, live scores, Times of India sports, ESPN Cricinfo, BBC Sport, CnpTV news">
+  <meta name="author" content="sayan">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  
+  <link rel="canonical" href="https://sayan.info/news/">
+  
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sayan.info/news/">
+  <meta property="og:title" content="Latest Sports News & Updates | CnpTV">
+  <meta property="og:description" content="Stay updated with the latest live sports news, cricket updates, and football highlights from top global sources.">
+  <meta property="og:image" content="https://sayan.info/assets/android-chrome-512x512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="CnpTV">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://sayan.info/news/">
+  <meta name="twitter:title" content="Latest Sports News & Updates | CnpTV">
+  <meta name="twitter:description" content="Stay updated with the latest live sports news, cricket updates, and football highlights.">
+  <meta name="twitter:image" content="https://sayan.info/assets/android-chrome-512x512.png">
+  <meta name="twitter:site" content="@CnpTV">
+  
+  <meta name="theme-color" content="#0b0d0f">
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Latest Sports News",
+    "url": "https://sayan.info/news/",
+    "description": "Real-time sports news and updates from top global networks.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "CnpTV",
+      "url": "https://sayan.info/"
+    }
+  }
+  </script>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://sayan.info/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Sports News",
+        "item": "https://sayan.info/news/"
+      }
+    ]
+  }
+  </script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BSW772KQX6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BSW772KQX6');
+  </script>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-primary: #0b0d0f;
+      --bg-card: #13161a;
+      --bg-card-hover: #1a1e24;
+      --accent: #7dffb3;
+      --accent-dim: rgba(125, 255, 179, 0.1);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-muted: rgba(255, 255, 255, 0.5);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(125, 255, 179, 0.3);
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    header {
+      background: rgba(11, 13, 15, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+    .logo .cnp { color: var(--accent); }
+    
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-link:hover { 
+      color: var(--accent); 
+      background: var(--accent-dim);
+    }
+    
+    main {
+      flex: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 48px 24px;
+      width: 100%;
+    }
+    
+    .page-header {
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .page-header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+    }
+    
+    .news-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .news-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(125, 255, 179, 0), rgba(125, 255, 179, 0));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      transition: background 0.3s ease;
+      pointer-events: none;
+    }
+    .news-card:hover {
+      transform: translateY(-6px);
+      background: var(--bg-card-hover);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .news-card:hover::before {
+      background: linear-gradient(135deg, var(--accent), rgba(125, 255, 179, 0.1));
+    }
+    
+    .news-image-wrapper {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      background: #1a1d21;
+    }
+    .news-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .news-card:hover .news-image {
+      transform: scale(1.05);
+    }
+    .news-source-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(11, 13, 15, 0.85);
+      backdrop-filter: blur(8px);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(125, 255, 179, 0.2);
+    }
+    
+    .news-content {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.4;
+      color: var(--text-primary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .news-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+    }
+    .news-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    
+    .skeleton-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .skeleton-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(90deg, #1a1d21 25%, #252930 50%, #1a1d21 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.8s infinite;
+    }
+    .skeleton-content { padding: 24px; }
+    .skeleton-line {
+      height: 16px;
+      background: linear-gradient(90deg, #1a1d21 25%, #252930 50%, #1a1d21 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.8s infinite;
+      border-radius: 6px;
+      margin-bottom: 14px;
+    }
+    .skeleton-line.short { width: 30%; height: 12px; margin-bottom: 16px; }
+    .skeleton-line.title { width: 90%; height: 22px; }
+    .skeleton-line.desc { width: 100%; }
+    .skeleton-line.desc:last-child { width: 70%; }
+    
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    .site-foot {
+      background: var(--bg-primary);
+      border-top: 1px solid var(--border);
+      padding: 48px 24px 32px;
+      text-align: center;
+    }
+    .site-foot-container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .site-foot-brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .site-foot .cnp { color: var(--accent); }
+    .site-foot-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+    }
+    .site-foot-copy {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .site-foot-copy a { 
+      color: var(--accent); 
+      text-decoration: none; 
+    }
+    
+    .error-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+    .error-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    
+    @media (max-width: 768px) {
+      main { padding: 32px 16px; }
+      .news-grid { grid-template-columns: 1fr; gap: 20px; }
+      .page-header { margin-bottom: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo" aria-label="CnpTV Home"><span class="cnp">Cnp</span>TV</a>
+    <a href="/" class="nav-link">
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      Back to Home
+    </a>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <h1>Latest Sports News</h1>
+      <p>Real-time updates, match highlights, and breaking stories from top global sports networks.</p>
+    </div>
+
+    <div id="news-container" class="news-grid">
+      <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-content"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line desc"></div><div class="skeleton-line desc"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-content"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line desc"></div><div class="skeleton-line desc"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-content"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line desc"></div><div class="skeleton-line desc"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-content"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line desc"></div><div class="skeleton-line desc"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-content"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line desc"></div><div class="skeleton-line desc"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-content"><div class="skeleton-line short"></div><div class="skeleton-line title"></div><div class="skeleton-line desc"></div><div class="skeleton-line desc"></div></div></div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="site-foot-container">
+      <a href="/" class="site-foot-brand"><span class="cnp">Cnp</span>TV</a>
+      <p class="site-foot-desc">Your ultimate destination for live sports streaming and real-time news.</p>
+      <p class="site-foot-copy">&copy; <span id="year"></span> <a href="/">CnpTV</a> (sayan.info). All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    async function loadNews() {
+      try {
+        const response = await fetch('/news/data.json', { cache: 'no-cache' });
+        if (!response.ok) throw new Error('Failed to load news data');
+        const data = await response.json();
+        
+        const container = document.getElementById('news-container');
+        container.innerHTML = '';
+        
+        if (!data.articles || data.articles.length === 0) {
+          throw new Error('No articles found');
+        }
+        
+        data.articles.forEach(article => {
+          const date = new Date(article.pubDate);
+          const timeAgo = getTimeAgo(date);
+          
+          const card = document.createElement('a');
+          card.className = 'news-card';
+          card.href = article.link;
+          card.target = '_blank';
+          card.rel = 'noopener noreferrer';
+          
+          card.innerHTML = `
+            <div class="news-image-wrapper">
+              <img src="${article.image}" alt="${article.title}" class="news-image" loading="lazy" onerror="this.src='https://sayan.info/assets/android-chrome-512x512.png'">
+              <span class="news-source-badge">${article.source}</span>
+            </div>
+            <div class="news-content">
+              <h2 class="news-title">${article.title}</h2>
+              <p class="news-desc">${article.description}</p>
+              <div class="news-meta">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <time datetime="${date.toISOString()}">Published ${timeAgo}</time>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        document.getElementById('news-container').innerHTML = `
+          <div class="error-state">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <h3>Unable to load news feed</h3>
+            <p>Please check your connection or try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    function getTimeAgo(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      let interval = seconds / 31536000;
+      if (interval > 1) return Math.floor(interval) + " Years ago";
+      interval = seconds / 2592000;
+      if (interval > 1) return Math.floor(interval) + " Months ago";
+      interval = seconds / 86400;
+      if (interval > 1) return Math.floor(interval) + " Days ago";
+      interval = seconds / 3600;
+      if (interval > 1) return Math.floor(interval) + " Hours ago";
+      interval = seconds / 60;
+      if (interval > 1) return Math.floor(interval) + " Minutes ago";
+      return "Just now";
+    }
+
+    loadNews();
+  </script>
+</body>
+</html>
