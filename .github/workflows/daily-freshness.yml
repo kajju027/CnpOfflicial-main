@@ -1,8 +1,8 @@
 name: Daily Site Maintenance
 
-on:
+"on":
   schedule:
-    - cron: "0 0 * * *"  # প্রতিদিন মধ্যরাতে
+    - cron: "0 0 * * *"  # প্রতিদিন মধ্যরাতে (UTC)
   workflow_dispatch:
 
 permissions:
@@ -23,55 +23,56 @@ jobs:
       - name: Update sitemap.xml
         run: |
           python3 << 'EOF'
+          import sys
           import xml.etree.ElementTree as ET
           from datetime import datetime, timezone
-          import xml.dom.minidom
+
+          SM_NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
+          ET.register_namespace('', SM_NS)
 
           try:
               tree = ET.parse('sitemap.xml')
               root = tree.getroot()
           except Exception as e:
               print(f"Error parsing sitemap.xml: {e}")
-              exit(1)
+              sys.exit(1)
 
           today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
           legacy_date = '2025-11-29'
 
-          ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          ns = {'sm': SM_NS}
 
           for url in root.findall('sm:url', ns):
               loc_elem = url.find('sm:loc', ns)
               if loc_elem is None or loc_elem.text is None:
                   continue
               loc = loc_elem.text
-              
+
               # Fix Channel URLs to include .html extension
               if '/Channel-' in loc and not loc.endswith('.html'):
                   loc_elem.text = loc + '.html'
                   loc = loc_elem.text
-              
+
               # Clean up existing optional tags
               for child in list(url):
                   tag_name = child.tag.split('}')[-1]
                   if tag_name in ['lastmod', 'changefreq', 'priority']:
                       url.remove(child)
-              
+
               # Add new lastmod
-              lastmod = ET.SubElement(url, '{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod')
+              lastmod = ET.SubElement(url, f'{{{SM_NS}}}lastmod')
               if '/Channel-' in loc and loc.endswith('.html'):
                   lastmod.text = legacy_date
               else:
                   lastmod.text = today
 
           # Format and write
-          xmlstr = xml.dom.minidom.parseString(ET.tostring(root)).toprettyxml(indent="  ")
-          lines = xmlstr.split('\n')
-          if lines[0].startswith('<?xml'):
-              lines = lines[1:]
+          ET.indent(root, space="  ")
+          xmlstr = ET.tostring(root, encoding='unicode')
 
           with open('sitemap.xml', 'w', encoding='utf-8') as f:
               f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-              f.write('\n'.join(lines))
+              f.write(xmlstr)
           EOF
 
       - name: Commit changes if any
@@ -81,5 +82,6 @@ jobs:
           git add freshness.txt sitemap.xml
           if ! git diff --staged --quiet; then
             git commit -m "chore: daily site maintenance and sitemap update"
+            git pull --rebase origin ${{ github.ref_name }}
             git push
           fi
