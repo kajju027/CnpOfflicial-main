@@ -2,11 +2,15 @@ name: Daily Site Maintenance
 
 "on":
   schedule:
-    - cron: "0 0 * * *"  # প্রতিদিন মধ্যরাতে (UTC)
+    - cron: "0 0 * * *"       # প্রতিদিন UTC 00:00 → IST ভোর 05:30
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: daily-maintenance
+  cancel-in-progress: false
 
 jobs:
   maintenance:
@@ -14,74 +18,126 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update freshness timestamp
         run: |
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           echo "last_updated: $TIMESTAMP" > freshness.txt
 
-      - name: Update sitemap.xml
+      # ─────────────────────────────────────────────────────────
+      #  1) home/live/ ফোল্ডার স্ক্যান → sitemap.xml পুনর্নির্মাণ
+      # ─────────────────────────────────────────────────────────
+      - name: Rebuild sitemap.xml from home/live/
         run: |
-          python3 << 'EOF'
-          import sys
-          import xml.etree.ElementTree as ET
+          python3 << 'PYEOF'
+          import re
           from datetime import datetime, timezone
+          from pathlib import Path
 
-          SM_NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
-          ET.register_namespace('', SM_NS)
+          SITE        = "https://sayan.info"
+          LIVE_DIR    = "home/live"
+          SITEMAP     = Path("sitemap.xml")
+          TODAY       = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+          LEGACY_DATE = "2025-11-29"     # Channel- URL-এর জন্য
 
-          try:
-              tree = ET.parse('sitemap.xml')
-              root = tree.getroot()
-          except Exception as e:
-              print(f"Error parsing sitemap.xml: {e}")
-              sys.exit(1)
+          def xml_escape(s: str) -> str:
+              return (s.replace("&", "&amp;")
+                       .replace("<", "&lt;")
+                       .replace(">", "&gt;"))
 
-          today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
-          legacy_date = '2025-11-29'
+          # ── ১) পুরোনো সাইটম্যাপ পড়া (regex — ভাঙা ফাইলেও চলে) ──
+          existing = {}   # loc -> lastmod
+          if SITEMAP.exists():
+              raw = SITEMAP.read_text(encoding="utf-8").lstrip("\ufeff")
+              # কন্ট্রোল ক্যারেক্টার পরিষ্কার
+              raw = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", raw)
+              # প্রতিটি সম্পূর্ণ <url>...</url> ব্লক ধরুন
+              for block in re.findall(r"<url>(.*?)</url>", raw, re.DOTALL):
+                  m_loc = re.search(r"<loc>(.*?)</loc>", block, re.DOTALL)
+                  if not m_loc:
+                      continue
+                  loc = m_loc.group(1).strip()
+                  m_dt = re.search(r"<lastmod>(.*?)</lastmod>", block, re.DOTALL)
+                  existing[loc] = m_dt.group(1).strip() if m_dt else TODAY
 
-          ns = {'sm': SM_NS}
+          print(f"[i] পুরোনো সাইটম্যাপে URL: {len(existing)}")
 
-          for url in root.findall('sm:url', ns):
-              loc_elem = url.find('sm:loc', ns)
-              if loc_elem is None or loc_elem.text is None:
+          # ── ২) home/live/ ডিরেক্টরি স্ক্যান ──
+          live_urls = set()
+          live_path = Path(LIVE_DIR)
+          if live_path.exists():
+              for f in live_path.rglob("*"):
+                  if not f.is_file():
+                      continue
+                  # hidden (.git, .DS_Store, dotfile) বাদ
+                  if any(part.startswith(".") for part in f.parts):
+                      continue
+                  # জাঞ্ক ফাইল বাদ
+                  if f.name in ("Thumbs.db", "desktop.ini"):
+                      continue
+
+                  if f.name == "index.html":
+                      # clean URL:  /home/live/arg-vs-ben/
+                      rel = f.parent.as_posix()
+                      url = f"{SITE}/{rel}/"
+                  else:
+                      # সাধারণ ফাইল: /home/live/arg-vs-ben.html
+                      url = f"{SITE}/{f.as_posix()}"
+                  live_urls.add(url)
+
+          print(f"[i] {LIVE_DIR}/ এ ফাইল পাওয়া গেছে: {len(live_urls)}")
+
+          # ── ৩) মার্জ ──
+          prefix = f"{SITE}/{LIVE_DIR}/"
+          merged = {}
+
+          # ৩ক) live-এর বাইরের সব URL আগের lastmod সহ অটুট
+          for loc, lm in existing.items():
+              if loc.startswith(prefix):
                   continue
-              loc = loc_elem.text
+              # Channel- URL নরমালাইজ (পুরোনো লজিক ধরে রাখা)
+              if "/Channel-" in loc and not loc.endswith(".html"):
+                  loc = loc + ".html"
+                  lm  = LEGACY_DATE
+              merged[loc] = lm
 
-              # Fix Channel URLs to include .html extension
-              if '/Channel-' in loc and not loc.endswith('.html'):
-                  loc_elem.text = loc + '.html'
-                  loc = loc_elem.text
+          # ৩খ) live থেকে আসা URL → আজকের তারিখ
+          for url in sorted(live_urls):
+              merged[url] = TODAY
 
-              # Clean up existing optional tags
-              for child in list(url):
-                  tag_name = child.tag.split('}')[-1]
-                  if tag_name in ['lastmod', 'changefreq', 'priority']:
-                      url.remove(child)
+          # ── ৪) সাইটম্যাপ লেখা ──
+          out = ['<?xml version="1.0" encoding="UTF-8"?>',
+                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+                 '']
+          for loc, lm in merged.items():
+              out.append("  <url>")
+              out.append(f"    <loc>{xml_escape(loc)}</loc>")
+              out.append(f"    <lastmod>{lm}</lastmod>")
+              out.append("  </url>")
+              out.append("")
 
-              # Add new lastmod
-              lastmod = ET.SubElement(url, f'{{{SM_NS}}}lastmod')
-              if '/Channel-' in loc and loc.endswith('.html'):
-                  lastmod.text = legacy_date
-              else:
-                  lastmod.text = today
+          out.append("</urlset>")
+          SITEMAP.write_text("\n".join(out) + "\n", encoding="utf-8")
+          print(f"[✓] sitemap.xml লেখা হলো — মোট URL: {len(merged)}")
+          PYEOF
 
-          # Format and write
-          ET.indent(root, space="  ")
-          xmlstr = ET.tostring(root, encoding='unicode')
-
-          with open('sitemap.xml', 'w', encoding='utf-8') as f:
-              f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-              f.write(xmlstr)
-          EOF
-
-      - name: Commit changes if any
+      # ─────────────────────────────────────────────────────────
+      #  2) কমিট + পুশ (নিরাপদ pull --rebase সহ)
+      # ─────────────────────────────────────────────────────────
+      - name: Commit and push changes
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add freshness.txt sitemap.xml
-          if ! git diff --staged --quiet; then
-            git commit -m "chore: daily site maintenance and sitemap update"
-            git pull --rebase origin ${{ github.ref_name }}
-            git push
+
+          if git diff --staged --quiet; then
+            echo "[i] কোনো পরিবর্তন নেই — কিছু কমিট করছি না"
+            exit 0
           fi
+
+          git commit -m "chore: daily sitemap sync from ${LIVE_DIR:-home/live} [skip ci]"
+          git pull --rebase origin "${{ github.ref_name }}"
+          git push origin "HEAD:${{ github.ref_name }}"
