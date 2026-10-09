@@ -73,20 +73,6 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "1ST TEST MATCH 2026",
-      "homeTeam": {
-        "name": "South Africa",
-        "logo": "https://flagpedia.net/data/flags/w1160/za.webp"
-      },
-      "awayTeam": {
-        "name": "Australia",
-        "logo": "https://flagpedia.net/data/flags/w1160/au.webp"
-      },
-      "poster": "https://ik.imagekit.io/sonuxs/file_00000000799081fdb0b5891479f58a3e.png",
-      "date": "09 OCT 2026, 01:00 PM",
-      "watchUrl": "/home/live/sa-vs-aus.html"
-    },
-    {
       "tournament": "WEST INDIES TOUR OF INDIA - 2ND T20I",
       "homeTeam": {
         "name": "India",
@@ -99,6 +85,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://img10.hotstar.com/image/upload/f_auto,q_90,w_1920/sources/r1/cms/prod/9280/1791259109280-i",
       "date": "09 OCT 2026, 07:00 PM",
       "watchUrl": "/home/live/ind-vs-wi.html"
+    },
+    {
+      "tournament": "1ST TEST MATCH 2026",
+      "homeTeam": {
+        "name": "South Africa",
+        "logo": "https://flagpedia.net/data/flags/w1160/za.webp"
+      },
+      "awayTeam": {
+        "name": "Australia",
+        "logo": "https://flagpedia.net/data/flags/w1160/au.webp"
+      },
+      "poster": "https://ik.imagekit.io/sonuxs/file_00000000799081fdb0b5891479f58a3e.png",
+      "date": "09 OCT 2026, 01:00 PM",
+      "watchUrl": "/home/live/sa-vs-aus.html"
     }
   ];
 }
