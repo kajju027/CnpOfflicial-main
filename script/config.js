@@ -73,20 +73,6 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "1ST TEST MATCH 2026",
-      "homeTeam": {
-        "name": "Afghanistan",
-        "logo": "https://flagcdn.com/w1160/af.webp"
-      },
-      "awayTeam": {
-        "name": "Bangladesh",
-        "logo": "https://flagcdn.com/w1160/bd.webp"
-      },
-      "poster": "https://ik.imagekit.io/sonuxs/Bangladesh%20vs%20Afghanistan%20test%20match",
-      "date": "09 OCT 2026, 11:00 AM",
-      "watchUrl": "/home/live/afg-vs-ban.html"
-    },
-    {
       "tournament": "WEST INDIES TOUR OF INDIA - 2ND T20I",
       "homeTeam": {
         "name": "India",
