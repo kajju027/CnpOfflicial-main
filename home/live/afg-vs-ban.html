@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+
+  <!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║              SAYAN INC. — LIVE MATCH PAGE TEMPLATE              ║
+  ║                                                                  ║
+  ║  HOW TO USE THIS TEMPLATE:                                       ║
+  ║  1. Find every block marked   «FILL»  and replace with real data ║
+  ║  2. The only places that need editing are:                       ║
+  ║       • <head> meta/SEO tags  (Section A)                        ║
+  ║       • window.__matchFallback JS object  (Section B)            ║
+  ║       • Match description paragraph  (Section C)                 ║
+  ║  3. Everything else (CSS, layout, logic) stays untouched.        ║
+  ║  4. Save the file as:  [home-code]-vs-[away-code].html           ║
+  ║     Example:  arg-vs-ben.html  /  ind-vs-pak.html                ║
+  ╚══════════════════════════════════════════════════════════════════╝
+  -->
+
+
+  <!-- ──────────────────────────────────────────────────────────────
+       SECTION A — SEO / META TAGS
+       Replace every  placeholder below with real values.
+  ─────────────────────────────────────────────────────────────────── -->
+
+  <!-- Page title shown in browser tab and Google search results -->
+  <title>Afghanistan vs Bangladesh — Live Match Stream 4K</title>
+
+  <!-- Primary SEO -->
+  <meta name="description" content="Watch Afghanistan vs Bangladesh live match streaming in 4K HD on Sayan Inc. High-voltage clash streaming with instant multi-channel switching." />
+  <meta name="keywords"    content="Afghanistan vs Bangladesh, afg-vs-ban live, live football, live match stream 4K, sayan info live" />
+  <meta name="author"      content="Sayan Inc." />
+  <meta name="robots"      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="googlebot"   content="index, follow" />
+
+  <!-- Canonical URL — must match the actual file path on the server -->
+  <link rel="canonical" href="https://sayan.info/home/live/afg-vs-ban.html" />
+
+  <!-- Theme -->
+  <meta name="theme-color"  content="#050505" />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- Open Graph (Facebook / WhatsApp link preview) -->
+  <meta property="og:type"        content="video.other" />
+  <meta property="og:url"         content="https://sayan.info/home/live/afg-vs-ban.html" />
+  <meta property="og:title"       content="Afghanistan vs Bangladesh — Live 4K Stream" />
+  <meta property="og:description" content="Watch Afghanistan vs Bangladesh live in 4K HD on Sayan Inc. Multi-channel instant switching." />
+  <meta property="og:site_name"   content="Sayan Inc. Live Sports" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Afghanistan vs Bangladesh — Live 4K Stream" />
+  <meta name="twitter:description" content="Watch Afghanistan vs Bangladesh live in 4K HD on Sayan Inc." />
+
+
+  <!-- ──────────────────────────────────────────────────────────────
+       FONTS & ICONS  (do not change)
+  ─────────────────────────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+
+  <!-- ──────────────────────────────────────────────────────────────
+       GOOGLE ANALYTICS  (do not change)
+  ─────────────────────────────────────────────────────────────────── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5NE717HVD"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G5NE717HVD',{anonymize_ip:true});</script>
+
+
+  <!-- ──────────────────────────────────────────────────────────────
+       STYLES  (do not change — all design tokens live here)
+  ─────────────────────────────────────────────────────────────────── -->
+  <style>
+    /* ═══════════════════ DESIGN TOKENS ═══════════════════ */
+    :root {
+      --bg:          #050505;
+      --bg-2:        #0c0c10;
+      --bg-card:     rgba(16, 16, 22, 0.94);
+      --orange:      #f97316;
+      --orange-dim:  rgba(249, 115, 22, 0.18);
+      --orange-glow: rgba(249, 115, 22, 0.35);
+      --red-live:    #ef4444;
+      --text:        #f1f5f9;
+      --text-2:      #94a3b8;
+      --text-3:      rgba(255,255,255,0.28);
+      --border:      rgba(255, 255, 255, 0.08);
+      --border-2:    rgba(255, 255, 255, 0.05);
+      --radius-sm:   10px;
+      --radius:      14px;
+      --radius-lg:   20px;
+      --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+      --hh:          64px;
+      --font-display: 'Barlow Condensed', 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-ui:      'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      overflow-x: hidden;
+      min-height: 100dvh;
+      background-image:
+        radial-gradient(ellipse 70% 40% at 20% 0%,   rgba(249,115,22,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 35% at 80% 100%, rgba(249,115,22,0.07) 0%, transparent 60%);
+    }
+
+    /* ═══════════════════ HEADER ═══════════════════ */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--hh);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 0 clamp(12px, 3vw, 28px);
+      background: rgba(5,5,5,0.93);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .site-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 8%; right: 8%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(249,115,22,0.45), transparent);
+      pointer-events: none;
+    }
+
+    /* Home button (top-left) */
+    .header-back {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      color: var(--text-2);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color .2s var(--ease);
+      flex-shrink: 0;
+    }
+    .header-back:hover { color: var(--text); }
+    .header-back .material-icons-round { font-size: 18px; }
+
+    /* Team names + VS in center of header */
+    .scoreboard {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(8px, 2.5vw, 24px);
+    }
+    .sb-name {
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem, 2.6vw, 1.55rem);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+      line-height: 1;
+      text-shadow: 0 1px 12px rgba(0,0,0,0.5);
+    }
+    .vs-word {
+      font-family: var(--font-display);
+      font-size: clamp(0.9rem, 2vw, 1.25rem);
+      font-weight: 900;
+      color: var(--orange);
+      letter-spacing: 0.14em;
+      line-height: 1;
+      text-shadow: 0 0 28px var(--orange-glow);
+    }
+
+    /* ═══════════════════ PAGE LAYOUT ═══════════════════ */
+    .page-main {
+      padding-top: var(--hh);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ═══════════════════ VIDEO PLAYER ═══════════════════ */
+    .player-shell {
+      width: 100%;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 16px 64px rgba(0,0,0,0.95);
+      padding-bottom: 56.25%; /* 16:9 on mobile */
+      height: 0;
+    }
+    @media (min-width: 860px) {
+      .player-shell { padding-bottom: 0; height: min(58vw, 85vh); }
+    }
+    .player-shell iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #000;
+      display: block;
+    }
+
+    /* ═══════════════════ INNER CONTENT WRAPPER ═══════════════════ */
+    .inner-wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 clamp(14px, 3vw, 24px);
+      width: 100%;
+    }
+
+    /* ═══════════════════ SECTION DIVIDER (used for Stream Channels & Match Info headings) ═══════════════════ */
+    .section-divider {
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 4px;
+      white-space: nowrap;
+    }
+    .section-label .material-icons-round { font-size: 15px; color: var(--orange); }
+    .section-label-text {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-2);
+      text-transform: uppercase;
+    }
+    /* Channel count badge (auto-filled by JS) */
+    .section-label-count {
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 1px 7px;
+      color: var(--text-2);
+    }
+
+    /* ═══════════════════ CHANNEL CARDS GRID ═══════════════════ */
+    /* Grid auto-sizes — no need to manually set column count */
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 16px 0 32px;
+    }
+    @media (min-width: 560px) { .channels-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 900px) { .channels-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
+
+    /* Individual channel card */
+    .ch-card {
+      position: relative;
+      border-radius: var(--radius);
+      cursor: pointer;
+      overflow: hidden;
+      padding: 2px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      transition: transform .26s var(--ease), box-shadow .26s var(--ease), border-color .26s var(--ease);
+    }
+    .ch-inner {
+      position: relative;
+      z-index: 2;
+      border-radius: calc(var(--radius) - 2px);
+      background: linear-gradient(145deg, rgba(18,18,26,0.97), rgba(11,11,18,0.99));
+      padding: 22px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      text-align: center;
+      min-height: 70px;
+      transition: background .26s var(--ease);
+    }
+    .ch-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #dde4ee;
+      line-height: 1;
+      transition: color .2s;
+    }
+    .ch-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+
+    /* Card hover state */
+    .ch-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(249,115,22,0.38);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.65), 0 0 18px rgba(249,115,22,0.18);
+    }
+    .ch-card:hover .ch-name  { color: #fff; }
+    .ch-card:hover .ch-label { color: var(--text-2); }
+
+    /* External channel card (opens in new tab) */
+    .ch-card.is-ext { border-color: rgba(249,115,22,0.14); }
+    .ch-card.is-ext .ch-label { color: rgba(249,115,22,0.5); }
+
+    /* Active channel card — animated rotating conic border */
+    .ch-card.is-active {
+      border-color: transparent;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.7), 0 0 28px rgba(249,115,22,0.32);
+    }
+    .ch-card.is-active::before {
+      content: '';
+      position: absolute;
+      top: -55%; left: -55%;
+      width: 210%; height: 210%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0%, #f97316 22%, #ffca44 44%,
+        #ffffff 54%,  #f97316 72%, transparent 100%
+      );
+      animation: rotateConic 3s linear infinite;
+      z-index: 1;
+    }
+    .ch-card.is-active .ch-inner  { background: linear-gradient(145deg, rgba(26,14,6,0.99), rgba(16,8,3,0.99)); }
+    .ch-card.is-active .ch-name   { color: #fff; text-shadow: 0 0 12px rgba(249,115,22,0.55); }
+    .ch-card.is-active .ch-label  { color: rgba(249,115,22,0.65); }
+    @keyframes rotateConic { to { transform: rotate(360deg); } }
+
+    /* ═══════════════════ MATCH INFO SECTION (open layout — no card) ═══════════════════ */
+    .match-info-section { padding: 6px 0 36px; }
+
+    /* Top row: Home Logo + Name | VS | Away Logo + Name */
+    .mi-teams {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 28px 0 24px;
+    }
+    .mi-team {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    /* Team logo / flag image */
+    .mi-logo {
+      width: clamp(64px, 11vw, 96px);
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+      display: block;
+    }
+    /* Team name below logo */
+    .mi-name {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.8vw, 1.45rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.1;
+    }
+    /* VS text in the center */
+    .mi-vs {
+      flex-shrink: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 900;
+      color: var(--orange);
+      letter-spacing: 0.14em;
+      text-shadow: 0 0 32px var(--orange-glow);
+      line-height: 1;
+    }
+    /* Description block below the teams row */
+    .mi-desc-block {
+      border-top: 1px solid var(--border);
+      padding-top: 22px;
+    }
+    .mi-desc-text {
+      font-size: clamp(0.85rem, 1.8vw, 0.96rem);
+      color: var(--text-2);
+      line-height: 1.75;
+      font-weight: 400;
+      max-width: 680px;
+    }
+
+    /* ═══════════════════ FOOTER ═══════════════════ */
+    .site-footer { margin-top: auto; border-top: 1px solid var(--border-2); }
+    .footer-body {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: clamp(28px,4vw,40px) clamp(14px,3vw,24px) clamp(28px,4vw,40px);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    @media (min-width: 640px) {
+      .footer-body { grid-template-columns: auto 1fr auto; align-items: start; gap: 32px; }
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .footer-logo .accent { color: var(--orange); }
+    .footer-tagline { font-size: 0.78rem; color: var(--text-2); font-weight: 500; line-height: 1.4; }
+    .footer-nav { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px 28px; }
+    @media (min-width: 640px) { .footer-nav { flex-direction: column; gap: 8px; align-items: flex-start; } }
+    .footer-nav a {
+      font-size: 0.82rem; font-weight: 600; color: var(--text-2);
+      text-decoration: none; transition: color .2s;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .footer-nav a:hover { color: var(--text); }
+    .footer-nav a .material-icons-round { font-size: 14px; }
+    .footer-social { display: flex; gap: 10px; align-items: center; }
+    .social-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: var(--text-2); text-decoration: none;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .social-btn:hover { background: var(--orange-dim); border-color: rgba(249,115,22,0.35); color: var(--orange); }
+    .social-btn .material-icons-round { font-size: 18px; }
+    .footer-bottom { background: rgba(0,0,0,0.3); border-top: 1px solid var(--border-2); }
+    .footer-bottom-inner {
+      max-width: 1040px; margin: 0 auto;
+      padding: 14px clamp(14px,3vw,24px);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+    .footer-copy { font-size: 0.75rem; color: var(--text-3); font-weight: 500; }
+    .footer-legal { display: flex; gap: 16px; }
+    .footer-legal a { font-size: 0.75rem; color: var(--text-3); text-decoration: none; font-weight: 500; transition: color .2s; }
+    .footer-legal a:hover { color: var(--text-2); }
+
+    /* ═══════════════════ WHATSAPP POPUP MODAL ═══════════════════ */
+    #waOverlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 9999; padding: 20px;
+    }
+    #waOverlay.show { display: flex; animation: popIn .32s var(--ease); }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    #waCard {
+      width: 100%; max-width: 400px;
+      background: linear-gradient(160deg, #14161e, #0b0d11);
+      border: 1px solid rgba(249,115,22,0.2); border-radius: 22px;
+      padding: 34px 26px 26px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.9), 0 0 60px rgba(249,115,22,0.08);
+      text-align: center;
+    }
+    .wa-icon {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      box-shadow: 0 0 36px rgba(37,211,102,0.3);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .wa-icon svg { width: 34px; height: 34px; }
+    #waCard h2 { font-size: clamp(1.2rem,2.5vw,1.7rem); font-weight: 800; color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em; }
+    #waCard p  { font-size: 0.88rem; color: var(--text-2); line-height: 1.5; margin-bottom: 22px; }
+    .wa-btns   { display: flex; gap: 10px; }
+    .wa-btn    { flex: 1; padding: 13px 0; border: none; border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all .22s var(--ease); }
+    #btnAlready { background: rgba(255,255,255,0.05); color: var(--text-2); border: 1px solid var(--border); }
+    #btnAlready:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+    #btnJoin { background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; box-shadow: 0 4px 18px rgba(37,211,102,0.3); }
+    #btnJoin:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
+  </style>
+
+
+  <!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║   SECTION B — MATCH DATA  ← THE MAIN PLACE TO FILL IN          ║
+  ║                                                                  ║
+  ║  This object is the single source of truth for:                  ║
+  ║    • Team names & country codes (for flags)                      ║
+  ║    • Channel stream URLs                                         ║
+  ║    • Competition name                                            ║
+  ║                                                                  ║
+  ║  If a config.js file exists at  ../../script/config.js           ║
+  ║  and has an entry matching this page's filename slug,            ║
+  ║  that config data takes priority over this inline fallback.      ║
+  ║  Otherwise, only this block is used.                             ║
+  ╚══════════════════════════════════════════════════════════════════╝
+  -->
+
+  <!-- Attempt to load shared config from project root (optional) -->
+  <script>
+    (function() {
+      try {
+        var el = document.createElement('script');
+        el.src = '../../script/config.js';
+        el.onerror = function() { /* falls back to __matchFallback below */ };
+        document.head.appendChild(el);
+      } catch(e) {}
+    })();
+  </script>
+
+  <script>
+    window.__matchFallback = {
+      "slug": "afg-vs-ban",
+      "home": {
+            "name": "Afghanistan",
+            "code": "afg",
+            "label": ""
+      },
+      "away": {
+            "name": "Bangladesh",
+            "code": "bd",
+            "label": ""
+      },
+      "competition": "1ST TEST MATCH 2026",
+      "description": "Afghanistan and Bangladesh are facing each other in a one-off Test match at the Zayed Cricket Stadium in Abu Dhabi from October 9 to 13, 2026. Led by Najmul Hossain Shanto, Bangladesh will aim to build a strong first-innings total, while Rahmat Shah’s Afghanistan will look to challenge them with disciplined bowling and spin. With both teams eager to secure victory, batting consistency, bowling performance and adaptability to the conditions will be crucial in deciding the outcome.",
+      "channels": [
+            {
+                  "name": "Fancode FHD",
+                  "label": "",
+                  "url": "https://matchdekho.pages.dev/player/PR?url=https://akamaii.lovable.app/api/public/px/fancode?url=https://in-mc-plive.fancode.com/mumbai/4249693_english_hls_aaca093f3b682701ta-di_h264/1080p.m3u8?hdntl=Expires=1791607022~_GO=Generated~acl=/mumbai/4249693_english_hls_aaca093f3b682701ta-di_h264/*~SessionID=7076612632_watcho_fa6b2595-bff2-43~Signature=AXZsC1C0RXD7c64UuxA1GZDAfjnnJIim-P8PlmYozuqbXfT8yeKiEshsnsJevjBN8IbXKAaD9NME0TpUZlzFY5TA1UJ"
+            },
+            {
+                  "name": "Willow",
+                  "label": "",
+                  "url": "https://matchdekho.pages.dev/player/drm?url=https://abfjk4haaaaaaaamkitc5445rybm6.bia-cf.live.pv-cdn.net/iad-nitro/live/clients/dash/enc/94oo2jxxp4/out/v1/c6789bc599e54c3bb1f26880531b8531/cenc.mpd&keys=effa45e438d4a21939035abc7cf5d3a4:d2f43abbc17cb5e3c05c5f14fd1e8181"
+            }
+      ]
+};
+  </script>
+
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════ HEADER ═══════════════════════════════
+       Layout: [Home button]  [HOME TEAM  VS  AWAY TEAM]  [spacer]
+       Team names are injected automatically by JS from the match data above.
+  ════════════════════════════════════════════════════════════════════════ -->
+  <header class="site-header">
+
+    <!-- Home button — navigates back to the site root -->
+    <a href="../../" class="header-back" aria-label="Back to home">
+      <span class="material-icons-round">home</span>
+      <span>Home</span>
+    </a>
+
+    <!-- Team names (filled by JS — do not change the IDs) -->
+    <div class="scoreboard" role="heading" aria-level="1">
+      <span class="sb-name" id="hdrHomeName">HOME TEAM</span>
+      <span class="vs-word">VS</span>
+      <span class="sb-name" id="hdrAwayName">AWAY TEAM</span>
+    </div>
+
+    <!-- Right spacer — keeps the scoreboard visually centered -->
+    <div style="width:56px; flex-shrink:0;"></div>
+
+  </header>
+
+
+  <!-- ═══════════════════════════════ PAGE BODY ═══════════════════════════════ -->
+  <main class="page-main">
+
+    <!-- ── 1. VIDEO PLAYER ──────────────────────────────────────────────────
+         The iframe src is set automatically when the page loads (first channel).
+         Clicking a channel card below switches the src.
+         Do not change the id="mainPlayer".
+    ──────────────────────────────────────────────────────────────────────── -->
+    <div class="player-shell">
+      <iframe
+        id="mainPlayer"
+        src=""
+        allowfullscreen
+        loading="eager"
+        title="Live Match Stream"
+        allow="encrypted-media; fullscreen; autoplay"
+      ></iframe>
+    </div>
+
+
+    <div class="inner-wrap">
+
+      <!-- ── 2. STREAM CHANNELS ────────────────────────────────────────────
+           Channel cards are generated automatically from the channels array
+           in Section B above. No manual HTML needed here.
+           The count badge (e.g. "4") is also auto-filled.
+           Active card shows an animated glowing border.
+      ─────────────────────────────────────────────────────────────────────── -->
+      <div class="section-divider" role="separator">
+        <div class="section-label">
+          <span class="material-icons-round" aria-hidden="true">sensors</span>
+          <span class="section-label-text">Stream Channels</span>
+          <span class="section-label-count" id="channelCountBadge"></span>
+        </div>
+      </div>
+
+      <!-- Channel cards are injected here by JS -->
+      <div class="channels-grid" id="channelsGrid" role="list"></div>
+
+
+      <!-- ── 3. MATCH INFORMATION ──────────────────────────────────────────
+           Team logos and names are auto-filled by JS from Section B.
+           Only the description paragraph (Section C) needs manual editing.
+      ─────────────────────────────────────────────────────────────────────── -->
+      <div class="section-divider" role="separator">
+        <div class="section-label">
+          <span class="material-icons-round" aria-hidden="true">info</span>
+          <span class="section-label-text">Match Information</span>
+        </div>
+      </div>
+
+      <div class="match-info-section">
+
+        <!-- Teams row: auto-filled by JS (do not change IDs) -->
+        <div class="mi-teams">
+          <div class="mi-team">
+            <img class="mi-logo" id="mcHomeFlag" src="" alt="Home Team" loading="lazy" />
+            <div class="mi-name" id="mcHomeName">Home Team</div>
+          </div>
+
+          <div class="mi-vs">VS</div>
+
+          <div class="mi-team">
+            <img class="mi-logo" id="mcAwayFlag" src="" alt="Away Team" loading="lazy" />
+            <div class="mi-name" id="mcAwayName">Away Team</div>
+          </div>
+        </div>
+
+        <!--
+        ╔══════════════════════════════════════════════════════════════════╗
+        ║   SECTION C — MATCH DESCRIPTION  ← EDIT THIS TEXT MANUALLY     ║
+        ║                                                                  ║
+        ║   This paragraph is NOT pulled from config or any data source.  ║
+        ║   Edit the text between the <p> tags directly in this file.     ║
+        ║   You can use a bot/script to auto-replace it per match.        ║
+        ╚══════════════════════════════════════════════════════════════════╝
+        -->
+        <div class="mi-desc-block">
+          <p class="mi-desc-text" id="matchDescription">
+            Afghanistan and Bangladesh are facing each other in a one-off Test match at the Zayed Cricket Stadium in Abu Dhabi from October 9 to 13, 2026. Led by Najmul Hossain Shanto, Bangladesh will aim to build a strong first-innings total, while Rahmat Shah’s Afghanistan will look to challenge them with disciplined bowling and spin. With both teams eager to secure victory, batting consistency, bowling performance and adaptability to the conditions will be crucial in deciding the outcome.
+          </p>
+        </div>
+
+      </div>
+
+    </div><!-- /inner-wrap -->
+
+
+    <!-- ═══════════════════════════════ FOOTER ═══════════════════════════════
+         Static footer — no edits needed here.
+    ════════════════════════════════════════════════════════════════════════ -->
+    <footer class="site-footer">
+      <div class="footer-body">
+
+        <div class="footer-brand">
+          <span class="footer-logo"><span class="accent">Sayan</span> Inc.</span>
+          <p class="footer-tagline">Watch sports, live &amp; free.<br>HD · 4K · Multi-Channel.</p>
+        </div>
+
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/"><span class="material-icons-round">home</span>Home</a>
+          <a href="/news/"><span class="material-icons-round">article</span>Sports News</a>
+          <a href="/Willow/"><span class="material-icons-round">sports_cricket</span>Willow Cricket</a>
+          <a href="/Hotstar/"><span class="material-icons-round">live_tv</span>Hotstar</a>
+        </nav>
+
+        <div class="footer-social">
+          <a class="social-btn" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+            <span class="material-icons-round">send</span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-inner">
+          <p class="footer-copy">&copy; <span id="footerYear"></span> Sayan Inc. &middot; sayan.info &middot; All rights reserved.</p>
+          <div class="footer-legal">
+            <a href="/privacy.html">Privacy</a>
+            <a href="/terms.html">Terms</a>
+            <a href="/disclaimer.html">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+
+  <!-- ═══════════════════════════════ WHATSAPP POPUP ═══════════════════════════════
+       Appears automatically 2 seconds after a channel is clicked.
+       "Already Joined" → closes the popup.
+       "Join Now"       → opens WhatsApp channel in new tab, then closes popup.
+       Clicking outside the card does NOT close it (intentional).
+  ════════════════════════════════════════════════════════════════════════════════ -->
+  <div id="waOverlay" role="dialog" aria-modal="true" aria-label="Join WhatsApp channel">
+    <div id="waCard">
+      <div class="wa-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="white">
+          <path d="M20.52 3.48A11.82 11.82 0 0 0 12.04 0C5.45 0 .08 5.37.08 11.96c0 2.11.55 4.17 1.59 5.99L0 24l6.24-1.63a11.9 11.9 0 0 0 5.8 1.48h.01c6.59 0 11.96-5.37 11.96-11.96 0-3.19-1.24-6.19-3.49-8.41zM12.05 21.8a9.8 9.8 0 0 1-5-1.37l-.36-.21-3.7.97.99-3.61-.24-.37a9.77 9.77 0 1 1 8.31 4.59zm5.38-7.34c-.29-.14-1.72-.85-1.98-.95-.27-.1-.46-.14-.66.14-.19.29-.76.95-.93 1.14-.17.19-.34.22-.63.08-.29-.14-1.21-.45-2.31-1.45-.85-.75-1.43-1.68-1.6-1.96-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.66-1.59-.91-2.17-.24-.57-.49-.49-.66-.5h-.56c-.19 0-.49.07-.75.36s-.98.96-.98 2.34.99 2.71 1.13 2.9c.14.19 1.95 2.98 4.72 4.18.66.29 1.18.46 1.58.59.66.21 1.26.18 1.74.11.53-.08 1.72-.7 1.96-1.37.24-.67.24-1.24.17-1.37-.07-.13-.27-.21-.56-.35z"/>
+        </svg>
+      </div>
+      <h2>Join WhatsApp Channel</h2>
+      <p>Get live match links &amp; sports updates directly on your phone — free, instant.</p>
+      <div class="wa-btns">
+        <button class="wa-btn" id="btnAlready">Already Joined</button>
+        <button class="wa-btn" id="btnJoin">Join Now &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════ SCRIPTS (do not edit) ═══════════════════════════════ -->
+  <script>
+    (function () {
+      'use strict';
+
+      // WhatsApp channel link
+      const WHATSAPP  = 'https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f';
+
+      // Flag image CDN base URLs
+      const FLAG_CDN    = 'https://flagcdn.com/w40/';   // small (header)
+      const FLAG_CDN_LG = 'https://flagcdn.com/w80/';   // large (match info section)
+
+      // Detect which match this page is for by reading the filename from the URL
+      const slug = location.pathname.split('/').pop().replace(/\.html?$/i, '');
+
+      // Try to resolve match data from config.js (if loaded), then fall back to inline data
+      const configSources = [
+        window.cnpMatches,
+        window.matchDatabase,
+        window.cnpLiveMatches,
+        window.matchConfig
+      ];
+      let matchData = null;
+      for (const src of configSources) {
+        if (src && src[slug]) { matchData = src[slug]; break; }
+      }
+      if (!matchData) matchData = window.__matchFallback;
+
+      const { home, away, competition, description, channels } = matchData;
+
+      // ── Fill header team names ──
+      function setHeaderTeams() {
+        const hn = document.getElementById('hdrHomeName');
+        const an = document.getElementById('hdrAwayName');
+        if (hn) hn.textContent = home.name.toUpperCase();
+        if (an) an.textContent = away.name.toUpperCase();
+      }
+
+      // ── Fill match info logos and names ──
+      function setMatchInfo() {
+        const mcHF = document.getElementById('mcHomeFlag');
+        const mcHN = document.getElementById('mcHomeName');
+        const mcAF = document.getElementById('mcAwayFlag');
+        const mcAN = document.getElementById('mcAwayName');
+        if (mcHF) { mcHF.src = FLAG_CDN_LG + home.code + '.png'; mcHF.alt = home.name; }
+        if (mcHN) mcHN.textContent = home.name;
+        if (mcAF) { mcAF.src = FLAG_CDN_LG + away.code + '.png'; mcAF.alt = away.name; }
+        if (mcAN) mcAN.textContent = away.name;
+      }
+
+      // ── Channel grid ──
+      const grid        = document.getElementById('channelsGrid');
+      const countBadge  = document.getElementById('channelCountBadge');
+      const player      = document.getElementById('mainPlayer');
+      const overlay     = document.getElementById('waOverlay');
+
+      // Count non-external channels for the badge
+      const streamCount = channels.filter(c => !c.external).length;
+      if (countBadge) countBadge.textContent = streamCount;
+
+      // Render all channel cards; highlight the active one
+      function renderGrid(activeIdx) {
+        grid.innerHTML = channels.map((ch, i) => `
+          <div
+            class="ch-card${i === activeIdx ? ' is-active' : ''}${ch.external ? ' is-ext' : ''}"
+            data-index="${i}"
+            role="listitem"
+            tabindex="0"
+            aria-label="${ch.name}${ch.external ? ' — opens in new tab' : ''}"
+          >
+            <div class="ch-inner">
+              <span class="ch-name">${ch.name}</span>
+              <span class="ch-label">${ch.label || (ch.external ? '↗ External' : 'HD Stream')}</span>
+            </div>
+          </div>
+        `).join('');
+
+        grid.querySelectorAll('.ch-card').forEach(card => {
+          const activate = () => switchChannel(parseInt(card.dataset.index, 10));
+          card.addEventListener('click', activate);
+          card.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+          });
+        });
+      }
+
+      // Switch iframe to the selected channel; external channels open in a new tab
+      function switchChannel(idx) {
+        const ch = channels[idx];
+        if (!ch) return;
+        if (ch.external) {
+          window.open(ch.url, '_blank', 'noopener,noreferrer');
+          return;
+        }
+        player.src = ch.url;
+        renderGrid(idx);
+        showPopup();
+      }
+
+      // Load the first non-external channel on page load
+      function initPlayer() {
+        const first = channels.find(c => !c.external);
+        if (first && player) player.src = first.url;
+      }
+
+      // Show WhatsApp popup after a short delay
+      function showPopup() {
+        setTimeout(() => { if (overlay) overlay.classList.add('show'); }, 2000);
+      }
+
+      // Footer year
+      const yearEl = document.getElementById('footerYear');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      // ── Initialise ──
+      setHeaderTeams();
+      setMatchInfo();
+      initPlayer();
+      renderGrid(0);
+      showPopup();
+
+      // ── Popup buttons ──
+      // "Already Joined" — just close
+      document.getElementById('btnAlready').onclick = function () {
+        overlay.classList.remove('show');
+      };
+      // "Join Now" — open WhatsApp, then close
+      document.getElementById('btnJoin').onclick = function () {
+        window.open(WHATSAPP, '_blank', 'noopener,noreferrer');
+        overlay.classList.remove('show');
+      };
+      // Backdrop click is intentionally disabled — only buttons close this modal
+
+    })();
+  </script>
+
+</body>
+</html>
