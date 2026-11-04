@@ -5,9 +5,7 @@
   var FILE_MODE = location.protocol === "file:";
 
   var FILES = [
-    "store.js",
     "app.js",
-    "landing.js",
     "live-events.js",
     "willow-live.js",
     "fancode.js",
@@ -21,7 +19,7 @@
   var STARTED = false;
 
   var FALLBACK = {
-    siteName: "CnpTV",
+    siteName: "MatchCentral",
     heroSlideDuration: 10000,
     maxHeroMatches: 8,
     heroFeedUrl: "",
