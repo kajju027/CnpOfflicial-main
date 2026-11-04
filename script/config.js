@@ -122,6 +122,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://imgh.in/host/2a2tix",
       "date": "2ND ODI MATCH LIVE - 07 : 00 AM",
       "watchUrl": "/home/live/ind-vs-nz.html"
+    },
+    {
+      "tournament": "ACC MEN'S ASIA CUP 2026",
+      "homeTeam": {
+        "name": "Asia Cup",
+        "logo": "https://imgh.in/host/xxrz2u"
+      },
+      "awayTeam": {
+        "name": "Asia Cup",
+        "logo": "https://imgh.in/host/xxrz2u"
+      },
+      "poster": "https://imgh.in/host/efya6e",
+      "date": "05 NOV - 14 NOV 2026 - 10:00 AM",
+      "watchUrl": "/home/live/acc-asiacup-2026.html"
     }
   ];
 }
