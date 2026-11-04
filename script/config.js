@@ -119,7 +119,7 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "name": "Asia Cup",
         "logo": "https://imgh.in/host/xxrz2u"
       },
-      "poster": "https://imgh.in/host/efya6e",
+      "poster": "https://imgh.in/host/ahj6j1",
       "date": "05 NOV - 14 NOV 2026 - 10:00 AM",
       "watchUrl": "/home/live/acc-asiacup-2026.html"
     },
