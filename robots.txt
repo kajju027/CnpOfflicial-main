@@ -24,4 +24,4 @@ Allow: /Kannada/
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://sayan.info/sitemap.xml
+Sitemap: https://matchcentral.in/sitemap.xml
