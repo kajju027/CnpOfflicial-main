@@ -9,8 +9,6 @@
   var PLAYER_BASE  = cfg.playerBase || '';
   var EAGER_CARDS  = 5;
 
-  var DEFAULT_SERVER_ID = 3;
-
   if (!document.getElementById('willow-default-btn-style')) {
     var styleEl = document.createElement('style');
     styleEl.id = 'willow-default-btn-style';
@@ -70,7 +68,7 @@
     return String(val || '').replace(/[^0-9]/g, '');
   }
 
-  function buildPlayerUrl(matchId, serverId) {
+  function buildPlayerUrl(matchId) {
     var cfgObj = window.CNPTV_CONFIG || window.MATCHDEKHO_CONFIG || {};
     var secCfg = ((cfgObj.sections || {}).willow) || {};
     var secLink = String(secCfg.link || '');
@@ -84,8 +82,9 @@
     }
     var nid = numericId(matchId);
     if (!nid) return base;
-    var srv = serverId || DEFAULT_SERVER_ID;
-    return base + '?CB' + nid + '&ser=' + srv;
+    /* Redirect carries the match ID only — the player page picks its
+       own default server and the user can switch servers there. */
+    return base + '?CB' + nid;
   }
 
   function buildTitle(m) {
@@ -224,7 +223,7 @@
         watchHtml = '<div class="md-actions"><a class="md-watch-btn md-coming-soon" href="' +
           escapeHtml(viewAllLink) + '">' + escapeHtml(comingSoonLabel) + '</a></div>';
       } else if (id) {
-        var href = escapeHtml(buildPlayerUrl(id, DEFAULT_SERVER_ID));
+        var href = escapeHtml(buildPlayerUrl(id));
         watchHtml = '<div class="md-actions"><a class="md-watch-btn md-watch-btn-default" href="' + href + '" ' +
           'aria-label="Watch ' + imgAlt + ' live">' +
           '<span class="md-watch-btn-icon" aria-hidden="true">&#9654;</span>' +
