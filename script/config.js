@@ -110,7 +110,7 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 5TH T20I",
+      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND ODI",
       "homeTeam": {
         "name": "India",
         "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
@@ -119,8 +119,8 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "name": "New Zealand",
         "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
       },
-      "poster": "https://ik.imagekit.io/sayanmete/India%20vs%20New%20Zealand%20T20%20match%20poster%20by%20Sayan",
-      "date": "1ST NOVEMBER 2026 - 11:45 AM",
+      "poster": "https://ik.imagekit.io/sayanmete/xxxzxxzsx",
+      "date": "2ND ODI MATCH LIVE - 07 : 00 AM",
       "watchUrl": "/home/live/ind-vs-nz.html"
     }
   ];
