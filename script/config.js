@@ -1,5 +1,5 @@
 var CNPTV_CONF = {
-  siteName: "CNP TV",
+  siteName: "MatchCentral",
 
   build: "24",
   heroSlideDuration: 10000,
