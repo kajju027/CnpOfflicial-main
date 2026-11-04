@@ -120,7 +120,7 @@
   <link rel="dns-prefetch" href="https://origin-staticv2.sonyliv.com">
   <link rel="dns-prefetch" href="https://upload.wikimedia.org">
 
-  <meta name="mc-build" content="24">
+  <meta name="mc-build" content="25">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -212,76 +212,6 @@
       background: linear-gradient(90deg, #00e87b, rgba(0, 232, 123, 0.15)) !important;
     }
 
-    /* ── Feature bar (static, no JS) ── */
-    .mc-feature-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      max-width: 1240px;
-      margin: clamp(14px, 2vw, 22px) auto clamp(6px, 1.2vw, 12px);
-      padding: 0 clamp(1rem, 4vw, 3rem);
-    }
-    .mc-feature-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 16px;
-      border: 1px solid rgba(148, 190, 205, 0.10);
-      border-radius: 14px;
-      background: linear-gradient(160deg, rgba(11, 18, 25, 0.9), rgba(7, 11, 16, 0.9));
-      transition: border-color 0.25s ease, transform 0.25s ease;
-    }
-    .mc-feature-item:hover {
-      border-color: rgba(0, 232, 123, 0.4);
-      transform: translateY(-2px);
-    }
-    .mc-feature-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: linear-gradient(140deg, rgba(0, 232, 123, 0.16), rgba(56, 189, 248, 0.10));
-      color: #00e87b;
-    }
-    .mc-feature-icon svg { width: 19px; height: 19px; }
-    .mc-feature-copy { min-width: 0; }
-    .mc-feature-copy strong {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.01em;
-      color: #f4f8fb;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .mc-feature-copy span {
-      display: block;
-      margin-top: 2px;
-      font-size: 0.66rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(143, 163, 176, 0.9);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    @media (max-width: 900px) {
-      .mc-feature-bar { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .mc-feature-bar { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 0 12px; }
-      .mc-feature-item { gap: 9px; padding: 10px 11px; }
-      .mc-feature-icon { width: 32px; height: 32px; border-radius: 9px; }
-      .mc-feature-icon svg { width: 16px; height: 16px; }
-      .mc-feature-copy strong { font-size: 0.72rem; }
-      .mc-feature-copy span { font-size: 0.56rem; }
-    }
-
     /* ── News Section ── */
     .news-section {
       padding-top: clamp(1.5rem, 3vw, 2.5rem);
@@ -355,131 +285,6 @@
     .news-read-more span { color: #00e87b; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; display: block; }
     .news-read-more p { color: rgba(255,255,255,0.6); font-size: 0.85rem; margin: 0; }
 
-    /* ── Footer ── */
-    .site-foot {
-      background: #05070c !important;
-      color: rgba(255, 255, 255, 0.72) !important;
-      padding: 60px 16px 30px;
-      border-top: 1px solid rgba(0, 232, 123, 0.12);
-      margin-top: 40px;
-    }
-    .site-foot-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-    @media (min-width: 768px) {
-      .site-foot-container { grid-template-columns: 1.5fr 2fr; }
-    }
-
-    .site-foot-brand {
-      font-size: 1.8rem;
-      font-weight: 800;
-      text-decoration: none;
-      display: inline-block;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-    }
-    .site-foot .mc-accent { color: #00e87b !important; }
-    .site-foot .mc-base  { color: #ffffff !important; }
-    .site-foot-desc {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 20px;
-      max-width: 340px;
-      color: rgba(255,255,255,0.7) !important;
-    }
-
-    /* Social icons */
-    .site-foot-social {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-    .site-foot-social a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.8) !important;
-      text-decoration: none !important;
-      transition: all 0.3s ease;
-    }
-    .site-foot-social a:hover {
-      background: #00e87b !important;
-      color: #05070c !important;
-      transform: translateY(-2px);
-    }
-
-    .site-foot-updated {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.5) !important;
-    }
-
-    .site-foot-nav {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
-    }
-    @media (min-width: 768px) {
-      .site-foot-nav { grid-template-columns: repeat(4, 1fr); }
-    }
-    .foot-nav-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #ffffff !important;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin: 0 0 16px 0;
-    }
-    .site-foot-nav a {
-      display: block;
-      color: rgba(255,255,255,0.7) !important;
-      text-decoration: none !important;
-      font-size: 0.9rem;
-      padding: 6px 0;
-      transition: all 0.2s ease;
-    }
-    .site-foot-nav a:hover, .site-foot-nav a:focus {
-      color: #00e87b !important;
-      padding-left: 4px;
-    }
-
-    .site-foot-bottom {
-      max-width: 1200px;
-      margin: 40px auto 0;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      text-align: center;
-    }
-    .site-foot-copy {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.5) !important;
-      margin: 0 0 12px 0;
-    }
-    .site-foot-legal {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .site-foot-legal a {
-      color: rgba(255,255,255,0.6) !important;
-      text-decoration: none !important;
-      font-size: 0.85rem;
-      transition: color 0.2s ease;
-    }
-    .site-foot-legal a:hover { color: #00e87b !important; }
-
     /* shimmer animation for skeleton cards */
     @keyframes shimmer {
       0%   { background-position: 200% 0; }
@@ -488,12 +293,12 @@
   </style>
 
   <!-- Landing stylesheets (order matters: live-events.css is the override layer) -->
-  <link rel="stylesheet" href="css/willow-live.css?v=2.0">
-  <link rel="stylesheet" href="css/sony-liv.css?v=2.0">
-  <link rel="stylesheet" href="css/world-sports.css?v=2.0">
-  <link rel="stylesheet" href="css/fancode.css?v=2.0">
-  <link rel="stylesheet" href="css/main.css?v=2.0">
-  <link rel="stylesheet" href="css/live-events.css?v=2.0">
+  <link rel="stylesheet" href="css/willow-live.css?v=2.1">
+  <link rel="stylesheet" href="css/sony-liv.css?v=2.1">
+  <link rel="stylesheet" href="css/world-sports.css?v=2.1">
+  <link rel="stylesheet" href="css/fancode.css?v=2.1">
+  <link rel="stylesheet" href="css/main.css?v=2.1">
+  <link rel="stylesheet" href="css/live-events.css?v=2.1">
 </head>
 <body id="top">
 
@@ -552,34 +357,6 @@
       <polyline points="6 9 12 15 18 9"/>
     </svg>
     <span>SCROLL</span>
-  </div>
-
-  <!-- ═══════════════════════════════ FEATURE BAR ════════════════════════════════ -->
-  <div class="mc-feature-bar" aria-label="Why MatchCentral">
-    <div class="mc-feature-item">
-      <span class="mc-feature-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      </span>
-      <span class="mc-feature-copy"><strong>Live Scores</strong><span>Real-time updates</span></span>
-    </div>
-    <div class="mc-feature-item">
-      <span class="mc-feature-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </span>
-      <span class="mc-feature-copy"><strong>Fixtures</strong><span>Never miss a match</span></span>
-    </div>
-    <div class="mc-feature-item">
-      <span class="mc-feature-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
-      </span>
-      <span class="mc-feature-copy"><strong>Free HD Streams</strong><span>Cricket &amp; football 24×7</span></span>
-    </div>
-    <div class="mc-feature-item">
-      <span class="mc-feature-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      </span>
-      <span class="mc-feature-copy"><strong>World Sports</strong><span>Global tournaments</span></span>
-    </div>
   </div>
 
   <!-- ════════════════════════════════════ MAIN ══════════════════════════════════ -->
@@ -701,63 +478,104 @@
   </main>
 
   <!-- ════════════════════════════════ FOOTER ═════════════════════════════════════ -->
-  <footer class="site-foot">
-    <div class="site-foot-container">
+  <footer class="mc-footer" id="mcFooter">
 
-      <!-- Brand column -->
-      <div class="site-foot-brand-section">
-        <a href="#top" class="site-foot-brand" aria-label="MatchCentral home">
-          <span class="mc-base">Match</span><span class="mc-accent">Central</span>
-        </a>
-        <p class="site-foot-desc">
-          Your central hub for live sports. Watch cricket and football 24×7, follow real-time scores, fixtures and highlights — free on MatchCentral.
-        </p>
-
-        <!-- Social -->
-        <div class="site-foot-social">
-          <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-            </svg>
+    <!-- CTA band -->
+    <div class="mc-foot-cta">
+      <div class="mc-foot-cta-inner">
+        <div class="mc-foot-cta-copy">
+          <p class="mc-foot-kicker"><span class="mc-dot" aria-hidden="true"></span>Every Match. One Central Hub.</p>
+          <h3 class="mc-foot-cta-title">Never miss a moment<br>of the action</h3>
+          <p class="mc-foot-cta-sub">Live cricket, football &amp; world sports — streaming 24×7, free on MatchCentral.</p>
+        </div>
+        <div class="mc-foot-cta-actions">
+          <a class="mc-foot-btn mc-foot-btn-solid" href="#footballSection">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+            <span>Watch Live Free</span>
+          </a>
+          <a class="mc-foot-btn mc-foot-btn-ghost" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            <span>Join Telegram</span>
           </a>
         </div>
-
-        <!-- Last updated -->
-        <div class="site-foot-updated">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          Last Updated: <time id="last-updated-time" datetime="">Loading...</time>
-        </div>
       </div>
+    </div>
 
-      <nav class="site-foot-nav" aria-label="Footer navigation">
-        <div class="foot-nav-col">
-          <h3 class="foot-nav-title">Live Sports</h3>
-          <a href="#footballSection">Football 24×7</a>
-          <a href="#cricketSection">Cricket 24×7</a>
-          <a href="#willow-live">Willow Cricbuzz</a>
-          <a href="#fancodeSection">FanCode</a>
-          <a href="#worldSportsSection">World Sports</a>
-          <a href="#sonyLivSection">Sony LIV Events</a>
+    <!-- Main footer grid -->
+    <div class="mc-foot-main">
+      <div class="mc-foot-grid">
+
+        <!-- Brand column -->
+        <div class="mc-foot-brandcol">
+          <a href="#top" class="mc-foot-logo" aria-label="MatchCentral home">
+            <span class="mc-base">Match</span><span class="mc-accent">Central</span>
+          </a>
+          <p class="mc-foot-tag">
+            The central hub for live sports — free 24×7 cricket &amp; football streams,
+            real-time scores, fixtures and highlights. Every match, one home.
+          </p>
+          <div class="mc-foot-social">
+            <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" aria-label="MatchCentral on Telegram" title="Telegram">
+              <svg width="19" height="19" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+              </svg>
+            </a>
+            <a href="https://matchcentral.in/" aria-label="matchcentral.in website" title="matchcentral.in">
+              <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </a>
+          </div>
+          <p class="mc-foot-updated">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Data refreshed: <time id="last-updated-time" datetime="">Loading...</time>
+          </p>
         </div>
-        <div class="foot-nav-col">
-          <h3 class="foot-nav-title">MatchCentral</h3>
-          <a href="/news/">Latest Sports News</a>
-          <a href="/Feedback/">Contact Us</a>
-          <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Telegram</a>
-        </div>
-      </nav>
+
+        <!-- Link columns -->
+        <nav class="mc-foot-col" aria-label="Live sports sections">
+          <h4 class="mc-foot-col-title">Live Sports</h4>
+          <ul class="mc-foot-links">
+            <li><a href="#footballSection">Football 24×7</a></li>
+            <li><a href="#cricketSection">Cricket 24×7</a></li>
+            <li><a href="#willow-live">Willow Cricbuzz</a></li>
+            <li><a href="#fancodeSection">FanCode</a></li>
+            <li><a href="#worldSportsSection">World Sports</a></li>
+            <li><a href="#sonyLivSection">Sony LIV Events</a></li>
+          </ul>
+        </nav>
+
+        <nav class="mc-foot-col" aria-label="Explore MatchCentral">
+          <h4 class="mc-foot-col-title">Explore</h4>
+          <ul class="mc-foot-links">
+            <li><a href="#newsSection">Sports News</a></li>
+            <li><a href="/news/">Latest Stories</a></li>
+            <li><a href="/Feedback/">Feedback</a></li>
+            <li><a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Telegram Channel</a></li>
+          </ul>
+        </nav>
+
+        <nav class="mc-foot-col" aria-label="Legal">
+          <h4 class="mc-foot-col-title">Legal</h4>
+          <ul class="mc-foot-links">
+            <li><a href="/terms.html">Terms of Use</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/disclaimer.html">Disclaimer</a></li>
+            <li><a href="/Feedback/">Report an Issue</a></li>
+          </ul>
+        </nav>
+
+      </div>
     </div>
 
     <!-- Bottom bar -->
-    <div class="site-foot-bottom">
-      <p class="site-foot-copy">&copy; <span id="current-year"></span> MatchCentral <span aria-hidden="true">•</span> All rights reserved.</p>
-      <div class="site-foot-legal">
-        <a href="/terms.html">Terms</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/disclaimer.html">Disclaimer</a>
+    <div class="mc-foot-bottom">
+      <div class="mc-foot-bottom-inner">
+        <p class="mc-foot-copy">&copy; <span id="current-year"></span> MatchCentral <span class="mc-sep" aria-hidden="true">·</span> All rights reserved</p>
+        <p class="mc-foot-note">MatchCentral is an indexing &amp; discovery platform. All streams, trademarks and logos belong to their respective owners.</p>
       </div>
     </div>
   </footer>
@@ -770,7 +588,7 @@
   </button>
 
   <!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════════ -->
-  <script defer src="script/boot.js?v=2.0"></script>
+  <script defer src="script/boot.js?v=2.1"></script>
 
   <script>
     /* ── Current year ── */
