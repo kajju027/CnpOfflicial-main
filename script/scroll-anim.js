@@ -36,9 +36,28 @@
   updateHint();
 
   var canObserve = "IntersectionObserver" in window;
-  var animating = canObserve && (FORCE || !reducedMotion());
 
-  if (!animating) return;
+  /* Play entrance animations only ONCE per tab session.
+     On reload or back-navigation the page renders fully visible
+     instantly instead of fading in again (user request). */
+  var SEEN_KEY = "mcEntrancePlayed";
+  var alreadyPlayed = false;
+  try { alreadyPlayed = window.sessionStorage.getItem(SEEN_KEY) === "1"; } catch (e) { alreadyPlayed = false; }
+
+  var animating = canObserve && (FORCE || !reducedMotion()) && !alreadyPlayed;
+
+  if (!animating) {
+    /* Safety net: if the page was restored from the back/forward cache
+       mid-animation, make sure every element is visible immediately. */
+    window.addEventListener("pageshow", function (event) {
+      if (!event.persisted) return;
+      var hidden = document.querySelectorAll(".md-reveal:not(.md-in)");
+      for (var i = 0; i < hidden.length; i++) hidden[i].classList.add("md-in");
+    });
+    return;
+  }
+
+  try { window.sessionStorage.setItem(SEEN_KEY, "1"); } catch (e) {}
 
   root.classList.add("md-anim");
   if (FORCE && reducedMotion()) root.classList.add("md-anim-forced");
@@ -46,10 +65,13 @@
   var TARGETS = [
     ".poster-wrapper",
     ".section-hd",
+    ".live-events-section",
+    ".news-section",
     ".willow-live-section",
     ".sony-liv-section",
     ".fancode-section",
     ".world-sports-section",
+    ".mc-footer",
     ".md-card"
   ].join(",");
 
@@ -118,7 +140,7 @@
 
   scan(document.body || root);
 
-  ["willowLiveTrack", "sonyLivTrack", "fancodeTrack", "worldSportsTrack"].forEach(function (id) {
+  ["willowLiveTrack", "sonyLivTrack", "fancodeTrack", "worldSportsTrack", "footballTrack", "cricketTrack", "landingNewsTrack"].forEach(function (id) {
     var track = document.getElementById(id);
     if (!track || !window.MutationObserver) return;
     new MutationObserver(function (mutations) {
