@@ -164,93 +164,6 @@
       pointer-events: none;
     }
 
-    /* ── Back to top (progress ring) ── */
-    .mc-back-top {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 55;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      padding: 0;
-      border: 0;
-      border-radius: 50%;
-      background: rgba(6, 12, 10, 0.88);
-      color: #00e87b;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(14px) scale(0.9);
-      transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease, box-shadow 0.2s ease, color 0.2s ease;
-    }
-    .mc-back-top.visible {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0) scale(1);
-    }
-    .mc-back-top:hover {
-      color: #7dffc4;
-      box-shadow: 0 8px 26px rgba(0, 232, 123, 0.35);
-    }
-    .mc-ring {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-    }
-    .mc-ring circle {
-      fill: none;
-      stroke-width: 2.5;
-    }
-    .mc-ring-bg { stroke: rgba(255, 255, 255, 0.10); }
-    .mc-ring-fill {
-      stroke: #00e87b;
-      stroke-linecap: round;
-      filter: drop-shadow(0 0 4px rgba(0, 232, 123, 0.6));
-      transition: stroke-dashoffset 0.12s linear;
-    }
-    .mc-arrow {
-      position: relative;
-      width: 18px;
-      height: 18px;
-      transition: transform 0.25s ease;
-    }
-    .mc-back-top:hover .mc-arrow { transform: translateY(-2px); }
-
-    /* small scroll percentage inside the ring (arrow appears on hover) */
-    .mc-pct {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      transition: opacity 0.2s ease;
-    }
-    .mc-back-top .mc-arrow {
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.22s ease, transform 0.22s ease;
-    }
-    .mc-back-top.visible:hover .mc-arrow,
-    .mc-back-top.visible:focus-visible .mc-arrow {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .mc-back-top.visible:hover .mc-pct,
-    .mc-back-top.visible:focus-visible .mc-pct {
-      opacity: 0;
-    }
-
     /* ── Section Headers ── */
     .section-hd-title {
       margin: 0 !important;
@@ -357,7 +270,7 @@
   <link rel="stylesheet" href="css/sony-liv.css?v=2.3">
   <link rel="stylesheet" href="css/world-sports.css?v=2.3">
   <link rel="stylesheet" href="css/fancode.css?v=2.3">
-  <link rel="stylesheet" href="css/main.css?v=2.4">
+  <link rel="stylesheet" href="css/main.css?v=2.5">
   <link rel="stylesheet" href="css/live-events.css?v=2.4">
 </head>
 <body id="top">
@@ -571,125 +484,82 @@
   </main>
 
   <!-- ══════════════════════════════ FOOTER ══════════════════════════════
-       MatchCentral "Horizon" footer — original design. The top of the footer has
-       no edge line: it melts into the landing page through a glowing horizon seam,
-       with the Telegram bridge card floating right on the merge zone. -->
+       MatchCentral footer — clean, organised, original.
+       No hard top edge: the footer quietly melts into the landing page,
+       with a single soft green glow marking the merge zone. -->
   <footer class="mf-footer" id="mcFooter" aria-label="MatchCentral footer">
-
-    <!-- seamless merge zone: horizon glow line + light bloom -->
-    <div class="mf-seam" aria-hidden="true">
-      <i class="mf-seam-bloom"></i>
-      <i class="mf-seam-line"></i>
-      <i class="mf-seam-beam mf-beam-l"></i>
-      <i class="mf-seam-beam mf-beam-r"></i>
-    </div>
 
     <div class="mf-container">
 
-      <!-- BRIDGE CARD — floats on the seam between page and footer -->
-      <section class="mf-bridge" aria-label="Join MatchCentral on Telegram">
-        <div class="mf-bridge-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-        </div>
-        <div class="mf-bridge-copy">
+      <!-- UPDATES PANEL — Important & Updates -->
+      <section class="mf-updates" aria-label="Important and Updates">
+        <div class="mf-updates-copy">
+          <p class="mf-eyebrow"><i class="mf-dot" aria-hidden="true"></i>Important &amp; Updates</p>
           <h2>Never miss a <span>single match.</span></h2>
-          <p>Instant stream alerts, live scores &amp; event news — straight to your Telegram, free forever.</p>
+          <p class="mf-updates-sub">Match alerts, live scores and free streaming updates — straight to your Telegram, every single day.</p>
         </div>
-        <a class="mf-bridge-btn" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">
+        <a class="mf-join" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">
           Join Telegram
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
         </a>
       </section>
 
-      <!-- CENTERED BRAND STRIP -->
-      <div class="mf-brand-row">
-        <a href="#top" class="mf-logo" aria-label="MatchCentral home">
-          <img src="assets/logo.png?v=3" alt="MatchCentral" loading="lazy" decoding="async">
-        </a>
-        <p class="mf-tagline">Every match. <span>One home.</span></p>
-      </div>
+      <!-- MAIN GRID — brand · watch · information -->
+      <div class="mf-grid">
 
-      <!-- WATCH RAIL — all sections as living chips -->
-      <nav class="mf-rail" aria-label="Watch on MatchCentral">
-        <a href="#footballSection">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m12 8 3.5 2.5-1.3 4.1H9.8L8.5 10.5z"/><path d="M12 3v5M15.5 10.5 20 9M14.2 14.6l2.6 3.7M9.8 14.6l-2.6 3.7M8.5 10.5 4 9"/></svg>
-          Football
-        </a>
-        <a href="#cricketSection">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 4 6 6-9.5 9.5a2 2 0 0 1-2.8 0l-3.2-3.2a2 2 0 0 1 0-2.8z"/><path d="m5 19-2 2"/></svg>
-          Cricket
-        </a>
-        <a href="#willow-live">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><path d="M7.7 7.7a6 6 0 0 0 0 8.6M16.3 7.7a6 6 0 0 1 0 8.6M4.8 4.8a10 10 0 0 0 0 14.4M19.2 4.8a10 10 0 0 1 0 14.4"/></svg>
-          Willow
-        </a>
-        <a href="#fancodeSection">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6.5" width="17" height="12.5" rx="2"/><path d="m8 3 4 3.5L16 3"/></svg>
-          FanCode
-        </a>
-        <a href="#worldSportsSection">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
-          World Sports
-        </a>
-        <a href="#sonyLivSection">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 6 3.5-6 3.5z"/></svg>
-          Sony LIV
-        </a>
-        <a href="#newsSection">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M7 9.5h6M7 13h10M7 16h7"/></svg>
-          News
-        </a>
-      </nav>
+        <div class="mf-brand">
+          <a href="#top" class="mf-logo" aria-label="MatchCentral home">
+            <img src="assets/logo.png?v=3" alt="MatchCentral" loading="lazy" decoding="async">
+          </a>
+          <p class="mf-tagline">Every match. <span>One home.</span></p>
+          <p class="mf-about">Football, cricket and world sports — live streams, scores and news gathered in one place, free for everyone.</p>
+        </div>
 
-      <!-- INFO ROW: freshness · legal · back to top -->
-      <div class="mf-info">
-        <p class="mf-updated">
-          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          Data refreshed: <time id="last-updated-time" datetime="">Loading...</time>
-        </p>
-        <nav class="mf-legal" aria-label="Legal">
-          <a href="/terms.html">Terms</a>
-          <a href="/privacy.html">Privacy</a>
-          <a href="/disclaimer.html">Disclaimer</a>
-          <a href="/Feedback/">Feedback</a>
+        <nav class="mf-col" aria-label="Watch on MatchCentral">
+          <h3>Watch</h3>
+          <ul>
+            <li><a href="#footballSection">Football</a></li>
+            <li><a href="#cricketSection">Cricket</a></li>
+            <li><a href="#willow-live">Willow</a></li>
+            <li><a href="#fancodeSection">FanCode</a></li>
+            <li><a href="#worldSportsSection">World Sports</a></li>
+            <li><a href="#sonyLivSection">Sony LIV</a></li>
+            <li><a href="#newsSection">News</a></li>
+          </ul>
         </nav>
-        <button type="button" class="mf-top-btn" id="mcBackTopFooter" aria-label="Back to top">
-          Top
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>
-        </button>
+
+        <nav class="mf-col" aria-label="Information">
+          <h3>Information</h3>
+          <ul>
+            <li><a href="/terms.html">Terms of Use</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/disclaimer.html">Disclaimer</a></li>
+            <li><a href="/Feedback/">Feedback</a></li>
+          </ul>
+        </nav>
+
       </div>
 
-      <!-- DISCLAIMER: Bengali statement + English echo -->
-      <div class="mf-note">
-        <p class="mf-note-bn" lang="bn">আমরা কোন কনটেন্ট পোস্ট করিনা শুধুমাত্র ইন্টারনেটে যে কনটেন্ট পাবলিক থাকে সেগুলো থেকে আমরা শুধু সংগ্রহ করে মানুষকে ফ্রিতে দেখাই।</p>
-        <p class="mf-note-en">MatchCentral does not post, host or upload any content — we only collect what is publicly available on the internet and show it to everyone for free.</p>
-      </div>
-
-      <!-- BOTTOM BAR -->
-      <div class="mf-bottom">
-        <p class="mf-copyright">&copy; <span id="current-year">2026</span> MatchCentral — All rights reserved.</p>
-        <p class="mf-credit">Made for the love of <strong>sports.</strong></p>
+      <!-- SMALL PRINT — English disclaimer + bottom bar -->
+      <div class="mf-small">
+        <p class="mf-disclaimer">We do not post any content on MatchCentral. We only collect content that is publicly available on the internet and show it to people for free.</p>
+        <div class="mf-bottom">
+          <p class="mf-copyright">&copy; <span id="current-year">2026</span> MatchCentral — All rights reserved.</p>
+          <p class="mf-updated">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Data refreshed: <time id="last-updated-time" datetime="">Loading...</time>
+          </p>
+          <p class="mf-credit">Made for the love of <strong>sports.</strong></p>
+        </div>
       </div>
 
     </div>
   </footer>
 
 
-  <!-- Back to top with scroll progress ring -->
-  <button class="mc-back-top" id="mcBackTop" type="button" aria-label="Back to top">
-    <svg class="mc-ring" viewBox="0 0 48 48" aria-hidden="true">
-      <circle class="mc-ring-bg" cx="24" cy="24" r="20"></circle>
-      <circle class="mc-ring-fill" id="mcRingFill" cx="24" cy="24" r="20"></circle>
-    </svg>
-    <svg class="mc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <polyline points="18 15 12 9 6 15"/>
-    </svg>
-    <span class="mc-pct" id="mcPct" aria-hidden="true">0%</span>
-  </button>
-
-  <!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════════ -->
+<!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════════ -->
   <script defer src="script/boot.js?v=2.4"></script>
 
   <script>
@@ -719,29 +589,16 @@
         if (el) el.textContent = 'Recently';
       });
 
-    /* ── Scroll progress + back to top ── */
+    /* ── Scroll progress bar ── */
     (function () {
       const progress = document.getElementById('mcScrollProgress');
-      const backTop  = document.getElementById('mcBackTop');
-      const ring     = document.getElementById('mcRingFill');
-      const pctEl    = document.getElementById('mcPct');
-      if (!progress || !backTop) return;
-
-      const RING_LEN = 2 * Math.PI * 20;
-      if (ring) {
-        ring.style.strokeDasharray  = RING_LEN;
-        ring.style.strokeDashoffset = RING_LEN;
-      }
+      if (!progress) return;
 
       let ticking = false;
       function update() {
         const st  = window.pageYOffset || document.documentElement.scrollTop || 0;
         const max = (document.documentElement.scrollHeight - window.innerHeight) || 1;
-        const p   = Math.min(1, st / max);
-        progress.style.width = (p * 100) + '%';
-        backTop.classList.toggle('visible', st > 600);
-        if (ring) ring.style.strokeDashoffset = RING_LEN * (1 - p);
-        if (pctEl) pctEl.textContent = Math.round(p * 100) + '%';
+        progress.style.width = (Math.min(1, st / max) * 100) + '%';
         ticking = false;
       }
       window.addEventListener('scroll', function () {
@@ -750,10 +607,6 @@
         window.requestAnimationFrame(update);
       }, { passive: true });
       update();
-
-      backTop.addEventListener('click', function () {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
     })();
 
     /* Landing news is loaded by script/landing-news.js. */
