@@ -98,7 +98,7 @@
             </div>
           </div>
           <div class="action-buttons">
-            <a href="${watchUrl}" class="watch-btn"><span class="icon">&#9654;</span><span>Watch Now</span></a>
+            <a href="${watchUrl}" class="watch-btn"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5L20 12L8 19Z"/></svg></span><span>Watch Now</span></a>
           </div>
         </div>
       </section>
