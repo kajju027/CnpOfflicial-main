@@ -363,13 +363,23 @@
     });
   }
 
+  /* ── cache helpers: restore instantly, then refresh quietly in background ── */
+  function cacheHydrate(key) {
+    return !!(window.CNPStore && window.CNPStore.hydrate(track, key));
+  }
+  function cachePersist(key) {
+    if (window.CNPStore) window.CNPStore.persist(track, key);
+  }
+
   function fetchFancode() {
     if (!API_URL) {
       console.error('[FanCode] No API URL configured (cfg.apis.fancode / fanCode).');
-      track.innerHTML = '<div class="md-error"><strong>FanCode feed is not configured</strong>Check script/config.js</div>';
+      if (!track.querySelector('.md-card')) {
+        track.innerHTML = '<div class="md-error"><strong>FanCode feed is not configured</strong>Check script/config.js</div>';
+      }
       return;
     }
-    if (!track.querySelector('.md-card')) renderSkeletons(6);
+    if (!cacheHydrate('fancode-track') && !track.querySelector('.md-card, .md-skeleton')) renderSkeletons(6);
     getJSON(API_URL)
       .catch(function () {
         if (!SNAPSHOT_URL) throw new Error('no snapshot');
@@ -380,10 +390,13 @@
         var live = all.filter(function (m) { return statusInfo(pick(m, ['status', 'state'])).className === 'live'; });
         var rest = all.filter(function (m) { return statusInfo(pick(m, ['status', 'state'])).className !== 'live'; });
         renderMatches(live.concat(rest).slice(0, 20));
+        cachePersist('fancode-track');
       })
       .catch(function (err) {
         console.error('[FanCode] fetch error:', err);
-        track.innerHTML = '<div class="md-error"><strong>Could not load FanCode matches</strong>Please refresh in a moment.</div>';
+        if (!track.querySelector('.md-card')) {
+          track.innerHTML = '<div class="md-error"><strong>Could not load FanCode matches</strong>Please refresh in a moment.</div>';
+        }
       });
   }
 
@@ -409,5 +422,4 @@
 
   load();
 
-  window.addEventListener('beforeunload', function () { if (timer) window.clearInterval(timer); });
 })();
