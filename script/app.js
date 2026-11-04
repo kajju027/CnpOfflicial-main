@@ -218,6 +218,28 @@
     goToSlide(currentIndex - 1);
   });
 
+  /* Keyboard navigation for the hero slider (desktop UX) */
+  document.addEventListener("keydown", function (event) {
+    if (mobileMenu && mobileMenu.classList.contains("active")) return;
+    const tag = (event.target && event.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || tag === "select") return;
+    if (event.key === "ArrowRight" && matches.length > 1) {
+      goToSlide(currentIndex + 1);
+    } else if (event.key === "ArrowLeft" && matches.length > 1) {
+      goToSlide(currentIndex - 1);
+    }
+  });
+
+  /* Pause hero autoplay while the user is hovering the slider (desktop UX) */
+  if (posterWrapper) {
+    posterWrapper.addEventListener("mouseenter", function () {
+      if (autoplayTimer) window.clearTimeout(autoplayTimer);
+    });
+    posterWrapper.addEventListener("mouseleave", function () {
+      restartAutoplay();
+    });
+  }
+
   if (posterWrapper) posterWrapper.addEventListener("click", function (event) {
     if (event.target.closest(".action-buttons, .slider-arrow, .slider-progress")) return;
     const activeSlide = slidesRoot && slidesRoot.querySelector(".poster-section.active");
