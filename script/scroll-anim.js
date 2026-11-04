@@ -71,7 +71,7 @@
     ".sony-liv-section",
     ".fancode-section",
     ".world-sports-section",
-    ".mc-footer",
+    ".mf-footer",
     ".md-card"
   ].join(",");
 
