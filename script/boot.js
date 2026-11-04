@@ -19,7 +19,7 @@
   var STARTED = false;
 
   var FALLBACK = {
-    siteName: "CnpTV",
+    siteName: "MatchCentral",
     heroSlideDuration: 10000,
     maxHeroMatches: 8,
     heroFeedUrl: "",
