@@ -666,7 +666,7 @@ header {
   border-bottom-color: rgba(0, 232, 123, .16);
   background: rgba(5, 9, 14, .9);
 }
-.logo { grid-column: auto; justify-self: auto; margin-right: auto; font-size: clamp(1.05rem, 1.5vw, 1.34rem); }
+.logo { grid-column: auto; justify-self: auto; margin-right: 0; font-size: clamp(1.05rem, 1.5vw, 1.34rem); }
 .header-nav { grid-column: auto; justify-self: auto; gap: 3px; padding: 4px; border: 1px solid rgba(220, 240, 247, .11); border-radius: 12px; background: rgba(255, 255, 255, .028); }
 .header-nav a { padding: 8px 9px; border-radius: 8px; color: #aebdc8; font-size: .71rem; font-weight: 720; white-space: nowrap; }
 .header-nav a:hover,
@@ -698,9 +698,10 @@ header {
 @media (max-width: 900px) {
   header { min-height: 62px; }
   .header-nav { display: none !important; }
-  .hamburger { display: flex !important; grid-column: auto; width: 38px; height: 38px; margin-left: auto; padding: 7px; order: 3; }
-  .logo { margin-right: 0; order: 1; }
-  .mobile-menu { z-index: 50; }
+  .hamburger { display: flex !important; margin-left: 0; }
+  .logo { margin-right: 0; }
+  .drawer { z-index: 50; }
+  .scrim { z-index: 40; }
 }
 
 @media (max-width: 760px) {
