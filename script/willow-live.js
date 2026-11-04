@@ -298,13 +298,23 @@
     });
   }
 
+  /* ── cache helpers: restore instantly, then refresh quietly in background ── */
+  function cacheHydrate(key) {
+    return !!(window.CNPStore && window.CNPStore.hydrate(track, key));
+  }
+  function cachePersist(key) {
+    if (window.CNPStore) window.CNPStore.persist(track, key);
+  }
+
   function fetchMatches() {
     if (!API_URL) {
       console.error('[Willow] No API URL configured (cfg.apis.willow / willowLive).');
-      track.innerHTML = '<div class="md-error"><strong>Willow feed is not configured</strong>Check script/config.js</div>';
+      if (!track.querySelector('.md-card')) {
+        track.innerHTML = '<div class="md-error"><strong>Willow feed is not configured</strong>Check script/config.js</div>';
+      }
       return;
     }
-    if (!track.querySelector('.md-card')) renderSkeletons(6);
+    if (!cacheHydrate('willow-track') && !track.querySelector('.md-card, .md-skeleton')) renderSkeletons(6);
     getJSON(API_URL)
       .catch(function () {
         if (!SNAPSHOT_URL) throw new Error('no snapshot');
@@ -313,10 +323,13 @@
       .then(function (data) {
         var matches = extractMatches(data).slice(0, 20);
         renderMatches(matches);
+        cachePersist('willow-track');
       })
       .catch(function (err) {
         console.error('[Willow] fetch error:', err);
-        track.innerHTML = '<div class="md-error"><strong>Could not load matches</strong>Please refresh in a moment.</div>';
+        if (!track.querySelector('.md-card')) {
+          track.innerHTML = '<div class="md-error"><strong>Could not load matches</strong>Please refresh in a moment.</div>';
+        }
       });
   }
 
@@ -342,5 +355,4 @@
 
   load();
 
-  window.addEventListener('beforeunload', function () { if (timer) window.clearInterval(timer); });
 })();
