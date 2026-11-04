@@ -210,23 +210,13 @@
     });
   }
 
-  /* ── cache helpers: restore instantly, then refresh quietly in background ── */
-  function cacheHydrate(key) {
-    return !!(window.CNPStore && window.CNPStore.hydrate(track, key));
-  }
-  function cachePersist(key) {
-    if (window.CNPStore) window.CNPStore.persist(track, key);
-  }
-
   function fetchWorldSports() {
     if (!API_URL) {
       console.error('[WorldSports] No API URL configured (cfg.apis.worldSports).');
-      if (!track.querySelector('.md-card')) {
-        track.innerHTML = '<div class="md-error"><strong>World Sports feed is not configured</strong>Check script/config.js</div>';
-      }
+      track.innerHTML = '<div class="md-error"><strong>World Sports feed is not configured</strong>Check script/config.js</div>';
       return;
     }
-    if (!cacheHydrate('world-sports-track') && !track.querySelector('.md-card, .md-skeleton')) renderSkeletons(6);
+    if (!track.querySelector('.md-card')) renderSkeletons(6);
     getJSON(API_URL)
       .catch(function () {
         if (!SNAPSHOT_URL) throw new Error('no snapshot');
@@ -236,13 +226,10 @@
         var raw = data.matches || data.events || data || [];
         var matches = (Array.isArray(raw) ? raw : []).slice(0, 20);
         renderMatches(matches);
-        cachePersist('world-sports-track');
       })
       .catch(function (err) {
         console.error('[WorldSports] fetch error:', err);
-        if (!track.querySelector('.md-card')) {
-          track.innerHTML = '<div class="md-error"><strong>Failed to load events</strong></div>';
-        }
+        track.innerHTML = '<div class="md-error"><strong>Failed to load events</strong></div>';
       });
   }
 
@@ -270,4 +257,5 @@
 
   load();
 
+  window.addEventListener('beforeunload', function () { if (timer) window.clearInterval(timer); });
 })();
