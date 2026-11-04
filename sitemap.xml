@@ -2,112 +2,112 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://sayan.info/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/news/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/player/sony</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Willow/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Hotstar/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Fox/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Cricbuzz/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Scorecard/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/English/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Hindi/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Bangla/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Tamil/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Telugu/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/Kannada/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/home/sony-sports-events/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/home/buzz/</loc>
-    <lastmod>2026-10-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://sayan.info/home/live/afg-vs-ban.html</loc>
+    <loc>https://matchcentral.in/</loc>
     <lastmod>2026-11-04</lastmod>
   </url>
 
   <url>
-    <loc>https://sayan.info/home/live/arg-vs-ben.html</loc>
+    <loc>https://matchcentral.in/news/</loc>
     <lastmod>2026-11-04</lastmod>
   </url>
 
   <url>
-    <loc>https://sayan.info/home/live/ind-vs-nz.html</loc>
+    <loc>https://matchcentral.in/player/sony</loc>
     <lastmod>2026-11-04</lastmod>
   </url>
 
   <url>
-    <loc>https://sayan.info/home/live/ind-vs-wi.html</loc>
+    <loc>https://matchcentral.in/Willow/</loc>
     <lastmod>2026-11-04</lastmod>
   </url>
 
   <url>
-    <loc>https://sayan.info/home/live/ind-vs-zim.html</loc>
+    <loc>https://matchcentral.in/Hotstar/</loc>
     <lastmod>2026-11-04</lastmod>
   </url>
 
   <url>
-    <loc>https://sayan.info/home/live/sa-vs-aus.html</loc>
+    <loc>https://matchcentral.in/Fox/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/Cricbuzz/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/Scorecard/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/English/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/Hindi/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/Bangla/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/Tamil/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/Telugu/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/Kannada/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/home/sony-sports-events/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/home/buzz/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/home/live/afg-vs-ban.html</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/home/live/arg-vs-ben.html</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/home/live/ind-vs-nz.html</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/home/live/ind-vs-wi.html</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/home/live/ind-vs-zim.html</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+
+  <url>
+    <loc>https://matchcentral.in/home/live/sa-vs-aus.html</loc>
     <lastmod>2026-11-04</lastmod>
   </url>
 
