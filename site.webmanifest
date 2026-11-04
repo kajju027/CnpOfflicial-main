@@ -1,11 +1,11 @@
 {
-  "name": "CnpTV - Live Sports News Streaming",
-  "short_name": "CnpTV",
-  "description": "Watch live cricket, football, and sports streaming free",
+  "name": "MatchCentral - Live Cricket, Football & Sports Streaming",
+  "short_name": "MatchCentral",
+  "description": "Watch live cricket, football, and sports streaming free on matchcentral.in",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0b0d0f",
-  "theme_color": "#0b0d0f",
+  "background_color": "#05070c",
+  "theme_color": "#05070c",
   "orientation": "portrait-primary",
   "icons": [
     {
