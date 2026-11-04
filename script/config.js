@@ -1,7 +1,7 @@
 var CNPTV_CONF = {
-  siteName: "CnpTV",
+  siteName: "MatchCentral",
 
-  build: "23",
+  build: "24",
   heroSlideDuration: 10000,
   maxHeroMatches: 8,
   heroFeedUrl: "",
