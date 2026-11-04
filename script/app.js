@@ -266,7 +266,10 @@
     });
 
     document.addEventListener("click", function (event) {
-      if (mobileMenu.classList.contains("active") && !mobileMenu.contains(event.target) && !hamburger.contains(event.target)) closeMenu();
+      if (!mobileMenu.classList.contains("active")) return;
+      /* clicking the dark backdrop (outside the panel) closes the menu */
+      if (event.target === mobileMenu) { closeMenu(); return; }
+      if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) closeMenu();
     });
   }
 })();
