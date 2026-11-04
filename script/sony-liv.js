@@ -214,20 +214,33 @@
     });
   }
 
+  /* ── cache helpers: restore instantly, then refresh quietly in background ── */
+  function cacheHydrate(key) {
+    return !!(window.CNPStore && window.CNPStore.hydrate(track, key));
+  }
+  function cachePersist(key) {
+    if (window.CNPStore) window.CNPStore.persist(track, key);
+  }
+
   function fetchEvents() {
     if (!API_URL) {
-      track.innerHTML = "<div class=\"md-error\"><strong>Sony Liv feed is not configured</strong>Check script/config.js</div>";
+      if (!track.querySelector(".md-card")) {
+        track.innerHTML = "<div class=\"md-error\"><strong>Sony Liv feed is not configured</strong>Check script/config.js</div>";
+      }
       return;
     }
-    if (!track.querySelector(".md-card")) renderSkeletons(4);
+    if (!cacheHydrate('sony-liv-track') && !track.querySelector(".md-card, .md-skeleton")) renderSkeletons(4);
     getJSON(API_URL)
       .then(function (data) {
         var matches = extractMatches(data).slice();
         matches.sort(function (a, b) { return rank(a) - rank(b); });
         renderMatches(matches.slice(0, 20));
+        cachePersist('sony-liv-track');
       })
       .catch(function () {
-        track.innerHTML = "<div class=\"md-error\"><strong>Could not load Sony Liv</strong>Please refresh in a moment.</div>";
+        if (!track.querySelector(".md-card")) {
+          track.innerHTML = "<div class=\"md-error\"><strong>Could not load Sony Liv</strong>Please refresh in a moment.</div>";
+        }
       });
   }
 
@@ -263,8 +276,4 @@
   }
 
   load();
-
-  window.addEventListener("beforeunload", function () {
-    if (timer) window.clearInterval(timer);
-  });
 })();
