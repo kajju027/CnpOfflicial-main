@@ -2,7 +2,7 @@
   padding: clamp(1.5rem, 3.5vw, 3.5rem) 0 clamp(1rem, 2.5vw, 2.5rem);
   background:
     radial-gradient(640px 180px at 8% 0%, rgba(56, 148, 255, 0.08), transparent 70%),
-    linear-gradient(180deg, #05070c 0%, #070c12 100%);
+    linear-gradient(180deg, #0b0d0f 0%, #0c1016 100%);
 }
 
 .sony-liv-carousel-wrapper {
@@ -39,7 +39,7 @@
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 50%;
-  background: rgba(9, 12, 17, 0.88);
+  background: rgba(12, 14, 18, 0.88);
   color: rgba(255, 255, 255, 0.85);
   font-size: clamp(0.7rem, 1.1vw, 1rem);
   cursor: pointer;
