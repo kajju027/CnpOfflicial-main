@@ -1,6 +1,6 @@
 .fancode-section {
   padding: clamp(1.5rem, 3.5vw, 3.5rem) 0 clamp(1rem, 2.5vw, 2.5rem);
-  background: linear-gradient(180deg, #05070c 0%, #070b10 100%);
+  background: linear-gradient(180deg, #0b0d0f 0%, #0d0f13 100%);
 }
 
 .fancode-carousel-wrapper {
