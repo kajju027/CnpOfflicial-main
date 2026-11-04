@@ -119,7 +119,7 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "name": "New Zealand",
         "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
       },
-      "poster": "https://ik.imagekit.io/sayanmete/xxxzxxzsx",
+      "poster": "https://imgh.in/host/2a2tix",
       "date": "2ND ODI MATCH LIVE - 07 : 00 AM",
       "watchUrl": "/home/live/ind-vs-nz.html"
     }
