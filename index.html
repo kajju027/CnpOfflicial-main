@@ -108,7 +108,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="preload" as="image" href="/assets/logo.png" fetchpriority="high">
+  <link rel="preload" as="image" href="/assets/logo.png?v=3" fetchpriority="high">
 
   <!-- Performance: preconnect & dns-prefetch -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -125,7 +125,7 @@
   <link rel="dns-prefetch" href="https://origin-staticv2.sonyliv.com">
   <link rel="dns-prefetch" href="https://upload.wikimedia.org">
 
-  <meta name="mc-build" content="26">
+  <meta name="mc-build" content="27">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -223,6 +223,33 @@
       transition: transform 0.25s ease;
     }
     .mc-back-top:hover .mc-arrow { transform: translateY(-2px); }
+
+    /* small scroll percentage inside the ring (arrow appears on hover) */
+    .mc-pct {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      transition: opacity 0.2s ease;
+    }
+    .mc-back-top .mc-arrow {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .mc-back-top.visible:hover .mc-arrow,
+    .mc-back-top.visible:focus-visible .mc-arrow {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .mc-back-top.visible:hover .mc-pct,
+    .mc-back-top.visible:focus-visible .mc-pct {
+      opacity: 0;
+    }
 
     /* ── Section Headers ── */
     .section-hd-title {
@@ -326,12 +353,12 @@
   </style>
 
   <!-- Landing stylesheets (order matters: live-events.css is the override layer) -->
-  <link rel="stylesheet" href="css/willow-live.css?v=2.2">
-  <link rel="stylesheet" href="css/sony-liv.css?v=2.2">
-  <link rel="stylesheet" href="css/world-sports.css?v=2.2">
-  <link rel="stylesheet" href="css/fancode.css?v=2.2">
-  <link rel="stylesheet" href="css/main.css?v=2.2">
-  <link rel="stylesheet" href="css/live-events.css?v=2.2">
+  <link rel="stylesheet" href="css/willow-live.css?v=2.3">
+  <link rel="stylesheet" href="css/sony-liv.css?v=2.3">
+  <link rel="stylesheet" href="css/world-sports.css?v=2.3">
+  <link rel="stylesheet" href="css/fancode.css?v=2.3">
+  <link rel="stylesheet" href="css/main.css?v=2.3">
+  <link rel="stylesheet" href="css/live-events.css?v=2.3">
 </head>
 <body id="top">
 
@@ -340,60 +367,62 @@
 
   <!-- ═══════════════════════════════════ HEADER ═══════════════════════════════════ -->
   <header>
-    <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="hamburger" id="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+      <i></i>
+      <i></i>
+      <i></i>
     </button>
-    <div class="brand-lockup">
-      <a href="#top" class="logo" aria-label="MatchCentral home">
-        <img src="/assets/logo.png" alt="MatchCentral" class="logo-img" width="885" height="142">
-      </a>
-      <!-- OFFER button — replace the href below with your offer / affiliate link -->
-      <a class="offer-btn" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" aria-label="Special offer">
-        <svg class="offer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4.6 13.2c-.3.4 0 .8.4.8H10l-1.6 7.2c-.1.5.5.8.8.4L18.9 9.9c.3-.4 0-.9-.5-.9H13l1.4-6.2c.1-.5-.5-.8-1.4-.8z" transform="translate(-1.2 0)"/></svg>
-        <span class="offer-text">OFFER</span>
-      </a>
-    </div>
+    <a href="#top" class="logo" aria-label="MatchCentral home">
+      <img src="/assets/logo.png?v=3" alt="MatchCentral" class="logo-img" width="2643" height="300">
+    </a>
     <nav class="header-nav" aria-label="Main navigation">
       <a href="#top">Home</a>
       <a href="#footballSection">Football</a>
       <a href="#cricketSection">Cricket</a>
-      <a href="#willow-live">Willow</a>
-      <a href="#fancodeSection">FanCode</a>
-      <a href="#newsSection">News</a>
+      <a href="#willow-live" class="nav-compact">Willow</a>
+      <a href="#fancodeSection" class="nav-compact">FanCode</a>
+      <a href="#newsSection" class="nav-compact">News</a>
       <a href="https://t.me/Cnp_action_bot" class="sign-in" target="_blank" rel="noopener noreferrer">Contact</a>
       <a href="#footballSection" class="subscribe">Watch Free</a>
     </nav>
+    <!-- OFFER button — allrounder-style pill. Replace the href below with your offer / affiliate link -->
+    <a class="offer-btn" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" aria-label="Special offer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="m12 2 3 3 4 0 0 4 3 3-3 3v4h-4l-3 3-3-3H5v-4l-3-3 3-3V5h4z"/>
+        <path d="m8 16 8-8"/>
+        <circle cx="8" cy="8" r="1"/>
+        <circle cx="16" cy="16" r="1"/>
+      </svg>
+      <span>Offer</span>
+    </a>
   </header>
 
-  <!-- ══════════════════════════════ MOBILE MENU ══════════════════════════════════ -->
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
-    <div class="mm-panel" role="dialog" aria-modal="true">
-      <div class="mm-head">
-        <img src="/assets/logo.png" alt="MatchCentral" class="mm-logo">
-        <span class="mm-live"><span class="mc-dot" aria-hidden="true"></span>Live</span>
-      </div>
-      <p class="mm-label">Live Sports</p>
-      <div class="mm-links">
-        <a href="#footballSection">Football 24×7<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></a>
-        <a href="#cricketSection">Cricket 24×7<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></a>
-        <a href="#willow-live">Willow Cricbuzz<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></a>
-        <a href="#fancodeSection">FanCode<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></a>
-        <a href="#worldSportsSection">World Sports<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></a>
-        <a href="#sonyLivSection">Sony LIV<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></a>
-      </div>
-      <p class="mm-label">More</p>
-      <div class="mm-links">
-        <a href="#newsSection">Sports News<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></a>
-        <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Contact Us<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></a>
-      </div>
-      <div class="mm-actions">
-        <a href="#footballSection" class="subscribe-mobile">Watch Free</a>
-        <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" class="mm-telegram">Telegram</a>
-      </div>
+
+  <!-- ══════════════════════════════ SLIDE MENU (DRAWER) ═══════════════════════════ -->
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Main menu" inert>
+    <div class="dr-head">
+      <a class="dr-logo" href="#top" aria-label="MatchCentral home">
+        <img src="/assets/logo.png?v=3" alt="MatchCentral">
+      </a>
+      <button class="dclose" id="dclose" aria-label="Close menu"><b></b><b></b></button>
     </div>
-  </nav>
+    <label class="dr-search">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="6.5"/>
+        <path d="m16 16 4.5 4.5"/>
+      </svg>
+      <input type="search" id="drSearch" placeholder="Search matches &amp; sports" autocomplete="off" enterkeyhint="search" aria-label="Search">
+    </label>
+    <div class="dr-scroll">
+      <nav class="dr-nav" id="drNav" aria-label="Sections"></nav>
+    </div>
+    <div class="dr-foot" style="--i:9">
+      <a class="dr-login" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Join Telegram</a>
+      <p class="dr-legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/disclaimer.html">Disclaimer</a></p>
+    </div>
+  </aside>
+
 
   <!-- SEO: single page heading for crawlers -->
   <h1 class="sr-only">MatchCentral — Watch Live Cricket, Football &amp; Sports Streams Free</h1>
@@ -534,56 +563,46 @@
   </main>
 
   <!-- ════════════════════════════════ FOOTER ═════════════════════════════════════ -->
-  <footer class="mc-footer" id="mcFooter">
+  <footer class="mf-footer" id="mcFooter" aria-label="MatchCentral footer">
 
-    <!-- Telegram join strip -->
-    <div class="mc-foot-cta">
-      <div class="mc-foot-cta-inner">
-        <div class="mc-foot-cta-copy">
-          <span class="mc-foot-tg" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          </span>
-          <div class="mc-foot-cta-text">
-            <strong class="mc-foot-cta-title">Get instant match alerts on Telegram</strong>
-            <p class="mc-foot-cta-sub">Live stream links, scores &amp; event news — free, every day.</p>
-          </div>
-        </div>
-        <div class="mc-foot-cta-actions">
-          <a class="mc-foot-btn mc-foot-btn-ghost" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">
-            <span>Join Telegram</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg>
-          </a>
-        </div>
+    <div class="mf-accent" aria-hidden="true"></div>
+
+    <div class="mf-container">
+
+      <!-- TOP ROW -->
+      <div class="mf-top">
+        <span class="mf-eyebrow">
+          <i aria-hidden="true"></i>
+          MATCHCENTRAL SPORTS
+        </span>
+        <button type="button" class="mf-top-btn" id="mcBackTopFooter" aria-label="Back to top">
+          Back to top
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>
+        </button>
       </div>
-    </div>
 
-    <!-- Main footer grid -->
-    <div class="mc-foot-main">
-      <div class="mc-foot-grid">
+      <!-- MAIN GRID -->
+      <div class="mf-main">
 
-        <!-- Brand column -->
-        <div class="mc-foot-brandcol">
-          <a href="#top" class="mc-foot-logo" aria-label="MatchCentral home">
-            <span class="mc-base">Match</span><span class="mc-accent">Central</span>
+        <!-- BRAND COLUMN -->
+        <div class="mf-brand">
+          <a href="#top" class="mf-logo" aria-label="MatchCentral home">
+            <img src="/assets/logo.png?v=3" alt="MatchCentral" loading="lazy" decoding="async">
           </a>
-          <p class="mc-foot-tag">
-            The central hub for live sports — free 24×7 cricket &amp; football streams,
-            real-time scores, fixtures and highlights. Every match, one home.
+          <h2>Every match.<br><span>One central hub.</span></h2>
+          <p class="mf-description">
+            The central hub for live sports — free 24×7 cricket &amp; football
+            streams, real-time scores, fixtures and highlights. Explore live
+            events and upcoming matches, all in one place.
           </p>
-          <div class="mc-foot-social">
-            <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" aria-label="MatchCentral on Telegram" title="Telegram">
-              <svg width="19" height="19" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-              </svg>
-            </a>
-            <a href="https://matchcentral.in/" aria-label="matchcentral.in website" title="matchcentral.in">
-              <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-              </svg>
-            </a>
+          <div class="mf-sports-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="m9 8 7 4-7 4z"/>
+            </svg>
+            CRICKET · FOOTBALL · MORE
           </div>
-          <p class="mc-foot-updated">
+          <p class="mf-updated">
             <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
@@ -591,50 +610,59 @@
           </p>
         </div>
 
-        <!-- Link columns -->
-        <nav class="mc-foot-col" aria-label="Live sports sections">
-          <h4 class="mc-foot-col-title">Live Sports</h4>
-          <ul class="mc-foot-links">
-            <li><a href="#footballSection">Football 24×7</a></li>
-            <li><a href="#cricketSection">Cricket 24×7</a></li>
-            <li><a href="#willow-live">Willow Cricbuzz</a></li>
-            <li><a href="#fancodeSection">FanCode</a></li>
-            <li><a href="#worldSportsSection">World Sports</a></li>
-            <li><a href="#sonyLivSection">Sony LIV Events</a></li>
-          </ul>
+        <!-- EXPLORE LINKS -->
+        <nav class="mf-column" aria-label="Explore MatchCentral">
+          <h3>Explore</h3>
+          <a href="#top">Home</a>
+          <a href="#footballSection">Football 24×7</a>
+          <a href="#cricketSection">Cricket 24×7</a>
+          <a href="#willow-live">Willow Cricbuzz</a>
+          <a href="#newsSection">Sports News</a>
         </nav>
 
-        <nav class="mc-foot-col" aria-label="Explore MatchCentral">
-          <h4 class="mc-foot-col-title">Explore</h4>
-          <ul class="mc-foot-links">
-            <li><a href="#newsSection">Sports News</a></li>
-            <li><a href="/news/">Latest Stories</a></li>
-            <li><a href="/Feedback/">Feedback</a></li>
-            <li><a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Telegram Channel</a></li>
-          </ul>
-        </nav>
-
-        <nav class="mc-foot-col" aria-label="Legal">
-          <h4 class="mc-foot-col-title">Legal</h4>
-          <ul class="mc-foot-links">
-            <li><a href="/terms.html">Terms of Use</a></li>
-            <li><a href="/privacy.html">Privacy Policy</a></li>
-            <li><a href="/disclaimer.html">Disclaimer</a></li>
-            <li><a href="/Feedback/">Report an Issue</a></li>
-          </ul>
+        <!-- MORE LINKS -->
+        <nav class="mf-column" aria-label="More sports and info">
+          <h3>More</h3>
+          <a href="#fancodeSection">FanCode</a>
+          <a href="#worldSportsSection">World Sports</a>
+          <a href="#sonyLivSection">Sony LIV Events</a>
+          <a href="/news/">Latest Stories</a>
+          <a href="/Feedback/">Feedback</a>
         </nav>
 
       </div>
-    </div>
 
-    <!-- Bottom bar -->
-    <div class="mc-foot-bottom">
-      <div class="mc-foot-bottom-inner">
-        <p class="mc-foot-copy">&copy; <span id="current-year"></span> MatchCentral <span class="mc-sep" aria-hidden="true">·</span> All rights reserved</p>
-        <p class="mc-foot-note">MatchCentral does not host or post any content. We only collect content that is publicly available on the internet and show it to everyone for free.</p>
+      <!-- TELEGRAM JOIN STRIP -->
+      <div class="mf-feature">
+        <div>
+          <h3>The action never <span>stops.</span></h3>
+          <p>Join our Telegram for instant match alerts, live stream links, scores &amp; event news — free, every day.</p>
+        </div>
+        <a href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" class="mf-feature-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Join Telegram
+        </a>
       </div>
+
+      <!-- COPYRIGHT + LEGAL -->
+      <div class="mf-bottom">
+        <p class="mf-copyright">&copy; <span id="current-year">2026</span> MatchCentral. All rights reserved.</p>
+        <nav class="mf-legal" aria-label="Legal">
+          <a href="/terms.html">Terms of Use</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/disclaimer.html">Disclaimer</a>
+        </nav>
+      </div>
+
+      <!-- DISCLAIMER NOTE -->
+      <div class="mf-note-row">
+        <p class="mf-note">MatchCentral does not post, host or upload any content. We only collect content that is publicly available on the internet and show it to everyone for free.</p>
+        <p class="mf-credit">Made for the love of <strong>sports.</strong></p>
+      </div>
+
     </div>
   </footer>
+
 
   <!-- Back to top with scroll progress ring -->
   <button class="mc-back-top" id="mcBackTop" type="button" aria-label="Back to top">
@@ -645,10 +673,11 @@
     <svg class="mc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <polyline points="18 15 12 9 6 15"/>
     </svg>
+    <span class="mc-pct" id="mcPct" aria-hidden="true">0%</span>
   </button>
 
   <!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════════ -->
-  <script defer src="script/boot.js?v=2.2"></script>
+  <script defer src="script/boot.js?v=2.3"></script>
 
   <script>
     /* ── Current year ── */
@@ -682,6 +711,7 @@
       const progress = document.getElementById('mcScrollProgress');
       const backTop  = document.getElementById('mcBackTop');
       const ring     = document.getElementById('mcRingFill');
+      const pctEl    = document.getElementById('mcPct');
       if (!progress || !backTop) return;
 
       const RING_LEN = 2 * Math.PI * 20;
@@ -698,6 +728,7 @@
         progress.style.width = (p * 100) + '%';
         backTop.classList.toggle('visible', st > 600);
         if (ring) ring.style.strokeDashoffset = RING_LEN * (1 - p);
+        if (pctEl) pctEl.textContent = Math.round(p * 100) + '%';
         ticking = false;
       }
       window.addEventListener('scroll', function () {
