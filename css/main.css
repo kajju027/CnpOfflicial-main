@@ -1945,18 +1945,19 @@ section[id] {
 .sony-liv-arrow.arrow-right { right: 6px; }
 
 /* ═══════════════════════════════════════════════════════════════════
-   FOOTER v2.4 — "HORIZON" · original MatchCentral design (not a copy)
-   No top edge: the footer melts into the landing page through a glowing
-   horizon seam, and the Telegram bridge card floats on the merge zone.
-   Green identity + faint blue side glows to match the page ambience.
+   FOOTER v2.5 — "CLEAN HORIZON" · tidy, organised, original
+   No hard top edge: the footer melts into the landing page through one
+   quiet green glow. Content first — an "Important & Updates" panel, a
+   tidy 3-column grid (brand / watch / information) and one clean
+   small-print area. Everything aligned to a single grid, no clutter.
    ═══════════════════════════════════════════════════════════════════ */
 
 #mcFooter {
   --mf-green: #00e87b;
   --mf-green-soft: #7dffc4;
-  --mf-gerua: #f55505;
   --mf-text: #eef0f4;
-  --mf-muted: #9296a3;
+  --mf-muted: #9aa0ad;
+  --mf-line: rgba(255, 255, 255, 0.08);
 
   position: relative;
   isolation: isolate;
@@ -1964,38 +1965,43 @@ section[id] {
   margin-top: 0;
   background: linear-gradient(
     180deg,
-    rgba(5, 7, 12, 0) 0px,
-    rgba(6, 8, 13, 0.55) 130px,
-    #060811 280px
+    rgba(7, 10, 18, 0) 0px,
+    rgba(7, 10, 18, 0.72) 150px,
+    #070a12 320px
   );
   color: var(--mf-text);
   font-family: Inter, system-ui, sans-serif;
 }
 
-/* soft ambient glows — green left-top, blue right-bottom (page DNA) */
-
+/* one quiet glow where the page becomes the footer — the only decoration */
 #mcFooter::before {
   content: "";
   position: absolute;
-  top: -40px;
-  left: -170px;
-  width: 560px;
-  height: 470px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 232, 123, 0.07), transparent 66%);
+  top: -130px;
+  left: 50%;
+  width: min(900px, 100%);
+  height: 310px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    50% 62% at 50% 40%,
+    rgba(0, 232, 123, 0.09),
+    rgba(0, 232, 123, 0.02) 56%,
+    transparent 76%
+  );
   pointer-events: none;
   z-index: -1;
 }
 
+/* faint blue corner glow — page DNA, bottom right */
 #mcFooter::after {
   content: "";
   position: absolute;
-  right: -210px;
-  bottom: -250px;
+  right: -220px;
+  bottom: -260px;
   width: 560px;
   height: 480px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(56, 148, 255, 0.08), transparent 68%);
+  background: radial-gradient(circle, rgba(56, 148, 255, 0.07), transparent 68%);
   pointer-events: none;
   z-index: -1;
 }
@@ -2011,419 +2017,246 @@ section[id] {
 #mcFooter .mf-container {
   position: relative;
   z-index: 1;
-  width: 100%;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0 22px 30px;
+  padding: 0 24px 34px;
 }
 
-/* ---------- HORIZON SEAM (the merge zone) ---------- */
+/* ---------- UPDATES PANEL — "Important & Updates" ---------- */
 
-#mcFooter .mf-seam {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 230px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* glowing horizon line — the "no edge" edge */
-#mcFooter .mf-seam-line {
-  position: absolute;
-  top: 92px;
-  left: 50%;
-  width: min(720px, 86%);
-  height: 1px;
-  transform: translateX(-50%);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 232, 123, 0.5) 22%,
-    rgba(125, 255, 196, 0.95) 50%,
-    rgba(0, 232, 123, 0.5) 78%,
-    transparent
-  );
-  box-shadow:
-    0 0 18px rgba(0, 232, 123, 0.45),
-    0 0 46px rgba(0, 232, 123, 0.2);
-}
-
-/* soft bloom rising from the line */
-#mcFooter .mf-seam-bloom {
-  position: absolute;
-  top: -46px;
-  left: 50%;
-  width: min(920px, 104%);
-  height: 240px;
-  transform: translateX(-50%);
-  background: radial-gradient(
-    48% 100% at 50% 62%,
-    rgba(0, 232, 123, 0.1),
-    rgba(0, 232, 123, 0.03) 56%,
-    transparent 76%
-  );
-}
-
-/* two faint floodlight streaks at the ends of the horizon */
-#mcFooter .mf-seam-beam {
-  position: absolute;
-  top: 6px;
-  width: 1px;
-  height: 160px;
-  background: linear-gradient(180deg, transparent, rgba(125, 255, 196, 0.26), transparent);
-}
-
-#mcFooter .mf-beam-l {
-  left: 19%;
-  transform: rotate(13deg);
-}
-
-#mcFooter .mf-beam-r {
-  right: 19%;
-  transform: rotate(-13deg);
-}
-
-/* ---------- BRIDGE CARD (floats on the seam) ---------- */
-
-#mcFooter .mf-bridge {
+#mcFooter .mf-updates {
+  margin-top: 92px;
   display: flex;
   align-items: center;
-  gap: 20px;
-  max-width: 880px;
-  margin: 54px auto 0;
-  padding: 22px 26px;
-  border: 1px solid rgba(0, 232, 123, 0.22);
-  border-radius: 18px;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 26px 30px;
+  border: 1px solid rgba(0, 232, 123, 0.16);
+  border-radius: 20px;
   background:
-    linear-gradient(
-      120deg,
-      rgba(0, 232, 123, 0.085),
-      rgba(56, 148, 255, 0.055) 55%,
-      rgba(245, 85, 5, 0.05)
-    ),
-    rgba(10, 13, 19, 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow:
-    0 24px 60px -24px rgba(0, 0, 0, 0.85),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
-    0 0 42px -8px rgba(0, 232, 123, 0.16);
+    linear-gradient(135deg, rgba(0, 232, 123, 0.075), rgba(0, 232, 123, 0.015) 46%, rgba(255, 255, 255, 0.02)),
+    rgba(9, 13, 22, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
 }
 
-#mcFooter .mf-bridge-icon {
-  display: flex;
+#mcFooter .mf-eyebrow {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  flex: 0 0 58px;
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background: linear-gradient(160deg, #2bd68b, #009e57);
-  color: #fff;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 10px 26px -10px rgba(0, 232, 123, 0.6);
-}
-
-#mcFooter .mf-bridge-icon svg {
-  width: 30px;
-  height: 30px;
-}
-
-#mcFooter .mf-bridge-copy {
-  flex: 1;
-  min-width: 0;
-}
-
-#mcFooter .mf-bridge-copy h2 {
-  margin: 0 0 5px;
-  color: #fff;
-  font-size: clamp(19px, 2.3vw, 26px);
+  gap: 9px;
+  margin: 0 0 10px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: -0.4px;
-  line-height: 1.2;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--mf-green-soft);
 }
 
-#mcFooter .mf-bridge-copy h2 span {
+#mcFooter .mf-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mf-green);
+  animation: mfPulse 2.2s infinite;
+}
+
+@keyframes mfPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0, 232, 123, 0.45); }
+  70%  { box-shadow: 0 0 0 9px rgba(0, 232, 123, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 232, 123, 0); }
+}
+
+#mcFooter .mf-updates h2 {
+  margin: 0;
+  font-size: clamp(21px, 2.6vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+#mcFooter .mf-updates h2 span {
   color: var(--mf-green);
 }
 
-#mcFooter .mf-bridge-copy p {
-  margin: 0;
+#mcFooter .mf-updates-sub {
+  margin: 9px 0 0;
+  max-width: 560px;
+  font-size: 13.5px;
+  line-height: 1.6;
   color: var(--mf-muted);
-  font-size: 13px;
-  line-height: 1.55;
 }
 
-#mcFooter .mf-bridge-btn {
+#mcFooter .mf-join {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 9px;
-  height: 46px;
-  padding: 0 22px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #52ffa8, #00d46e);
-  color: #04180d;
-  font-size: 12.5px;
+  padding: 15px 26px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #00e87b, #00b564);
+  color: #04120a;
+  font-size: 13.5px;
   font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    0 10px 24px -10px rgba(0, 232, 123, 0.65);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 26px rgba(0, 232, 123, 0.28);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-#mcFooter .mf-bridge-btn svg {
+#mcFooter .mf-join svg {
   width: 16px;
   height: 16px;
-  transition: transform 0.2s ease;
+  transition: transform 0.18s ease;
 }
 
-#mcFooter .mf-bridge-btn:hover {
+#mcFooter .mf-join:hover {
   transform: translateY(-2px);
-  filter: brightness(1.07);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.42),
-    0 14px 30px -10px rgba(0, 232, 123, 0.8);
+  box-shadow: 0 14px 32px rgba(0, 232, 123, 0.38);
 }
 
-#mcFooter .mf-bridge-btn:hover svg {
+#mcFooter .mf-join:hover svg {
   transform: translateX(3px);
 }
 
-/* ---------- CENTERED BRAND STRIP ---------- */
+/* ---------- MAIN GRID — brand · watch · information ---------- */
 
-#mcFooter .mf-brand-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding: 46px 0 6px;
-  text-align: center;
+#mcFooter .mf-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 48px;
+  padding: 54px 0 46px;
+}
+
+#mcFooter .mf-brand {
+  align-self: start;
 }
 
 #mcFooter .mf-logo {
-  display: inline-flex;
-  max-width: 100%;
+  display: inline-block;
 }
 
 #mcFooter .mf-logo img {
   display: block;
-  width: min(250px, 74%);
+  width: min(240px, 70%);
   height: auto;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: opacity 0.18s ease;
 }
 
 #mcFooter .mf-logo:hover img {
-  transform: scale(1.03);
-  filter: drop-shadow(0 0 14px rgba(0, 232, 123, 0.25));
+  opacity: 0.85;
 }
 
 #mcFooter .mf-tagline {
-  margin: 0;
-  color: #c8ccd6;
-  font-size: clamp(15px, 1.6vw, 18px);
+  margin: 15px 0 12px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  color: #cfd3dc;
 }
 
 #mcFooter .mf-tagline span {
   color: var(--mf-green);
 }
 
-/* ---------- WATCH RAIL (section chips) ---------- */
-
-#mcFooter .mf-rail {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding: 26px 0 4px;
+#mcFooter .mf-about {
+  margin: 0;
+  max-width: 380px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--mf-muted);
 }
 
-#mcFooter .mf-rail a {
+#mcFooter .mf-col h3 {
+  margin: 6px 0 18px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8b909c;
+}
+
+#mcFooter .mf-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+#mcFooter .mf-col a {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.035);
-  color: #c3c7d1;
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  transition:
-    border-color 0.22s ease,
-    background-color 0.22s ease,
-    color 0.22s ease,
-    transform 0.22s ease,
-    box-shadow 0.22s ease;
+  gap: 9px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #c6cad3;
+  transition: color 0.16s ease;
 }
 
-#mcFooter .mf-rail a svg {
-  width: 15px;
-  height: 15px;
-  color: var(--mf-green);
-  opacity: 0.85;
-  transition: opacity 0.22s ease;
+#mcFooter .mf-col a::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(0, 232, 123, 0.35);
+  transition: background 0.16s ease, transform 0.16s ease;
 }
 
-#mcFooter .mf-rail a:hover {
-  border-color: rgba(0, 232, 123, 0.5);
-  background: rgba(0, 232, 123, 0.08);
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -10px rgba(0, 232, 123, 0.45);
+#mcFooter .mf-col a:hover {
+  color: #ffffff;
 }
 
-#mcFooter .mf-rail a:hover svg {
-  opacity: 1;
+#mcFooter .mf-col a:hover::before {
+  background: var(--mf-green);
+  transform: scale(1.3);
 }
 
-/* ---------- INFO ROW: freshness · legal · top ---------- */
+/* ---------- SMALL PRINT — disclaimer + bottom bar ---------- */
 
-#mcFooter .mf-info {
+#mcFooter .mf-small {
+  border-top: 1px solid var(--mf-line);
+  padding-top: 20px;
+}
+
+#mcFooter .mf-disclaimer {
+  margin: 0 0 15px;
+  max-width: 880px;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: #7e8492;
+}
+
+#mcFooter .mf-bottom {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 36px;
-  padding: 20px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  gap: 8px 26px;
+}
+
+#mcFooter .mf-bottom p {
+  margin: 0;
+  font-size: 11.5px;
+  color: #9aa0ad;
 }
 
 #mcFooter .mf-updated {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  margin: 0;
-  color: #7d8190;
-  font-size: 11.5px;
-  font-weight: 500;
 }
 
 #mcFooter .mf-updated svg {
-  flex: 0 0 auto;
-  color: var(--mf-green);
+  opacity: 0.65;
+  flex-shrink: 0;
 }
 
-#mcFooter .mf-legal {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 18px;
-}
-
-#mcFooter .mf-legal a {
-  color: #8b8f9c;
-  font-size: 11.5px;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-#mcFooter .mf-legal a:hover {
-  color: var(--mf-green-soft);
-}
-
-#mcFooter .mf-top-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  height: 38px;
-  padding: 0 15px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-  color: #dfe0e6;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.25s ease,
-    color 0.25s ease;
-}
-
-#mcFooter .mf-top-btn svg {
-  width: 15px;
-  height: 15px;
-  transition: transform 0.25s ease;
-}
-
-#mcFooter .mf-top-btn:hover {
-  background: rgba(0, 232, 123, 0.1);
-  border-color: rgba(0, 232, 123, 0.45);
-  color: var(--mf-green-soft);
-  transform: translateY(-3px);
-}
-
-#mcFooter .mf-top-btn:hover svg {
-  transform: translateY(-2px);
-}
-
-/* ---------- DISCLAIMER (Bengali + English) ---------- */
-
-#mcFooter .mf-note {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 4px 0 24px;
-  text-align: center;
-}
-
-#mcFooter .mf-note-bn {
-  margin: 0 0 7px;
-  color: rgba(238, 240, 244, 0.52);
-  font-size: 12px;
-  line-height: 1.75;
-}
-
-#mcFooter .mf-note-en {
-  margin: 0;
-  color: rgba(238, 240, 244, 0.28);
-  font-size: 10.5px;
-  line-height: 1.6;
-}
-
-/* ---------- BOTTOM BAR ---------- */
-
-#mcFooter .mf-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 18px 0 6px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-#mcFooter .mf-copyright {
-  margin: 0;
-  color: #6f7380;
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-#mcFooter .mf-credit {
-  margin: 0;
-  color: #6f7380;
-  font-size: 11px;
-  line-height: 1.5;
-  white-space: nowrap;
+#mcFooter .mf-updated time {
+  color: #c6cad3;
+  font-weight: 600;
 }
 
 #mcFooter .mf-credit strong {
-  color: #bfc1cb;
+  color: #c6cad3;
   font-weight: 600;
 }
 
@@ -2435,91 +2268,65 @@ section[id] {
   outline-offset: 4px;
 }
 
-/* ---------- MOBILE ---------- */
+/* ---------- RESPONSIVE ---------- */
 
-@media (max-width: 760px) {
+@media (max-width: 960px) {
+  #mcFooter .mf-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 38px;
+    padding: 46px 0 40px;
+  }
+
+  #mcFooter .mf-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
   #mcFooter .mf-container {
-    padding: 0 16px 24px;
+    padding: 0 16px 26px;
   }
 
-  #mcFooter .mf-seam-line {
-    top: 84px;
-  }
-
-  #mcFooter .mf-bridge {
+  #mcFooter .mf-updates {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-    margin-top: 48px;
-    padding: 20px 18px;
-    border-radius: 14px;
+    gap: 20px;
+    margin-top: 64px;
+    padding: 22px 20px;
+    border-radius: 16px;
   }
 
-  #mcFooter .mf-bridge-icon {
-    flex-basis: 50px;
-    width: 50px;
-    height: 50px;
-    border-radius: 13px;
-  }
-
-  #mcFooter .mf-bridge-icon svg {
-    width: 26px;
-    height: 26px;
-  }
-
-  #mcFooter .mf-bridge-btn {
+  #mcFooter .mf-join {
     width: 100%;
+    justify-content: center;
   }
 
-  #mcFooter .mf-brand-row {
-    padding-top: 38px;
+  #mcFooter .mf-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px 0 34px;
   }
 
   #mcFooter .mf-logo img {
-    width: min(210px, 82%);
+    width: min(210px, 78%);
   }
 
-  #mcFooter .mf-rail {
-    gap: 8px;
-    padding-top: 22px;
+  #mcFooter .mf-small {
+    padding-top: 17px;
   }
 
-  #mcFooter .mf-rail a {
-    padding: 8px 13px;
-    font-size: 11.5px;
-  }
-
-  #mcFooter .mf-rail a svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  #mcFooter .mf-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 13px;
-    margin-top: 28px;
-  }
-
-  #mcFooter .mf-note {
-    padding-bottom: 20px;
-  }
-
-  #mcFooter .mf-note-bn {
-    font-size: 11.5px;
+  #mcFooter .mf-disclaimer {
+    font-size: 11px;
   }
 
   #mcFooter .mf-bottom {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 7px;
   }
 
-  #mcFooter .mf-copyright,
-  #mcFooter .mf-legal a,
-  #mcFooter .mf-credit,
-  #mcFooter .mf-note-en {
-    font-size: 10px;
+  #mcFooter .mf-bottom p {
+    font-size: 10.5px;
   }
 }
 
