@@ -7,7 +7,19 @@
   var FALLBACK_IMAGE = '/assets/android-chrome-512x512.png';
   var track = document.getElementById('landingNewsTrack');
 
+  function cacheHydrate(key) {
+    return !!(window.CNPStore && window.CNPStore.hydrate(track, key));
+  }
+  function cachePersist(key) {
+    if (window.CNPStore) window.CNPStore.persist(track, key);
+  }
+
+
   if (!track) return;
+
+  /* Restore the news rail from cache so a return visit never shows the
+     loading skeleton again — the fresh feed replaces it in the background. */
+  cacheHydrate('news-track');
 
   function escapeHtml(value) {
     return String(value == null ? '' : value)
@@ -112,16 +124,17 @@
     .then(function (payload) {
       var articles = Array.isArray(payload) ? payload : payload && payload.articles;
       if (!Array.isArray(articles) || !articles.length) {
-        renderFailure();
+        if (!track.querySelector('.news-card-landing')) renderFailure();
         return;
       }
 
       // Home page rule: render exactly the first ten API news items at most.
       track.innerHTML = articles.slice(0, MAX_ITEMS).map(renderArticle).join('') + renderMoreCard();
+      cachePersist('news-track');
       setImageFallbacks();
     })
     .catch(function (error) {
       if (window.console && console.warn) console.warn('[landing-news] could not load', error);
-      renderFailure();
+      if (!track.querySelector('.news-card-landing')) renderFailure();
     });
 })();
