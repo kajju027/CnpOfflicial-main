@@ -77,6 +77,8 @@
 
     return `
       <section class="poster-section${index === 0 ? " active" : ""}" data-slide="${index}" aria-label="${title}: ${homeName} vs ${awayName}">
+        <div class="poster-ambient" aria-hidden="true"><img src="${poster}" alt="" decoding="async" loading="${index === 0 ? "eager" : "lazy"}"></div>
+        <div class="hero-card">
         <div class="poster-art">
           <picture>
             <img src="${poster}" alt="${homeName} vs ${awayName}" class="poster-image" loading="eager" decoding="async" ${index === 0 ? 'fetchpriority="high"' : ''}${posterStyle}>
@@ -101,6 +103,7 @@
             <a href="${watchUrl}" class="watch-btn"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5L20 12L8 19Z"/></svg></span><span>Watch Now</span></a>
           </div>
         </div>
+        </div>
       </section>
     `;
   }
@@ -116,6 +119,8 @@
       image.addEventListener("error", function () {
         image.hidden = true;
         image.closest(".poster-art").classList.add("image-fallback");
+        const ambient = image.closest(".poster-section").querySelector(".poster-ambient");
+        if (ambient) ambient.hidden = true;
       });
     });
 
@@ -166,7 +171,7 @@
 
   function restartAutoplay() {
     if (autoplayTimer) window.clearTimeout(autoplayTimer);
-    if (document.hidden) return;
+    if (document.hidden || (posterWrapper && posterWrapper.contains(document.activeElement))) return;
     if (matches.length > 1) {
       autoplayTimer = window.setTimeout(function () {
         goToSlide(currentIndex + 1);
@@ -201,9 +206,7 @@
     }
   }
 
-  /* ───────────────────────── Slide drawer menu ─────────────────────────
-     Same-to-same with allrounderlive.in: scrim + left drawer, staggered
-     item entrance, accordion, search filter, focus trap, saffron accent. */
+  
   const DR_ICONS = {
     home: '<path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
     live: '<circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M7.7 7.7a6 6 0 0 0 0 8.6M16.3 7.7a6 6 0 0 1 0 8.6M4.8 4.8a10 10 0 0 0 0 14.4M19.2 4.8a10 10 0 0 1 0 14.4"/>',
@@ -220,7 +223,7 @@
   }
 
   if (drNav) {
-    const OFFER_URL = "https://t.me/Cnp_action_bot"; /* placeholder — same as header Offer button */
+    const OFFER_URL = "https://t.me/Cnp_action_bot"; 
     let ki = 0;
     const sty = () => ' style="--i:' + (ki++) + '"';
     const NAV = [
@@ -294,7 +297,7 @@
     goToSlide(currentIndex - 1);
   });
 
-  /* Keyboard navigation for the hero slider (desktop UX) */
+  
   document.addEventListener("keydown", function (event) {
     if (dOpen) return;
     const tag = (event.target && event.target.tagName || "").toLowerCase();
@@ -306,13 +309,22 @@
     }
   });
 
-  /* Pause hero autoplay while the user is hovering the slider (desktop UX) */
+  
   if (posterWrapper) {
     posterWrapper.addEventListener("mouseenter", function () {
       if (autoplayTimer) window.clearTimeout(autoplayTimer);
     });
     posterWrapper.addEventListener("mouseleave", function () {
       restartAutoplay();
+    });
+  }
+
+  if (posterWrapper) {
+    posterWrapper.addEventListener("focusin", function () {
+      if (autoplayTimer) window.clearTimeout(autoplayTimer);
+    });
+    posterWrapper.addEventListener("focusout", function (event) {
+      if (!posterWrapper.contains(event.relatedTarget)) restartAutoplay();
     });
   }
 
@@ -349,7 +361,7 @@
       if (event.target.closest("a")) closeDrawer();
     });
 
-    /* simple focus trap inside the drawer */
+    
     drawer.addEventListener("keydown", function (event) {
       if (event.key !== "Tab") return;
       const focusables = Array.prototype.filter.call(
@@ -368,7 +380,7 @@
       }
     });
 
-    /* search filter inside the drawer */
+    
     if (drSearch) {
       drSearch.addEventListener("input", function () {
         const q = drSearch.value.trim().toLowerCase();
