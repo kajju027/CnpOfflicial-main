@@ -12,7 +12,7 @@
   const dcloseBtn = document.getElementById("dclose");
   const drNav = document.getElementById("drNav");
   const drSearch = document.getElementById("drSearch");
-  const slideDuration = Number(config.heroSlideDuration) || 10000;
+  const slideDuration = 5000;
   let currentIndex = 0;
   let autoplayTimer = null;
 
@@ -64,8 +64,6 @@
     const title = escapeHtml(normalized.tournament);
     const homeName = escapeHtml(home.name);
     const awayName = escapeHtml(away.name);
-    const homeLogo = escapeHtml(home.logo);
-    const awayLogo = escapeHtml(away.logo);
     const poster = escapeHtml(normalized.poster);
     const watchUrl = escapeHtml(normalized.watchUrl);
 
@@ -90,12 +88,10 @@
           <div class="match-title">${title}</div>
           <div class="teams-row">
             <div class="team">
-              ${homeLogo ? `<img src="${homeLogo}" alt="" class="team-flag" loading="${index === 0 ? "eager" : "lazy"}" decoding="async">` : ""}
               <span class="team-name">${homeName}</span>
             </div>
-            <span class="vs-label" aria-hidden="true">VS</span>
+            <span class="vs-label" aria-hidden="true">V</span>
             <div class="team">
-              ${awayLogo ? `<img src="${awayLogo}" alt="" class="team-flag" loading="${index === 0 ? "eager" : "lazy"}" decoding="async">` : ""}
               <span class="team-name">${awayName}</span>
             </div>
           </div>
@@ -135,11 +131,15 @@
       if (arrowRight) arrowRight.hidden = true;
       progressRoot.hidden = true;
     } else {
-      if (arrowLeft) arrowLeft.hidden = false;
-      if (arrowRight) arrowRight.hidden = false;
+      if (arrowLeft) arrowLeft.hidden = true;
+      if (arrowRight) arrowRight.hidden = true;
       progressRoot.hidden = false;
     }
 
+    slidesRoot.querySelectorAll('.poster-section').forEach(function (slide, index) {
+      slide.inert = index !== 0;
+      slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
+    });
     currentIndex = 0;
     updateProgressBars();
     restartAutoplay();
@@ -153,7 +153,7 @@
       fill.style.animationDuration = `${slideDuration}ms`;
       fill.style.width = "";
       void fill.offsetWidth;
-      if (index < currentIndex) fill.classList.add("filled");
+      track.classList.toggle('is-active', index === currentIndex);
       if (index === currentIndex) fill.classList.add("filling");
     });
   }
@@ -163,7 +163,11 @@
     const slides = Array.from(slidesRoot.querySelectorAll(".poster-section"));
     const nextIndex = ((index % slides.length) + slides.length) % slides.length;
     slides[currentIndex].classList.remove("active");
+    slides[currentIndex].inert = true;
+    slides[currentIndex].setAttribute('aria-hidden', 'true');
     slides[nextIndex].classList.add("active");
+    slides[nextIndex].inert = false;
+    slides[nextIndex].setAttribute('aria-hidden', 'false');
     currentIndex = nextIndex;
     updateProgressBars();
     restartAutoplay();
@@ -328,12 +332,38 @@
     });
   }
 
-  if (posterWrapper) posterWrapper.addEventListener("click", function (event) {
-    if (event.target.closest(".action-buttons, .slider-arrow, .slider-progress")) return;
-    const activeSlide = slidesRoot && slidesRoot.querySelector(".poster-section.active");
-    const watchLink = activeSlide && activeSlide.querySelector(".watch-btn");
-    if (watchLink) window.location.href = watchLink.href;
-  });
+  if (posterWrapper) {
+    let gesture = null;
+    let suppressClickUntil = 0;
+    posterWrapper.style.touchAction = 'pan-y pinch-zoom';
+    posterWrapper.addEventListener('pointerdown', function (event) {
+      if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
+      if (event.target.closest('.action-buttons')) return;
+      gesture = { id: event.pointerId, x: event.clientX, y: event.clientY };
+      if (autoplayTimer) window.clearTimeout(autoplayTimer);
+      posterWrapper.setPointerCapture(event.pointerId);
+    });
+    posterWrapper.addEventListener('pointerup', function (event) {
+      if (!gesture || event.pointerId !== gesture.id) return;
+      const dx = event.clientX - gesture.x;
+      const dy = event.clientY - gesture.y;
+      gesture = null;
+      if (Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy) * 1.3 && matches.length > 1) {
+        suppressClickUntil = Date.now() + 400;
+        goToSlide(currentIndex + (dx < 0 ? 1 : -1));
+      } else restartAutoplay();
+    });
+    posterWrapper.addEventListener('pointercancel', function () {
+      gesture = null;
+      restartAutoplay();
+    });
+    posterWrapper.addEventListener('click', function (event) {
+      if (Date.now() < suppressClickUntil) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }, true);
+  }
 
   if (hamburger && drawer && scrim) {
     hamburger.addEventListener("click", function (event) {
