@@ -15,6 +15,44 @@
   const slideDuration = 5000;
   let currentIndex = 0;
   let autoplayTimer = null;
+  let physicalIndex = 0;
+  let slideNodes = [];
+  let settling = false;
+  let settleTimer = null;
+
+  function positionTrack(animate, offset) {
+    if (!slidesRoot || !slideNodes.length) return;
+    const width = slideNodes[0].getBoundingClientRect().width;
+    const gap = parseFloat(getComputedStyle(slidesRoot).gap) || 0;
+    const x = (posterWrapper.clientWidth - width) / 2 - physicalIndex * (width + gap) + (offset || 0);
+    slidesRoot.style.transition = animate ? 'transform 600ms cubic-bezier(.22,1,.36,1)' : 'none';
+    slidesRoot.style.transform = 'translate3d(' + x + 'px,0,0)';
+  }
+
+  function finishTransition() {
+    clearTimeout(settleTimer);
+    if (matches.length > 1) {
+      if (physicalIndex === 0) physicalIndex = matches.length;
+      if (physicalIndex === matches.length + 1) physicalIndex = 1;
+    }
+    markActive();
+    positionTrack(false);
+    settling = false;
+  }
+
+  function markActive() {
+    slideNodes.forEach(function (slide, index) {
+      const active = index === physicalIndex;
+      slide.classList.toggle('active', active);
+      slide.inert = !active;
+      slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+    const backdrop = posterWrapper.querySelector('.hero-ambient-stage');
+    if (backdrop) Array.from(backdrop.children).forEach(function (image, index) {
+      image.classList.toggle('active', index === currentIndex);
+    });
+  }
+
 
   function escapeHtml(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (character) {
@@ -106,7 +144,23 @@
 
   function renderHero() {
     if (!slidesRoot || !progressRoot) return;
-    slidesRoot.innerHTML = matches.map(renderMatch).join("");
+    clearTimeout(settleTimer);
+    settling = false;
+    const visualMatches = matches.length > 1 ? [matches[matches.length - 1]].concat(matches, [matches[0]]) : matches;
+    slidesRoot.innerHTML = visualMatches.map(renderMatch).join('');
+    slideNodes = Array.from(slidesRoot.querySelectorAll('.poster-section'));
+    physicalIndex = matches.length > 1 ? 1 : 0;
+    let backdrop = posterWrapper.querySelector('.hero-ambient-stage');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'hero-ambient-stage';
+      backdrop.setAttribute('aria-hidden', 'true');
+      posterWrapper.prepend(backdrop);
+    }
+    backdrop.innerHTML = matches.map(function (match) {
+      return '<img src="' + escapeHtml(normalizeMatch(match).poster) + '" alt="" decoding="async">';
+    }).join('');
+    posterWrapper.classList.toggle('hero-single', matches.length < 2);
     progressRoot.innerHTML = matches.map(function (_, index) {
       return `<div class="progress-track" data-track="${index}"><div class="progress-fill"></div></div>`;
     }).join("");
@@ -141,6 +195,8 @@
       slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
     });
     currentIndex = 0;
+    markActive();
+    positionTrack(false);
     updateProgressBars();
     restartAutoplay();
   }
@@ -159,19 +215,23 @@
   }
 
   function goToSlide(index) {
-    if (matches.length < 2 || !slidesRoot) return;
-    const slides = Array.from(slidesRoot.querySelectorAll(".poster-section"));
-    const nextIndex = ((index % slides.length) + slides.length) % slides.length;
-    slides[currentIndex].classList.remove("active");
-    slides[currentIndex].inert = true;
-    slides[currentIndex].setAttribute('aria-hidden', 'true');
-    slides[nextIndex].classList.add("active");
-    slides[nextIndex].inert = false;
-    slides[nextIndex].setAttribute('aria-hidden', 'false');
-    currentIndex = nextIndex;
+    if (matches.length < 2 || !slidesRoot || settling) return;
+    const direction = index > currentIndex ? 1 : -1;
+    physicalIndex += direction;
+    currentIndex = ((index % matches.length) + matches.length) % matches.length;
+    markActive();
+    settling = true;
+    positionTrack(true);
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(finishTransition, 650);
     updateProgressBars();
     restartAutoplay();
   }
+
+  if (slidesRoot) slidesRoot.addEventListener('transitionend', function (event) {
+    if (event.target === slidesRoot && event.propertyName === 'transform') finishTransition();
+  });
+  window.addEventListener('resize', function () { finishTransition(); });
 
   function restartAutoplay() {
     if (autoplayTimer) window.clearTimeout(autoplayTimer);
@@ -336,32 +396,47 @@
     let gesture = null;
     let suppressClickUntil = 0;
     posterWrapper.style.touchAction = 'pan-y pinch-zoom';
+    posterWrapper.addEventListener('dragstart', function (event) { event.preventDefault(); });
     posterWrapper.addEventListener('pointerdown', function (event) {
-      if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
+      if (!event.isPrimary || settling || matches.length < 2 || (event.pointerType === 'mouse' && event.button !== 0)) return;
       if (event.target.closest('.action-buttons')) return;
-      gesture = { id: event.pointerId, x: event.clientX, y: event.clientY };
-      if (autoplayTimer) window.clearTimeout(autoplayTimer);
-      posterWrapper.setPointerCapture(event.pointerId);
+      gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, start: performance.now(), dx: 0, axis: null };
+      clearTimeout(autoplayTimer);
     });
-    posterWrapper.addEventListener('pointerup', function (event) {
+    posterWrapper.addEventListener('pointermove', function (event) {
       if (!gesture || event.pointerId !== gesture.id) return;
       const dx = event.clientX - gesture.x;
       const dy = event.clientY - gesture.y;
-      gesture = null;
-      if (Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy) * 1.3 && matches.length > 1) {
-        suppressClickUntil = Date.now() + 400;
-        goToSlide(currentIndex + (dx < 0 ? 1 : -1));
-      } else restartAutoplay();
-    });
-    posterWrapper.addEventListener('pointercancel', function () {
-      gesture = null;
-      restartAutoplay();
-    });
-    posterWrapper.addEventListener('click', function (event) {
-      if (Date.now() < suppressClickUntil) {
-        event.preventDefault();
-        event.stopPropagation();
+      if (!gesture.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 8) {
+        gesture.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+        if (gesture.axis === 'x') {
+          try { posterWrapper.setPointerCapture(event.pointerId); } catch (error) {}
+          posterWrapper.classList.add('hero-dragging');
+        }
       }
+      if (gesture.axis !== 'x') return;
+      gesture.dx = dx;
+      positionTrack(false, dx);
+    });
+    function endGesture(event, cancel) {
+      if (!gesture || event.pointerId !== gesture.id) return;
+      const drag = gesture;
+      gesture = null;
+      posterWrapper.classList.remove('hero-dragging');
+      const velocity = Math.abs(drag.dx) / Math.max(1, performance.now() - drag.start);
+      const threshold = Math.min(90, posterWrapper.clientWidth * .16);
+      if (!cancel && drag.axis === 'x' && (Math.abs(drag.dx) > threshold || (Math.abs(drag.dx) > 25 && velocity > .45))) {
+        suppressClickUntil = Date.now() + 450;
+        goToSlide(currentIndex + (drag.dx < 0 ? 1 : -1));
+      } else {
+        positionTrack(true);
+        restartAutoplay();
+      }
+    }
+    posterWrapper.addEventListener('pointerup', function (event) { endGesture(event, false); });
+    posterWrapper.addEventListener('pointercancel', function (event) { endGesture(event, true); });
+    posterWrapper.addEventListener('click', function (event) {
+      if (Date.now() < suppressClickUntil) { event.preventDefault(); event.stopPropagation(); }
     }, true);
   }
 
