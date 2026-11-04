@@ -7,7 +7,11 @@
   const arrowLeft = document.getElementById("arrowLeft");
   const arrowRight = document.getElementById("arrowRight");
   const hamburger = document.getElementById("hamburger");
-  const mobileMenu = document.getElementById("mobileMenu");
+  const drawer = document.getElementById("drawer");
+  const scrim = document.getElementById("scrim");
+  const dcloseBtn = document.getElementById("dclose");
+  const drNav = document.getElementById("drNav");
+  const drSearch = document.getElementById("drSearch");
   const slideDuration = Number(config.heroSlideDuration) || 10000;
   let currentIndex = 0;
   let autoplayTimer = null;
@@ -197,12 +201,84 @@
     }
   }
 
-  function closeMenu() {
-    if (!hamburger || !mobileMenu) return;
+  /* ───────────────────────── Slide drawer menu ─────────────────────────
+     Same-to-same with allrounderlive.in: scrim + left drawer, staggered
+     item entrance, accordion, search filter, focus trap, saffron accent. */
+  const DR_ICONS = {
+    home: '<path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+    live: '<circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M7.7 7.7a6 6 0 0 0 0 8.6M16.3 7.7a6 6 0 0 1 0 8.6M4.8 4.8a10 10 0 0 0 0 14.4M19.2 4.8a10 10 0 0 1 0 14.4"/>',
+    cric: '<path d="m14 4 6 6-9.5 9.5a2 2 0 0 1-2.8 0l-3.2-3.2a2 2 0 0 1 0-2.8z"/><path d="m5 19-2 2"/>',
+    foot: '<circle cx="12" cy="12" r="9"/><path d="m12 8 3.5 2.5-1.3 4.1H9.8L8.5 10.5z"/><path d="M12 3v5M15.5 10.5 20 9M14.2 14.6l2.6 3.7M9.8 14.6l-2.6 3.7M8.5 10.5 4 9"/>',
+    tv: '<rect x="3.5" y="6.5" width="17" height="12.5" rx="2"/><path d="m8 3 4 3.5L16 3"/>',
+    grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',
+    tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/>',
+    help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>'
+  };
+
+  function drIcon(key) {
+    return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + DR_ICONS[key] + "</svg>";
+  }
+
+  if (drNav) {
+    const OFFER_URL = "https://t.me/Cnp_action_bot"; /* placeholder — same as header Offer button */
+    let ki = 0;
+    const sty = () => ' style="--i:' + (ki++) + '"';
+    const NAV = [
+      ["Home", "#top", "home", true],
+      ["Football 24\u00d77", "#footballSection", "foot", false],
+      ["Cricket 24\u00d77", "#cricketSection", "cric", false],
+      ["Willow Cricbuzz", "#willow-live", "live", false],
+      ["FanCode", "#fancodeSection", "tv", false]
+    ];
+    const MORE = [
+      ["World Sports", "#worldSportsSection"],
+      ["Sony LIV Events", "#sonyLivSection"]
+    ];
+    drNav.innerHTML =
+      NAV.map(function (item) {
+        const label = item[0], href = item[1], icon = item[2], current = item[3];
+        return '<a class="dr-item"' + sty() + ' href="' + href + '"' + (current ? ' aria-current="page"' : "") + ">" + drIcon(icon) + "<span>" + label + "</span></a>";
+      }).join("") +
+      '<button class="dr-item dr-acc"' + sty() + ' type="button" aria-expanded="false" aria-controls="drSub">' + drIcon("grid") + "<span>All Sports</span><svg class=\"chev\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/></svg></button>" +
+      '<div class="dr-sub" id="drSub"><div>' +
+      MORE.map(function (item) {
+        return '<a class="dr-sub-item" href="' + item[1] + '">' + item[0] + "</a>";
+      }).join("") +
+      "</div></div>" +
+      '<div class="dr-sep"></div>' +
+      '<a class="dr-item"' + sty() + ' href="' + OFFER_URL + '" target="_blank" rel="noopener noreferrer">' + drIcon("tag") + "<span>Offers</span><span class=\"dr-new\">NEW</span></a>" +
+      '<a class="dr-item"' + sty() + ' href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">' + drIcon("help") + "<span>Help &amp; Support</span></a>";
+  }
+
+  let dOpen = false;
+  let lastFocus = null;
+
+  function openDrawer() {
+    if (dOpen || !drawer || !scrim || !hamburger) return;
+    dOpen = true;
+    lastFocus = document.activeElement;
+    try { drawer.inert = false; } catch (e) {}
+    drawer.setAttribute("aria-hidden", "false");
+    hamburger.setAttribute("aria-expanded", "true");
+    drawer.classList.add("open");
+    scrim.classList.add("open");
+    hamburger.classList.add("active");
+    document.documentElement.classList.add("lock");
+    const closeBtn = document.getElementById("dclose");
+    if (closeBtn) window.setTimeout(function () { closeBtn.focus({ preventScroll: true }); }, 60);
+  }
+
+  function closeDrawer() {
+    if (!dOpen || !drawer || !scrim || !hamburger) return;
+    dOpen = false;
+    drawer.classList.remove("open");
+    scrim.classList.remove("open");
     hamburger.classList.remove("active");
-    mobileMenu.classList.remove("active");
+    try { drawer.inert = true; } catch (e) {}
+    drawer.setAttribute("aria-hidden", "true");
     hamburger.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+    document.documentElement.classList.remove("lock");
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
 
   renderHero();
@@ -220,7 +296,7 @@
 
   /* Keyboard navigation for the hero slider (desktop UX) */
   document.addEventListener("keydown", function (event) {
-    if (mobileMenu && mobileMenu.classList.contains("active")) return;
+    if (dOpen) return;
     const tag = (event.target && event.target.tagName || "").toLowerCase();
     if (tag === "input" || tag === "textarea" || tag === "select") return;
     if (event.key === "ArrowRight" && matches.length > 1) {
@@ -247,29 +323,69 @@
     if (watchLink) window.location.href = watchLink.href;
   });
 
-  if (hamburger && mobileMenu) {
+  if (hamburger && drawer && scrim) {
     hamburger.addEventListener("click", function (event) {
       event.stopPropagation();
-      hamburger.classList.toggle("active");
-      mobileMenu.classList.toggle("active");
-      const isOpen = mobileMenu.classList.contains("active");
-      hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      document.body.style.overflow = isOpen ? "hidden" : "";
+      if (dOpen) closeDrawer(); else openDrawer();
     });
 
-    mobileMenu.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", closeMenu);
-    });
+    if (dcloseBtn) dcloseBtn.addEventListener("click", closeDrawer);
+
+    scrim.addEventListener("click", closeDrawer);
 
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") closeMenu();
+      if (event.key === "Escape") closeDrawer();
     });
 
-    document.addEventListener("click", function (event) {
-      if (!mobileMenu.classList.contains("active")) return;
-      /* clicking the dark backdrop (outside the panel) closes the menu */
-      if (event.target === mobileMenu) { closeMenu(); return; }
-      if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) closeMenu();
+    drawer.addEventListener("click", function (event) {
+      const acc = event.target.closest(".dr-acc");
+      if (acc) {
+        const open = acc.getAttribute("aria-expanded") !== "true";
+        acc.setAttribute("aria-expanded", String(open));
+        const sub = document.getElementById("drSub");
+        if (sub) sub.classList.toggle("open", open);
+        return;
+      }
+      if (event.target.closest("a")) closeDrawer();
     });
+
+    /* simple focus trap inside the drawer */
+    drawer.addEventListener("keydown", function (event) {
+      if (event.key !== "Tab") return;
+      const focusables = Array.prototype.filter.call(
+        drawer.querySelectorAll("a[href],button,input"),
+        function (el) { return el.offsetParent !== null; }
+      );
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    /* search filter inside the drawer */
+    if (drSearch) {
+      drSearch.addEventListener("input", function () {
+        const q = drSearch.value.trim().toLowerCase();
+        drawer.querySelectorAll(".dr-item").forEach(function (item) {
+          if (item.classList.contains("dr-acc")) return;
+          const text = item.textContent.toLowerCase();
+          item.style.display = (!q || text.indexOf(q) !== -1) ? "" : "none";
+        });
+        drawer.querySelectorAll(".dr-sub-item").forEach(function (item) {
+          const text = item.textContent.toLowerCase();
+          item.style.display = (!q || text.indexOf(q) !== -1) ? "" : "none";
+        });
+        const sub = document.getElementById("drSub");
+        const sep = drawer.querySelector(".dr-sep");
+        if (sub) sub.style.display = q ? "none" : "";
+        if (sep) sep.style.display = q ? "none" : "";
+      });
+    }
   }
 })();
