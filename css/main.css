@@ -2140,3 +2140,54 @@ section[id] {
   #posterWrapper .watch-btn { transition: none; }
 }
 #posterWrapper .teams-row { max-width: 560px; margin-left: auto; margin-right: auto; }
+
+#posterWrapper .slider-arrow { display: none !important; }
+#posterWrapper .match-details { left: 20px; right: 20px; bottom: 8%; animation: none; }
+#posterWrapper .match-title { font-size: clamp(12px, 1.3vw, 18px); line-height: 1.45; letter-spacing: .015em; font-weight: 400; margin-bottom: 15px; text-transform: none; color: #e0e0d7; }
+#posterWrapper .teams-row { display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 0; max-width: 560px; }
+#posterWrapper .team { display: block; }
+#posterWrapper .team-flag { display: none !important; }
+#posterWrapper .team-name { font-size: clamp(25px, 3.2vw, 43px); font-weight: 750; line-height: 1.15; color: #f5f5f0; letter-spacing: -.025em; }
+#posterWrapper .vs-label { display: flex; align-items: center; justify-content: center; gap: 16px; height: 39px; width: 100%; color: #b2bd96; font-size: 20px; line-height: 1; font-weight: 400; letter-spacing: 0; }
+#posterWrapper .vs-label::before, #posterWrapper .vs-label::after { content: ''; display: block; flex: 1; max-width: 190px; height: 1px; background: linear-gradient(90deg, transparent, #94a17a); }
+#posterWrapper .vs-label::after { transform: rotate(180deg); }
+#posterWrapper .action-buttons { margin-top: 25px; }
+#posterWrapper .watch-btn { min-height: 54px; padding: 0 28px; gap: 10px; border: 0; border-radius: 5px; background: linear-gradient(180deg, #4d86ff, #2563ff); color: #fff; font-size: 16px; font-weight: 750; letter-spacing: .07em; box-shadow: inset 0 2px 0 #ffffff4d, 0 8px 22px -8px #2563ffa6; }
+#posterWrapper .watch-btn:hover { background: linear-gradient(180deg, #6596ff, #3973ff); transform: none; }
+#posterWrapper .watch-btn .ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #ffffff12; }
+#posterWrapper .watch-btn .ico svg { width: 22px; height: 22px; }
+#posterWrapper .gradient-overlay { background: linear-gradient(180deg, transparent 24%, #03081118 38%, #0308119c 62%, #030811ed 100%); }
+#posterWrapper .match-title, #posterWrapper .team, #posterWrapper .vs-label, #posterWrapper .action-buttons { opacity: 0; transform: translate3d(0, 12px, 0); }
+#posterWrapper .poster-section.active .match-title, #posterWrapper .poster-section.active .team, #posterWrapper .poster-section.active .vs-label, #posterWrapper .poster-section.active .action-buttons { animation: mc-hero-text-in .55s cubic-bezier(.16,1,.3,1) both; }
+#posterWrapper .poster-section.active .match-title { animation-delay: .08s; }
+#posterWrapper .poster-section.active .team:first-child { animation-delay: .15s; }
+#posterWrapper .poster-section.active .vs-label { animation-delay: .22s; }
+#posterWrapper .poster-section.active .team:last-child { animation-delay: .29s; }
+#posterWrapper .poster-section.active .action-buttons { animation-delay: .36s; }
+@keyframes mc-hero-text-in { from { opacity: 0; transform: translate3d(0,12px,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
+#posterWrapper .slider-progress { justify-content: center; align-items: center; width: auto; max-width: 80%; height: 10px; gap: 8px; bottom: 6px; }
+#posterWrapper .progress-track { flex: 0 0 7px; width: 7px; height: 7px; border-radius: 20px; background: #ffffffbd; overflow: hidden; transition: flex-basis .25s, width .25s; }
+#posterWrapper .progress-track.is-active { flex-basis: 28px; width: 28px; background: #ffffff40; }
+#posterWrapper .progress-fill { height: 100%; background: #4d86ff; border-radius: inherit; }
+.scroll-hint { position: relative; color: #b8c9e2; font-size: 10px; font-weight: 650; letter-spacing: .14em; gap: 4px; padding: 8px 12px; animation: mc-scroll-cue 2.6s ease-in-out infinite; }
+.scroll-hint svg { width: 22px; height: 22px; color: #a6c1ec; }
+@keyframes mc-scroll-cue { 0%,100% { opacity: .72; transform: translateY(0); } 50% { opacity: 1; transform: translateY(4px); } }
+@media (max-width: 760px) {
+  #posterWrapper { aspect-ratio: 100 / 120; }
+  #posterWrapper .match-details { left: 18px; right: 18px; bottom: 8%; }
+  #posterWrapper .match-title { font-size: clamp(10px, 2.8vw, 17px); margin-bottom: 14px; }
+  #posterWrapper .team-name { font-size: clamp(25px, 6.5vw, 42px); }
+  #posterWrapper .vs-label { height: 36px; gap: 14px; font-size: 20px; }
+  #posterWrapper .action-buttons { margin-top: 25px; }
+  #posterWrapper .watch-btn { min-height: 54px; padding: 0 24px; font-size: 16px; gap: 8px; }
+  #posterWrapper .watch-btn .ico { width: 40px; height: 40px; }
+  .scroll-hint { font-size: 9px; margin-top: -10px; }
+  .scroll-hint svg { width: 21px; height: 21px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #posterWrapper .match-title, #posterWrapper .team, #posterWrapper .vs-label, #posterWrapper .action-buttons, #posterWrapper .poster-section.active .match-title, #posterWrapper .poster-section.active .team, #posterWrapper .poster-section.active .vs-label, #posterWrapper .poster-section.active .action-buttons { animation: none !important; opacity: 1; transform: none; }
+  .scroll-hint { animation: none !important; opacity: 1; }
+  #posterWrapper .progress-track { transition: none; }
+}
+#posterWrapper .watch-btn .ico { flex: 0 0 40px; }
+#posterWrapper .watch-btn:hover { box-shadow: inset 0 1px 0 #ffffff4d, 0 8px 22px -8px #2563ffa6; }
