@@ -9,7 +9,10 @@ Disallow: /temp/
 # Allow all bots to crawl important pages
 Allow: /*.html$
 Allow: /home/
-Allow: /player/
+Allow: /live/
+Allow: /news/
+Allow: /watch/
+Allow: /events/
 Allow: /Willow/
 Allow: /Hotstar/
 Allow: /Fox/
