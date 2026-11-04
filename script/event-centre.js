@@ -64,7 +64,7 @@
     var value = status === 'live' ? elapsed(time) : status === 'upcoming' ? upcomingTime(time) : 'Finished';
     var extraClass = status === 'upcoming' ? ' upcoming' : '';
 
-    document.title = (event.name || item.title || 'Event') + ' — CnpTV';
+    document.title = (event.name || item.title || 'Event') + ' — CNP TV';
     shell.innerHTML = '<div class="event-hero"><div class="event-topline"><span class="event-sport">' + escapeHtml(event.category || sport) + '</span><span class="event-state ' + status + '">' + escapeHtml(status === 'ended' ? 'Ended' : status) + '</span></div><p class="event-league">' + escapeHtml(item.title || event.name || sport) + '</p><h1 class="event-name">' + escapeHtml(event.name || item.title || 'Sports event') + '</h1><div class="event-teams">' + team(event.teamA || 'Team A', event.teamAFlag) + '<span class="event-versus">VS</span>' + team(event.teamB || 'Team B', event.teamBFlag) + '</div></div><div class="event-status"><div class="status-card"><span class="status-label">' + escapeHtml(label) + '</span><time class="status-time' + extraClass + '" data-event-start="' + escapeHtml(time) + '" data-status="' + status + '">' + escapeHtml(value) + '</time><span class="status-note">Match details refresh automatically from the schedule.</span></div></div>';
   }
 
