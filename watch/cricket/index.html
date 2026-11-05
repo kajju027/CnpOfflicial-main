@@ -79,45 +79,54 @@ a.card:hover{transform:translateY(-5px);border-color:rgba(0,232,123,.42);box-sha
 .src{min-width:118px;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--s);cursor:pointer;text-align:left;font-weight:800;font-size:.78rem;transition:all .2s}.src:hover{border-color:rgba(0,232,123,.35)}.src small{display:block;margin-top:2px;color:var(--m);font-size:.58rem;letter-spacing:.06em}
 .src.on{border-color:rgba(0,232,123,.55);background:rgba(0,232,123,.1);color:var(--aq)}.src.bad{border-color:var(--live);color:#ff8aa0}
 .mini{min-height:32px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:rgba(255,255,255,.025);font-size:.7rem;font-weight:750;color:#a8b9c6;cursor:pointer}.mini:hover{color:#fff}
-.panel{max-width:760px;margin-top:16px}
 .sk{height:260px;border-radius:14px;background:linear-gradient(90deg,var(--s),#101b27,var(--s));background-size:200%;animation:sk 1.4s linear infinite}@keyframes sk{to{background-position:-200%}}
 .empty{padding:40px 20px;text-align:center;color:var(--m);border:1px solid var(--line);border-radius:14px;background:var(--s)}
-footer{border-top:1px solid rgba(0,232,123,.12);background:var(--bg);padding:40px var(--pad) calc(20px + env(safe-area-inset-bottom))}
-.fi{max-width:1280px;margin:0 auto;display:grid;gap:26px;grid-template-columns:1.5fr repeat(3,1fr)}
-.fi h3{margin:0 0 10px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#8fa8b5}.fi a{display:block;padding:3px 0;font-size:.8rem;color:#c5d3dc}.fi a:hover{color:var(--aq)}.fi p{margin:8px 0 0;color:var(--m);font-size:.78rem}
-.fb{max-width:1280px;margin:26px auto 0;padding-top:16px;border-top:1px solid var(--line);color:#6f8190;font-size:.7rem}
-#wa{position:fixed;inset:0;z-index:99;display:none;place-items:center;padding:16px;background:rgba(0,0,0,.72)}#wa.show{display:grid}
-.wac{max-width:380px;padding:24px;text-align:center;border:1px solid var(--line);border-radius:16px;background:var(--s)}.wac h2{margin:0 0 8px;font-size:1.15rem}.wac p{margin:0 0 18px;color:var(--m);font-size:.85rem}
-.wac button{padding:11px 16px;border-radius:10px;border:1px solid var(--line);background:transparent;font-weight:800;cursor:pointer}.wac .pri{background:#25d366;border-color:#25d366;color:#04230f}
-@media(max-width:720px){.fi{grid-template-columns:1fr 1fr}.fi>div:first-child{grid-column:1/-1}.upd{display:none}}
+.offer{margin-left:auto;display:inline-flex;align-items:center;min-height:34px;padding:0 15px;border:1px solid rgba(0,232,123,.35);border-radius:99px;font-size:.76rem;font-weight:750;background:rgba(0,232,123,.08)}
+.wb{display:flex;align-items:center;gap:12px;margin:14px 0 0;padding:10px 12px;border:1px solid rgba(37,211,102,.25);border-radius:12px;background:rgba(37,211,102,.07)}
+.wb svg{width:36px;height:36px;padding:8px;border-radius:10px;border:1px solid rgba(37,211,102,.4);fill:#25d366;flex:none}
+.wb p{margin:0;flex:1;font-size:.8rem;font-weight:700;line-height:1.3}.wb a{padding:8px 16px;border-radius:8px;background:#25d366;color:#04230f;font-weight:850;font-size:.78rem}
+.wb button{border:0;background:none;color:#9babb8;font-size:1.4rem;line-height:1;cursor:pointer;padding:0 4px}
+.mi{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(155deg,rgba(14,24,34,.98),#0a1118)}
+.mi .orb{--o:46px;flex:none;animation:none}.mx{flex:1;min-width:0}.mx .pt{font-size:clamp(.9rem,2.4vw,1.1rem)}
+.sub{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin-top:7px;font-size:.68rem;color:#9babb8;font-variant-numeric:tabular-nums}.sub time,.sub b{color:var(--aq);font-weight:700}
+.tabs{display:grid;grid-template-columns:1fr 1fr;margin-top:18px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--s)}
+.tab{position:relative;min-height:46px;border:0;background:none;font-weight:800;font-size:.85rem;color:#8fa3b0;cursor:pointer}.tab b{margin-left:7px;padding:2px 8px;border-radius:7px;background:rgba(255,255,255,.07);font-size:.72rem}
+.tab.on{color:#fff}.tab.on:after{content:"";position:absolute;left:18%;right:18%;bottom:0;height:3px;border-radius:3px;background:var(--g)}
+.lh{display:flex;align-items:center;justify-content:space-between;margin:20px 0 12px}.lh h2{margin:0;font-size:1.35rem;font-weight:850;letter-spacing:-.04em}.lh span{display:flex;align-items:center;gap:8px;font-size:.74rem;font-weight:750;color:#9babb8}
+.chs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.ch{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:92px;padding:12px 8px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(160deg,#111b27,var(--s));cursor:pointer;color:#fff;font-weight:800;font-size:.74rem;text-transform:uppercase;text-align:center;transition:all .2s}
+.ch .bg{width:42px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:.78rem;font-weight:900;background:radial-gradient(circle at 35% 30%,#2b4358,#122029 70%);border:2px solid rgba(230,244,255,.2)}
+.ch small{display:block;margin-top:2px;color:var(--m);font-size:.52rem;letter-spacing:.08em;font-weight:700}
+.ch:hover{border-color:rgba(0,232,123,.35)}.ch.on{border-color:var(--g);box-shadow:inset 0 0 0 1px var(--g),0 0 22px rgba(0,232,123,.16)}.ch.on .bg{border-color:var(--g);color:var(--aq)}.ch.bad{border-color:var(--live)}.ch.bad .bg{border-color:var(--live)}
+footer{border-top:1px solid rgba(0,232,123,.12);padding:22px var(--pad) calc(18px + env(safe-area-inset-bottom));text-align:center}
+.fd{max-width:720px;margin:0 auto;color:#7d90a0;font-size:.72rem;line-height:1.65}.fl{margin-top:12px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap}.fl a{font-size:.74rem;font-weight:650;color:#a8b9c6}.fl a:hover{color:var(--aq)}.fc{margin-top:10px;color:#5d6e7c;font-size:.66rem}
+@media(max-width:720px){.upd{display:none}.shell{margin:0 calc(var(--pad)*-1);border-radius:0;border-left:0;border-right:0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header><a href="/" aria-label="MatchCentral home"><img src="https://matchcentral.in/assets/logo.png?v=3" alt="MatchCentral" width="2643" height="300"></a>
-<nav aria-label="Main"><a href="/">Home</a><a href="/watch/football/">Football</a><a href="/watch/cricket/">Cricket</a></nav></header>
+<a class="offer" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Offer</a></header>
 <main>
+<div class="wb" id="wb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.04 0C5.45 0 .08 5.37.08 11.96c0 2.11.55 4.17 1.59 5.99L0 24l6.24-1.63a11.9 11.9 0 0 0 5.8 1.48h.01c6.59 0 11.96-5.37 11.96-11.96 0-3.19-1.24-6.19-3.49-8.41zM12.05 21.8a9.8 9.8 0 0 1-5-1.37l-.36-.21-3.7.97.99-3.61-.24-.37a9.77 9.77 0 1 1 8.31 4.59zm5.38-7.34c-.29-.14-1.72-.85-1.98-.95-.27-.1-.46-.14-.66.14-.19.29-.76.95-.93 1.14-.17.19-.34.22-.63.08-.29-.14-1.21-.45-2.31-1.45-.85-.75-1.43-1.68-1.6-1.96-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.66-1.59-.91-2.17-.24-.57-.49-.49-.66-.5h-.56c-.19 0-.49.07-.75.36s-.98.96-.98 2.34.99 2.71 1.13 2.9c.14.19 1.95 2.98 4.72 4.18.66.29 1.18.46 1.58.59.66.21 1.26.18 1.74.11.53-.08 1.72-.7 1.96-1.37.24-.67.24-1.24.17-1.37-.07-.13-.27-.21-.56-.35z"/></svg><p>Stay connected with MatchCentral on WhatsApp</p><a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f" target="_blank" rel="noopener noreferrer">Join</a><button id="wx" type="button" aria-label="Close">×</button></div>
 <section id="list">
 <div class="hero"><p class="kick">MatchCentral · Cricket</p><h1>Cricket <em>Live Centre</em></h1><p>Live, upcoming &amp; finished cricket matches · all times in IST</p></div>
 <div class="bar" id="bar"></div><div class="note" id="note" hidden></div>
 <div id="out"><div class="grid"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
 </section>
 <section id="play" hidden>
-<a class="back" id="bk" href="./">← All matches</a>
 <div class="shell" id="shell"><video id="v" playsinline webkit-playsinline autoplay muted></video><div class="ov" id="ov"></div></div>
-<div class="row" id="srcs"></div>
-<div class="row" id="tools" hidden><button class="mini" id="rl" type="button">↻ Reload</button><button class="mini" id="px" type="button">Retry via proxy</button></div>
-<div class="card panel" id="panel"></div>
-<div class="sec" id="moreWrap" hidden><h2>More matches</h2><div class="grid" id="more"></div></div>
+<div class="mi" id="panel"></div>
+<div class="tabs"><button class="tab on" type="button" data-t="1">Channels <b id="cn">0</b></button><button class="tab" type="button" data-t="2">Recent Matches</button></div>
+<div id="p1"><div class="lh"><h2>Live Channels</h2><span><i class="dot"></i><em id="cn2" style="font-style:normal">0 channels</em></span></div><div class="chs" id="srcs"></div>
+<div class="row" id="tools" hidden><button class="mini" id="rl" type="button">↻ Reload</button><button class="mini" id="px" type="button">Retry via proxy</button></div></div>
+<div id="p2" hidden><div class="lh"><h2>Recent Matches</h2></div><div class="grid" id="more"></div><p class="empty" id="mnone" hidden>No other matches right now.</p></div>
+<a class="back" id="bk" href="./">← All matches</a>
 </section>
 </main>
-<footer><div class="fi">
-<div><img src="https://matchcentral.in/assets/logo.png?v=3" alt="MatchCentral" style="height:30px;width:auto;display:block" width="2643" height="300"><p>Your home for live sports. Every match. One home.</p><p>Join us on Telegram for match alerts: <a style="display:inline;color:var(--aq)" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">t.me/Cnp_action_bot</a></p></div>
-<div><h3>Explore</h3><a href="/watch/football/">Football Stream</a><a href="/watch/cricket/">Cricket Stream</a><a href="/watch/wwsports/">World Sports</a><a href="/news/">Sports News</a></div>
-<div><h3>Watch</h3><a href="/watch/willow/">Willow Cricbuzz</a><a href="/watch/fancode/">FanCode Asia</a><a href="/watch/sliv/">Sony LIV Events</a></div>
-<div><h3>Information</h3><a href="/Feedback/">Feedback</a><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Use</a><a href="/disclaimer.html">Disclaimer</a></div>
-</div><div class="fb">Match Central brings together links to sports content available on third-party websites. We do not host streams. Third-party content belongs to its respective owners.<br>© <span id="yr"></span> Match Central. All rights reserved.</div></footer>
-<div id="wa" role="dialog" aria-modal="true" aria-labelledby="wat"><div class="wac"><h2 id="wat">Join our WhatsApp Channel</h2><p>Get live match links &amp; sports updates on your phone — free and instant.</p><div style="display:flex;gap:10px;justify-content:center"><button id="wy" type="button">Already Joined</button><button id="wj" class="pri" type="button">Join Now →</button></div></div></div>
+<footer><p class="fd">We are truly sorry if anything here worries you. MatchCentral does not host, store or upload any video or content on its own servers. We only point people to links that are already publicly available on the internet, so they can be found in one place. Everything belongs to its respective owners, and we mean no harm to anyone's work. If you are an owner and would like something removed, please tell us and we will take it down quickly.</p>
+<div class="fl"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Use</a><a href="/disclaimer.html">Disclaimer</a></div>
+<p class="fc">© <span id="yr"></span> MatchCentral · Every match. One home.</p></footer>
 <script src="https://cdn.jsdelivr.net/npm/mux.js@7/dist/mux.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@5.2.4/dist/shaka-player.ui.min.js"></script>
 <script>
@@ -182,37 +191,44 @@ let P=null,tok=0,hdr=null,org='';
 const msg=t=>{$('ov').textContent=t||'';$('ov').hidden=!t};
 const ensure=async()=>{if(P)return P;await new Promise(r=>{let n=0;(function c(){$('shell').clientWidth||n++>40?r():requestAnimationFrame(c)})()});
  shaka.polyfill.installAll();if(!shaka.Player.isBrowserSupported())throw new Error('unsupported');
- P=new shaka.Player();await P.attach($('v'));
+ P=new shaka.Player();await P.attach($('v'));P.addEventListener('error',e=>{const d=e.detail||{};if(d.severity===2&&A)fail(A.t)});
  P.getNetworkingEngine().registerRequestFilter((t,r)=>{if(hdr&&org&&(r.uris[0]||'').indexOf(org)===0)Object.assign(r.headers,hdr)});
  try{new shaka.ui.Overlay(P,$('shell'),$('v'))}catch(e){$('v').controls=true}return P};
 const mark=c=>{const b=$('srcs').children[CI];if(b)b.classList.add(c)};
-const play=async(s,px)=>{const t=++tok,url=px?PROXY+(PROXY_ENCODE||/[&#]/.test(s.url)?encodeURIComponent(s.url):s.url):s.url;msg(px?'Direct link failed — retrying via proxy…':'Loading stream…');
+let A=null;
+const attempts=s=>{const a=[[0,0]];if(s.kid)a.push([0,1]);a.push([1,0]);if(s.kid)a.push([1,1]);return a};
+const fail=t=>{if(!A||A.t!==t||A.f)return;A.f=1;if(A.n+1<attempts(A.s).length)return play(A.s,A.n+1);mark('bad');
+ msg(CUR&&status(CUR)==='upcoming'?'Match has not started yet — the stream may go live shortly. Try again soon.':'Channel '+A.s.id+' could not be played. Please try another channel.')};
+const play=async(s,n)=>{const t=++tok,at=attempts(s),px=at[n][0],sw=at[n][1];A={s,n,t,f:0};
+ const url=px?PROXY+(PROXY_ENCODE||/[&#]/.test(s.url)?encodeURIComponent(s.url):s.url):s.url;msg(px?'Retrying via proxy…':n?'Retrying…':'Loading stream…');
  hdr=s.h;try{org=hdr?new URL(url,location.href).origin:''}catch(e){org=''}
- try{const p=await ensure();if(t!==tok)return;const rp={maxAttempts:3,baseDelay:500,backoffFactor:2,fuzzFactor:.5,timeout:20000};
-  p.configure({drm:{clearKeys:s.kid&&s.key?{[s.kid]:s.key}:{}},manifest:{defaultPresentationDelay:4,ignoreTextStreamFailures:true,retryParameters:rp},streaming:{bufferingGoal:10,rebufferingGoal:2,bufferBehind:20,retryParameters:rp},abr:{enabled:true}});
+ try{const p=await ensure();if(t!==tok)return;const rp={maxAttempts:2,baseDelay:500,backoffFactor:2,fuzzFactor:.5,timeout:20000},kid=sw?s.key:s.kid,key=sw?s.kid:s.key;
+  p.configure({drm:{clearKeys:kid&&key?{[kid]:key}:{}},manifest:{defaultPresentationDelay:4,ignoreTextStreamFailures:true,retryParameters:rp},streaming:{bufferingGoal:10,rebufferingGoal:2,bufferBehind:20,retryParameters:rp},abr:{enabled:true}});
   const mime=/\.m3u8(?:[?#]|$)/i.test(s.url)?'application/x-mpegURL':/\.mpd(?:[?#]|$)/i.test(s.url)?'application/dash+xml':null;
   await p.load(url,null,mime);if(t!==tok)return;msg('');const r=$('v').play();r&&r.catch&&r.catch(()=>{})
- }catch(e){if(t!==tok||(e&&e.code===7000))return;if(!px)return play(s,true);mark('bad');
-  msg(CUR&&status(CUR)==='upcoming'?'Match has not started yet — the stream may go live shortly. Try again soon.':'Source '+s.id+' could not be played. Please try another source.')}};
+ }catch(e){if(t!==tok||(e&&e.code===7000))return;fail(t)}};
 const pick=(i,push)=>{const s=S[i];if(!s)return;CI=i;[...$('srcs').children].forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.remove('bad')});
- if(push&&CUR.id)history.replaceState(null,'','?id='+encodeURIComponent(CUR.id)+'&src='+encodeURIComponent(s.id));play(s,false)};
-const build=()=>{$('srcs').innerHTML=S.map((s,i)=>`<button class="src" type="button" data-i="${i}">Source ${esc(s.id)}<small>${esc(s.title?s.title+' · ':'')}${esc(s.type)}</small></button>`).join('');$('tools').hidden=!S.length;
+ if(push&&CUR.id)history.replaceState(null,'','?id='+encodeURIComponent(CUR.id)+'&src='+encodeURIComponent(s.id));play(s,0)};
+const abbr=(s)=>{const w=String(s.title||'').replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/).filter(Boolean);return(w.length>1?w.slice(0,3).map(x=>x[0]).join(''):(w[0]||'').slice(0,3)||s.id).toUpperCase()};
+const build=()=>{$('srcs').innerHTML=S.map((s,i)=>`<button class="ch" type="button" data-i="${i}"><span class="bg">${esc(abbr(s))}</span><span>${esc(s.title||'Channel '+s.id)}<small>${esc(s.type)}</small></span></button>`).join('');$('tools').hidden=!S.length;
+ $('cn').textContent=S.length;$('cn2').textContent=S.length+' channel'+(S.length===1?'':'s');
  if(!S.length)msg(status(CUR)==='upcoming'?'Stream will be available shortly before the match starts.':'No stream sources are listed for this match.')};
-const paint=()=>{const s=status(CUR);CUR.s0=s;$('panel').innerHTML=vis(CUR,s,1)+`<div class="info"><h1 class="pt">${esc(CUR.title)}</h1><div class="foot"><div class="meta">${meta(CUR,s)}</div></div></div>`;
- const o=group(EV.filter(m=>m.id!==CUR.id)).live.concat(group(EV.filter(m=>m.id!==CUR.id)).upcoming).slice(0,6);$('moreWrap').hidden=!o.length;$('more').innerHTML=o.map(m=>card(m,status(m))).join('');tick()};
+const subl=(m,s)=>(s==='live'?`<time data-k="l" data-t="${m.st?+m.st:''}"></time>`:s==='upcoming'?`<span>Starts <b data-k="u" data-t="${m.st?+m.st:''}"></b></span><span>${fmt(m.st)}</span>`:`<span>${m.en?fmt(m.en):'Ended'}</span>`)+(m.lg?`<span>${esc(m.lg)}</span>`:'');
+const paint=()=>{const s=status(CUR);CUR.s0=s;$('panel').innerHTML=`${orb(CUR.fa,CUR.a)}<div class="mx"><h1 class="pt">${esc(CUR.title)}</h1><div class="sub"><span class="chip s ${s}">${s==='live'?'Live':s==='ended'?'Finished':'Upcoming'}</span>${subl(CUR,s)}</div></div>${orb(CUR.fb,CUR.b)}`;
+ const g=group(EV.filter(m=>m.id!==CUR.id)),r=g.live.concat(g.ended,g.upcoming).slice(0,8);$('mnone').hidden=!!r.length;$('more').innerHTML=r.map(m=>card(m,status(m))).join('');tick()};
 const open=()=>{$('list').hidden=true;$('play').hidden=false;$('bk').href=location.pathname;document.title=CUR.name+' Live Stream | MatchCentral';$('robots').content='noindex, follow';
  build();paint();const w=Q.get('src')||'1';let i=S.findIndex(s=>s.id===w);if(i<0)i=Math.max(0,Math.min((+w||1)-1,S.length-1));if(S.length)pick(i,false)};
 
 /* ---- boot ---- */
 const refresh=async()=>{if(!await fetchEv())return;if(CUR&&CUR.id){const n=EV.find(m=>m.id===CUR.id);if(n){const had=S.length;CUR=n;S=streamsOf(n);if(!had&&S.length){msg('');build();pick(0,true)}}}draw()};
 document.addEventListener('DOMContentLoaded',async()=>{
- $('yr').textContent=new Date().getFullYear();const a=document.querySelector('nav a[href$="/'+SPORT+'/"]');a&&a.classList.add('on');
- const wa=$('wa');if(!POPUP_ONCE||!sessionStorage.getItem('mc:wa')){setTimeout(()=>wa.classList.add('show'),2000)}
- const shut=()=>{wa.classList.remove('show');try{sessionStorage.setItem('mc:wa','1')}catch(e){}};$('wy').onclick=shut;$('wj').onclick=()=>{window.open(WA,'_blank','noopener,noreferrer');shut()};
+ $('yr').textContent=new Date().getFullYear();
+ const wb=$('wb');try{if(sessionStorage.getItem('mc:wb'))wb.hidden=true}catch(e){}$('wx').onclick=()=>{wb.hidden=true;try{sessionStorage.setItem('mc:wb','1')}catch(e){}};
+ document.querySelector('.tabs').onclick=e=>{const b=e.target.closest('.tab');if(!b)return;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));$('p1').hidden=b.dataset.t!=='1';$('p2').hidden=b.dataset.t!=='2'};
  const um=e=>{if(e.target.closest&&e.target.closest('.shaka-controls-container'))return;$('v').muted=false;['pointerdown','touchstart','keydown'].forEach(n=>document.removeEventListener(n,um,true))};['pointerdown','touchstart','keydown'].forEach(n=>document.addEventListener(n,um,true));
  $('bar').onclick=e=>{const b=e.target.closest('[data-f]');if(b){F=b.dataset.f;draw()}};
- $('srcs').onclick=e=>{const b=e.target.closest('.src');if(b)pick(+b.dataset.i,true)};
- $('rl').onclick=()=>S[CI]&&play(S[CI],false);$('px').onclick=()=>S[CI]&&play(S[CI],true);
+ $('srcs').onclick=e=>{const b=e.target.closest('.ch');if(b)pick(+b.dataset.i,true)};
+ $('rl').onclick=()=>S[CI]&&play(S[CI],0);$('px').onclick=()=>S[CI]&&play(S[CI],attempts(S[CI]).findIndex(a=>a[0]));
  setInterval(tick,1e3);setInterval(()=>{if(EV.some(m=>m.s0&&m.s0!==status(m))||(CUR&&CUR.s0!==status(CUR)))draw()},15e3);
  if(Q.get('url')){CUR={id:'',title:'Direct stream',name:'Direct stream',cat:'Stream',a:'Direct',b:'Stream',fa:'',fb:'',st:null,en:null,js:'live'};
   S=[parseS({url:Q.get('url'),keys:Q.get('keys')||'',keyId:Q.get('keyId')||'',key:Q.get('key')||''},0)].filter(Boolean);open();return}
