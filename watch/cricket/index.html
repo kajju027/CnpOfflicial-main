@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://matchcentral.in/watch/cricket/">
 <link rel="preload" as="image" href="https://matchcentral.in/assets/logo.png?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Acme&amp;family=Amaranth:wght@400;700&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@5.2.4/dist/controls.css">
 <style>
 :root{color-scheme:dark;--bg:#05070c;--s:#0f141c;--line:rgba(255,255,255,.08);--m:#8fa3b0;--aq:#57ffc4;--g:#00e87b;--y:#ffd257;--live:#ff2d55;--pad:clamp(14px,5vw,48px);--gold:#d4af37;}
@@ -20,32 +20,93 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}[hi
 
 /* Header & Navigation */
 header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:clamp(10px,2vw,20px);min-height:60px;padding:10px var(--pad);background:rgba(5,8,13,.82);border-bottom:1px solid rgba(255,255,255,.05);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-header img{height:clamp(20px,2vw,28px);width:auto;display:block} 
-.menu-btn{background:none;border:none;color:#fff;cursor:pointer;padding:5px;display:flex;align-items:center;justify-content:center}
+header .logo{display:inline-flex;align-items:center;min-width:0}
+header .logo-img{height:clamp(18px,1.8vw,24px);width:auto;display:block}
+.hamburger{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:6px;width:36px;height:36px;padding:0;border:0;background:none;color:#fff;cursor:pointer;flex:0 0 auto}
+.hamburger i{display:block;height:3px;width:26px;border-radius:3px;background:currentColor;transform-origin:left center;transition:width .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1),opacity .2s ease}
+.hamburger i:nth-child(2){width:16px}
+.hamburger:hover i:nth-child(2),.hamburger:focus-visible i:nth-child(2){width:26px}
+.hamburger.active i:nth-child(1){transform:translateY(9px) rotate(45deg)}
+.hamburger.active i:nth-child(2){opacity:0;transform:scaleX(.2)}
+.hamburger.active i:nth-child(3){transform:translateY(-9px) rotate(-45deg);width:26px}
+.hamburger:focus-visible{outline:2px solid var(--g);outline-offset:4px;border-radius:6px}
 
 /* Profile Button */
 .profile-btn{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(212,175,55,.1);color:var(--gold);transition:all .2s}
 .profile-btn:hover{background:rgba(212,175,55,.2);box-shadow:0 0 15px rgba(212,175,55,.25)}
 
-/* Sidebar */
-.sidebar{position:fixed;top:0;left:-260px;width:250px;height:100vh;background:#0a1119;z-index:100;transition:left .3s ease;border-right:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:15px}
-.sidebar.open{left:0}
-.sidebar .close-btn{background:none;border:none;color:#fff;font-size:1.5rem;align-self:flex-end;cursor:pointer;margin-bottom:10px}
-.sidebar a{color:#a8b9c6;font-weight:600;font-size:.95rem;padding:10px;border-radius:8px;transition:background .2s}
-.sidebar a:hover{background:rgba(255,255,255,.05);color:#fff}
-.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;display:none}
-.sidebar-overlay.open{display:block}
+/* Slide Menu (drawer) — same design as the MatchCentral landing page */
+html.lock{overflow:hidden}
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.62);opacity:0;visibility:hidden;transition:opacity .38s ease,visibility 0s linear .38s}
+.scrim.open{opacity:1;visibility:visible;transition:opacity .38s ease}
+.drawer{position:fixed;top:0;bottom:0;left:0;z-index:50;width:min(86vw,340px);display:flex;flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#13151c,#0b0d12 45%);border-right:1px solid rgba(255,255,255,.07);box-shadow:24px 0 60px -20px rgba(0,0,0,.8);transform:translate3d(-104%,0,0);visibility:hidden;transition:transform .32s cubic-bezier(.4,0,1,1),visibility 0s linear .32s;will-change:transform;touch-action:pan-y;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer.open{transform:none;visibility:visible;transition:transform .5s cubic-bezier(.32,.72,0,1)}
+.drawer::before{content:"";position:absolute;left:0;right:0;top:0;height:200px;background:radial-gradient(80% 100% at 0 0,rgba(245,85,5,.15),transparent),radial-gradient(60% 70% at 100% 100%,rgba(245,85,5,.07),transparent);pointer-events:none}
+.drawer::after{content:"";position:absolute;top:0;bottom:0;right:0;width:2px;background:linear-gradient(180deg,transparent,rgba(245,85,5,.55) 18%,rgba(245,85,5,.55) 82%,transparent);pointer-events:none}
+.dr-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px 10px 20px}
+.dr-logo{display:inline-flex;align-items:center;max-width:min(230px,60vw)}
+.dr-logo img{display:block;width:100%;height:auto}
+.dclose{position:relative;width:42px;height:42px;flex:0 0 42px;border:0;border-radius:50%;background:rgba(255,255,255,.06);color:#fff;cursor:pointer;transition:background-color .2s ease,transform .3s cubic-bezier(.22,1,.36,1)}
+.dclose:hover{background:rgba(245,85,5,.16)}
+.dclose:active{transform:rotate(90deg) scale(.92)}
+.dclose:focus-visible{outline:2px solid #f55505;outline-offset:3px}
+.dclose b{position:absolute;left:50%;top:50%;width:18px;height:2.5px;margin:-1.25px 0 0 -9px;border-radius:3px;background:currentColor;transform:rotate(0) scaleX(.2);transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.drawer.open .dclose b:nth-child(1){transform:rotate(45deg) scaleX(1);transition-delay:.2s}
+.drawer.open .dclose b:nth-child(2){transform:rotate(-45deg) scaleX(1);transition-delay:.26s}
+.dr-search{position:relative;display:flex;align-items:center;gap:10px;margin:6px 16px 10px;padding:0 14px;height:44px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);transition:border-color .25s ease,background-color .25s ease}
+.dr-search:focus-within{border-color:rgba(245,85,5,.6);background:rgba(245,85,5,.06);box-shadow:0 0 0 3px rgba(245,85,5,.12)}
+.dr-search svg{width:18px;height:18px;flex:0 0 18px;fill:none;stroke:#8b90a0;stroke-width:1.8;stroke-linecap:round}
+.dr-search input{flex:1;min-width:0;border:0;outline:0;background:none;color:#fff;font-family:inherit;font-size:16px}
+.dr-search input::placeholder{color:#7d8190}
+.dr-scroll{position:relative;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:4px 10px 12px;scrollbar-width:none;-ms-overflow-style:none}
+.dr-scroll::-webkit-scrollbar{display:none}
+.dr-item,.dr-foot{opacity:0;translate:-16px 0;transition:opacity .2s ease,translate .2s ease,transform .15s ease,background-color .2s,color .2s}
+.drawer.open .dr-item,.drawer.open .dr-foot{opacity:1;translate:0 0;transition:opacity .45s ease calc(var(--i,0)*40ms + 140ms),translate .55s cubic-bezier(.22,1,.36,1) calc(var(--i,0)*40ms + 140ms),transform .15s ease,background-color .2s,color .2s}
+.dr-item{position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:50px;padding:0 14px;margin:2px 0;border:0;border-radius:10px;background:none;color:#dfe1e7;font-family:inherit;font-size:15px;font-weight:500;text-decoration:none;text-align:left;cursor:pointer}
+.dr-item .i{width:22px;height:22px;flex:0 0 22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.dr-item:hover{background:rgba(245,85,5,.09)}
+.dr-item:hover .i{stroke:#ff7a3d;opacity:1}
+.dr-item:active{transform:scale(.98);background:rgba(255,255,255,.07)}
+.dr-item:focus-visible{outline:2px solid #f55505;outline-offset:-2px}
+.dr-item[aria-current="page"]{color:#fff;background:linear-gradient(90deg,rgba(245,85,5,.16),transparent)}
+.dr-item[aria-current="page"]::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:3px;background:#f55505}
+.dr-item[aria-current="page"] .i{stroke:#f55505;opacity:1}
+.dr-new{margin-left:auto;background:#2563ff;color:#fff;font-size:10px;font-weight:800;letter-spacing:.6px;padding:3px 8px;border-radius:99px}
+.chev{margin-left:auto;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.7;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.dr-acc[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.dr-sub{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s cubic-bezier(.4,0,.15,1)}
+.dr-sub.open{grid-template-rows:1fr}
+.dr-sub>div{min-height:0;overflow:hidden;margin-left:25px;padding-left:12px;border-left:1px solid rgba(255,255,255,.08)}
+.dr-sub-item{display:flex;align-items:center;gap:10px;min-height:42px;padding:0 12px;border-radius:8px;color:#b4b8c5;font-size:14px;text-decoration:none;transition:background-color .2s ease,color .2s ease}
+.dr-sub-item::before{content:"";width:5px;height:5px;border-radius:50%;background:#f55505;opacity:.7}
+.dr-sub-item:hover,.dr-sub-item:active{background:rgba(255,255,255,.05);color:#fff}
+.dr-sep{height:1px;margin:10px 14px;background:rgba(255,255,255,.07)}
+.dr-foot{position:relative;padding:12px 16px 16px;border-top:1px solid rgba(255,255,255,.07);background:#0b0d12}
+.dr-login{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;height:46px;border-radius:8px;background:linear-gradient(180deg,#ff7a30,#f55505 58%,#e04e04);color:#fff;font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;text-decoration:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 8px 20px -8px rgba(245,85,5,.55);transition:background-color .2s ease,transform .15s ease,box-shadow .2s ease}
+.dr-login::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.32) 50%,transparent);opacity:0;transform:translate3d(-160%,0,0) skewX(-20deg)}
+.dr-login:hover::after{opacity:1;animation:mc-shimmer 1.1s ease forwards}
+.dr-login:hover{background:linear-gradient(180deg,#ff8a45,#ff6a22 58%,#f55505);box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 10px 24px -8px rgba(245,85,5,.7)}
+.dr-login:active{background:#c24405;transform:scale(.98)}
+.dr-login:focus-visible{outline:2px solid #fff;outline-offset:-2px}
+.dr-legal{display:flex;justify-content:center;gap:16px;margin:12px 0 0;font-size:11px;color:#7d8190}
+.dr-legal a{color:inherit;text-decoration:none}
+.dr-legal a:hover{color:#fff}
+@keyframes mc-shimmer{to{transform:translate3d(340%,0,0) skewX(-20deg)}}
 
-/* WhatsApp Popup Modal */
-.wa-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);padding:20px}
-.wa-modal-content{background:linear-gradient(160deg,#111621,#0a1119);border:2px solid #25d366;border-radius:16px;padding:28px 24px;max-width:380px;width:100%;position:relative;text-align:center;box-shadow:0 20px 50px rgba(37,211,102,.15)}
-.wa-modal-close{position:absolute;top:12px;right:15px;background:none;border:none;color:#9babb8;font-size:1.6rem;cursor:pointer;transition:color .2s}
-.wa-modal-close:hover{color:#fff}
-.wa-modal svg{width:64px;height:64px;fill:#25d366;margin:0 auto 16px;filter:drop-shadow(0 0 10px rgba(37,211,102,.3))}
-.wa-modal h3{margin:0 0 10px;font-size:1.3rem;font-weight:800;color:#fff}
-.wa-modal p{margin:0 0 24px;font-size:.85rem;color:#a8b9c6;line-height:1.5}
-.wa-modal a{display:block;width:100%;padding:14px;border-radius:12px;background:#25d366;color:#04230f;font-weight:900;font-size:1rem;text-decoration:none;box-shadow:0 4px 15px rgba(37,211,102,.3);transition:transform .2s}
-.wa-modal a:hover{transform:translateY(-2px)}
+/* WhatsApp Join Popup — same design as TeamRohit45 landing page */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);display:none;padding:12px;z-index:99999;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.popup-overlay.open{display:flex}
+.popup-box{width:100%;max-width:340px;margin:auto;background:#1C1D22;border:2px solid #00BFFF;border-radius:24px;padding:29px 20px 20px;text-align:center;position:relative;box-shadow:0 0 12px rgba(0,191,255,.34),0 0 32px rgba(0,191,255,.14),inset 0 0 10px rgba(0,191,255,.10),inset 0 0 0 1px rgba(120,215,255,.10),0 24px 60px rgba(0,0,0,.6);animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both}
+@keyframes popIn{0%{opacity:0;transform:scale(.8) translateY(30px)}60%{opacity:1;transform:scale(1.03) translateY(-4px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.popup-close{position:absolute;top:10px;right:12px;width:32px;height:32px;border:none;border-radius:50%;background:rgba(255,255,255,.08);color:#9babb8;font-size:1.35rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .25s}
+.popup-close:hover{background:rgba(255,255,255,.16);color:#fff;transform:rotate(90deg)}
+.popup-title{color:#ffcc00;font-family:'Acme',sans-serif;font-size:clamp(21px,6.4vw,27px);margin-bottom:9px}
+.popup-text{color:#a0a0a8;font-size:clamp(12.5px,3.8vw,14px);line-height:1.58;margin-bottom:20px}
+.popup-text b{color:#fff;font-family:'Amaranth',sans-serif;font-size:clamp(15px,4.6vw,17px);display:block;margin-top:6px}
+.btn-popup{width:100%;padding:13px;border:none;border-radius:12px;font-family:'Amaranth',sans-serif;cursor:pointer;-webkit-appearance:none;appearance:none;touch-action:manipulation;transition:transform .18s}
+.btn-popup:active{transform:scale(.95)}
+.btn-join-main{font-size:clamp(16px,4.8vw,18px);font-weight:700;display:block}
+@media (max-width:480px){.popup-box{padding:24px 16px 16px}}
 
 main{flex:1;width:100%;max-width:1280px;margin:0 auto;padding:0 var(--pad) 48px}
 .hero{padding:30px 0 6px}.kick{margin:0 0 8px;color:#8fa8b5;font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
@@ -112,13 +173,12 @@ a.card:hover{transform:translateY(-5px);border-color:rgba(0,232,123,.42);box-sha
 .ch small{display:block;margin-top:4px;color:var(--m);font-size:.55rem;letter-spacing:.08em;font-weight:700}
 .ch:hover{border-color:rgba(0,232,123,.35)}.ch.on{border-color:#00e87b;box-shadow:inset 0 0 0 1px #00e87b,0 0 22px rgba(0,232,123,.15)}.ch.on .bg{border-color:#00e87b;color:#00e87b}.ch.bad{border-color:var(--live)}.ch.bad .bg{border-color:var(--live)}
 
-/* Custom Shaka Player Theme */
-.shaka-controls-container { --shaka-primary-color: #00e87b !important; }
-.shaka-scrub-bar-current-time { background-color: #00e87b !important; }
-.shaka-scrub-bar-buffering-bg { background-color: rgba(0, 232, 123, 0.3) !important; }
-.shaka-play-button { color: #00e87b !important; }
-.shaka-range-element { accent-color: #00e87b !important; }
-.shaka-controls-button-panel button:hover { color: #00e87b !important; }
+/* Custom Shaka Player Theme — MatchCentral green (seek/progress/volume bars) */
+.shaka-video-container{--shaka-thumb-color:#00e87b;--shaka-track-color:rgba(255,255,255,.22);--shaka-font-family:Inter,system-ui,sans-serif}
+.shaka-controls-button-panel button:hover{color:#00e87b!important}
+.shaka-big-buttons-container button:hover{color:#00e87b}
+.shaka-range-element{accent-color:#00e87b}
+.shaka-current-time{color:#57ffc4}
 
 /* Footer */
 footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(24px + env(safe-area-inset-bottom));text-align:center;background:#030509}
@@ -130,38 +190,65 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
 </head>
 <body>
 
-<!-- WhatsApp Popup Modal (Hidden by default, shown by JS after 6s) -->
-<div class="wa-modal" id="waModal">
-    <div class="wa-modal-content">
-        <button class="wa-modal-close" id="closeWa" aria-label="Close">×</button>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.04 0C5.45 0 .08 5.37.08 11.96c0 2.11.55 4.17 1.59 5.99L0 24l6.24-1.63a11.9 11.9 0 0 0 5.8 1.48h.01c6.59 0 11.96-5.37 11.96-11.96 0-3.19-1.24-6.19-3.49-8.41zM12.05 21.8a9.8 9.8 0 0 1-5-1.37l-.36-.21-3.7.97.99-3.61-.24-.37a9.77 9.77 0 1 1 8.31 4.59zm5.38-7.34c-.29-.14-1.72-.85-1.98-.95-.27-.1-.46-.14-.66.14-.19.29-.76.95-.93 1.14-.17.19-.34.22-.63.08-.29-.14-1.21-.45-2.31-1.45-.85-.75-1.43-1.68-1.6-1.96-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.66-1.59-.91-2.17-.24-.57-.49-.49-.66-.5h-.56c-.19 0-.49.07-.75.36s-.98.96-.98 2.34.99 2.71 1.13 2.9c.14.19 1.95 2.98 4.72 4.18.66.29 1.18.46 1.58.59.66.21 1.26.18 1.74.11.53-.08 1.72-.7 1.96-1.37.24-.67.24-1.24.17-1.37-.07-.13-.27-.21-.56-.35z"/></svg>
-        <h3>Join Our WhatsApp Channel</h3>
-        <p>Stay connected with MatchCentral for the latest updates, live match alerts, and exclusive offers.</p>
-        <a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f" target="_blank" rel="noopener noreferrer">Join Now</a>
+<!-- WhatsApp Join Popup — shown on EVERY load/refresh; X closes it; no "Already Joined" -->
+<div class="popup-overlay" id="waModal" role="dialog" aria-modal="true" aria-labelledby="waTitle">
+    <div class="popup-box">
+        <button class="popup-close" id="waClose" type="button" aria-label="Close">&times;</button>
+        <div class="popup-title" id="waTitle">Follow Us !!</div>
+        <div class="popup-text">
+            Join our WhatsApp channel
+            <b>MatchCentral</b>
+        </div>
+        <button class="btn-popup btn-join-main" id="waJoin" type="button">JOIN NOW</button>
     </div>
 </div>
 
-<!-- Sidebar Menu -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-<div class="sidebar" id="sidebar">
-    <button class="close-btn" id="closeSidebar" aria-label="Close Menu">×</button>
-    <a href="/">Home</a>
-    <a href="/privacy.html">Privacy Policy</a>
-    <a href="/terms.html">Terms of Use</a>
-    <a href="/disclaimer.html">Disclaimer</a>
-    <a href="/contact.html">Contact Us</a>
-</div>
-
 <header>
-    <button class="menu-btn" id="openSidebar" aria-label="Open Menu">
-        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    <button class="hamburger" id="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+        <i></i><i></i><i></i>
     </button>
-    <a href="/" aria-label="MatchCentral home"><img src="https://matchcentral.in/assets/logo.png?v=3" alt="MatchCentral"></a>
-    
-    <a class="profile-btn" href="https://your-link-here.com" target="_blank" rel="noopener noreferrer" aria-label="Profile">
+    <a href="/" class="logo" aria-label="MatchCentral home"><img class="logo-img" src="https://matchcentral.in/assets/logo.png?v=3" alt="MatchCentral"></a>
+
+    <a class="profile-btn" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer" aria-label="Account and contact">
         <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
     </a>
 </header>
+
+<!-- Slide Menu (drawer) — same as the MatchCentral landing page -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Main menu" inert>
+    <div class="dr-head">
+        <a class="dr-logo" href="/" aria-label="MatchCentral home">
+            <img src="https://matchcentral.in/assets/logo.png?v=3" alt="MatchCentral">
+        </a>
+        <button class="dclose" id="dclose" type="button" aria-label="Close menu"><b></b><b></b></button>
+    </div>
+    <label class="dr-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        <input type="search" id="drSearch" placeholder="Search matches &amp; sports" autocomplete="off" enterkeyhint="search" aria-label="Search">
+    </label>
+    <div class="dr-scroll">
+        <nav class="dr-nav" id="drNav" aria-label="Sections">
+            <a class="dr-item" style="--i:0" href="/"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+            <a class="dr-item" style="--i:1" href="/watch/football/"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m12 8 3.5 2.5-1.3 4.1H9.8L8.5 10.5z"/><path d="M12 3v5M15.5 10.5 20 9M14.2 14.6l2.6 3.7M9.8 14.6l-2.6 3.7M8.5 10.5 4 9"/></svg><span>Football 24×7</span></a>
+            <a class="dr-item" style="--i:2" href="/watch/cricket/" aria-current="page"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m14 4 6 6-9.5 9.5a2 2 0 0 1-2.8 0l-3.2-3.2a2 2 0 0 1 0-2.8z"/><path d="m5 19-2 2"/></svg><span>Cricket 24×7</span></a>
+            <a class="dr-item" style="--i:3" href="/watch/willow/"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M7.7 7.7a6 6 0 0 0 0 8.6M16.3 7.7a6 6 0 0 1 0 8.6M4.8 4.8a10 10 0 0 0 0 14.4M19.2 4.8a10 10 0 0 1 0 14.4"/></svg><span>Willow Cricbuzz</span></a>
+            <a class="dr-item" style="--i:4" href="/watch/fancode/"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6.5" width="17" height="12.5" rx="2"/><path d="m8 3 4 3.5L16 3"/></svg><span>FanCode</span></a>
+            <button class="dr-item dr-acc" style="--i:5" type="button" aria-expanded="false" aria-controls="drSub"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg><span>All Sports</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="dr-sub" id="drSub"><div>
+                <a class="dr-sub-item" href="/watch/wwsports/">World Sports</a>
+                <a class="dr-sub-item" href="/watch/sliv/">Sony LIV Events</a>
+            </div></div>
+            <div class="dr-sep"></div>
+            <a class="dr-item" style="--i:6" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg><span>Offers</span><span class="dr-new">NEW</span></a>
+            <a class="dr-item" style="--i:7" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg><span>Help &amp; Support</span></a>
+        </nav>
+    </div>
+    <div class="dr-foot" style="--i:9">
+        <a class="dr-login" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">Join Telegram</a>
+        <p class="dr-legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/disclaimer.html">Disclaimer</a></p>
+    </div>
+</aside>
 
 <main>
 <section id="list">
@@ -281,7 +368,7 @@ const vis=(m,s,big)=>`<div class="vis${big?' big':''}"><div class="top"><span cl
 const meta=(m,s)=>{const t=m.st?+m.st:'';return s==='live'?`<span class="ts live">Live for</span><time class="dur" data-k="l" data-t="${t}">${t?dur(Date.now()-t):'Now'}</time>`
  :s==='upcoming'?`<span class="ts up">Starts <b data-k="u" data-t="${t}"></b></span><time>${fmt(m.st)}</time>`
  :`<span class="ts">Finished</span><time>${m.en?fmt(m.en):'Ended'}${m.st&&m.en?' · Ran '+dur(m.en-m.st).slice(0,7):''}</time>`};
-const card=(m,s)=>{m.s0=s;return`<a class="card ${s}" href="?id=${encodeURIComponent(m.id)}&amp;src=1">${vis(m,s)}<div class="info"><p class="lg">${esc(m.title)}</p><div class="foot"><div class="meta">${meta(m,s)}</div>${s==='live'?'<span class="go">▶ Watch Now</span>':''}</div></div></a>`};
+const card=(m,s)=>{m.s0=s;return`<a class="card ${s}" href="?id=${encodeURIComponent(m.id)}">${vis(m,s)}<div class="info"><p class="lg">${esc(m.title)}</p><div class="foot"><div class="meta">${meta(m,s)}</div>${s==='live'?'<span class="go">▶ Watch Now</span>':''}</div></div></a>`};
 const tick=()=>{const n=Date.now();document.querySelectorAll('[data-k]').forEach(e=>{const t=+e.dataset.t;if(!t)return;e.textContent=e.dataset.k==='l'?dur(n-t):t>n?'in '+cd(t-n):'starting…'})};
 
 /* ---- list ---- */
@@ -290,10 +377,12 @@ const LBL={live:'Live Now',upcoming:'Upcoming',ended:'Finished'};
 const group=(list)=>{const n=Date.now(),g={live:[],upcoming:[],ended:[]},k=m=>m.st?+m.st:9e15;list.forEach(m=>g[status(m,n)].push(m));
  g.live.sort((a,b)=>k(a)-k(b));g.upcoming.sort((a,b)=>k(a)-k(b));g.ended.sort((a,b)=>k(b)-k(a));return g};
 const draw=()=>{if(CUR)return paint();const g=group(EV),c=x=>g[x].length;
- $('bar').innerHTML=[['all','All',EV.length],['live','Live',c('live')],['upcoming','Upcoming',c('upcoming')],['ended','Finished',c('ended')]].map(x=>`<button type="button" class="pill${F===x[0]?' on':''}" data-f="${x[0]}">${x[1]}<b>${x[2]}</b></button>`).join('')+`<span class="upd">Updated ${new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase()} IST</span>`;
- const nx=g.upcoming[0],nt=$('note');nt.hidden=!(!c('live')&&nx&&F!=='ended');if(!nt.hidden)nt.textContent='No live match right now. Next: '+nx.a+' vs '+nx.b+(nx.st?' · starts in '+cd(nx.st-Date.now()):'');
- const h=['live','upcoming','ended'].filter(k=>(F==='all'||F===k)&&c(k)).map(k=>`<div class="sec"><h2>${k==='live'?'<i class="dot"></i>':''}${LBL[k]} <small>${c(k)} match${c(k)>1?'es':''}</small></h2><div class="grid">${g[k].map(m=>card(m,k)).join('')}</div></div>`).join('');
- $('out').innerHTML=h||'<div class="empty" style="margin-top:20px">No matches in this section right now.</div>';tick()};
+ // Only Live + Upcoming are listed. Finished/recent matches are intentionally not rendered.
+ const total=c('live')+c('upcoming');
+ $('bar').innerHTML=[['all','All',total],['live','Live',c('live')],['upcoming','Upcoming',c('upcoming')]].map(x=>`<button type="button" class="pill${F===x[0]?' on':''}" data-f="${x[0]}">${x[1]}<b>${x[2]}</b></button>`).join('')+`<span class="upd">Updated ${new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase()} IST</span>`;
+ const nx=g.upcoming[0],nt=$('note');nt.hidden=!(!c('live')&&nx);if(!nt.hidden)nt.textContent='No live match right now. Next: '+nx.a+' vs '+nx.b+(nx.st?' · starts in '+cd(nx.st-Date.now()):'');
+ const h=['live','upcoming'].filter(k=>(F==='all'||F===k)&&c(k)).map(k=>`<div class="sec"><h2>${k==='live'?'<i class="dot"></i>':''}${LBL[k]} <small>${c(k)} match${c(k)>1?'es':''}</small></h2><div class="grid">${g[k].map(m=>card(m,k)).join('')}</div></div>`).join('');
+ $('out').innerHTML=h||'<div class="empty" style="margin-top:20px">No live or upcoming matches right now.</div>';tick()};
 
 /* ---- player ---- */
 let P=null,tok=0,hdr=null,org='';
@@ -302,7 +391,14 @@ const ensure=async()=>{if(P)return P;await new Promise(r=>{let n=0;(function c()
  shaka.polyfill.installAll();if(!shaka.Player.isBrowserSupported())throw new Error('unsupported');
  P=new shaka.Player();await P.attach($('v'));P.addEventListener('error',e=>{const d=e.detail||{};if(d.severity===2&&A)fail(A.t)});
  P.getNetworkingEngine().registerRequestFilter((t,r)=>{if(hdr&&org&&(r.uris[0]||'').indexOf(org)===0)Object.assign(r.headers,hdr)});
- try{new shaka.ui.Overlay(P,$('shell'),$('v'))}catch(e){$('v').controls=true}return P};
+ try{
+  const ui=new shaka.ui.Overlay(P,$('shell'),$('v'));
+  ui.configure({
+   seekBarColors:{base:'rgba(255,255,255,.22)',buffered:'rgba(0,232,123,.4)',played:'#00e87b'},
+   volumeBarColors:{base:'rgba(255,255,255,.22)',level:'#00e87b'},
+   playbackRateBarColors:{base:'rgba(255,255,255,.22)',level:'#00e87b'}
+  });
+ }catch(e){$('v').controls=true}return P};
 const mark=c=>{const b=$('srcs').children[CI];if(b)b.classList.add(c)};
 let A=null;
 const attempts=s=>{const a=[[0,0]];if(s.kid)a.push([0,1]);a.push([1,0]);if(s.kid)a.push([1,1]);return a};
@@ -361,7 +457,7 @@ const pick=(i,push)=>{const s=S[i];if(!s)return;CI=i;[...$('srcs').children].for
  if(push&&CUR.id)history.replaceState(null,'','?id='+encodeURIComponent(CUR.id)+'&src='+encodeURIComponent(s.id));play(s,0)};
 const abbr=(s)=>{const w=String(s.title||'').replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/).filter(Boolean);return(w.length>1?w.slice(0,3).map(x=>x[0]).join(''):(w[0]||'').slice(0,3)||s.id).toUpperCase()};
 const build=()=>{$('srcs').innerHTML=S.map((s,i)=>`<button class="ch" type="button" data-i="${i}"><span class="bg">${esc(abbr(s))}</span><span>${esc(s.title||'Channel '+s.id)}<small>${esc(s.type)}</small></span></button>`).join('');$('tools').hidden=!S.length;
- $('cn').textContent=S.length;$('cn2').textContent=S.length+' channel'+(S.length===1?'':'s');
+$('cn2').textContent=S.length+' channel'+(S.length===1?'':'s');
  if(!S.length)msg(status(CUR)==='upcoming'?'Stream will be available shortly before the match starts.':'No stream sources are listed for this match.')};
 const subl=(m,s)=>(s==='live'?`<time data-k="l" data-t="${m.st?+m.st:''}"></time>`:s==='upcoming'?`<span>Starts <b data-k="u" data-t="${m.st?+m.st:''}"></b></span><span>${fmt(m.st)}</span>`:`<span>${m.en?fmt(m.en):'Ended'}</span>`)+(m.lg?`<span>${esc(m.lg)}</span>`:'');
 
@@ -370,11 +466,12 @@ const paint=()=>{const s=status(CUR);CUR.s0=s;$('panel').innerHTML=`${orb(CUR.fa
 
 const open=()=>{$('list').hidden=true;$('play').hidden=false;$('bk').href=location.pathname;document.title=CUR.name+' Live Stream | MatchCentral';$('robots').content='noindex, follow';
  build();paint();
- // Auto-play first stream if no server selected
- const w=Q.get('src')||'1';
- let i=S.findIndex(s=>s.id===w);
- if(i<0) i=0; 
- if(S.length) pick(i,false);
+ // Only the match being played is shown on this screen — no other/recent matches.
+ // Auto-play: with only ?id= (no server/src chosen) the FIRST stream starts automatically.
+ const w=(Q.get('src')||'').trim();
+ let i=w?S.findIndex(s=>s.id===w):-1;
+ if(i<0)i=0;
+ if(S.length)pick(i,false);
 };
 
 /* ---- boot ---- */
@@ -382,22 +479,37 @@ const refresh=async()=>{if(!await fetchEv())return;if(CUR&&CUR.id){const n=EV.fi
 document.addEventListener('DOMContentLoaded',async()=>{
  $('yr').textContent=new Date().getFullYear();
  
- // Sidebar Logic
- const sidebar = $('sidebar'), overlay = $('sidebarOverlay');
- $('openSidebar').onclick = () => { sidebar.classList.add('open'); overlay.classList.add('open'); };
- const closeMenu = () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); };
- $('closeSidebar').onclick = closeMenu;
- overlay.onclick = closeMenu;
+ // WhatsApp popup — same logic/design as the TeamRohit45 landing page.
+ // Appears on EVERY load/refresh (nothing is stored). X or JOIN closes it.
+ const waModal=$('waModal');
+ const closeWa=()=>{if(waModal)waModal.classList.remove('open')};
+ const isMobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+ $('waClose').onclick=closeWa;
+ $('waJoin').onclick=()=>{closeWa();if(isMobile){window.location.href=WA}else{window.open(WA,'_blank','noopener,noreferrer')}};
+ // Random JOIN button colour scheme, exactly like the reference popup.
+ const JOIN_SCHEMES=[
+  {bg:'linear-gradient(135deg,#43a047,#2e7d32)',color:'#fff'},
+  {bg:'linear-gradient(90deg,#1bcc26,#17b823)',color:'#fff'},
+  {bg:'linear-gradient(90deg,#11f7e0,#0dcaba)',color:'#003d36'},
+  {bg:'linear-gradient(90deg,#ffd60a,#ffb703)',color:'#3d2b00'},
+  {bg:'linear-gradient(90deg,#ff5fa2,#ff2d78)',color:'#fff'},
+  {bg:'linear-gradient(90deg,#8e5bff,#6a35ff)',color:'#fff'}
+ ];
+ const sch=JOIN_SCHEMES[Math.floor(Math.random()*JOIN_SCHEMES.length)],jb=$('waJoin');
+ if(jb){jb.style.background=sch.bg;jb.style.color=sch.color}
+ if(waModal)waModal.classList.add('open'); // show on every refresh
 
- // WhatsApp Popup Logic (Delayed by 6 seconds)
- const waModal = $('waModal');
- setTimeout(() => {
-     if (waModal) waModal.style.display = 'flex';
- }, 6000); // 6000ms = 6 seconds
-
- $('closeWa').onclick = () => { 
-     if (waModal) waModal.style.display = 'none'; 
- };
+ // Slide menu (drawer) — same behaviour as the MatchCentral landing page.
+ const drawer=$('drawer'),scrim=$('scrim'),hamburger=$('hamburger'),dclose=$('dclose'),drSearch=$('drSearch');
+ let dOpen=false,lastFocus=null;
+ const openDrawer=()=>{if(dOpen)return;dOpen=true;lastFocus=document.activeElement;try{drawer.inert=false}catch(e){}drawer.setAttribute('aria-hidden','false');hamburger.setAttribute('aria-expanded','true');drawer.classList.add('open');scrim.classList.add('open');hamburger.classList.add('active');document.documentElement.classList.add('lock');setTimeout(()=>{if(dclose)dclose.focus({preventScroll:true})},60)};
+ const closeDrawer=()=>{if(!dOpen)return;dOpen=false;drawer.classList.remove('open');scrim.classList.remove('open');hamburger.classList.remove('active');try{drawer.inert=true}catch(e){}drawer.setAttribute('aria-hidden','true');hamburger.setAttribute('aria-expanded','false');document.documentElement.classList.remove('lock');if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true})};
+ hamburger.onclick=e=>{e.stopPropagation();dOpen?closeDrawer():openDrawer()};
+ dclose.onclick=closeDrawer;scrim.onclick=closeDrawer;
+ drawer.addEventListener('click',e=>{const acc=e.target.closest('.dr-acc');if(acc){const o=acc.getAttribute('aria-expanded')!=='true';acc.setAttribute('aria-expanded',String(o));const sub=$('drSub');if(sub)sub.classList.toggle('open',o);return}if(e.target.closest('a'))closeDrawer()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDrawer();closeWa()}});
+ drawer.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const f=[...drawer.querySelectorAll('a[href],button,input')].filter(el=>el.offsetParent!==null);if(!f.length)return;const first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
+ if(drSearch)drSearch.addEventListener('input',()=>{const q=drSearch.value.trim().toLowerCase();drawer.querySelectorAll('.dr-item').forEach(it=>{if(it.classList.contains('dr-acc'))return;it.style.display=(!q||it.textContent.toLowerCase().includes(q))?'':'none'});drawer.querySelectorAll('.dr-sub-item').forEach(it=>{it.style.display=(!q||it.textContent.toLowerCase().includes(q))?'':'none'});const sub=$('drSub'),sep=drawer.querySelector('.dr-sep');if(sub)sub.style.display=q?'none':'';if(sep)sep.style.display=q?'none':''});
 
  const um=e=>{if(e.target.closest&&e.target.closest('.shaka-controls-container'))return;$('v').muted=false;['pointerdown','touchstart','keydown'].forEach(n=>document.removeEventListener(n,um,true))};['pointerdown','touchstart','keydown'].forEach(n=>document.addEventListener(n,um,true));
  $('bar').onclick=e=>{const b=e.target.closest('[data-f]');if(b){F=b.dataset.f;draw()}};
