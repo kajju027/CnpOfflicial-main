@@ -20,7 +20,7 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}[hi
 
 /* Header & Navigation */
 header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:clamp(10px,2vw,20px);min-height:60px;padding:10px var(--pad);background:rgba(5,8,13,.82);border-bottom:1px solid rgba(255,255,255,.05);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-header img{height:clamp(20px,2vw,28px);width:auto;display:block} /* Smaller Logo */
+header img{height:clamp(20px,2vw,28px);width:auto;display:block} 
 .menu-btn{background:none;border:none;color:#fff;cursor:pointer;padding:5px;display:flex;align-items:center;justify-content:center}
 
 /* Profile Button */
@@ -37,13 +37,15 @@ header img{height:clamp(20px,2vw,28px);width:auto;display:block} /* Smaller Logo
 .sidebar-overlay.open{display:block}
 
 /* WhatsApp Popup Modal */
-.wa-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);padding:20px}
-.wa-modal-content{background:linear-gradient(160deg,#111621,#0a1119);border:1px solid rgba(37,211,102,.3);border-radius:16px;padding:24px;max-width:400px;width:100%;position:relative;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.5)}
-.wa-modal-close{position:absolute;top:10px;right:15px;background:none;border:none;color:#9babb8;font-size:1.5rem;cursor:pointer}
-.wa-modal svg{width:60px;height:60px;fill:#25d366;margin:0 auto 15px}
-.wa-modal h3{margin:0 0 10px;font-size:1.2rem;font-weight:800}
-.wa-modal p{margin:0 0 20px;font-size:.85rem;color:#a8b9c6;line-height:1.4}
-.wa-modal a{display:block;width:100%;padding:12px;border-radius:10px;background:#25d366;color:#04230f;font-weight:850;font-size:.95rem;text-decoration:none}
+.wa-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);padding:20px}
+.wa-modal-content{background:linear-gradient(160deg,#111621,#0a1119);border:2px solid #25d366;border-radius:16px;padding:28px 24px;max-width:380px;width:100%;position:relative;text-align:center;box-shadow:0 20px 50px rgba(37,211,102,.15)}
+.wa-modal-close{position:absolute;top:12px;right:15px;background:none;border:none;color:#9babb8;font-size:1.6rem;cursor:pointer;transition:color .2s}
+.wa-modal-close:hover{color:#fff}
+.wa-modal svg{width:64px;height:64px;fill:#25d366;margin:0 auto 16px;filter:drop-shadow(0 0 10px rgba(37,211,102,.3))}
+.wa-modal h3{margin:0 0 10px;font-size:1.3rem;font-weight:800;color:#fff}
+.wa-modal p{margin:0 0 24px;font-size:.85rem;color:#a8b9c6;line-height:1.5}
+.wa-modal a{display:block;width:100%;padding:14px;border-radius:12px;background:#25d366;color:#04230f;font-weight:900;font-size:1rem;text-decoration:none;box-shadow:0 4px 15px rgba(37,211,102,.3);transition:transform .2s}
+.wa-modal a:hover{transform:translateY(-2px)}
 
 main{flex:1;width:100%;max-width:1280px;margin:0 auto;padding:0 var(--pad) 48px}
 .hero{padding:30px 0 6px}.kick{margin:0 0 8px;color:#8fa8b5;font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
@@ -128,20 +130,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
 </head>
 <body>
 
-<!-- GLOBAL ROUTER SCRIPT -->
-<script type='text/javascript'>
-  (function(){
-    var p=window.location.pathname;
-    var wa="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f";
-    if(p==="/"||p===""||p==="/index.html")return;
-    if(!p.includes(".html")){
-      var system=p.includes("/b/")||p.includes("/preview")||p.includes("/search");
-      if(!system)window.location.replace(wa);
-    }
-  })();
-</script>
-
-<!-- WhatsApp Popup Modal -->
+<!-- WhatsApp Popup Modal (Hidden by default, shown by JS after 6s) -->
 <div class="wa-modal" id="waModal">
     <div class="wa-modal-content">
         <button class="wa-modal-close" id="closeWa" aria-label="Close">×</button>
@@ -376,7 +365,6 @@ const build=()=>{$('srcs').innerHTML=S.map((s,i)=>`<button class="ch" type="butt
  if(!S.length)msg(status(CUR)==='upcoming'?'Stream will be available shortly before the match starts.':'No stream sources are listed for this match.')};
 const subl=(m,s)=>(s==='live'?`<time data-k="l" data-t="${m.st?+m.st:''}"></time>`:s==='upcoming'?`<span>Starts <b data-k="u" data-t="${m.st?+m.st:''}"></b></span><span>${fmt(m.st)}</span>`:`<span>${m.en?fmt(m.en):'Ended'}</span>`)+(m.lg?`<span>${esc(m.lg)}</span>`:'');
 
-// Recent Matches Removed here
 const paint=()=>{const s=status(CUR);CUR.s0=s;$('panel').innerHTML=`${orb(CUR.fa,CUR.a)}<div class="mx"><h1 class="pt">${esc(CUR.title)}</h1><div class="sub"><span class="chip s ${s}">${s==='live'?'Live':s==='ended'?'Finished':'Upcoming'}</span>${subl(CUR,s)}</div></div>${orb(CUR.fb,CUR.b)}`;
  tick()};
 
@@ -401,11 +389,15 @@ document.addEventListener('DOMContentLoaded',async()=>{
  $('closeSidebar').onclick = closeMenu;
  overlay.onclick = closeMenu;
 
- // WhatsApp Popup Logic (Shows Every Time)
+ // WhatsApp Popup Logic (Delayed by 6 seconds)
  const waModal = $('waModal');
- // It's visible by default in HTML, but just ensuring it's active
- waModal.style.display = 'flex';
- $('closeWa').onclick = () => { waModal.style.display = 'none'; };
+ setTimeout(() => {
+     if (waModal) waModal.style.display = 'flex';
+ }, 6000); // 6000ms = 6 seconds
+
+ $('closeWa').onclick = () => { 
+     if (waModal) waModal.style.display = 'none'; 
+ };
 
  const um=e=>{if(e.target.closest&&e.target.closest('.shaka-controls-container'))return;$('v').muted=false;['pointerdown','touchstart','keydown'].forEach(n=>document.removeEventListener(n,um,true))};['pointerdown','touchstart','keydown'].forEach(n=>document.addEventListener(n,um,true));
  $('bar').onclick=e=>{const b=e.target.closest('[data-f]');if(b){F=b.dataset.f;draw()}};
