@@ -3,1644 +3,215 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050505">
-<meta name="referrer" content="no-referrer">
-<title>Live Events</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#05070c"><meta name="color-scheme" content="dark"><meta name="referrer" content="no-referrer">
+<title>Live Cricket Streaming &amp; Schedule | MatchCentral</title>
+<meta name="description" content="Watch live cricket streams free on MatchCentral — live matches, upcoming fixtures and finished games with multiple HD sources. All times in IST.">
+<meta name="robots" content="index, follow, max-image-preview:large" id="robots">
+<link rel="canonical" href="https://matchcentral.in/watch/cricket/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="MatchCentral"><meta property="og:locale" content="en_IN">
+<meta property="og:url" content="https://matchcentral.in/watch/cricket/">
+<meta property="og:title" content="Live Cricket Streaming | MatchCentral"><meta property="og:description" content="Watch live cricket streams free on MatchCentral — live matches, upcoming fixtures and finished games with multiple HD sources. All times in IST.">
+<meta property="og:image" content="https://matchcentral.in/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Live Cricket Streaming | MatchCentral">
+<meta name="twitter:description" content="Watch live cricket streams free on MatchCentral — live matches, upcoming fixtures and finished games with multiple HD sources. All times in IST."><meta name="twitter:image" content="https://matchcentral.in/assets/og-image.jpg">
+<link rel="icon" href="/assets/favicon.ico"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MatchCentral","item":"https://matchcentral.in/"},{"@type":"ListItem","position":2,"name":"Cricket","item":"https://matchcentral.in/watch/cricket/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@5.2.4/dist/controls.css">
-
 <style>
-
-:root{
-  color-scheme:dark;
-  --bg:#050505;
-  --line:rgba(255,255,255,.09);
-  --orange:#f97316;
-  --green:#25d366;
-}
-
-*{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  background:var(--bg);
-  color:#f7f7f8;
-  font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-
-body{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-button{font:inherit}
-
-[hidden]{display:none!important}
-
-.site-header{
-  position:sticky;
-  top:0;
-  z-index:30;
-  min-height:58px;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  gap:12px;
-  padding:7px clamp(12px,3vw,28px);
-  background:rgba(5,5,5,.94);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--line);
-}
-
-.site-header:after{
-  content:"";
-  position:absolute;
-  bottom:-1px;
-  left:8%;
-  right:8%;
-  height:1px;
-  background:linear-gradient(90deg,transparent,rgba(249,115,22,.5),transparent);
-}
-
-.back-link{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  justify-self:start;
-  color:#b7b7be;
-  text-decoration:none;
-  font-size:.8rem;
-  font-weight:700;
-}
-.back-link:hover{color:#fff}
-.back-link svg{width:19px;height:19px}
-
-.header-center{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-width:0;
-  text-align:center;
-}
-
-.matchup{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  max-width:min(78vw,520px);
-  font-size:.78rem;
-  font-weight:800;
-  line-height:1.1;
-  color:#e6e6ec;
-  white-space:nowrap;
-  overflow:hidden;
-}
-.matchup .m-team{
-  max-width:40vw;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.matchup .m-vs{
-  font-size:.62rem;
-  font-weight:900;
-  letter-spacing:.16em;
-  color:var(--orange);
-}
-.matchup:empty{display:none}
-
-.spacer{justify-self:end;width:44px}
-
-main{
-  width:100%;
-  max-width:1280px;
-  margin:0 auto;
-  padding:clamp(10px,2vw,22px) clamp(10px,2vw,22px) 28px;
-  flex:1;
-}
-
-.landing{padding:14px 0 0}
-
-.landing-head{
-  text-align:center;
-  margin:10px 0 24px;
-}
-.landing-title{
-  margin:0 0 8px;
-  font-size:clamp(1.35rem,3.4vw,1.95rem);
-  font-weight:900;
-  letter-spacing:-.025em;
-  line-height:1.15;
-}
-.landing-title span{color:var(--orange)}
-.landing-sub{
-  margin:0;
-  font-size:.8rem;
-  color:#8a8a94;
-  font-weight:500;
-}
-
-.landing-notice{
-  max-width:620px;
-  margin:0 auto 18px;
-  padding:10px 14px;
-  background:rgba(249,115,22,.08);
-  border:1px solid rgba(249,115,22,.25);
-  border-radius:10px;
-  color:#ffa264;
-  font-size:.78rem;
-  font-weight:600;
-  text-align:center;
-}
-
-.match-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:14px;
-}
-
-.match-card{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  padding:16px;
-  background:linear-gradient(145deg,rgba(18,18,22,.96),rgba(10,10,12,.92));
-  border:1px solid var(--line);
-  border-radius:16px;
-  cursor:pointer;
-  text-align:left;
-  color:inherit;
-  font:inherit;
-  transition:transform .18s,border-color .18s,background .18s,box-shadow .18s;
-  overflow:hidden;
-  appearance:none;
-}
-.match-card:hover{
-  transform:translateY(-3px);
-  border-color:rgba(249,115,22,.5);
-  background:linear-gradient(145deg,rgba(23,22,20,.98),rgba(12,11,10,.94));
-  box-shadow:0 12px 32px rgba(0,0,0,.5);
-}
-
-.match-card[data-status="live"]{border-color:rgba(255,91,91,.28)}
-.match-card[data-status="live"]::before{
-  content:"";
-  position:absolute;
-  top:0;left:0;right:0;
-  height:2px;
-  background:linear-gradient(90deg,transparent,#ff5b5b,transparent);
-  opacity:.75;
-}
-
-.card-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-}
-
-.card-status{
-  font-size:.6rem;
-  font-weight:900;
-  letter-spacing:.12em;
-  padding:3px 8px;
-  border-radius:6px;
-  text-transform:uppercase;
-  line-height:1;
-  flex:none;
-}
-.card-status.live{
-  color:#ff5b5b;
-  background:rgba(255,91,91,.1);
-  border:1px solid rgba(255,91,91,.32);
-  animation:pulseStatus 1.8s ease-in-out infinite;
-}
-.card-status.upcoming{
-  color:#7dd3fc;
-  background:rgba(125,211,252,.1);
-  border:1px solid rgba(125,211,252,.3);
-}
-.card-status.ended{
-  color:#8b8b93;
-  background:rgba(139,139,147,.1);
-  border:1px solid rgba(139,139,147,.25);
-}
-@keyframes pulseStatus{
-  0%,100%{opacity:1}
-  50%{opacity:.55}
-}
-
-.card-time{
-  font-size:.68rem;
-  font-weight:600;
-  color:#8b8b94;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  text-align:right;
-  min-width:0;
-}
-
-.card-teams{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  gap:10px;
-}
-.card-team{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  min-width:0;
-}
-.card-team.right{justify-content:flex-end;text-align:right}
-
-.card-logo-wrap{
-  position:relative;
-  width:38px;
-  height:38px;
-  flex:none;
-}
-.card-logo{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  object-fit:cover;
-  background:#19191d;
-  border:1px solid #ffffff1a;
-  padding:2px;
-  z-index:2;
-}
-
-.card-logo-fallback{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:linear-gradient(135deg,#2a2a30,#18181c);
-  border:1px solid #ffffff14;
-  color:var(--orange);
-  font-size:.72rem;
-  font-weight:900;
-  z-index:1;
-}
-
-.card-name{
-  font-size:.86rem;
-  font-weight:800;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  letter-spacing:-.01em;
-}
-.card-vs{
-  font-size:.58rem;
-  font-weight:900;
-  letter-spacing:.14em;
-  color:var(--orange);
-  flex:none;
-}
-.card-title{
-  font-size:.72rem;
-  font-weight:600;
-  color:#8e8e97;
-  line-height:1.35;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.landing-empty{
-  max-width:520px;
-  margin:40px auto;
-  padding:32px 24px;
-  text-align:center;
-  color:#8a8a94;
-  font-size:.9rem;
-  font-weight:500;
-  background:linear-gradient(145deg,rgba(18,18,22,.96),rgba(10,10,12,.92));
-  border:1px solid var(--line);
-  border-radius:16px;
-}
-
-.player-shell{
-  position:relative;
-  width:100%;
-  aspect-ratio:16/9;
-  overflow:hidden;
-  background:#000;
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:16px;
-  box-shadow:0 24px 68px rgba(0,0,0,.62);
-}
-.player-shell video{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:contain;
-  background:#000;
-}
-
+:root{color-scheme:dark;--bg:#05070c;--s:#0a1119;--line:rgba(148,190,205,.13);--m:#8fa3b0;--aq:#57ffc4;--live:#ff2d55;--pad:clamp(12px,4vw,32px)}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:radial-gradient(800px 300px at 0 0,rgba(0,232,123,.07),transparent 70%),var(--bg);color:#f4f8fb;font:500 14px/1.4 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top)}
+a{color:inherit;text-decoration:none}[hidden]{display:none!important}button{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:10px var(--pad);background:rgba(5,7,12,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+header img{height:26px;width:auto;display:block}
+nav{margin-left:auto;display:flex;gap:4px}nav a{padding:7px 12px;border-radius:99px;font-size:.78rem;font-weight:700;color:var(--m)}nav a:hover,nav a.on{color:#031a12;background:var(--aq)}
+main{flex:1;width:100%;max-width:1200px;margin:0 auto;padding:0 var(--pad) 40px}
+.hero{padding:24px 0 8px}.hero h1{margin:0;font-size:clamp(1.7rem,4.5vw,2.5rem);font-weight:850;letter-spacing:-.045em;line-height:1.05}.hero em{color:var(--aq);font-style:normal}.hero p{margin:8px 0 0;color:var(--m);font-size:.85rem}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0 4px}
+.pill{border:1px solid var(--line);background:rgba(255,255,255,.03);padding:7px 13px;border-radius:99px;font-size:.74rem;font-weight:750;color:#a8b9c6;cursor:pointer}.pill.on{background:var(--aq);border-color:var(--aq);color:#031a12}.pill b{opacity:.65;margin-left:4px}
+.upd{margin-left:auto;font-size:.68rem;color:var(--m)}
+.note{margin:14px 0 0;padding:11px 14px;border:1px solid rgba(255,210,87,.28);background:rgba(255,210,87,.07);border-radius:12px;color:#ffd78a;font-size:.8rem;font-weight:650}
+.sec{margin-top:28px}.sec h2{display:flex;align-items:center;gap:9px;margin:0 0 12px;font-size:1.2rem;font-weight:850;letter-spacing:-.03em}.sec h2 small{color:var(--m);font-size:.72rem;font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--live);animation:pu 1.6s infinite}@keyframes pu{0%{box-shadow:0 0 0 0 rgba(255,45,85,.6)}70%,100%{box-shadow:0 0 0 9px transparent}}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+.card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--s);box-shadow:0 8px 24px rgba(0,0,0,.25);transition:transform .2s,border-color .2s}
+a.card:hover{transform:translateY(-4px);border-color:rgba(0,232,123,.45)}.card.live{border-color:rgba(255,45,85,.3)}
+.vis{position:relative;overflow:hidden;padding:12px 14px 16px;background:radial-gradient(circle at 4% 0,rgba(0,232,123,.2),transparent 40%),radial-gradient(circle at 96% 100%,rgba(56,148,255,.28),transparent 48%),linear-gradient(125deg,#0d2c22,#0c1626 58%,#10203a)}
+.vis:after{content:"";position:absolute;width:140px;height:140px;top:-70px;right:-50px;border:22px solid rgba(195,255,243,.06);border-radius:50%}
+.top{position:relative;z-index:1;display:flex;justify-content:space-between;gap:8px}
+.chip{display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:7px;font-size:.56rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;background:rgba(222,255,250,.11);border:1px solid rgba(222,255,250,.25);color:#d9faf4}
+.chip.live{background:var(--live);border-color:var(--live);color:#fff;box-shadow:0 0 16px rgba(255,45,85,.4)}.chip.upcoming{background:rgba(91,71,6,.58);border-color:rgba(247,205,56,.35);color:#f9d85c}.chip.ended{background:rgba(55,67,79,.8);border-color:transparent;color:#a6b6c2}
+.name{position:relative;z-index:1;margin:9px 0 12px;text-align:center;font-size:.8rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.teams{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:8px}
+.tm{display:grid;justify-items:center;gap:8px;min-width:0}.tm span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.76rem;font-weight:780}
+.vs{align-self:center;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(13,25,38,.6);font-size:.6rem;font-weight:900;color:#e0e7ee}
+.orb{position:relative;width:var(--o,66px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 35% 30%,#3c5a54,#122029 70%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.22),inset 0 -8px 14px rgba(0,0,0,.45),inset 0 6px 12px rgba(255,255,255,.2),0 8px 22px rgba(0,0,0,.45),0 0 18px rgba(87,255,196,.14);animation:lq 6s ease-in-out infinite,fl 5s ease-in-out infinite}
+.tm:nth-child(3) .orb{animation-delay:-2.5s}.orb b{font-size:.9rem;font-weight:900}
+.orb img{position:absolute;inset:0;width:100%;height:100%;z-index:1;object-fit:cover;padding:0}
+.orb i{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse 45% 28% at 32% 20%,rgba(255,255,255,.55),transparent 70%),radial-gradient(circle,transparent 58%,rgba(87,255,196,.2))}
+.orb i:after{content:"";position:absolute;top:0;bottom:0;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.32),transparent);animation:sh 4.5s ease-in-out infinite}
+@keyframes lq{50%{border-radius:46% 54% 52% 48%/54% 46% 54% 46%}}@keyframes fl{50%{transform:translateY(-3px)}}@keyframes sh{0%,55%{transform:translateX(-130%) skewX(-20deg)}100%{transform:translateX(330%) skewX(-20deg)}}
+.big .orb{--o:92px}.big .tm span{font-size:.9rem}
+.info{display:flex;flex-direction:column;gap:10px;padding:12px 14px 14px;flex:1}
+.lg{margin:0;color:var(--m);font-size:.7rem;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.72rem;font-weight:700;font-variant-numeric:tabular-nums}.meta small{color:var(--m);font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;margin-right:4px}
+.live .meta time{color:#ff8aa0}.meta time{color:#9bd8ff}
+.btn{margin-top:auto;display:flex;justify-content:center;align-items:center;gap:8px;min-height:46px;border-radius:13px;font-weight:850;font-size:.9rem;color:#031a12;background:linear-gradient(135deg,#57ffc4,#00e87b);box-shadow:0 6px 20px rgba(0,232,123,.28)}
+.back{display:inline-flex;margin:18px 0 12px;padding:8px 14px;border:1px solid var(--line);border-radius:99px;font-size:.78rem;font-weight:750;color:#a8b9c6}
+.shell{position:relative;aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 68px rgba(0,0,0,.6)}
+.shell video{position:absolute;inset:0;width:100%;height:100%;background:#000}
+.ov{position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;padding:18px;background:rgba(0,0,0,.6);font-weight:700;font-size:.9rem;pointer-events:none}
 .shaka-spinner-container{display:none!important}
-.shaka-controls-container button{color:#fff!important}
-
-#loader{
-  position:absolute;
-  inset:0;
-  z-index:5;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .25s ease;
-}
-#loader.show{opacity:1}
-#loader svg{width:38px;height:38px;animation:spin 1s linear infinite}
-#loader circle{fill:none;stroke-width:3.5;stroke-linecap:round}
-#loader .track{stroke:rgba(255,255,255,.14)}
-#loader .arc{stroke:var(--orange);stroke-dasharray:28 85}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.match-panel{
-  max-width:1000px;
-  margin:18px auto 0;
-  padding:18px;
-  background:linear-gradient(145deg,rgba(18,18,22,.96),rgba(10,10,12,.92));
-  border:1px solid var(--line);
-  border-radius:16px;
-}
-.match-title{
-  text-align:center;
-  margin:0 auto 16px;
-  font-size:clamp(1.05rem,2.5vw,1.42rem);
-  line-height:1.32;
-  font-weight:800;
-  letter-spacing:-.02em;
-}
-.teams{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  gap:14px;
-  max-width:620px;
-  margin:0 auto;
-}
-.team{display:flex;align-items:center;gap:11px;min-width:0}
-.team:last-child{justify-content:flex-end;text-align:right}
-.team-logo{
-  width:54px;
-  height:54px;
-  flex:none;
-  border-radius:50%;
-  object-fit:cover;
-  background:#19191d;
-  border:1px solid #ffffff1a;
-  padding:3px;
-}
-.team-name{
-  font-size:clamp(1.1rem,3vw,1.5rem);
-  font-weight:900;
-  letter-spacing:-.01em;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.vs{
-  font-size:.72rem;
-  font-weight:900;
-  letter-spacing:.16em;
-  color:var(--orange);
-}
-.match-time{
-  text-align:center;
-  margin-top:16px;
-  color:#bbbcc3;
-  font-size:.8rem;
-  font-weight:500;
-}
-.match-time b{color:#f0f0f2;font-weight:800}
-.elapsed{
-  margin-top:7px;
-  text-align:center;
-  color:#a7a7af;
-  font-size:.78rem;
-  font-weight:600;
-  font-variant-numeric:tabular-nums;
-  min-height:18px;
-}
-
-.channels{max-width:1000px;margin:20px auto 0}
-.section-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin:0 0 12px;
-  font-size:.7rem;
-  text-transform:uppercase;
-  letter-spacing:.13em;
-  font-weight:800;
-  color:#c6c6cc;
-}
-.section-title:before,
-.section-title:after{
-  content:"";
-  height:1px;
-  flex:1;
-  background:var(--line);
-}
-.section-title span{white-space:nowrap}
-
-.channel-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-}
-.channel{
-  min-height:66px;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  width:100%;
-  padding:11px 13px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:linear-gradient(145deg,#141418,#0c0c0f);
-  color:#eee;
-  text-align:left;
-  cursor:pointer;
-  transition:transform .18s,border-color .18s,background .18s;
-}
-.channel:hover{transform:translateY(-2px);border-color:#f973166e;background:#171411}
-.channel.active{border-color:var(--orange);box-shadow:0 0 0 1px #f9731624}
-
-.channel-logo{
-  width:37px;
-  height:37px;
-  flex:none;
-  display:grid;
-  place-items:center;
-  border-radius:10px;
-  background:#202025;
-  border:1px solid #ffffff12;
-  color:#ffad74;
-  font-size:.7rem;
-  font-weight:900;
-}
-.channel-copy{min-width:0;display:flex;flex-direction:column;gap:4px}
-.channel-name{
-  font-size:.82rem;
-  font-weight:800;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.channel-type{font-size:.66rem;font-weight:600;color:#92929b}
-.channel-state{
-  margin-left:auto;
-  color:#84848d;
-  font-size:.65rem;
-  font-weight:800;
-  letter-spacing:.06em;
-  white-space:nowrap;
-}
-.channel.active .channel-state{color:#ffa264}
-
-.source-note{
-  min-height:18px;
-  text-align:center;
-  color:#9999a2;
-  font-size:.72rem;
-  font-weight:500;
-  line-height:1.5;
-  margin:10px 0 0;
-}
-
-.site-footer{margin-top:auto;border-top:1px solid var(--line);background:#080809}
-.footer-body{
-  max-width:1280px;
-  margin:0 auto;
-  padding:22px clamp(16px,3vw,28px);
-  display:flex;
-  align-items:center;
-  gap:24px;
-}
-.footer-brand{min-width:180px}
-.footer-logo{
-  font-size:1.1rem;
-  font-weight:900;
-  letter-spacing:.02em;
-  color:#eee;
-}
-.footer-logo .accent{color:var(--orange)}
-.footer-tagline{
-  margin:5px 0 0;
-  color:#8d8d95;
-  font-size:.71rem;
-  font-weight:500;
-  line-height:1.5;
-}
-.footer-nav{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px 20px;
-  margin-left:auto;
-}
-.footer-nav a{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  color:#aaaab1;
-  text-decoration:none;
-  font-size:.75rem;
-  font-weight:700;
-}
-.footer-nav a:hover{color:#fff}
-.footer-nav svg{width:15px;height:15px;color:var(--orange)}
-
-.footer-bottom{border-top:1px solid rgba(255,255,255,.055)}
-.footer-bottom-inner{
-  max-width:1280px;
-  margin:0 auto;
-  padding:11px clamp(16px,3vw,28px);
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:center;
-  color:#73737b;
-  font-size:.67rem;
-  font-weight:600;
-}
-.footer-bottom p{margin:0}
-.footer-legal{display:flex;gap:15px}
-.footer-legal a{color:inherit;text-decoration:none}
-.footer-legal a:hover{color:#ccc}
-
-#waOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.84);
-  backdrop-filter:blur(15px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-  padding:20px;
-  animation:fadePopup .35s ease;
-}
-#waOverlay.show{display:flex}
-
-#waCard{
-  width:100%;
-  max-width:410px;
-  background:linear-gradient(160deg,#141519,#0b0b0e);
-  border:1px solid rgba(37,211,102,.17);
-  border-radius:23px;
-  padding:31px 25px 25px;
-  box-shadow:0 35px 85px #000c;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
-#waCard:before{
-  content:"";
-  position:absolute;
-  left:-30%;
-  top:-90px;
-  width:160%;
-  height:150px;
-  background:radial-gradient(ellipse,rgba(37,211,102,.12),transparent 68%);
-  pointer-events:none;
-}
-.wa-icon{
-  position:relative;
-  width:66px;
-  height:66px;
-  margin:0 auto 15px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,#25d366,#128c7e);
-  box-shadow:0 0 34px rgba(37,211,102,.2);
-}
-.wa-icon svg{width:34px;height:34px;fill:#fff}
-
-#waCard h2{
-  position:relative;
-  margin:0 0 8px;
-  font-size:1.34rem;
-  font-weight:800;
-}
-#waCard p{
-  position:relative;
-  margin:0 0 21px;
-  color:#a2a2aa;
-  font-size:.9rem;
-  font-weight:500;
-  line-height:1.55;
-}
-.wa-btns{position:relative;display:flex;gap:10px}
-.wa-btn{
-  flex:1;
-  min-height:45px;
-  border-radius:40px;
-  font-weight:800;
-  font-size:.82rem;
-  cursor:pointer;
-  transition:transform .18s,filter .18s;
-  border:0;
-}
-.wa-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
-#btnAlready{background:rgba(255,255,255,.06);color:#d0d0d4;border:1px solid rgba(255,255,255,.1)}
-#btnJoin{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;box-shadow:0 6px 24px rgba(37,211,102,.2)}
-
-@keyframes fadePopup{
-  from{opacity:0;transform:scale(.97) translateY(10px)}
-  to{opacity:1;transform:scale(1) translateY(0)}
-}
-
-@media(max-width:720px){
-  .match-grid{grid-template-columns:1fr}
-}
-@media(max-width:650px){
-  .site-header{min-height:50px}
-  .matchup{font-size:.72rem;gap:6px}
-  .team-logo{width:44px;height:44px}
-  .match-panel{padding:15px 12px}
-  .channel-grid{grid-template-columns:1fr}
-  .footer-body{align-items:flex-start;flex-direction:column;gap:17px}
-  .footer-nav{margin-left:0}
-  .footer-bottom-inner{align-items:flex-start;flex-direction:column}
-  .back-link span{display:none}
-}
-
-@media(prefers-reduced-motion:reduce){
-  *,*:before,*:after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    scroll-behavior:auto!important;
-    transition-duration:.01ms!important;
-  }
-}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+.src{min-width:118px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--s);cursor:pointer;text-align:left;font-weight:800;font-size:.8rem}.src small{display:block;margin-top:2px;color:var(--m);font-size:.6rem;letter-spacing:.06em}
+.src.on{border-color:var(--aq);color:var(--aq);box-shadow:inset 0 0 0 1px var(--aq)}.src.bad{border-color:var(--live);color:#ff8aa0}
+.mini{padding:8px 13px;border-radius:99px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:.72rem;font-weight:750;color:#a8b9c6;cursor:pointer}
+.panel{max-width:760px;margin-top:16px}
+.sk{height:270px;border-radius:18px;background:linear-gradient(90deg,var(--s),#101b27,var(--s));background-size:200%;animation:sk 1.4s linear infinite}@keyframes sk{to{background-position:-200%}}
+.empty{padding:40px 20px;text-align:center;color:var(--m);border:1px solid var(--line);border-radius:18px;background:var(--s)}
+footer{border-top:1px solid var(--line);background:#070b10;padding:30px var(--pad) calc(22px + env(safe-area-inset-bottom))}
+.fi{max-width:1200px;margin:0 auto;display:grid;gap:22px;grid-template-columns:1.4fr repeat(3,1fr)}
+.fi h3{margin:0 0 10px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m)}.fi a{display:block;padding:3px 0;font-size:.8rem;color:#c5d3dc}.fi a:hover{color:var(--aq)}.fi p{margin:6px 0 0;color:var(--m);font-size:.78rem}
+.fb{max-width:1200px;margin:22px auto 0;padding-top:16px;border-top:1px solid var(--line);color:#6f8190;font-size:.7rem}
+#wa{position:fixed;inset:0;z-index:99;display:none;place-items:center;padding:16px;background:rgba(0,0,0,.72)}#wa.show{display:grid}
+.wac{max-width:380px;padding:24px;text-align:center;border:1px solid var(--line);border-radius:20px;background:var(--s)}.wac h2{margin:0 0 8px;font-size:1.15rem}.wac p{margin:0 0 18px;color:var(--m);font-size:.85rem}
+.wac button{padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:transparent;font-weight:800;cursor:pointer}.wac .pri{background:#25d366;border-color:#25d366;color:#04230f}
+@media(max-width:720px){.fi{grid-template-columns:1fr 1fr}.fi>div:first-child{grid-column:1/-1}nav a:not(.on){padding:7px 9px}.upd{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
-<header class="site-header">
-  <a class="back-link" href="./" id="backLink" aria-label="Home">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
-    <span id="backLabel">Home</span>
-  </a>
-  <div class="header-center">
-    <div class="matchup" id="headerMatchup"></div>
-  </div>
-  <span class="spacer" aria-hidden="true"></span>
-</header>
-
+<header><a href="/" aria-label="MatchCentral home"><img src="/assets/logo.png" alt="MatchCentral" width="229" height="26"></a>
+<nav aria-label="Main"><a href="/">Home</a><a href="/watch/football/">Football</a><a href="/watch/cricket/">Cricket</a></nav></header>
 <main>
-
-  <section class="landing" id="viewLanding" hidden>
-    <div class="landing-head">
-      <h1 class="landing-title">Live <span>&amp;</span> Upcoming</h1>
-      <p class="landing-sub">Pick a match to start watching</p>
-    </div>
-
-    <div class="landing-notice" id="landingNotice" hidden></div>
-
-    <div class="match-grid" id="matchGrid"></div>
-
-    <p class="landing-empty" id="landingEmpty" hidden>No events available right now.</p>
-  </section>
-
-  <section id="viewPlayer" hidden>
-
-    <section class="player-shell" id="playerShell" aria-label="Video player">
-      <video id="video" playsinline webkit-playsinline autoplay muted preload="auto" aria-label="Event video"></video>
-      <div id="loader" aria-hidden="true">
-        <svg viewBox="0 0 44 44">
-          <circle class="track" cx="22" cy="22" r="18"></circle>
-          <circle class="arc" cx="22" cy="22" r="18"></circle>
-        </svg>
-      </div>
-    </section>
-
-    <section class="match-panel" aria-label="Match information">
-      <h1 class="match-title" id="matchTitle"></h1>
-      <div class="teams">
-        <div class="team">
-          <img class="team-logo" id="logoA" alt="" referrerpolicy="no-referrer">
-          <strong class="team-name" id="teamA"></strong>
-        </div>
-        <span class="vs">VS</span>
-        <div class="team">
-          <strong class="team-name" id="teamB"></strong>
-          <img class="team-logo" id="logoB" alt="" referrerpolicy="no-referrer">
-        </div>
-      </div>
-      <div class="match-time"><b>Start time:</b> <span id="startTime">—</span></div>
-      <div class="elapsed" id="elapsedText"></div>
-    </section>
-
-    <section class="channels" aria-label="Stream sources">
-      <h2 class="section-title"><span>Stream Channels <small id="channelCount"></small></span></h2>
-      <div class="channel-grid" id="channelGrid"></div>
-      <p class="source-note" id="sourceNote" aria-live="polite"></p>
-    </section>
-
-  </section>
-
+<section id="list">
+<div class="hero"><h1>Cricket <em>Live Centre</em></h1><p>Live, upcoming &amp; finished cricket matches · all times in IST</p></div>
+<div class="bar" id="bar"></div><div class="note" id="note" hidden></div>
+<div id="out"><div class="grid"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+</section>
+<section id="play" hidden>
+<a class="back" id="bk" href="./">← All matches</a>
+<div class="shell" id="shell"><video id="v" playsinline webkit-playsinline autoplay muted></video><div class="ov" id="ov"></div></div>
+<div class="row" id="srcs"></div>
+<div class="row" id="tools" hidden><button class="mini" id="rl" type="button">↻ Reload</button><button class="mini" id="px" type="button">Retry via proxy</button></div>
+<div class="card panel" id="panel"></div>
+<div class="sec" id="moreWrap" hidden><h2>More matches</h2><div class="grid" id="more"></div></div>
+</section>
 </main>
-
-<footer class="site-footer">
-  <div class="footer-body">
-    <div class="footer-brand">
-      <div class="footer-logo"><span class="accent">Sayan</span> Inc.</div>
-      <p class="footer-tagline">Watch sports, live &amp; free.<br>HD · 4K · Multi-Channel.</p>
-    </div>
-    <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>Home</a>
-      <a href="/news/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg>Sports News</a>
-      <a href="/Willow/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h16M7 15l4-5 3 2 5-7"/></svg>Willow Cricket</a>
-      <a href="/Hotstar/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg>Hotstar</a>
-    </nav>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-bottom-inner">
-      <p>© <span id="footerYear"></span> Sayan Inc. · sayan.info · All rights reserved.</p>
-      <div class="footer-legal"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/disclaimer.html">Disclaimer</a></div>
-    </div>
-  </div>
-</footer>
-
-<div id="waOverlay" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupText">
-  <div id="waCard">
-    <div class="wa-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.04 0C5.45 0 .08 5.37.08 11.96c0 2.11.55 4.17 1.59 5.99L0 24l6.24-1.63a11.9 11.9 0 0 0 5.8 1.48h.01c6.59 0 11.96-5.37 11.96-11.96 0-3.19-1.24-6.19-3.49-8.41zM12.05 21.8a9.8 9.8 0 0 1-5-1.37l-.36-.21-3.7.97.99-3.61-.24-.37a9.77 9.77 0 1 1 8.31 4.59zm5.38-7.34c-.29-.14-1.72-.85-1.98-.95-.27-.1-.46-.14-.66.14-.19.29-.76.95-.93 1.14-.17.19-.34.22-.63.08-.29-.14-1.21-.45-2.31-1.45-.85-.75-1.43-1.68-1.6-1.96-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.66-1.59-.91-2.17-.24-.57-.49-.49-.66-.5h-.56c-.19 0-.49.07-.75.36s-.98.96-.98 2.34.99 2.71 1.13 2.9c.14.19 1.95 2.98 4.72 4.18.66.29 1.18.46 1.58.59.66.21 1.26.18 1.74.11.53-.08 1.72-.7 1.96-1.37.24-.67.24-1.24.17-1.37-.07-.13-.27-.21-.56-.35z"/></svg>
-    </div>
-    <h2 id="popupTitle">Join WhatsApp Channel</h2>
-    <p id="popupText">Get live match links &amp; sports updates directly on your phone — free, instant.</p>
-    <div class="wa-btns">
-      <button class="wa-btn" id="btnAlready" type="button">Already Joined</button>
-      <button class="wa-btn" id="btnJoin" type="button">Join Now →</button>
-    </div>
-  </div>
-</div>
-
+<footer><div class="fi">
+<div><strong style="font-size:1.05rem">Match<span style="color:var(--aq)">Central</span></strong><p>Your home for live sports. Every match. One home.</p><p>Join us on Telegram for match alerts: <a style="display:inline;color:var(--aq)" href="https://t.me/Cnp_action_bot" target="_blank" rel="noopener noreferrer">t.me/Cnp_action_bot</a></p></div>
+<div><h3>Explore</h3><a href="/watch/football/">Football Stream</a><a href="/watch/cricket/">Cricket Stream</a><a href="/watch/wwsports/">World Sports</a><a href="/news/">Sports News</a></div>
+<div><h3>Watch</h3><a href="/watch/willow/">Willow Cricbuzz</a><a href="/watch/fancode/">FanCode Asia</a><a href="/watch/sliv/">Sony LIV Events</a></div>
+<div><h3>Information</h3><a href="/Feedback/">Feedback</a><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Use</a><a href="/disclaimer.html">Disclaimer</a></div>
+</div><div class="fb">Match Central brings together links to sports content available on third-party websites. We do not host streams. Third-party content belongs to its respective owners.<br>© <span id="yr"></span> Match Central. All rights reserved.</div></footer>
+<div id="wa" role="dialog" aria-modal="true" aria-labelledby="wat"><div class="wac"><h2 id="wat">Join our WhatsApp Channel</h2><p>Get live match links &amp; sports updates on your phone — free and instant.</p><div style="display:flex;gap:10px;justify-content:center"><button id="wy" type="button">Already Joined</button><button id="wj" class="pri" type="button">Join Now →</button></div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/mux.js@7/dist/mux.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@5.2.4/dist/shaka-player.ui.min.js"></script>
-
 <script>
-(function () {
-  'use strict';
-
-  var API_URL = 'https://sonujson-v5.pages.dev/Data/events/cricket.json';
-  var WHATSAPP_URL = 'https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f';
-
-  var LIVE_WINDOW_MS = 12 * 60 * 60 * 1000;
-
-  var query = new URLSearchParams(window.location.search);
-  var requestedId = (query.get('id') || '').trim();
-  var directUrl = query.get('url');
-  var directKeys = query.get('keys');
-  var directKeyId = query.get('keyId') || query.get('keyid') || query.get('kid') || '';
-  var directKey = query.get('key') || '';
-
-  var video        = document.getElementById('video');
-  var shell        = document.getElementById('playerShell');
-  var loader       = document.getElementById('loader');
-  var channelGrid  = document.getElementById('channelGrid');
-  var sourceNote   = document.getElementById('sourceNote');
-  var headerMatchup= document.getElementById('headerMatchup');
-  var backLink     = document.getElementById('backLink');
-  var backLabel    = document.getElementById('backLabel');
-
-  var viewLanding  = document.getElementById('viewLanding');
-  var viewPlayer   = document.getElementById('viewPlayer');
-  var landingNotice= document.getElementById('landingNotice');
-  var matchGrid    = document.getElementById('matchGrid');
-  var landingEmpty = document.getElementById('landingEmpty');
-
-  var player = null;
-  var overlay = null;
-  var playerPromise = null;
-  var loadToken = 0;
-  var clockTimer = null;
-  var activeHeaders = null;
-  var activeOrigin = ''
-
-  function byId(id) { return document.getElementById(id); }
-
-  function setText(id, value) {
-    var el = byId(id);
-    if (el) el.textContent = value == null ? '' : String(value);
-  }
-
-  function setLoader(on) {
-    if (loader) loader.classList.toggle('show', !!on);
-  }
-
-  function normalizeHex(value) {
-    var hex = String(value == null ? '' : value).replace(/[^0-9a-fA-F]/g, '').toLowerCase();
-    return hex.length === 32 ? hex : '';
-  }
-
-  function parseIST(value) {
-    if (!value) return null;
-    var raw = String(value).trim().replace(/\s*IST\s*$/i, '').replace(/\s+/, 'T');
-    if (!raw) return null;
-    var hasZone = /[zZ]$|[+-]\d{2}:?\d{2}$/.test(raw);
-    var date = new Date(hasZone ? raw : raw + '+05:30');
-    return isNaN(date.getTime()) ? null : date;
-  }
-
-  function fmtDuration(seconds) {
-    var n = Math.max(0, Math.floor(seconds));
-    var h = String(Math.floor(n / 3600)).padStart(2, '0');
-    var m = String(Math.floor((n % 3600) / 60)).padStart(2, '0');
-    var s = String(n % 60).padStart(2, '0');
-    return h + ':' + m + ':' + s;
-  }
-
-  function fmtMatchTime(value) {
-    var d = parseIST(value);
-    if (!d) return value || 'TBD';
-    try {
-      return d.toLocaleString('en-IN', {
-        day: 'numeric', month: 'short',
-        hour: 'numeric', minute: '2-digit',
-        hour12: true, timeZone: 'Asia/Kolkata'
-      });
-    } catch (e) {
-      return value;
-    }
-  }
-
-  function startClock(startValue) {
-    if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
-    var el = byId('elapsedText');
-    var start = parseIST(startValue);
-    if (!el || !start) { setText('elapsedText', ''); return; }
-
-    function tick() {
-      var diff = Math.floor((Date.now() - start.getTime()) / 1000);
-      if (diff < 0) el.textContent = 'Starts in ' + fmtDuration(-diff);
-      else el.textContent = 'Elapsed since start: ' + fmtDuration(diff);
-    }
-    tick();
-    clockTimer = setInterval(tick, 1000);
-  }
-
-  function setLogo(id, src, name) {
-    var img = byId(id);
-    if (!img) return;
-    img.alt = name || 'Team logo';
-    img.onerror = function () { img.style.visibility = 'hidden'; };
-    if (src) {
-      img.style.visibility = 'visible';
-      img.src = src;
-    } else {
-      img.style.visibility = 'hidden';
-      img.removeAttribute('src');
-    }
-  }
-
-  function renderHeaderMatchup(teamA, teamB) {
-    if (!headerMatchup) return;
-    headerMatchup.replaceChildren();
-    if (!teamA || !teamB) return;
-
-    var a = document.createElement('span');
-    a.className = 'm-team';
-    a.textContent = teamA;
-
-    var vs = document.createElement('span');
-    vs.className = 'm-vs';
-    vs.textContent = 'VS';
-
-    var b = document.createElement('span');
-    b.className = 'm-team';
-    b.textContent = teamB;
-
-    headerMatchup.append(a, vs, b);
-  }
-
-  function detectMime(url) {
-    var u = String(url || '').toLowerCase();
-    if (/\.m3u8(?:[?#]|$)/.test(u)) return 'application/x-mpegURL';
-    if (/\.mpd(?:[?#]|$)/.test(u)) return 'application/dash+xml';
-    return null;
-  }
-
-  function getOrigin(url) {
-    try { return new URL(url, window.location.href).origin; }
-    catch (e) { return ''; }
-  }
-
-  function parseStream(source, index) {
-    if (!source) return null;
-    var item = typeof source === 'string' ? { url: source } : source;
-    var raw = item.url || item.link || item.src || item.streamUrl || item.stream ||
-      item.mpd || item.mpdUrl || item.m3u8 || item.hls || item.file || item.manifest || item.playbackUrl || '';
-    var url = String(raw || '').trim();
-    if (!url) return null;
-
-    if (/^https?%3a/i.test(url)) {
-      try { url = decodeURIComponent(url); } catch (error) {}
-    }
-
-    var pair = '';
-    if (url.indexOf('|') !== -1) {
-      var pieces = url.split('|');
-      url = pieces.shift().trim();
-      pair = pieces.join('|').trim();
-    }
-
-    var nestedKeys = item.keys && typeof item.keys === 'object' ? item.keys : {};
-    var rawKeyId = item.keyId || item.keyID || item.keyid || item.key_id || item.kid || item.kidId || item.kid_id ||
-      nestedKeys.keyId || nestedKeys.keyid || nestedKeys.kid || '';
-    var rawKey = item.clearKey || item.decryptionKey || item.decryptionkey || item.licenseKey ||
-      nestedKeys.key || nestedKeys.clearKey || item.key || '';
-
-    if (!pair && typeof item.keys === 'string') pair = item.keys.trim();
-    if (!pair && typeof rawKey === 'string' && rawKey.indexOf(':') !== -1) pair = rawKey.trim();
-
-    var keyId = '';
-    var key = '';
-    if (pair) {
-      var separator = pair.indexOf(':') !== -1 ? ':' : '=';
-      var keyParts = pair.split(separator);
-      if (keyParts.length >= 2) {
-        keyId = normalizeHex(keyParts[0]);
-        key = normalizeHex(keyParts[1]);
-      }
-    } else {
-      keyId = normalizeHex(rawKeyId);
-      key = normalizeHex(rawKey);
-    }
-
-    var headers = {};
-    var hasHeaders = false;
-    if (item.headers && typeof item.headers === 'object') {
-      Object.keys(item.headers).forEach(function (name) {
-        headers[name] = item.headers[name];
-        hasHeaders = true;
-      });
-    }
-    if (item.referer) { headers.Referer = item.referer; hasHeaders = true; }
-    if (item.referrer) { headers.Referer = item.referrer; hasHeaders = true; }
-
-    var typeLabel = typeof item.type === 'string' && item.type ? item.type.toUpperCase() : '';
-    if (!typeLabel) {
-      var mime = detectMime(url);
-      if (mime === 'application/x-mpegURL') typeLabel = 'HLS';
-      else if (mime === 'application/dash+xml') typeLabel = 'DASH';
-      else if (keyId) typeLabel = 'DRM';
-      else typeLabel = 'STREAM';
-    }
-
-    return {
-      title: item.title || item.name || item.label || ('Stream ' + (index + 1)),
-      type: typeLabel,
-      url: url,
-      keyId: keyId,
-      key: key,
-      headers: hasHeaders ? headers : null
-    };
-  }
-  function collectSources(event) {
-    var groups = [event.dashStreams, event.streams, event.sources, event.links];
-    if (event.event) {
-      groups.push(event.event.dashStreams, event.event.streams,
-                  event.event.sources, event.event.links);
-    }
-
-    var list = [];
-    groups.forEach(function (group) {
-      if (!Array.isArray(group)) return;
-      group.forEach(function (source) {
-        var info = parseStream(source, list.length);
-        if (info) list.push(info);
-      });
-    });
-
-    if (!list.length) {
-      var single = event.stream || event.url || event.link || event.mpd ||
-                   event.m3u8 || event.streamUrl || event.playbackUrl;
-      if (!single && event.event) {
-        single = event.event.stream || event.event.url || event.event.link ||
-                 event.event.mpd || event.event.m3u8 || event.event.streamUrl;
-      }
-      if (single) {
-        var info = parseStream(single, 0);
-        if (info) list.push(info);
-      }
-    }
-    return list;
-  }
-
-  function getMatchStatus(item) {
-    var match = item.event || {};
-    var value = match.status || item.status || '';
-    if (value) {
-      var status = String(value).toLowerCase();
-      if (status.indexOf('live') !== -1 || status.indexOf('progress') !== -1) return 'live';
-      if (status.indexOf('upcoming') !== -1 || status.indexOf('scheduled') !== -1) return 'upcoming';
-      if (status.indexOf('ended') !== -1 || status.indexOf('finished') !== -1 || status.indexOf('complete') !== -1) return 'ended';
-    }
-    var start = parseIST(match.startTimeIST);
-    var end = parseIST(match.endTimeIST);
-    if (!start) return 'upcoming';
-    if (Date.now() < start.getTime()) return 'upcoming';
-    if (end && Date.now() >= end.getTime()) return 'ended';
-    if (Date.now() - start.getTime() < LIVE_WINDOW_MS) return 'live';
-    return 'ended';
-  }
-
-  
-  function waitForLayout(el) {
-    return new Promise(function (resolve) {
-      var tries = 0;
-      (function check() {
-        if (!el || el.clientWidth > 0 || tries >= 40) return resolve();
-        tries += 1;
-        requestAnimationFrame(check);
-      })();
-    });
-  }
-
-  function onPlayerError(event) {
-    var detail = (event && event.detail) || {};
-    var code = detail.code ? ' (code ' + detail.code + ')' : '';
-    setLoader(false);
-    sourceNote.textContent = 'Playback error' + code + ': ' +
-      (detail.message || 'the stream could not be played.');
-  }
-
-  function ensurePlayer() {
-    if (playerPromise) return playerPromise;
-
-    playerPromise = waitForLayout(shell)
-      .then(function () {
-        if (!window.shaka) throw new Error('Shaka Player library did not load.');
-
-        shaka.polyfill.installAll();
-        if (!shaka.Player.isBrowserSupported()) {
-          throw new Error('This browser does not support Shaka Player.');
-        }
-
-        player = new shaka.Player();
-        player.addEventListener('error', onPlayerError);
-
-        try {
-          var net = player.getNetworkingEngine();
-          if (net) {
-            net.registerRequestFilter(function (type, request) {
-              if (!activeHeaders || !activeOrigin) return;
-              var uri = (request.uris && request.uris[0]) || '';
-              if (uri.indexOf(activeOrigin) !== 0) return;
-              Object.keys(activeHeaders).forEach(function (k) {
-                request.headers[k] = activeHeaders[k];
-              });
-            });
-          }
-        } catch (e) {  }
-
-        return player.attach(video);
-      })
-      .then(function () {
-        
-        try {
-          overlay = new shaka.ui.Overlay(player, shell, video);
-          overlay.configure({
-            controlPanelElements: [
-              'play_pause',
-              'mute',
-              'volume',
-              'time_and_duration',
-              'spacer',
-              'quality',
-              'picture_in_picture',
-              'fullscreen',
-              'overflow_menu'
-            ],
-            seekBarColors: {
-              base: '#828282',
-              buffered: '#ffc336',
-              played: '#1fc7ff'
-            }
-          });
-        } catch (e) {
-          
-          video.controls = true;
-        }
-        return player;
-      });
-
-    playerPromise.catch(function () { playerPromise = null; });
-
-    return playerPromise;
-  }
-
-  function playSource(info, button) {
-    if (!info || !info.url) return Promise.resolve();
-
-    var token = ++loadToken;
-    setLoader(true);
-    sourceNote.textContent = '';
-    activeHeaders = info.headers || null;
-    activeOrigin = getOrigin(info.url);
-
-    return ensurePlayer()
-      .then(function () {
-        if (token !== loadToken) return null;
-
-        var clearKeys = {};
-        if (info.keyId && info.key) clearKeys[info.keyId] = info.key;
-
-        player.configure({
-          drm: { clearKeys: clearKeys, servers: {} },
-          manifest: {
-            defaultPresentationDelay: 4,
-            ignoreTextStreamFailures: true,
-            retryParameters: {
-              maxAttempts: 4,
-              baseDelay: 500,
-              backoffFactor: 2,
-              fuzzFactor: 0.5,
-              timeout: 30000
-            }
-          },
-          streaming: {
-            lowLatencyMode: false,
-            bufferingGoal: 10,
-            rebufferingGoal: 2,
-            bufferBehind: 20,
-            retryParameters: {
-              maxAttempts: 4,
-              baseDelay: 500,
-              backoffFactor: 2,
-              fuzzFactor: 0.5,
-              timeout: 30000
-            }
-          },
-          abr: {
-            enabled: true,
-            defaultBandwidthEstimate: 2000000,
-            switchInterval: 4
-          }
-        });
-
-        var mime = detectMime(info.url);
-        if (mime) return player.load(info.url, null, mime);
-        return player.load(info.url);
-      })
-      .then(function (result) {
-        if (result === null || token !== loadToken) return;
-
-        setLoader(false);
-        if (button) {
-          var state = button.querySelector('.channel-state');
-          if (state) state.textContent = 'PLAYING';
-        }
-
-        var attempt = video.play();
-        if (attempt && attempt.catch) attempt.catch(function () {});
-      })
-      .catch(function (error) {
-        if (token !== loadToken) return;
-
-        setLoader(false);
-
-        if (error && error.code === 7000) return;
-
-        if (button) {
-          var state = button.querySelector('.channel-state');
-          if (state) state.textContent = 'FAILED';
-        }
-        sourceNote.textContent = 'Unable to play this source: ' +
-          ((error && error.message) || 'unknown error') + '.';
-      });
-  }
-
-  function activateChannel(button, list, index) {
-    var buttons = channelGrid.querySelectorAll('.channel');
-
-    Array.prototype.forEach.call(buttons, function (el) {
-      el.classList.remove('active');
-      var state = el.querySelector('.channel-state');
-      if (state) state.textContent = 'SELECT';
-    });
-
-    button.classList.add('active');
-    var state = button.querySelector('.channel-state');
-    if (state) state.textContent = 'LOADING';
-
-    playSource(list[index], button);
-  }
-
-  function renderChannels(list) {
-    setText('channelCount', list.length ? '(' + list.length + ')' : '');
-    channelGrid.replaceChildren();
-
-    if (!list.length) {
-      sourceNote.textContent = 'No stream sources are listed for this event.';
-      return;
-    }
-    sourceNote.textContent = '';
-
-    var buttons = [];
-
-    list.forEach(function (info, index) {
-      var button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'channel';
-
-      var badge = document.createElement('span');
-      badge.className = 'channel-logo';
-      badge.textContent = String(index + 1);
-
-      var copy = document.createElement('span');
-      copy.className = 'channel-copy';
-
-      var name = document.createElement('span');
-      name.className = 'channel-name';
-      name.textContent = info.title;
-
-      var kind = document.createElement('span');
-      kind.className = 'channel-type';
-      kind.textContent = info.type;
-
-      var state = document.createElement('span');
-      state.className = 'channel-state';
-      state.textContent = 'SELECT';
-
-      copy.append(name, kind);
-      button.append(badge, copy, state);
-      channelGrid.append(button);
-      buttons.push(button);
-
-      button.addEventListener('click', function () {
-        activateChannel(button, list, index);
-      });
-    });
-
-    if (buttons.length) activateChannel(buttons[0], list, 0);
-  }
-
-  function renderEvent(item) {
-    var match = item.event || {};
-    var teamA = match.teamA || '';
-    var teamB = match.teamB || '';
-    var title = match.name || item.title ||
-      (teamA && teamB ? teamA + ' vs ' + teamB : 'Live Event');
-
-    setText('matchTitle', title);
-    setText('teamA', teamA);
-    setText('teamB', teamB);
-    setText('startTime', match.startTimeIST || '—');
-    setLogo('logoA', match.teamAFlag, teamA);
-    setLogo('logoB', match.teamBFlag, teamB);
-    renderHeaderMatchup(teamA, teamB);
-    startClock(match.startTimeIST);
-
-    document.title = title;
-
-    renderChannels(collectSources(item));
-  }
-
-  function showError(title, message) {
-    if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
-    setText('matchTitle', title);
-    setText('teamA', '');
-    setText('teamB', '');
-    setText('startTime', '—');
-    setText('elapsedText', '');
-    setText('channelCount', '');
-    setLogo('logoA', '', 'Team A');
-    setLogo('logoB', '', 'Team B');
-    renderHeaderMatchup('', '');
-    channelGrid.replaceChildren();
-    sourceNote.textContent = message;
-    setLoader(false);
-    if (player) {
-      try { player.unload(); } catch (e) {}
-    }
-  }
-
-  function setBackLink(mode) {
-    if (mode === 'player') {
-      backLink.href = window.location.pathname;
-      backLabel.textContent = 'All Matches';
-      backLink.setAttribute('aria-label', 'All Matches');
-    } else {
-      backLink.href = './';
-      backLabel.textContent = 'Home';
-      backLink.setAttribute('aria-label', 'Home');
-    }
-  }
-
-  function showLandingView(notice) {
-    viewLanding.hidden = false;
-    viewPlayer.hidden = true;
-    setBackLink('landing');
-
-    headerMatchup.replaceChildren();
-    var span = document.createElement('span');
-    span.className = 'm-team';
-    span.textContent = 'All Matches';
-    headerMatchup.append(span);
-
-    if (notice) {
-      landingNotice.textContent = notice;
-      landingNotice.hidden = false;
-    } else {
-      landingNotice.hidden = true;
-    }
-  }
-
-  function showPlayerView() {
-    viewLanding.hidden = true;
-    viewPlayer.hidden = false;
-    setBackLink('player');
-  }
-
-  function fetchEvents() {
-    return fetch(API_URL, { cache: 'no-store' })
-      .then(function (response) {
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        return response.json();
-      })
-      .then(function (data) {
-        if (!data || !Array.isArray(data.events)) throw new Error('Invalid API response');
-        return data.events;
-      });
-  }
-
-  function getInitials(name) {
-    if (!name) return '?';
-    var parts = String(name).trim().split(/\s+/).filter(Boolean);
-    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
-    return parts[0].substring(0, 3).toUpperCase();
-  }
-
-  function createLogoWrap(src, name) {
-    var wrap = document.createElement('div');
-    wrap.className = 'card-logo-wrap';
-
-    var fallback = document.createElement('span');
-    fallback.className = 'card-logo-fallback';
-    fallback.textContent = getInitials(name);
-    wrap.append(fallback);
-
-    if (src) {
-      var img = document.createElement('img');
-      img.className = 'card-logo';
-      img.alt = name || 'Team logo';
-      img.loading = 'lazy';
-      img.referrerPolicy = 'no-referrer';
-      img.onerror = function () { img.remove(); };
-      img.src = src;
-      wrap.append(img);
-    }
-    return wrap;
-  }
-
-  function createMatchCard(item) {
-    var match = item.event || {};
-    var teamA = match.teamA || '';
-    var teamB = match.teamB || '';
-    var title = match.name || item.title ||
-      (teamA && teamB ? teamA + ' vs ' + teamB : 'Live Event');
-
-    var status = getMatchStatus(item);
-    var statusLabel = status === 'live' ? 'LIVE'
-                    : status === 'ended' ? 'ENDED'
-                    : 'UPCOMING';
-
-    var card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'match-card';
-    card.dataset.status = status;
-
-    var top = document.createElement('div');
-    top.className = 'card-top';
-
-    var badge = document.createElement('span');
-    badge.className = 'card-status ' + status;
-    badge.textContent = statusLabel;
-
-    var time = document.createElement('span');
-    time.className = 'card-time';
-    time.textContent = fmtMatchTime(match.startTimeIST);
-
-    top.append(badge, time);
-
-    var teams = document.createElement('div');
-    teams.className = 'card-teams';
-
-    var leftTeam = document.createElement('div');
-    leftTeam.className = 'card-team';
-    leftTeam.append(createLogoWrap(match.teamAFlag, teamA));
-
-    var leftName = document.createElement('span');
-    leftName.className = 'card-name';
-    leftName.textContent = teamA || 'TBD';
-    leftTeam.append(leftName);
-
-    var vs = document.createElement('span');
-    vs.className = 'card-vs';
-    vs.textContent = 'VS';
-
-    var rightTeam = document.createElement('div');
-    rightTeam.className = 'card-team right';
-
-    var rightName = document.createElement('span');
-    rightName.className = 'card-name';
-    rightName.textContent = teamB || 'TBD';
-
-    rightTeam.append(rightName);
-    rightTeam.append(createLogoWrap(match.teamBFlag, teamB));
-
-    teams.append(leftTeam, vs, rightTeam);
-
-    card.append(top, teams);
-
-    if (title && title !== teamA + ' vs ' + teamB) {
-      var titleEl = document.createElement('div');
-      titleEl.className = 'card-title';
-      titleEl.textContent = title;
-      card.append(titleEl);
-    }
-
-    card.addEventListener('click', function () {
-      window.location.href = '?id=' + encodeURIComponent(item.id);
-    });
-
-    return card;
-  }
-
-  function sortEvents(events) {
-    var order = { live: 0, upcoming: 1, ended: 2 };
-
-    return events.slice().sort(function (a, b) {
-      var sa = getMatchStatus(a);
-      var sb = getMatchStatus(b);
-      if (order[sa] !== order[sb]) return order[sa] - order[sb];
-
-      var ta = parseIST((a.event || {}).startTimeIST);
-      var tb = parseIST((b.event || {}).startTimeIST);
-
-      if (!ta && !tb) return 0;
-      if (!ta) return 1;
-      if (!tb) return -1;
-
-      if (sa === 'live' || sa === 'ended') return tb - ta;
-      return ta - tb;
-    });
-  }
-
-  function renderLanding(events) {
-    matchGrid.replaceChildren();
-
-    if (!events || !events.length) {
-      landingEmpty.hidden = false;
-      landingEmpty.textContent = 'No events available right now.';
-      return;
-    }
-    landingEmpty.hidden = true;
-
-    sortEvents(events).forEach(function (item) {
-      if (!item) return;
-      matchGrid.append(createMatchCard(item));
-    });
-  }
-
-  function loadLanding(notice) {
-    showLandingView(notice);
-    return fetchEvents()
-      .then(function (events) { renderLanding(events); })
-      .catch(function () {
-        matchGrid.replaceChildren();
-        landingEmpty.hidden = false;
-        landingEmpty.textContent = 'Unable to load events. Please try again later.';
-      });
-  }
-
-  function loadPlayerById(id) {
-    return fetchEvents()
-      .then(function (events) {
-        var selected = null;
-        for (var i = 0; i < events.length; i++) {
-          if (String(events[i] && events[i].id) === id) { selected = events[i]; break; }
-        }
-
-        if (!selected) {
-          showLandingView('Event ' + id + ' was not found. Showing all matches.');
-          renderLanding(events);
-          return;
-        }
-
-        showPlayerView();
-        renderEvent(selected);
-      })
-      .catch(function () {
-        showLandingView('Unable to load events. Please try again later.');
-        matchGrid.replaceChildren();
-        landingEmpty.hidden = false;
-        landingEmpty.textContent = 'Unable to load events. Please try again later.';
-      });
-  }
-
-  function initPopup() {
-    var popup = byId('waOverlay');
-    if (!popup) return;
-
-    setTimeout(function () { popup.classList.add('show'); }, 2000);
-
-    var already = byId('btnAlready');
-    var join = byId('btnJoin');
-
-    if (already) {
-      already.addEventListener('click', function () { popup.classList.remove('show'); });
-    }
-    if (join) {
-      join.addEventListener('click', function () {
-        window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer');
-        popup.classList.remove('show');
-      });
-    }
-  }
-
-  function bindUnmute() {
-    function onGesture(event) {
-      var target = event && event.target;
-      if (target && target.closest && target.closest('.shaka-controls-container')) return;
-
-      video.muted = false;
-
-      ['pointerdown', 'touchstart', 'keydown'].forEach(function (name) {
-        document.removeEventListener(name, onGesture, true);
-      });
-    }
-
-    ['pointerdown', 'touchstart', 'keydown'].forEach(function (name) {
-      document.addEventListener(name, onGesture, true);
-    });
-  }
-
-  function boot() {
-    setText('footerYear', String(new Date().getFullYear()));
-    initPopup();
-    bindUnmute();
-
-    if (directUrl) {
-      showPlayerView();
-      renderHeaderMatchup('Direct', 'Stream');
-
-      var directInfo = parseStream({ url: directUrl, keys: directKeys || '', keyId: directKeyId, key: directKey }, 0);
-      if (directInfo) {
-        setText('matchTitle', 'Direct stream');
-        renderChannels([directInfo]);
-      } else {
-        showError('Invalid stream url', 'The url parameter could not be parsed.');
-      }
-      return;
-    }
-
-    if (!requestedId) {
-      loadLanding();
-      return;
-    }
-
-    if (!/^[1-9]\d*$/.test(requestedId)) {
-      loadLanding('Invalid event ID. Showing all matches.');
-      return;
-    }
-
-    loadPlayerById(requestedId);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
+(()=>{'use strict';
+/* ---- settings ---- */
+const SPORT='cricket',API='https://sonujson-v5.pages.dev/Data/events/cricket.json',
+PROXY='https://stream-through-spark.lovable.app/api/proxy?u=',PROXY_ENCODE=false, /* proxy prefix: change anytime */
+WA='https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f',POPUP_ONCE=true,LIVE_MAX=432e5,EVERY=6e4;
+const $=i=>document.getElementById(i),Q=new URLSearchParams(location.search),pad=n=>String(n).padStart(2,'0');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safe=u=>{try{const p=new URL(String(u||'').trim());return/^https?:$/.test(p.protocol)?p.href:''}catch(e){return''}};
+const ini=n=>String(n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'?';
+const dur=ms=>{const s=Math.max(0,Math.floor(ms/1e3));return pad(Math.floor(s/3600))+'h '+pad(Math.floor(s%3600/60))+'m '+pad(s%60)+'s'};
+const cd=ms=>ms>=864e5?Math.floor(ms/864e5)+'d '+Math.floor(ms%864e5/36e5)+'h':dur(ms);
+const parse=(v,z)=>{const t=String(v||'').trim().replace(/\s*IST$/i,'').replace(' ','T');if(!t)return null;const d=new Date(/Z$|[+-]\d\d:?\d\d$/i.test(t)?t:t+z);return isNaN(d)?null:d};
+const day=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata'}).format(d);
+const fmt=d=>{if(!d)return'Time TBC';const t=day(d),l=t===day(new Date())?'Today':t===day(new Date(Date.now()+864e5))?'Tomorrow':d.toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short'});return l+' · '+d.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase()+' IST'};
+
+/* ---- data ---- */
+const hex=v=>{const h=String(v||'').replace(/[^0-9a-f]/gi,'').toLowerCase();return h.length===32?h:''};
+const parseS=(s,i)=>{if(typeof s==='string')s={link:s};if(!s)return null;let u=String(s.link||s.url||s.src||s.stream||s.mpd||s.m3u8||'').trim();if(!u)return null;
+ let pr='';if(u.includes('|')){const p=u.split('|');u=p.shift().trim();pr=p.join('|')}
+ const k=s.keys&&typeof s.keys==='object'?s.keys:{};let kid=hex(s.keyId||s.kid||k.keyId||k.kid),key=hex(s.key||s.clearKey||k.key);
+ const kp=typeof s.keys==='string'?s.keys:typeof s.key==='string'&&s.key.includes(':')?s.key:pr.includes(':')&&hex(pr.split(':')[0])?pr:'';
+ if(kp){const x=kp.split(':');kid=hex(x[0]);key=hex(x[1])}
+ const h=Object.assign({},s.headers&&typeof s.headers==='object'?s.headers:{});if(s.referer||s.referrer)h.Referer=s.referer||s.referrer;
+ return{id:String(s.id||i+1),title:s.title||s.name||'',type:String(s.type||(/\.m3u8/i.test(u)?'HLS':/\.mpd/i.test(u)?'DASH':'STREAM')).toUpperCase(),url:u,kid,key,h:Object.keys(h).length?h:null}};
+const streamsOf=m=>{const r=m.raw,e=r.event||{},out=[];[r.streams,r.dashStreams,r.sources,r.links,e.streams].forEach(g=>Array.isArray(g)&&g.forEach(x=>{const s=parseS(x,out.length);if(s)out.push(s)}));return out};
+const norm=i=>{const e=i.event||{};return{raw:i,id:String(i.id||i.matchId||i.match_id||''),title:i.title||e.name||'',name:e.name||i.title||'Live Match',cat:e.category||'Cricket',
+ a:e.teamA||'Team A',b:e.teamB||'Team B',fa:safe(e.teamAFlag||e.teamALogo||e.teamAImage),fb:safe(e.teamBFlag||e.teamBLogo||e.teamBImage),
+ st:parse(e.startTimeIST||i.startTime||i.start_time,'+05:30')||parse(e.startTimeUTC,'Z'),en:parse(e.endTimeIST,'+05:30')||parse(e.endTimeUTC,'Z'),js:String(i.status||e.status||'').toLowerCase()}};
+const status=(m,n=Date.now())=>{const s=m.st&&+m.st,e=m.en&&+m.en;if(/end|finish|complete/.test(m.js))return'ended';if(e&&n>=e)return'ended';
+ if(s&&n>=s)return!e&&n-s>LIVE_MAX?'ended':'live';return/live|progress/.test(m.js)?'live':'upcoming'};
+let EV=[],CUR=null,S=[],CI=0;
+const getRaw=()=>{try{return JSON.parse(localStorage.getItem('mc:'+SPORT)||'[]')}catch(e){return[]}};
+const setEv=a=>{EV=a.filter(x=>x&&typeof x==='object').map(norm).filter(m=>m.id)};
+const fetchEv=async()=>{try{const r=await fetch(API,{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json(),a=Array.isArray(d)?d:d.events||d.matches||(d.data&&d.data.events)||[];
+ setEv(a);try{localStorage.setItem('mc:'+SPORT,JSON.stringify(a))}catch(e){}return true}catch(e){return false}};
+
+/* ---- markup ---- */
+const orb=(u,n)=>`<div class="orb"><b>${esc(ini(n))}</b>${u?`<img src="${esc(u)}" alt="${esc(n)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:''}<i></i></div>`;
+const vis=(m,s,big)=>`<div class="vis${big?' big':''}"><div class="top"><span class="chip">${esc(m.cat)}</span><span class="chip ${s}">${s==='live'?'● Live':s==='ended'?'Finished':'Upcoming'}</span></div><div class="name">${esc(m.name)}</div><div class="teams"><div class="tm">${orb(m.fa,m.a)}<span>${esc(m.a)}</span></div><div class="vs">VS</div><div class="tm">${orb(m.fb,m.b)}<span>${esc(m.b)}</span></div></div></div>`;
+const meta=(m,s)=>{const t=m.st?+m.st:'';return s==='live'?`<span><small>Live for</small><time data-k="l" data-t="${t}">${t?dur(Date.now()-t):'Now'}</time></span><span>${fmt(m.st)}</span>`
+ :s==='upcoming'?`<span><small>Starts</small>${fmt(m.st)}</span><time data-k="u" data-t="${t}"></time>`
+ :`<span><small>Finished</small>${m.en?fmt(m.en):''}</span><span>${m.st&&m.en?'Ran '+dur(m.en-m.st).slice(0,7):''}</span>`};
+const card=(m,s)=>{m.s0=s;return`<a class="card ${s}" href="?id=${encodeURIComponent(m.id)}&amp;src=1">${vis(m,s)}<div class="info"><p class="lg">${esc(m.title)}</p><div class="meta">${meta(m,s)}</div>${s==='live'?'<span class="btn">▶ Watch Now</span>':''}</div></a>`};
+const tick=()=>{const n=Date.now();document.querySelectorAll('[data-k]').forEach(e=>{const t=+e.dataset.t;if(!t)return;e.textContent=e.dataset.k==='l'?dur(n-t):t>n?'in '+cd(t-n):'starting…'})};
+
+/* ---- list ---- */
+let F='all';
+const LBL={live:'Live Now',upcoming:'Upcoming',ended:'Finished'};
+const group=(list)=>{const n=Date.now(),g={live:[],upcoming:[],ended:[]},k=m=>m.st?+m.st:9e15;list.forEach(m=>g[status(m,n)].push(m));
+ g.live.sort((a,b)=>k(a)-k(b));g.upcoming.sort((a,b)=>k(a)-k(b));g.ended.sort((a,b)=>k(b)-k(a));return g};
+const draw=()=>{if(CUR)return paint();const g=group(EV),c=x=>g[x].length;
+ $('bar').innerHTML=[['all','All',EV.length],['live','Live',c('live')],['upcoming','Upcoming',c('upcoming')],['ended','Finished',c('ended')]].map(x=>`<button type="button" class="pill${F===x[0]?' on':''}" data-f="${x[0]}">${x[1]}<b>${x[2]}</b></button>`).join('')+`<span class="upd">Updated ${new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase()} IST</span>`;
+ const nx=g.upcoming[0],nt=$('note');nt.hidden=!(!c('live')&&nx&&F!=='ended');if(!nt.hidden)nt.textContent='No live match right now. Next: '+nx.a+' vs '+nx.b+(nx.st?' · starts in '+cd(nx.st-Date.now()):'');
+ const h=['live','upcoming','ended'].filter(k=>(F==='all'||F===k)&&c(k)).map(k=>`<div class="sec"><h2>${k==='live'?'<i class="dot"></i>':''}${LBL[k]} <small>${c(k)} match${c(k)>1?'es':''}</small></h2><div class="grid">${g[k].map(m=>card(m,k)).join('')}</div></div>`).join('');
+ $('out').innerHTML=h||'<div class="empty" style="margin-top:20px">No matches in this section right now.</div>';tick()};
+
+/* ---- player ---- */
+let P=null,tok=0,hdr=null,org='';
+const msg=t=>{$('ov').textContent=t||'';$('ov').hidden=!t};
+const ensure=async()=>{if(P)return P;await new Promise(r=>{let n=0;(function c(){$('shell').clientWidth||n++>40?r():requestAnimationFrame(c)})()});
+ shaka.polyfill.installAll();if(!shaka.Player.isBrowserSupported())throw new Error('unsupported');
+ P=new shaka.Player();await P.attach($('v'));
+ P.getNetworkingEngine().registerRequestFilter((t,r)=>{if(hdr&&org&&(r.uris[0]||'').indexOf(org)===0)Object.assign(r.headers,hdr)});
+ try{new shaka.ui.Overlay(P,$('shell'),$('v'))}catch(e){$('v').controls=true}return P};
+const mark=c=>{const b=$('srcs').children[CI];if(b)b.classList.add(c)};
+const play=async(s,px)=>{const t=++tok,url=px?PROXY+(PROXY_ENCODE?encodeURIComponent(s.url):s.url):s.url;msg(px?'Direct link failed — retrying via proxy…':'Loading stream…');
+ hdr=s.h;try{org=hdr?new URL(url,location.href).origin:''}catch(e){org=''}
+ try{const p=await ensure();if(t!==tok)return;const rp={maxAttempts:3,baseDelay:500,backoffFactor:2,fuzzFactor:.5,timeout:20000};
+  p.configure({drm:{clearKeys:s.kid&&s.key?{[s.kid]:s.key}:{}},manifest:{defaultPresentationDelay:4,ignoreTextStreamFailures:true,retryParameters:rp},streaming:{bufferingGoal:10,rebufferingGoal:2,bufferBehind:20,retryParameters:rp},abr:{enabled:true}});
+  const mime=/\.m3u8(?:[?#]|$)/i.test(s.url)?'application/x-mpegURL':/\.mpd(?:[?#]|$)/i.test(s.url)?'application/dash+xml':null;
+  await p.load(url,null,mime);if(t!==tok)return;msg('');const r=$('v').play();r&&r.catch&&r.catch(()=>{})
+ }catch(e){if(t!==tok||(e&&e.code===7000))return;if(!px)return play(s,true);mark('bad');
+  msg(CUR&&status(CUR)==='upcoming'?'Match has not started yet — the stream may go live shortly. Try again soon.':'Source '+s.id+' could not be played. Please try another source.')}};
+const pick=(i,push)=>{const s=S[i];if(!s)return;CI=i;[...$('srcs').children].forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.remove('bad')});
+ if(push&&CUR.id)history.replaceState(null,'','?id='+encodeURIComponent(CUR.id)+'&src='+encodeURIComponent(s.id));play(s,false)};
+const build=()=>{$('srcs').innerHTML=S.map((s,i)=>`<button class="src" type="button" data-i="${i}">Source ${esc(s.id)}<small>${esc(s.title?s.title+' · ':'')}${esc(s.type)}</small></button>`).join('');$('tools').hidden=!S.length;
+ if(!S.length)msg(status(CUR)==='upcoming'?'Stream will be available shortly before the match starts.':'No stream sources are listed for this match.')};
+const paint=()=>{const s=status(CUR);CUR.s0=s;$('panel').innerHTML=vis(CUR,s,1)+`<div class="info"><p class="lg">${esc(CUR.title)}</p><div class="meta">${meta(CUR,s)}</div></div>`;
+ const o=group(EV.filter(m=>m.id!==CUR.id)).live.concat(group(EV.filter(m=>m.id!==CUR.id)).upcoming).slice(0,6);$('moreWrap').hidden=!o.length;$('more').innerHTML=o.map(m=>card(m,status(m))).join('');tick()};
+const open=()=>{$('list').hidden=true;$('play').hidden=false;$('bk').href=location.pathname;document.title=CUR.name+' Live Stream | MatchCentral';$('robots').content='noindex, follow';
+ build();paint();const w=Q.get('src')||'1';let i=S.findIndex(s=>s.id===w);if(i<0)i=Math.max(0,Math.min((+w||1)-1,S.length-1));if(S.length)pick(i,false)};
+
+/* ---- boot ---- */
+const refresh=async()=>{if(!await fetchEv())return;if(CUR&&CUR.id){const n=EV.find(m=>m.id===CUR.id);if(n){const had=S.length;CUR=n;S=streamsOf(n);if(!had&&S.length){msg('');build();pick(0,true)}}}draw()};
+document.addEventListener('DOMContentLoaded',async()=>{
+ $('yr').textContent=new Date().getFullYear();const a=document.querySelector('nav a[href$="/'+SPORT+'/"]');a&&a.classList.add('on');
+ const wa=$('wa');if(!POPUP_ONCE||!sessionStorage.getItem('mc:wa')){setTimeout(()=>wa.classList.add('show'),2000)}
+ const shut=()=>{wa.classList.remove('show');try{sessionStorage.setItem('mc:wa','1')}catch(e){}};$('wy').onclick=shut;$('wj').onclick=()=>{window.open(WA,'_blank','noopener,noreferrer');shut()};
+ const um=e=>{if(e.target.closest&&e.target.closest('.shaka-controls-container'))return;$('v').muted=false;['pointerdown','touchstart','keydown'].forEach(n=>document.removeEventListener(n,um,true))};['pointerdown','touchstart','keydown'].forEach(n=>document.addEventListener(n,um,true));
+ $('bar').onclick=e=>{const b=e.target.closest('[data-f]');if(b){F=b.dataset.f;draw()}};
+ $('srcs').onclick=e=>{const b=e.target.closest('.src');if(b)pick(+b.dataset.i,true)};
+ $('rl').onclick=()=>S[CI]&&play(S[CI],false);$('px').onclick=()=>S[CI]&&play(S[CI],true);
+ setInterval(tick,1e3);setInterval(()=>{if(EV.some(m=>m.s0&&m.s0!==status(m))||(CUR&&CUR.s0!==status(CUR)))draw()},15e3);
+ if(Q.get('url')){CUR={id:'',title:'Direct stream',name:'Direct stream',cat:'Stream',a:'Direct',b:'Stream',fa:'',fb:'',st:null,en:null,js:'live'};
+  S=[parseS({url:Q.get('url'),keys:Q.get('keys')||'',keyId:Q.get('keyId')||'',key:Q.get('key')||''},0)].filter(Boolean);open();return}
+ setEv(getRaw());const id=(Q.get('id')||'').trim();if(EV.length&&!id)draw();
+ const ok=await fetchEv();
+ if(!ok&&!EV.length){$('out').innerHTML='<div class="empty"><p>Unable to load matches right now.</p><button class="mini" type="button" onclick="location.reload()">Retry</button></div>';return}
+ if(id){const m=EV.find(x=>x.id===id);if(m){CUR=m;S=streamsOf(m);open()}else{$('note').hidden=false;$('note').textContent='Match '+id+' was not found. Showing all matches.';draw()}}else draw();
+ setInterval(refresh,EVERY)});
 })();
 </script>
 </body>
