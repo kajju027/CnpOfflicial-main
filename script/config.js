@@ -136,6 +136,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://imgh.in/host/l3k0qd",
       "date": "2ND ODI MATCH LIVE - 07 : 00 AM",
       "watchUrl": "/home/live/ind-vs-nz.html"
+    },
+    {
+      "tournament": "WEST INDIES TOUR OF BANGLADESH 2026",
+      "homeTeam": {
+        "name": "West Indies",
+        "logo": "https://images.dream11.com/eyJrZXkiOiJmbGFncy9jci1mbGFncy9GQy1XSU5AMngucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvdmVyIiwid2lkdGgiOjY0LCJoZWlnaHQiOjY0fSwid2VicCI6eyJxdWFsaXR5Ijo2MCwibG9zc2xlc3MiOmZhbHNlfX0sIm91dHB1dEZvcm1hdCI6IndlYnAifQ=="
+      },
+      "awayTeam": {
+        "name": "Bangladesh",
+        "logo": "https://images.dream11.com/eyJrZXkiOiJmbGFncy9jci1mbGFncy9GQy1CQU5AMngucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvdmVyIiwid2lkdGgiOjY0LCJoZWlnaHQiOjY0fSwid2VicCI6eyJxdWFsaXR5Ijo2MCwibG9zc2xlc3MiOmZhbHNlfX0sIm91dHB1dEZvcm1hdCI6IndlYnAifQ=="
+      },
+      "poster": "https://images.fancode.com/skillup-uploads/cms-media/West-Indies-tour-of-Bangladesh-sporty-v2.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhL1dlc3QtSW5kaWVzLXRvdXItb2YtQmFuZ2xhZGVzaC1zcG9ydHktdjIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvdmVyIiwid2lkdGgiOjgwMCwiaGVpZ2h0IjoxMDAwfSwid2VicCI6eyJxdWFsaXR5Ijo2MCwibG9zc2xlc3MiOmZhbHNlfX0sIm91dHB1dEZvcm1hdCI6IndlYnAifQ==",
+      "date": "05 NOVEMBER 2026 - 9:00 AM",
+      "watchUrl": "/home/live/wi-vs-ban.html"
     }
   ];
 }
