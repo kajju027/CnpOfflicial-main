@@ -17,12 +17,33 @@
 *{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}
 body{margin:0;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;background:radial-gradient(920px 420px at 8% -8%,rgba(0,232,123,.05),transparent 62%),radial-gradient(760px 460px at 100% 0,rgba(56,148,255,.05),transparent 58%),var(--bg);color:#fff;font:400 14px/1.4 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top)}
 a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}[hidden]{display:none!important}button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
-header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:clamp(14px,2vw,26px);min-height:64px;padding:10px var(--pad);background:rgba(5,8,13,.82);border-bottom:1px solid rgba(255,255,255,.05);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-header img{height:clamp(24px,2.5vw,34px);width:auto;display:block}
+
+/* Header & Navigation */
+header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:clamp(10px,2vw,20px);min-height:60px;padding:10px var(--pad);background:rgba(5,8,13,.82);border-bottom:1px solid rgba(255,255,255,.05);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+header img{height:clamp(20px,2vw,28px);width:auto;display:block} /* Smaller Logo */
+.menu-btn{background:none;border:none;color:#fff;cursor:pointer;padding:5px;display:flex;align-items:center;justify-content:center}
 
 /* Profile Button */
-.profile-btn{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(212,175,55,.1);color:var(--gold);transition:all .2s}
+.profile-btn{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(212,175,55,.1);color:var(--gold);transition:all .2s}
 .profile-btn:hover{background:rgba(212,175,55,.2);box-shadow:0 0 15px rgba(212,175,55,.25)}
+
+/* Sidebar */
+.sidebar{position:fixed;top:0;left:-260px;width:250px;height:100vh;background:#0a1119;z-index:100;transition:left .3s ease;border-right:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:15px}
+.sidebar.open{left:0}
+.sidebar .close-btn{background:none;border:none;color:#fff;font-size:1.5rem;align-self:flex-end;cursor:pointer;margin-bottom:10px}
+.sidebar a{color:#a8b9c6;font-weight:600;font-size:.95rem;padding:10px;border-radius:8px;transition:background .2s}
+.sidebar a:hover{background:rgba(255,255,255,.05);color:#fff}
+.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;display:none}
+.sidebar-overlay.open{display:block}
+
+/* WhatsApp Popup Modal */
+.wa-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);padding:20px}
+.wa-modal-content{background:linear-gradient(160deg,#111621,#0a1119);border:1px solid rgba(37,211,102,.3);border-radius:16px;padding:24px;max-width:400px;width:100%;position:relative;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.wa-modal-close{position:absolute;top:10px;right:15px;background:none;border:none;color:#9babb8;font-size:1.5rem;cursor:pointer}
+.wa-modal svg{width:60px;height:60px;fill:#25d366;margin:0 auto 15px}
+.wa-modal h3{margin:0 0 10px;font-size:1.2rem;font-weight:800}
+.wa-modal p{margin:0 0 20px;font-size:.85rem;color:#a8b9c6;line-height:1.4}
+.wa-modal a{display:block;width:100%;padding:12px;border-radius:10px;background:#25d366;color:#04230f;font-weight:850;font-size:.95rem;text-decoration:none}
 
 main{flex:1;width:100%;max-width:1280px;margin:0 auto;padding:0 var(--pad) 48px}
 .hero{padding:30px 0 6px}.kick{margin:0 0 8px;color:#8fa8b5;font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
@@ -76,24 +97,26 @@ a.card:hover{transform:translateY(-5px);border-color:rgba(0,232,123,.42);box-sha
 .sk{height:260px;border-radius:14px;background:linear-gradient(90deg,var(--s),#101b27,var(--s));background-size:200%;animation:sk 1.4s linear infinite}@keyframes sk{to{background-position:-200%}}
 .empty{padding:40px 20px;text-align:center;color:var(--m);border:1px solid var(--line);border-radius:14px;background:var(--s)}
 
-/* WhatsApp Banner Style */
-.wb{display:flex;align-items:center;gap:10px;margin:14px 0 0;padding:10px 12px;border:1px solid rgba(37,211,102,.25);border-radius:12px;background:rgba(37,211,102,.07)}
-.wb svg{width:32px;height:32px;padding:7px;border-radius:10px;border:1px solid rgba(37,211,102,.4);fill:#25d366;flex:none}
-.wb p{margin:0;flex:1;font-size:.76rem;font-weight:700;line-height:1.3}.wb a{padding:7px 14px;border-radius:8px;background:#25d366;color:#04230f;font-weight:850;font-size:.74rem;text-decoration:none}
-.wb button{border:0;background:none;color:#9babb8;font-size:1.4rem;line-height:1;cursor:pointer;padding:0 4px}
-
 .mi{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(155deg,rgba(14,24,34,.98),#0a1118)}
 .mi .orb{--o:46px;flex:none;animation:none}.mx{flex:1;min-width:0}.mx .pt{font-size:clamp(.9rem,2.4vw,1.1rem)}
 .sub{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin-top:7px;font-size:.68rem;color:#9babb8;font-variant-numeric:tabular-nums}.sub time,.sub b{color:var(--aq);font-weight:700}
 
-/* Live Channels Grid (Screenshot Style) */
+/* Live Channels Grid */
 .lh{display:flex;align-items:center;justify-content:space-between;margin:20px 0 12px}.lh h2{margin:0;font-size:1.35rem;font-weight:850;letter-spacing:-.04em}.lh span{display:flex;align-items:center;gap:8px;font-size:.74rem;font-weight:750;color:#9babb8}
-.chs{display:grid;gap:10px;grid-template-columns:repeat(2, 1fr)} /* 2 columns like screenshot */
+.chs{display:grid;gap:10px;grid-template-columns:repeat(2, 1fr)}
 @media(min-width: 500px) { .chs{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));} }
 .ch{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:120px;padding:15px 10px;border:1px solid #232936;border-radius:14px;background:linear-gradient(160deg,#111621,var(--s));cursor:pointer;color:#fff;font-weight:800;font-size:.8rem;text-transform:uppercase;text-align:center;transition:all .2s}
 .ch .bg{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:1rem;font-weight:900;color:#fff;background:#1e222f;border:2px solid #374151}
 .ch small{display:block;margin-top:4px;color:var(--m);font-size:.55rem;letter-spacing:.08em;font-weight:700}
-.ch:hover{border-color:rgba(0,232,123,.35)}.ch.on{border-color:#ff7b00;box-shadow:inset 0 0 0 1px #ff7b00,0 0 22px rgba(255,123,0,.15)}.ch.on .bg{border-color:#ff7b00;color:#ff7b00}.ch.bad{border-color:var(--live)}.ch.bad .bg{border-color:var(--live)}
+.ch:hover{border-color:rgba(0,232,123,.35)}.ch.on{border-color:#00e87b;box-shadow:inset 0 0 0 1px #00e87b,0 0 22px rgba(0,232,123,.15)}.ch.on .bg{border-color:#00e87b;color:#00e87b}.ch.bad{border-color:var(--live)}.ch.bad .bg{border-color:var(--live)}
+
+/* Custom Shaka Player Theme */
+.shaka-controls-container { --shaka-primary-color: #00e87b !important; }
+.shaka-scrub-bar-current-time { background-color: #00e87b !important; }
+.shaka-scrub-bar-buffering-bg { background-color: rgba(0, 232, 123, 0.3) !important; }
+.shaka-play-button { color: #00e87b !important; }
+.shaka-range-element { accent-color: #00e87b !important; }
+.shaka-controls-button-panel button:hover { color: #00e87b !important; }
 
 /* Footer */
 footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(24px + env(safe-area-inset-bottom));text-align:center;background:#030509}
@@ -104,11 +127,50 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
 </style>
 </head>
 <body>
+
+<!-- GLOBAL ROUTER SCRIPT -->
+<script type='text/javascript'>
+  (function(){
+    var p=window.location.pathname;
+    var wa="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f";
+    if(p==="/"||p===""||p==="/index.html")return;
+    if(!p.includes(".html")){
+      var system=p.includes("/b/")||p.includes("/preview")||p.includes("/search");
+      if(!system)window.location.replace(wa);
+    }
+  })();
+</script>
+
+<!-- WhatsApp Popup Modal -->
+<div class="wa-modal" id="waModal">
+    <div class="wa-modal-content">
+        <button class="wa-modal-close" id="closeWa" aria-label="Close">×</button>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.04 0C5.45 0 .08 5.37.08 11.96c0 2.11.55 4.17 1.59 5.99L0 24l6.24-1.63a11.9 11.9 0 0 0 5.8 1.48h.01c6.59 0 11.96-5.37 11.96-11.96 0-3.19-1.24-6.19-3.49-8.41zM12.05 21.8a9.8 9.8 0 0 1-5-1.37l-.36-.21-3.7.97.99-3.61-.24-.37a9.77 9.77 0 1 1 8.31 4.59zm5.38-7.34c-.29-.14-1.72-.85-1.98-.95-.27-.1-.46-.14-.66.14-.19.29-.76.95-.93 1.14-.17.19-.34.22-.63.08-.29-.14-1.21-.45-2.31-1.45-.85-.75-1.43-1.68-1.6-1.96-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.66-1.59-.91-2.17-.24-.57-.49-.49-.66-.5h-.56c-.19 0-.49.07-.75.36s-.98.96-.98 2.34.99 2.71 1.13 2.9c.14.19 1.95 2.98 4.72 4.18.66.29 1.18.46 1.58.59.66.21 1.26.18 1.74.11.53-.08 1.72-.7 1.96-1.37.24-.67.24-1.24.17-1.37-.07-.13-.27-.21-.56-.35z"/></svg>
+        <h3>Join Our WhatsApp Channel</h3>
+        <p>Stay connected with MatchCentral for the latest updates, live match alerts, and exclusive offers.</p>
+        <a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f" target="_blank" rel="noopener noreferrer">Join Now</a>
+    </div>
+</div>
+
+<!-- Sidebar Menu -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar" id="sidebar">
+    <button class="close-btn" id="closeSidebar" aria-label="Close Menu">×</button>
+    <a href="/">Home</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Use</a>
+    <a href="/disclaimer.html">Disclaimer</a>
+    <a href="/contact.html">Contact Us</a>
+</div>
+
 <header>
-    <a href="/" aria-label="MatchCentral home"><img src="https://matchcentral.in/assets/logo.png?v=3" alt="MatchCentral" width="2643" height="300"></a>
-    <!-- Profile Button -->
+    <button class="menu-btn" id="openSidebar" aria-label="Open Menu">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <a href="/" aria-label="MatchCentral home"><img src="https://matchcentral.in/assets/logo.png?v=3" alt="MatchCentral"></a>
+    
     <a class="profile-btn" href="https://your-link-here.com" target="_blank" rel="noopener noreferrer" aria-label="Profile">
-        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
     </a>
 </header>
 
@@ -128,15 +190,6 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
     <div class="shell" id="shell"><video id="v" playsinline webkit-playsinline autoplay muted></video><div class="ov" id="ov"></div></div>
     <div class="mi" id="panel"></div>
     
-    <!-- WhatsApp Banner directly below video -->
-    <div class="wb" id="wb">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.04 0C5.45 0 .08 5.37.08 11.96c0 2.11.55 4.17 1.59 5.99L0 24l6.24-1.63a11.9 11.9 0 0 0 5.8 1.48h.01c6.59 0 11.96-5.37 11.96-11.96 0-3.19-1.24-6.19-3.49-8.41zM12.05 21.8a9.8 9.8 0 0 1-5-1.37l-.36-.21-3.7.97.99-3.61-.24-.37a9.77 9.77 0 1 1 8.31 4.59zm5.38-7.34c-.29-.14-1.72-.85-1.98-.95-.27-.1-.46-.14-.66.14-.19.29-.76.95-.93 1.14-.17.19-.34.22-.63.08-.29-.14-1.21-.45-2.31-1.45-.85-.75-1.43-1.68-1.6-1.96-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.66-1.59-.91-2.17-.24-.57-.49-.49-.66-.5h-.56c-.19 0-.49.07-.75.36s-.98.96-.98 2.34.99 2.71 1.13 2.9c.14.19 1.95 2.98 4.72 4.18.66.29 1.18.46 1.58.59.66.21 1.26.18 1.74.11.53-.08 1.72-.7 1.96-1.37.24-.67.24-1.24.17-1.37-.07-.13-.27-.21-.56-.35z"/></svg>
-        <p>Stay connected with MatchCentral on WhatsApp</p>
-        <a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f" target="_blank" rel="noopener noreferrer">Join</a>
-        <button id="wx" type="button" aria-label="Close">×</button>
-    </div>
-
-    <!-- Live Channels Section -->
     <div id="p1">
         <div class="lh"><h2>Live Channels</h2><span><i class="dot"></i><em id="cn2" style="font-style:normal">0 channels</em></span></div>
         <div class="chs" id="srcs"></div>
@@ -144,13 +197,6 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
     </div>
 
     <a class="back" id="bk" href="./">← All matches</a>
-    
-    <!-- Recent Matches Moved to Bottom -->
-    <div id="p2" style="margin-top: 40px;">
-        <div class="lh"><h2>Recent Matches</h2></div>
-        <div class="grid" id="more"></div>
-        <p class="empty" id="mnone" hidden>No other matches right now.</p>
-    </div>
 </section>
 </main>
 
@@ -183,10 +229,9 @@ const parse=(v,z)=>{const t=String(v||'').trim().replace(/\s*IST$/i,'').replace(
 const day=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata'}).format(d);
 const fmt=d=>{if(!d)return'Time TBC';const t=day(d),l=t===day(new Date())?'Today':t===day(new Date(Date.now()+864e5))?'Tomorrow':d.toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short'});return l+' · '+d.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase()+' IST'};
 
-/* ---- data (UPDATED FOR YOUR SPECIFIC LOGIC) ---- */
+/* ---- data ---- */
 const hex=v=>{const h=String(v||'').replace(/[^0-9a-f]/gi,'').toLowerCase();return h.length===32?h:''};
 
-// নতুন আপডেট: type: "7" মানে MPD এবং type: "0" মানে HLS, api ফিল্ড থেকে Key নেওয়া হবে
 const parseS=(s,i)=>{
     if(typeof s==='string')s={link:s};if(!s)return null;
     let u=String(s.link||s.url||s.src||s.stream||s.mpd||s.m3u8||'').trim();if(!u)return null;
@@ -196,7 +241,6 @@ const parseS=(s,i)=>{
     let isMpd = false;
     let typeStr = String(s.type || '').trim();
 
-    // আপনার লজিক: Type 7 হলে সেটা MPD, এবং api থেকে key নিতে হবে
     if (typeStr === '7' || /\.mpd/i.test(u)) {
         isMpd = true;
         let apiStr = String(s.api || '').trim();
@@ -207,7 +251,6 @@ const parseS=(s,i)=>{
         }
     }
 
-    // ব্যাকআপ লজিক (যদি অন্য ফরম্যাটে কি থাকে)
     if (!kid || !key) {
         const k=s.keys&&typeof s.keys==='object'?s.keys:{};
         kid = hex(s.keyId||s.kid||k.keyId||k.kid) || kid;
@@ -223,7 +266,7 @@ const parseS=(s,i)=>{
     return {
         id: String(s.id||i+1),
         title: s.title||s.name||'',
-        type: isMpd ? (kid ? 'DASH · DRM' : 'DASH') : 'HLS', // ফোর্সফুলি টাইপ সেট করা হলো
+        type: isMpd ? (kid ? 'DASH · DRM' : 'DASH') : 'HLS',
         url: u,
         kid: kid,
         key: key,
@@ -263,7 +306,7 @@ const draw=()=>{if(CUR)return paint();const g=group(EV),c=x=>g[x].length;
  const h=['live','upcoming','ended'].filter(k=>(F==='all'||F===k)&&c(k)).map(k=>`<div class="sec"><h2>${k==='live'?'<i class="dot"></i>':''}${LBL[k]} <small>${c(k)} match${c(k)>1?'es':''}</small></h2><div class="grid">${g[k].map(m=>card(m,k)).join('')}</div></div>`).join('');
  $('out').innerHTML=h||'<div class="empty" style="margin-top:20px">No matches in this section right now.</div>';tick()};
 
-/* ---- player (UPDATED FOR DASH CLEARKEY) ---- */
+/* ---- player ---- */
 let P=null,tok=0,hdr=null,org='';
 const msg=t=>{$('ov').textContent=t||'';$('ov').hidden=!t};
 const ensure=async()=>{if(P)return P;await new Promise(r=>{let n=0;(function c(){$('shell').clientWidth||n++>40?r():requestAnimationFrame(c)})()});
@@ -289,7 +332,6 @@ const play=async(s,n)=>{
         const rp={maxAttempts:2,baseDelay:500,backoffFactor:2,fuzzFactor:.5,timeout:20000};
         const kid=sw?s.key:s.kid, key=sw?s.kid:s.key;
         
-        // DASH ডিআরএম এর জন্য সঠিক কনফিগারেশন
         let drmConfig = { servers: {} };
         if (kid && key) {
             drmConfig.clearKeys = { [kid]: key };
@@ -300,7 +342,7 @@ const play=async(s,n)=>{
             manifest: {
                 defaultPresentationDelay: 4,
                 ignoreTextStreamFailures: true,
-                dash: { ignoreMinBufferTime: true }, // এটি ড্যাশ ভিডিও লোড হতে সাহায্য করে
+                dash: { ignoreMinBufferTime: true },
                 retryParameters: rp
             },
             streaming: {
@@ -312,7 +354,6 @@ const play=async(s,n)=>{
             abr: { enabled: true }
         });
         
-        // আপনার টাইপ 7 এবং 0 লজিক অনুযায়ী Mime টাইপ সেট করা
         const mime = /\.mpd(?:[?#]|$)/i.test(s.url) ? 'application/dash+xml' : 
                      /\.m3u8(?:[?#]|$)/i.test(s.url) ? 'application/x-mpegURL' : null;
                      
@@ -334,17 +375,38 @@ const build=()=>{$('srcs').innerHTML=S.map((s,i)=>`<button class="ch" type="butt
  $('cn').textContent=S.length;$('cn2').textContent=S.length+' channel'+(S.length===1?'':'s');
  if(!S.length)msg(status(CUR)==='upcoming'?'Stream will be available shortly before the match starts.':'No stream sources are listed for this match.')};
 const subl=(m,s)=>(s==='live'?`<time data-k="l" data-t="${m.st?+m.st:''}"></time>`:s==='upcoming'?`<span>Starts <b data-k="u" data-t="${m.st?+m.st:''}"></b></span><span>${fmt(m.st)}</span>`:`<span>${m.en?fmt(m.en):'Ended'}</span>`)+(m.lg?`<span>${esc(m.lg)}</span>`:'');
+
+// Recent Matches Removed here
 const paint=()=>{const s=status(CUR);CUR.s0=s;$('panel').innerHTML=`${orb(CUR.fa,CUR.a)}<div class="mx"><h1 class="pt">${esc(CUR.title)}</h1><div class="sub"><span class="chip s ${s}">${s==='live'?'Live':s==='ended'?'Finished':'Upcoming'}</span>${subl(CUR,s)}</div></div>${orb(CUR.fb,CUR.b)}`;
- const g=group(EV.filter(m=>m.id!==CUR.id)),r=g.live.concat(g.ended,g.upcoming).slice(0,8);$('mnone').hidden=!!r.length;$('more').innerHTML=r.map(m=>card(m,status(m))).join('');tick()};
+ tick()};
+
 const open=()=>{$('list').hidden=true;$('play').hidden=false;$('bk').href=location.pathname;document.title=CUR.name+' Live Stream | MatchCentral';$('robots').content='noindex, follow';
- build();paint();const w=Q.get('src')||'1';let i=S.findIndex(s=>s.id===w);if(i<0)i=Math.max(0,Math.min((+w||1)-1,S.length-1));if(S.length)pick(i,false)};
+ build();paint();
+ // Auto-play first stream if no server selected
+ const w=Q.get('src')||'1';
+ let i=S.findIndex(s=>s.id===w);
+ if(i<0) i=0; 
+ if(S.length) pick(i,false);
+};
 
 /* ---- boot ---- */
 const refresh=async()=>{if(!await fetchEv())return;if(CUR&&CUR.id){const n=EV.find(m=>m.id===CUR.id);if(n){const had=S.length;CUR=n;S=streamsOf(n);if(!had&&S.length){msg('');build();pick(0,true)}}}draw()};
 document.addEventListener('DOMContentLoaded',async()=>{
  $('yr').textContent=new Date().getFullYear();
- const wb=$('wb');try{if(sessionStorage.getItem('mc:wb'))wb.hidden=true}catch(e){}$('wx').onclick=()=>{wb.hidden=true;try{sessionStorage.setItem('mc:wb','1')}catch(e){}};
  
+ // Sidebar Logic
+ const sidebar = $('sidebar'), overlay = $('sidebarOverlay');
+ $('openSidebar').onclick = () => { sidebar.classList.add('open'); overlay.classList.add('open'); };
+ const closeMenu = () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); };
+ $('closeSidebar').onclick = closeMenu;
+ overlay.onclick = closeMenu;
+
+ // WhatsApp Popup Logic (Shows Every Time)
+ const waModal = $('waModal');
+ // It's visible by default in HTML, but just ensuring it's active
+ waModal.style.display = 'flex';
+ $('closeWa').onclick = () => { waModal.style.display = 'none'; };
+
  const um=e=>{if(e.target.closest&&e.target.closest('.shaka-controls-container'))return;$('v').muted=false;['pointerdown','touchstart','keydown'].forEach(n=>document.removeEventListener(n,um,true))};['pointerdown','touchstart','keydown'].forEach(n=>document.addEventListener(n,um,true));
  $('bar').onclick=e=>{const b=e.target.closest('[data-f]');if(b){F=b.dataset.f;draw()}};
  $('srcs').onclick=e=>{const b=e.target.closest('.ch');if(b)pick(+b.dataset.i,true)};
