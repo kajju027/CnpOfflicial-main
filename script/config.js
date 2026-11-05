@@ -155,11 +155,11 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "tournament": "Zimbabwe Tour of Afghanistan in UAE, 2026",
       "homeTeam": {
         "name": "Afganistan",
-        "logo": "https://img.sofascore.com/api/v1/team/187575/image"
+        "logo": "https://flagpedia.net/data/flags/w1160/af.webp"
       },
       "awayTeam": {
         "name": "Zimbabwe",
-        "logo": "https://img.sofascore.com/api/v1/team/187745/image"
+        "logo": "https://flagpedia.net/data/flags/w1160/zw.webp"
       },
       "poster": "https://images.fancode.com/skillup-uploads/cms-media/AFG-vs-ZIM_Test_fc-app-v2.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhL0FGRy12cy1aSU1fVGVzdF9mYy1hcHAtdjIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvdmVyIiwid2lkdGgiOjgwMCwiaGVpZ2h0IjoxMDAwfSwid2VicCI6eyJxdWFsaXR5Ijo2MCwibG9zc2xlc3MiOmZhbHNlfX0sIm91dHB1dEZvcm1hdCI6IndlYnAifQ==",
       "date": "05 NOVEMBER 2026 - 10:30 AM",
