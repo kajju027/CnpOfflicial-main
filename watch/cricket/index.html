@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- MatchCentral | Design 1: Willow-style violet/blue player. Full standalone page. -->
+<!-- MatchCentral | Final Cricket page. API: cricket.json. Player theme: green/red/black. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -145,12 +145,10 @@ a.card:hover{transform:translateY(-4px);border-color:rgba(0,232,123,.35);box-sha
 .teams{margin-top:16px;display:grid;grid-template-columns:1fr 35px 1fr;align-items:start;gap:5px}
 .tm{display:grid;justify-items:center;gap:7px;min-width:0}.tm span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.7rem;font-weight:600;color:#f4f7fa}
 .vs{align-self:center;width:35px;height:35px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(13,25,38,.58);font-size:.6rem;font-weight:600;color:#e0e7ee}
-.orb{position:relative;width:var(--o,66px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 35% 30%,#3c5a54,#122029 70%);box-shadow:inset 0 0 0 1px rgba(230,244,255,.22),inset 0 -8px 14px rgba(0,0,0,.45),inset 0 6px 12px rgba(255,255,255,.2),0 8px 20px rgba(0,0,0,.4);animation:lq 6s ease-in-out infinite,fl 5s ease-in-out infinite}
-.tm:nth-child(3) .orb{animation-delay:-2.5s}.orb b{font-size:.85rem;font-weight:900;color:#e7f6f4}
-.orb img{position:absolute;inset:0;width:100%;height:100%;z-index:1;object-fit:cover;padding:0}
-.orb i{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse 45% 28% at 32% 20%,rgba(255,255,255,.5),transparent 70%),radial-gradient(circle,transparent 60%,rgba(87,255,196,.18))}
-.orb i:after{content:"";position:absolute;top:0;bottom:0;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);animation:sh 4.5s ease-in-out infinite}
-@keyframes lq{50%{border-radius:46% 54% 52% 48%/54% 46% 54% 46%}}@keyframes fl{50%{transform:translateY(-3px)}}@keyframes sh{0%,55%{transform:translateX(-130%) skewX(-20deg)}100%{transform:translateX(330%) skewX(-20deg)}}
+/* Team flags are static and matte; their space is reserved before images load. */
+.orb{position:relative;width:var(--o,66px);height:var(--o,66px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#16272b;border:1px solid rgba(230,244,255,.2)}
+.orb b{font-size:.85rem;font-weight:900;color:#e7f6f4}
+.orb img{position:absolute;inset:0;display:block;width:100%;height:100%;z-index:1;object-fit:cover;padding:0}
 .big .orb{--o:92px}.big .tm span{font-size:.88rem}
 .info{display:flex;flex-direction:column;gap:10px;padding:12px 13px 13px;flex:1;background:linear-gradient(155deg,rgba(14,24,34,.98),#0a1118)}
 .lg{margin:0;color:var(--y);font-size:.75rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -165,7 +163,7 @@ a.card:hover{transform:translateY(-4px);border-color:rgba(0,232,123,.35);box-sha
 .shell video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
 .shell video.mode-fill{object-fit:fill}.shell video.mode-cover{object-fit:cover}
 .ov{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;text-align:center;padding:18px;background:#0a0a0a;pointer-events:none}
-.ov svg{width:clamp(48px,10vw,70px);height:clamp(48px,10vw,70px);animation:playerSpin 1.15s linear infinite;overflow:visible}.ov p{margin:0;color:#74747c;font-size:.7rem;font-weight:500;letter-spacing:.04em}.ov.error svg{display:none}.ov.error p{color:#ff9aaa;max-width:420px;line-height:1.6}
+.ov .spin{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,153,51,.22);border-top-color:#FF9933;animation:playerSpin .8s linear infinite}.ov p{margin:0;color:#74747c;font-size:.7rem;font-weight:500;letter-spacing:.04em}.ov.error .spin{display:none}.ov.error p{color:#ff9aaa;max-width:420px;line-height:1.6}
 @keyframes playerSpin{to{transform:rotate(360deg)}}
 .shaka-spinner-container{display:none!important}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
@@ -176,7 +174,7 @@ a.card:hover{transform:translateY(-4px);border-color:rgba(0,232,123,.35);box-sha
 .empty{padding:40px 20px;text-align:center;color:var(--m);border:1px solid var(--line);border-radius:14px;background:var(--s)}
 
 .mi{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(155deg,rgba(14,24,34,.98),#0a1118)}
-.mi .orb{--o:46px;flex:none;animation:none}.mx{flex:1;min-width:0}.mx .pt{font-size:clamp(.9rem,2.4vw,1.1rem)}
+.mi .orb{--o:46px;flex:none}.mx{flex:1;min-width:0}.mx .pt{font-size:clamp(.9rem,2.4vw,1.1rem)}
 .sub{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin-top:7px;font-size:.68rem;color:#9babb8;font-variant-numeric:tabular-nums}.sub time,.sub b{color:var(--aq);font-weight:700}
 
 /* Live Channels Grid */
@@ -186,14 +184,14 @@ a.card:hover{transform:translateY(-4px);border-color:rgba(0,232,123,.35);box-sha
 .ch{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:92px;padding:10px 8px;border:1px solid #232936;border-radius:12px;background:linear-gradient(160deg,#111621,var(--s));cursor:pointer;color:#fff;font-weight:600;font-size:.7rem;text-align:center;transition:all .2s}
 .ch .bg{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:.78rem;font-weight:650;color:#fff;background:#1e222f;border:1.5px solid #374151}
 .ch small{display:block;margin-top:3px;color:var(--m);font-size:.53rem;letter-spacing:.025em;font-weight:500}
-.ch:hover{border-color:rgba(139,92,246,.48)}.ch.on{border-color:#8b5cf6;box-shadow:inset 0 0 0 1px #8b5cf6,0 0 18px rgba(139,92,246,.14)}.ch.on .bg{border-color:#8b5cf6;color:#c4b5fd}.ch.bad{border-color:var(--live)}.ch.bad .bg{border-color:var(--live)}
+.ch:hover{border-color:rgba(10,173,43,.48)}.ch.on{border-color:#0AAD2B;box-shadow:inset 0 0 0 1px #0AAD2B,0 0 18px rgba(10,173,43,.14)}.ch.on .bg{border-color:#0AAD2B;color:#0AAD2B}.ch.bad{border-color:var(--live)}.ch.bad .bg{border-color:var(--live)}
 
-/* Shaka Player — design adapted from the Willow player */
-.shaka-video-container{--shaka-thumb-color:#8b5cf6;--shaka-track-color:rgba(255,255,255,.22);--shaka-font-family:Inter,system-ui,sans-serif;background-color:#000!important}
-.shaka-controls-container button{color:#fff!important}.shaka-controls-button-panel button:hover{color:#c4b5fd!important}.shaka-big-buttons-container button:hover{color:#c4b5fd}.shaka-range-element{accent-color:#8b5cf6}.shaka-current-time{color:#c4b5fd}
+/* Shaka Player — final green/red/black theme */
+.shaka-video-container{--shaka-thumb-color:#0AAD2B;--shaka-track-color:#000;--shaka-font-family:Inter,system-ui,sans-serif;background-color:#000!important}
+.shaka-controls-container button{color:#fff!important}.shaka-controls-button-panel button:hover{color:#0AAD2B!important}.shaka-big-buttons-container button:hover{color:#0AAD2B}.shaka-range-element{accent-color:#0AAD2B}.shaka-current-time{color:#0AAD2B}
 .sp-btn{background:transparent!important;border:none!important;cursor:pointer!important;padding:0 8px!important;opacity:.78;display:flex;align-items:center;justify-content:center;height:100%;min-width:36px;color:#fff!important;transition:opacity .15s,color .15s}
-.sp-btn:hover{opacity:1}.sp-btn:active{transform:scale(.9)}.sp-btn:focus-visible{outline:2px solid #8b5cf6;outline-offset:2px;border-radius:6px}.sp-fit-btn{padding:0 7px!important;min-width:auto!important}
-.fit-pill{font-size:10px;font-weight:600;letter-spacing:.2px;padding:3px 7px;border-radius:4px;line-height:1;border:1.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.84);pointer-events:none;white-space:nowrap}.sp-fit-btn.mode-fill .fit-pill{border-color:#38bdf8;color:#38bdf8}.sp-fit-btn.mode-cover .fit-pill{border-color:#a78bfa;color:#a78bfa}
+.sp-btn:hover{opacity:1}.sp-btn:active{transform:scale(.9)}.sp-btn:focus-visible{outline:2px solid #0AAD2B;outline-offset:2px;border-radius:6px}.sp-fit-btn{padding:0 7px!important;min-width:auto!important}
+.fit-pill{font-size:10px;font-weight:600;letter-spacing:.2px;padding:3px 7px;border-radius:4px;line-height:1;border:1.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.84);pointer-events:none;white-space:nowrap}.sp-fit-btn.mode-fill .fit-pill{border-color:#0AAD2B;color:#0AAD2B}.sp-fit-btn.mode-cover .fit-pill{border-color:#F52545;color:#F52545}
 @media(max-width:380px){.fit-pill{font-size:9px;padding:2px 5px}.sp-btn{padding:0 5px!important}}
 
 /* Footer */
@@ -280,7 +278,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
     <div class="shell" id="shell">
         <video id="v" playsinline webkit-playsinline preload="none" autoplay muted x5-video-player-type="h5" x5-video-player-fullscreen="true"></video>
         <div class="ov" id="ov">
-            <svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><defs><linearGradient id="playerLoadingGradient" x1="18" y1="78" x2="82" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d21cff" stop-opacity=".25"/><stop offset=".18" stop-color="#b624ff" stop-opacity=".68"/><stop offset=".43" stop-color="#7045ff"/><stop offset=".72" stop-color="#287bff"/><stop offset="1" stop-color="#087cff"/></linearGradient></defs><circle cx="50" cy="50" r="34" stroke="url(#playerLoadingGradient)" stroke-width="8" stroke-linecap="round" stroke-dasharray="178 36" transform="rotate(-40 50 50)"/></svg>
+            <span class="spin" aria-hidden="true"></span>
             <p id="ovText">Loading Stream</p>
         </div>
     </div>
@@ -384,7 +382,7 @@ const fetchEv=async()=>{try{const r=await fetch(API,{cache:'no-store'});if(!r.ok
  setEv(a);try{localStorage.setItem('mc:'+SPORT,JSON.stringify(a))}catch(e){}return true}catch(e){return false}};
 
 /* ---- markup ---- */
-const orb=(u,n)=>`<div class="orb"><b>${esc(ini(n))}</b>${u?`<img src="${esc(u)}" alt="${esc(pretty(n))}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:''}<i></i></div>`;
+const orb=(u,n)=>`<div class="orb"><b>${esc(ini(n))}</b>${u?`<img src="${esc(u)}" alt="${esc(pretty(n))}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:''}</div>`;
 const vis=(m,s,big)=>`<div class="vis${big?' big':''}"><div class="top"><span class="chip lgc">${m.ll?`<img src="${esc(m.ll)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:''}${esc(pretty(m.lg||m.cat))}</span><span class="chip s ${s}">${s==='live'?'Live':s==='ended'?'Finished':'Upcoming'}</span></div><div class="teams"><div class="tm">${orb(m.fa,m.a)}<span>${esc(pretty(m.a))}</span></div><div class="vs">Vs</div><div class="tm">${orb(m.fb,m.b)}<span>${esc(pretty(m.b))}</span></div></div></div>`;
 const meta=(m,s)=>{const t=m.st?+m.st:'';return s==='live'?`<span class="ts live">Live for</span><time class="dur" data-k="l" data-t="${t}">${t?dur(Date.now()-t):'Now'}</time>`
  :s==='upcoming'?`<span class="ts up">Starts <b data-k="u" data-t="${t}"></b></span><time>${fmt(m.st)}</time>`
@@ -418,9 +416,9 @@ const ensure=async()=>{if(P)return P;await new Promise(r=>{let n=0;(function c()
   const ui=new shaka.ui.Overlay(P,$('shell'),$('v'));
   ui.configure({
    controlPanelElements:['play_pause','mute','volume','time_and_duration','spacer','quality','picture_in_picture','fullscreen'],
-   seekBarColors:{base:'rgba(255,255,255,.22)',buffered:'rgba(139,92,246,.35)',played:'#8b5cf6'},
-   volumeBarColors:{base:'rgba(255,255,255,.22)',level:'#8b5cf6'},
-   playbackRateBarColors:{base:'rgba(255,255,255,.22)',level:'#8b5cf6'}
+   seekBarColors:{base:'#000000',buffered:'#F52545',played:'#0AAD2B'},
+   volumeBarColors:{base:'#000000',level:'#0AAD2B'},
+   playbackRateBarColors:{base:'#000000',level:'#0AAD2B'}
   });
   let tries=0;(function addFit(){if(injectFitControl($('shell'),$('v')))return;if(++tries<8)setTimeout(addFit,120)})();
  }catch(e){$('v').controls=true}return P};
@@ -553,5 +551,5 @@ document.addEventListener('DOMContentLoaded',async()=>{
  setInterval(refresh,EVERY)});
 })();
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a55e0356d8877a18',t:'MTc5MzkwNDMwMA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a55e0356d8877a18',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
