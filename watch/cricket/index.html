@@ -8,16 +8,6 @@
 <meta name="description" content="Watch live cricket streams free on MatchCentral — live matches, upcoming fixtures and finished games with multiple HD sources. All times in IST.">
 <meta name="robots" content="index, follow, max-image-preview:large" id="robots">
 <link rel="canonical" href="https://matchcentral.in/watch/cricket/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="MatchCentral"><meta property="og:locale" content="en_IN">
-<meta property="og:url" content="https://matchcentral.in/watch/cricket/">
-<meta property="og:title" content="Live Cricket Streaming | MatchCentral"><meta property="og:description" content="Watch live cricket streams free on MatchCentral — live matches, upcoming fixtures and finished games with multiple HD sources. All times in IST.">
-<meta property="og:image" content="https://matchcentral.in/assets/og-image.jpg">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Live Cricket Streaming | MatchCentral">
-<meta name="twitter:description" content="Watch live cricket streams free on MatchCentral — live matches, upcoming fixtures and finished games with multiple HD sources. All times in IST."><meta name="twitter:image" content="https://matchcentral.in/assets/og-image.jpg">
-<link rel="icon" href="/assets/favicon.ico"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MatchCentral","item":"https://matchcentral.in/"},{"@type":"ListItem","position":2,"name":"Cricket","item":"https://matchcentral.in/watch/cricket/"}]}</script>
 <link rel="preload" as="image" href="https://matchcentral.in/assets/logo.png?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
@@ -29,7 +19,6 @@ body{margin:0;min-height:100vh;display:flex;flex-direction:column;overflow-x:hid
 a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}[hidden]{display:none!important}button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:clamp(14px,2vw,26px);min-height:64px;padding:10px var(--pad);background:rgba(5,8,13,.82);border-bottom:1px solid rgba(255,255,255,.05);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 header img{height:clamp(24px,2.5vw,34px);width:auto;display:block}
-nav{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}nav a{font-size:clamp(.78rem,1vw,.9rem);font-weight:500;color:rgba(255,255,255,.78);transition:color .2s}nav a:hover{color:#fff}nav a.on{color:#fff;font-weight:700;box-shadow:0 2px 0 var(--g);padding-bottom:3px}
 
 /* Profile Button */
 .profile-btn{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(212,175,55,.1);color:var(--gold);transition:all .2s}
@@ -117,7 +106,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
 <body>
 <header>
     <a href="/" aria-label="MatchCentral home"><img src="https://matchcentral.in/assets/logo.png?v=3" alt="MatchCentral" width="2643" height="300"></a>
-    <!-- Profile Button (Replace Offer) -->
+    <!-- Profile Button -->
     <a class="profile-btn" href="https://your-link-here.com" target="_blank" rel="noopener noreferrer" aria-label="Profile">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
     </a>
@@ -194,23 +183,54 @@ const parse=(v,z)=>{const t=String(v||'').trim().replace(/\s*IST$/i,'').replace(
 const day=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata'}).format(d);
 const fmt=d=>{if(!d)return'Time TBC';const t=day(d),l=t===day(new Date())?'Today':t===day(new Date(Date.now()+864e5))?'Tomorrow':d.toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short'});return l+' · '+d.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase()+' IST'};
 
-/* ---- data ---- */
+/* ---- data (UPDATED FOR YOUR SPECIFIC LOGIC) ---- */
 const hex=v=>{const h=String(v||'').replace(/[^0-9a-f]/gi,'').toLowerCase();return h.length===32?h:''};
+
+// নতুন আপডেট: type: "7" মানে MPD এবং type: "0" মানে HLS, api ফিল্ড থেকে Key নেওয়া হবে
 const parseS=(s,i)=>{
     if(typeof s==='string')s={link:s};if(!s)return null;
     let u=String(s.link||s.url||s.src||s.stream||s.mpd||s.m3u8||'').trim();if(!u)return null;
     let pr='';if(u.includes('|')){const p=u.split('|');u=p.shift().trim();pr=p.join('|')}
-    const k=s.keys&&typeof s.keys==='object'?s.keys:{};
-    let kid=hex(s.keyId||s.kid||k.keyId||k.kid),key=hex(s.key||s.clearKey||k.key);
     
-    // Extracting API keys (kid:key format) from `api` field as per user JSON
-    const ap=typeof s.api==='string'&&/^[0-9a-f]{32}:[0-9a-f]{32}$/i.test(s.api.trim())?s.api.trim():'';
-    const kp=ap||typeof s.keys==='string'?s.keys:typeof s.key==='string'&&s.key.includes(':')?s.key:pr.includes(':')&&hex(pr.split(':')[0])?pr:'';
-    if(kp){const x=kp.split(':');kid=hex(x[0]);key=hex(x[1])}
+    let kid='', key='';
+    let isMpd = false;
+    let typeStr = String(s.type || '').trim();
+
+    // আপনার লজিক: Type 7 হলে সেটা MPD, এবং api থেকে key নিতে হবে
+    if (typeStr === '7' || /\.mpd/i.test(u)) {
+        isMpd = true;
+        let apiStr = String(s.api || '').trim();
+        if (apiStr.includes(':')) {
+            const parts = apiStr.split(':');
+            kid = hex(parts[0]);
+            key = hex(parts[1]);
+        }
+    }
+
+    // ব্যাকআপ লজিক (যদি অন্য ফরম্যাটে কি থাকে)
+    if (!kid || !key) {
+        const k=s.keys&&typeof s.keys==='object'?s.keys:{};
+        kid = hex(s.keyId||s.kid||k.keyId||k.kid) || kid;
+        key = hex(s.key||s.clearKey||k.key) || key;
+        if(!kid || !key){
+            const kp=typeof s.keys==='string'?s.keys:typeof s.key==='string'&&s.key.includes(':')?s.key:pr.includes(':')&&hex(pr.split(':')[0])?pr:'';
+            if(kp){const x=kp.split(':');kid=hex(x[0]);key=hex(x[1])}
+        }
+    }
     
     const h=Object.assign({},s.headers&&typeof s.headers==='object'?s.headers:{});if(s.referer||s.referrer)h.Referer=s.referer||s.referrer;
-    return{id:String(s.id||i+1),title:s.title||s.name||'',type:/\.m3u8/i.test(u)?'HLS':/\.mpd/i.test(u)?(kid?'DASH · DRM':'DASH'):/^[a-z]/i.test(s.type||'')?String(s.type).toUpperCase():'STREAM',url:u,kid,key,h:Object.keys(h).length?h:null}
+    
+    return {
+        id: String(s.id||i+1),
+        title: s.title||s.name||'',
+        type: isMpd ? (kid ? 'DASH · DRM' : 'DASH') : 'HLS', // ফোর্সফুলি টাইপ সেট করা হলো
+        url: u,
+        kid: kid,
+        key: key,
+        h: Object.keys(h).length?h:null
+    }
 };
+
 const streamsOf=m=>{const r=m.raw,e=r.event||{},out=[];[r.streams,r.dashStreams,r.sources,r.links,e.streams].forEach(g=>Array.isArray(g)&&g.forEach(x=>{const s=parseS(x,out.length);if(s)out.push(s)}));return out};
 const norm=i=>{const e=i.event||{};return{raw:i,id:String(i.id||i.matchId||i.match_id||''),title:i.title||'',name:i.title||'Live Match',lg:e.type||e.league||'',ll:safe(e.logo),cat:e.category||'Cricket',
  a:e.teamA||'Team A',b:e.teamB||'Team B',fa:safe(e.teamAFlag||e.teamALogo||e.teamAImage),fb:safe(e.teamBFlag||e.teamBLogo||e.teamBImage),
@@ -243,7 +263,7 @@ const draw=()=>{if(CUR)return paint();const g=group(EV),c=x=>g[x].length;
  const h=['live','upcoming','ended'].filter(k=>(F==='all'||F===k)&&c(k)).map(k=>`<div class="sec"><h2>${k==='live'?'<i class="dot"></i>':''}${LBL[k]} <small>${c(k)} match${c(k)>1?'es':''}</small></h2><div class="grid">${g[k].map(m=>card(m,k)).join('')}</div></div>`).join('');
  $('out').innerHTML=h||'<div class="empty" style="margin-top:20px">No matches in this section right now.</div>';tick()};
 
-/* ---- player ---- */
+/* ---- player (UPDATED FOR DASH CLEARKEY) ---- */
 let P=null,tok=0,hdr=null,org='';
 const msg=t=>{$('ov').textContent=t||'';$('ov').hidden=!t};
 const ensure=async()=>{if(P)return P;await new Promise(r=>{let n=0;(function c(){$('shell').clientWidth||n++>40?r():requestAnimationFrame(c)})()});
@@ -256,14 +276,57 @@ let A=null;
 const attempts=s=>{const a=[[0,0]];if(s.kid)a.push([0,1]);a.push([1,0]);if(s.kid)a.push([1,1]);return a};
 const fail=t=>{if(!A||A.t!==t||A.f)return;A.f=1;if(A.n+1<attempts(A.s).length)return play(A.s,A.n+1);mark('bad');
  msg(CUR&&status(CUR)==='upcoming'?'Match has not started yet — the stream may go live shortly. Try again soon.':'Channel '+A.s.id+' could not be played. Please try another channel.')};
-const play=async(s,n)=>{const t=++tok,at=attempts(s),px=at[n][0],sw=at[n][1];A={s,n,t,f:0};
- const url=px?PROXY+(PROXY_ENCODE||/[&#]/.test(s.url)?encodeURIComponent(s.url):s.url):s.url;msg(px?'Retrying via proxy…':n?'Retrying…':'Loading stream…');
- hdr=s.h;try{org=hdr?new URL(url,location.href).origin:''}catch(e){org=''}
- try{const p=await ensure();if(t!==tok)return;const rp={maxAttempts:2,baseDelay:500,backoffFactor:2,fuzzFactor:.5,timeout:20000},kid=sw?s.key:s.kid,key=sw?s.kid:s.key;
-  p.configure({drm:{clearKeys:kid&&key?{[kid]:key}:{}},manifest:{defaultPresentationDelay:4,ignoreTextStreamFailures:true,retryParameters:rp},streaming:{bufferingGoal:10,rebufferingGoal:2,bufferBehind:20,retryParameters:rp},abr:{enabled:true}});
-  const mime=/\.m3u8(?:[?#]|$)/i.test(s.url)?'application/x-mpegURL':/\.mpd(?:[?#]|$)/i.test(s.url)?'application/dash+xml':null;
-  await p.load(url,null,mime);if(t!==tok)return;msg('');const r=$('v').play();r&&r.catch&&r.catch(()=>{})
- }catch(e){if(t!==tok||(e&&e.code===7000))return;fail(t)}};
+
+const play=async(s,n)=>{
+    const t=++tok,at=attempts(s),px=at[n][0],sw=at[n][1];A={s,n,t,f:0};
+    const url=px?PROXY+(PROXY_ENCODE||/[&#]/.test(s.url)?encodeURIComponent(s.url):s.url):s.url;
+    msg(px?'Retrying via proxy…':n?'Retrying…':'Loading stream…');
+    
+    hdr=s.h;try{org=hdr?new URL(url,location.href).origin:''}catch(e){org=''}
+    
+    try{
+        const p=await ensure();if(t!==tok)return;
+        const rp={maxAttempts:2,baseDelay:500,backoffFactor:2,fuzzFactor:.5,timeout:20000};
+        const kid=sw?s.key:s.kid, key=sw?s.kid:s.key;
+        
+        // DASH ডিআরএম এর জন্য সঠিক কনফিগারেশন
+        let drmConfig = { servers: {} };
+        if (kid && key) {
+            drmConfig.clearKeys = { [kid]: key };
+        }
+
+        p.configure({
+            drm: drmConfig,
+            manifest: {
+                defaultPresentationDelay: 4,
+                ignoreTextStreamFailures: true,
+                dash: { ignoreMinBufferTime: true }, // এটি ড্যাশ ভিডিও লোড হতে সাহায্য করে
+                retryParameters: rp
+            },
+            streaming: {
+                bufferingGoal: 10,
+                rebufferingGoal: 2,
+                bufferBehind: 20,
+                retryParameters: rp
+            },
+            abr: { enabled: true }
+        });
+        
+        // আপনার টাইপ 7 এবং 0 লজিক অনুযায়ী Mime টাইপ সেট করা
+        const mime = /\.mpd(?:[?#]|$)/i.test(s.url) ? 'application/dash+xml' : 
+                     /\.m3u8(?:[?#]|$)/i.test(s.url) ? 'application/x-mpegURL' : null;
+                     
+        await p.load(url, null, mime);
+        if(t!==tok)return;
+        msg('');
+        const r=$('v').play();r&&r.catch&&r.catch(()=>{})
+    }catch(e){
+        if(t!==tok||(e&&e.code===7000))return;
+        console.error("Playback error:", e);
+        fail(t);
+    }
+};
+
 const pick=(i,push)=>{const s=S[i];if(!s)return;CI=i;[...$('srcs').children].forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.remove('bad')});
  if(push&&CUR.id)history.replaceState(null,'','?id='+encodeURIComponent(CUR.id)+'&src='+encodeURIComponent(s.id));play(s,0)};
 const abbr=(s)=>{const w=String(s.title||'').replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/).filter(Boolean);return(w.length>1?w.slice(0,3).map(x=>x[0]).join(''):(w[0]||'').slice(0,3)||s.id).toUpperCase()};
@@ -275,8 +338,8 @@ const paint=()=>{const s=status(CUR);CUR.s0=s;$('panel').innerHTML=`${orb(CUR.fa
  const g=group(EV.filter(m=>m.id!==CUR.id)),r=g.live.concat(g.ended,g.upcoming).slice(0,8);$('mnone').hidden=!!r.length;$('more').innerHTML=r.map(m=>card(m,status(m))).join('');tick()};
 const open=()=>{$('list').hidden=true;$('play').hidden=false;$('bk').href=location.pathname;document.title=CUR.name+' Live Stream | MatchCentral';$('robots').content='noindex, follow';
  build();paint();const w=Q.get('src')||'1';let i=S.findIndex(s=>s.id===w);if(i<0)i=Math.max(0,Math.min((+w||1)-1,S.length-1));if(S.length)pick(i,false)};
- 
- /* ---- boot ---- */
+
+/* ---- boot ---- */
 const refresh=async()=>{if(!await fetchEv())return;if(CUR&&CUR.id){const n=EV.find(m=>m.id===CUR.id);if(n){const had=S.length;CUR=n;S=streamsOf(n);if(!had&&S.length){msg('');build();pick(0,true)}}}draw()};
 document.addEventListener('DOMContentLoaded',async()=>{
  $('yr').textContent=new Date().getFullYear();
@@ -298,4 +361,3 @@ document.addEventListener('DOMContentLoaded',async()=>{
 </script>
 </body>
 </html>
- 
