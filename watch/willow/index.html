@@ -155,9 +155,6 @@ a.card:focus-visible{outline:2px solid #ffb800;outline-offset:3px}
 a.card.live:hover .watch-now{filter:brightness(1.06);box-shadow:0 10px 28px rgba(255,136,0,.36),inset 0 1px 0 rgba(255,255,255,.45)}
 .upcoming-action{border:1px solid rgba(255,184,0,.24);color:#ffb800;background:linear-gradient(180deg,#282837,#191924);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
 .card.upcoming .poster img{filter:saturate(.84)}
-.thumb{position:relative;width:84px;aspect-ratio:16/9;flex:none;border-radius:9px;overflow:hidden;background:#0b1017;border:1px solid var(--line)}
-.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-@media(max-width:420px){.thumb{width:64px}}
 
 /* Footer */
 footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(24px + env(safe-area-inset-bottom));text-align:center;background:#030509}
@@ -288,6 +285,23 @@ const norm=i=>{const name=String(i.event_name||i.name||'').trim(),parts=name.spl
 // Status comes only from the API's `status` field. A future `time` string, an available
 // server key, or the word "Live" inside the time text must never promote an event to LIVE.
 const status=m=>m&&m.apiStatus==='LIVE'?'live':'upcoming';
+/* ---- routing ---- */
+// script/willow-live.js builds links as "?CB" + matchId.replace(/[^0-9]/g,''), so the token
+// carries only the digits of the match id. "&ser=N" optionally selects a server; when it is
+// omitted the first available server plays. Legacy ?id= / &src= links keep working.
+const digitsOf=v=>String(v==null?'':v).replace(/[^0-9]/g,'');
+const cbToken=()=>{for(const k of Q.keys()){const m=/^CB(\d+)$/i.exec(String(k).trim());if(m)return m[1]}
+ const v=String(Q.get('CB')||'').trim();return /^\d+$/.test(v)?v:''};
+// A digits-only token can belong to more than one event. A LIVE event always wins; otherwise
+// the first (soonest) event in API order is used, so the choice is stable across refreshes.
+const findByCB=n=>{if(!n)return null;
+ const hits=EV.filter(m=>{const d=digitsOf(m.id);return d===n||(d&&+d===+n)});
+ return hits.length?(hits.find(m=>status(m)==='live')||hits[0]):null};
+const serParam=()=>{const v=String(Q.get('ser')||Q.get('src')||'').trim();return /^\d+$/.test(v)?v:''};
+const hrefOf=m=>{const n=digitsOf(m.id);return n?'?CB'+n:'?id='+encodeURIComponent(m.id)};
+const urlFor=(m,ser)=>{const n=digitsOf(m.id);
+ return n?'?CB'+n+'&ser='+encodeURIComponent(ser):'?id='+encodeURIComponent(m.id)+'&src='+encodeURIComponent(ser)};
+
 let EV=[],CUR=null,S=[],CI=0,UPDATED='';
 const getRaw=()=>{try{return JSON.parse(localStorage.getItem('mc:'+SPORT)||'[]')}catch(e){return[]}};
 const setEv=a=>{EV=(Array.isArray(a)?a:[]).filter(x=>x&&typeof x==='object').map(norm).filter(m=>m.id)};
@@ -307,11 +321,10 @@ const PULSE='<i class="pulse" aria-hidden="true"></i>';
 const metaInner=(m,s)=>{const t=s==='live'?liveStart(m):0;
  if(t)return `${PULSE}<span class="run" data-live="1" data-t="${t}">${esc(liveText(t))}</span>`;
  return `${CLOCK}<span>${esc(m.time||(s==='live'?'Live now':'Time to be announced'))}</span>`};
-const thumb=m=>`<div class="thumb">${m.img?`<img src="${esc(m.img)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">`:''}</div>`;
 // Only an API-LIVE card is a Watch link. An UPCOMING card is deliberately not presented
 // as playable now: it keeps its scheduled API time and one muted Upcoming action.
 const card=(m,s)=>{m.s0=s;const inner=`${poster(m,s)}<div class="winfo"><h3 class="wtitle">${esc(m.match)}</h3>${m.league?`<p class="wleague">${esc(m.league)}</p>`:''}<div class="wmeta">${metaInner(m,s)}</div>${s==='live'?'<span class="watch-action watch-now">▶ Watch Now</span>':'<span class="watch-action upcoming-action">Upcoming</span>'}</div>`;
- return s==='live'?`<a class="card live" href="?id=${encodeURIComponent(m.id)}" aria-label="Watch ${esc(m.match)} now">${inner}</a>`:`<article class="card upcoming" aria-label="Upcoming: ${esc(m.match)}">${inner}</article>`};
+ return s==='live'?`<a class="card live" href="${hrefOf(m)}" aria-label="Watch ${esc(m.match)} now">${inner}</a>`:`<article class="card upcoming" aria-label="Upcoming: ${esc(m.match)}">${inner}</article>`};
 
 /* ---- list ---- */
 let F='all';
@@ -396,14 +409,14 @@ const play=async(s,n)=>{
 };
 
 const pick=(i,push)=>{const s=S[i];if(!s)return;CI=i;[...$('srcs').children].forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.remove('bad')});
- if(push&&CUR.id)history.replaceState(null,'','?id='+encodeURIComponent(CUR.id)+'&src='+encodeURIComponent(s.id));play(s,0)};
+ if(push&&CUR.id)history.replaceState(null,'',urlFor(CUR,s.id));play(s,0)};
 const build=()=>{$('srcs').innerHTML=S.map((s,i)=>`<button class="ch" type="button" data-i="${i}"><span class="bg">${i+1}</span><span>${esc(s.title)}<small>${esc(s.type)}</small></span></button>`).join('');
 $('cn2').textContent=S.length+' server'+(S.length===1?'':'s');
  if(!S.length)msg(status(CUR)==='upcoming'?`Upcoming event${CUR.time?' · '+CUR.time:''}. The stream will appear here when the API marks this event as LIVE.`:'No servers are listed for this event yet.')};
 
 const paint=()=>{const s=status(CUR);CUR.s0=s;const t=s==='live'?liveStart(CUR):0;
  const when=t?`<span class="run" data-live="1" data-t="${t}">${esc(liveText(t))}</span>`:(CUR.time?`<span>${esc(CUR.time)}</span>`:'');
- $('panel').innerHTML=`${thumb(CUR)}<div class="mx"><h1 class="pt">${esc(CUR.match)}</h1><div class="sub"><span class="chip s ${s}">${s==='live'?'Live':'Upcoming'}</span>${when}${CUR.league?`<span>${esc(CUR.league)}</span>`:''}</div></div>`};
+ $('panel').innerHTML=`<div class="mx"><h1 class="pt">${esc(CUR.match)}</h1><div class="sub"><span class="chip s ${s}">${s==='live'?'Live':'Upcoming'}</span>${when}${CUR.league?`<span>${esc(CUR.league)}</span>`:''}</div></div>`};
 
 // One shared 1s timer updates only the visible counters: no re-render, no layout work.
 const tick=()=>{const n=Date.now();document.querySelectorAll('[data-live]').forEach(e=>{const t=+e.dataset.t;if(t)e.textContent='Live for '+dur(n-t)})};
@@ -411,7 +424,7 @@ const tick=()=>{const n=Date.now();document.querySelectorAll('[data-live]').forE
 const open=()=>{const s=status(CUR);$('list').hidden=true;$('play').hidden=false;$('bk').href=location.pathname;document.title=CUR.match+(s==='live'?' Live Stream':' Upcoming')+' | MatchCentral';$('robots').content='noindex, follow';
  build();paint();
  // Only the selected event is shown here. Auto-play happens only when the API status is LIVE.
- const w=(Q.get('src')||'').trim();
+ const w=serParam();
  let i=w?S.findIndex(s=>s.id===w):-1;
  if(i<0)i=0;
  if(s==='live'&&S.length)pick(i,false);
@@ -451,13 +464,14 @@ document.addEventListener('DOMContentLoaded',async()=>{
  const um=e=>{if(e.target.closest&&e.target.closest('.shaka-controls-container'))return;$('v').muted=false;['pointerdown','touchstart','keydown'].forEach(n=>document.removeEventListener(n,um,true))};['pointerdown','touchstart','keydown'].forEach(n=>document.addEventListener(n,um,true));
  $('bar').onclick=e=>{const b=e.target.closest('[data-f]');if(b){F=b.dataset.f;draw()}};
  $('srcs').onclick=e=>{const b=e.target.closest('.ch');if(b)pick(+b.dataset.i,true)};
- setEv(getRaw());const id=(Q.get('id')||'').trim();if(EV.length&&!id)draw();
+ setEv(getRaw());const cb=cbToken(),id=(Q.get('id')||'').trim();if(EV.length&&!cb&&!id)draw();
  const ok=await fetchEv();
  if(!ok&&!EV.length){$('out').innerHTML='<div class="empty"><p>Unable to load events right now.</p><button class="mini" type="button" onclick="location.reload()">Retry</button></div>';return}
- if(id){const m=EV.find(x=>x.id===id);if(m){CUR=m;S=streamsOf(m);open()}else{$('note').hidden=false;$('note').className='note';$('note').textContent='Event '+id+' was not found. Showing all events.';draw()}}else draw();
+ if(cb||id){const m=cb?findByCB(cb):EV.find(x=>x.id===id);
+  if(m){CUR=m;S=streamsOf(m);open()}else{$('note').hidden=false;$('note').className='note';$('note').textContent='Event '+(cb?'CB'+cb:id)+' was not found. Showing all events.';draw()}}else draw();
  tick();setInterval(tick,1e3);
  setInterval(refresh,EVERY)});
 })();
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a55f367cda98ac93',t:'MTc5MzkxNjg4MQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a55f367cda98ac93',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
