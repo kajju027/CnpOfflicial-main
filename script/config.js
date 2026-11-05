@@ -150,6 +150,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://images.fancode.com/skillup-uploads/cms-media/West-Indies-tour-of-Bangladesh-sporty-v2.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhL1dlc3QtSW5kaWVzLXRvdXItb2YtQmFuZ2xhZGVzaC1zcG9ydHktdjIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvdmVyIiwid2lkdGgiOjgwMCwiaGVpZ2h0IjoxMDAwfSwid2VicCI6eyJxdWFsaXR5Ijo2MCwibG9zc2xlc3MiOmZhbHNlfX0sIm91dHB1dEZvcm1hdCI6IndlYnAifQ==",
       "date": "05 NOVEMBER 2026 - 9:00 AM",
       "watchUrl": "/home/live/wi-vs-ban.html"
+    },
+    {
+      "tournament": "Zimbabwe Tour of Afghanistan in UAE, 2026",
+      "homeTeam": {
+        "name": "Afganistan",
+        "logo": "https://img.sofascore.com/api/v1/team/187575/image"
+      },
+      "awayTeam": {
+        "name": "Zimbabwe",
+        "logo": "https://img.sofascore.com/api/v1/team/187745/image"
+      },
+      "poster": "https://images.fancode.com/skillup-uploads/cms-media/AFG-vs-ZIM_Test_fc-app-v2.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhL0FGRy12cy1aSU1fVGVzdF9mYy1hcHAtdjIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvdmVyIiwid2lkdGgiOjgwMCwiaGVpZ2h0IjoxMDAwfSwid2VicCI6eyJxdWFsaXR5Ijo2MCwibG9zc2xlc3MiOmZhbHNlfX0sIm91dHB1dEZvcm1hdCI6IndlYnAifQ==",
+      "date": "05 NOVEMBER 2026 - 10:30 AM",
+      "watchUrl": "/home/live/afg-vs-zim.html"
     }
   ];
 }
