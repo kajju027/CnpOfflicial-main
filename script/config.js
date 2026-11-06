@@ -110,20 +110,6 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "ACC MEN'S ASIA CUP 2026",
-      "homeTeam": {
-        "name": "Asia Cup",
-        "logo": "https://imgh.in/host/xxrz2u"
-      },
-      "awayTeam": {
-        "name": "Asia Cup",
-        "logo": "https://imgh.in/host/xxrz2u"
-      },
-      "poster": "https://imgh.in/host/ahj6j1",
-      "date": "05 NOV - 14 NOV 2026 - 10:00 AM",
-      "watchUrl": "/home/live/acc-asiacup-2026.html"
-    },
-    {
       "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND ODI",
       "homeTeam": {
         "name": "India",
@@ -150,6 +136,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://images.fancode.com/skillup-uploads/cms-media/West-Indies-tour-of-Bangladesh-sporty-v2.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhL1dlc3QtSW5kaWVzLXRvdXItb2YtQmFuZ2xhZGVzaC1zcG9ydHktdjIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvdmVyIiwid2lkdGgiOjgwMCwiaGVpZ2h0IjoxMDAwfSwid2VicCI6eyJxdWFsaXR5Ijo2MCwibG9zc2xlc3MiOmZhbHNlfX0sIm91dHB1dEZvcm1hdCI6IndlYnAifQ==",
       "date": "05 NOVEMBER 2026 - 9:00 AM",
       "watchUrl": "/home/live/wi-vs-ban.html"
+    },
+    {
+      "tournament": "ACC MEN'S ASIA CUP 2026",
+      "homeTeam": {
+        "name": "Asia Cup",
+        "logo": "https://imgh.in/host/xxrz2u"
+      },
+      "awayTeam": {
+        "name": "Asia Cup",
+        "logo": "https://imgh.in/host/xxrz2u"
+      },
+      "poster": "https://imgh.in/host/ahj6j1",
+      "date": "05 NOV - 14 NOV 2026 - 10:00 AM",
+      "watchUrl": "/home/live/acc-asiacup-2026.html"
     },
     {
       "tournament": "Zimbabwe Tour of Afghanistan in UAE, 2026",
