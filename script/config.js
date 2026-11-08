@@ -140,15 +140,15 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
     {
       "tournament": "ACC MEN'S ASIA CUP 2026",
       "homeTeam": {
-        "name": "Asia Cup",
-        "logo": "https://imgh.in/host/xxrz2u"
+        "name": "India",
+        "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
       },
       "awayTeam": {
-        "name": "Asia Cup",
-        "logo": "https://imgh.in/host/xxrz2u"
+        "name": "Pakistan",
+        "logo": "https://flagpedia.net/data/flags/w1160/pk.webp"
       },
-      "poster": "https://imgh.in/host/ahj6j1",
-      "date": "05 NOV - 14 NOV 2026 - 10:00 AM",
+      "poster": "https://imgh.in/host/9pvkh9",
+      "date": "08 NOV - 14 NOV 2026 - 10:00 AM",
       "watchUrl": "/home/live/acc-asiacup-2026.html"
     },
     {
