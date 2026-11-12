@@ -116,10 +116,10 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
       },
       "awayTeam": {
-        "name": "United Arab Empire",
-        "logo": "https://flagpedia.net/data/flags/w1160/ae.webp"
+        "name": "Afghanistan",
+        "logo": "https://flagpedia.net/data/flags/w1160/af.webp"
       },
-      "poster": "https://imgh.in/host/ijdree",
+      "poster": "https://imgh.in/host/zgw4fb",
       "date": "08 NOV - 14 NOV 2026 - 10:00 AM",
       "watchUrl": "/home/live/acc-asiacup-2026.html"
     },
