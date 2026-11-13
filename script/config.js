@@ -120,7 +120,7 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
       },
       "poster": "https://imgh.in/host/l3k0qd",
-      "date": "3RD ODI MATCH LIVE - 07 : 00 AM",
+      "date": "4TH ODI MATCH LIVE - 07:00 AM",
       "watchUrl": "/home/live/ind-vs-nz.html"
     },
     {
