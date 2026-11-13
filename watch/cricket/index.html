@@ -319,7 +319,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
 const SPORT='cricket',API='https://sonujson-v7.pages.dev/Data/events/cricket.json',
 PROXY='https://stream-through-spark.lovable.app/api/proxy?u=',PROXY_ENCODE=false,
 WA='https://whatsapp.com/channel/0029VbDMpWVAe5VldaFI370o',
-POPUNDER_AD_URL='https://aarems.org/1/1eadc3dd7604b2436ca0409b43cf0a34',LIVE_MAX=432e5,EVERY=6e4;
+POPUNDER_AD_URL='',LIVE_MAX=432e5,EVERY=6e4;
 const $=i=>document.getElementById(i),Q=new URLSearchParams(location.search),pad=n=>String(n).padStart(2,'0');
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safe=u=>{try{const p=new URL(String(u||'').trim());return/^https?:$/.test(p.protocol)?p.href:''}catch(e){return''}};
