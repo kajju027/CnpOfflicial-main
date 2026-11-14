@@ -4,19 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="refresh" content="0;url=https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f">
-<title>Redirecting...</title>
+<noscript><meta http-equiv="refresh" content="0;url=https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f"></noscript>
+<title>Opening WhatsApp...</title>
 <script>
 (function(){
-var u="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f";
-try{window.location.replace(u)}catch(e){window.location.href=u}
-setTimeout(function(){window.location.href=u},1200);
+var id="0029VbBjdsD9Bb63qmSGBY2f";
+var web="https://whatsapp.com/channel/"+id;
+var app="whatsapp://channel/"+id;
+var android=/Android/i.test(navigator.userAgent||"");
+var left=false;
+function mark(){left=true}
+document.addEventListener("visibilitychange",function(){if(document.hidden)mark()});
+window.addEventListener("pagehide",mark);
+window.addEventListener("blur",mark);
+var target=android?"intent://channel/"+id+"#Intent;scheme=whatsapp;S.browser_fallback_url="+encodeURIComponent(web)+";end":app;
+try{window.location.replace(target)}catch(e){window.location.href=target}
+setTimeout(function(){if(!left)window.location.replace(web)},1500);
 })();
 </script>
 </head>
 <body>
-<noscript><a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f">Join WhatsApp Channel</a></noscript>
-<a id="j" href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f" style="display:none">Join WhatsApp Channel</a>
-<script>setTimeout(function(){document.getElementById("j").style.display="inline"},1500)</script>
+<a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f">Open WhatsApp Channel</a>
 </body>
 </html>
