@@ -122,20 +122,6 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://imgh.in/host/l3k0qd",
       "date": "5TH ODI MATCH LIVE - 07:00 AM",
       "watchUrl": "/home/live/ind-vs-nz.html"
-    },
-    {
-      "tournament": "Zimbabwe Tour of Afghanistan in UAE, 2026",
-      "homeTeam": {
-        "name": "Afganistan",
-        "logo": "https://flagpedia.net/data/flags/w1160/af.webp"
-      },
-      "awayTeam": {
-        "name": "Zimbabwe",
-        "logo": "https://flagpedia.net/data/flags/w1160/zw.webp"
-      },
-      "poster": "https://images.fancode.com/skillup-uploads/cms-media/AFG-vs-ZIM_Test_fc-app-v2.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhL0FGRy12cy1aSU1fVGVzdF9mYy1hcHAtdjIuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6ImNvdmVyIiwid2lkdGgiOjgwMCwiaGVpZ2h0IjoxMDAwfSwid2VicCI6eyJxdWFsaXR5Ijo2MCwibG9zc2xlc3MiOmZhbHNlfX0sIm91dHB1dEZvcm1hdCI6IndlYnAifQ==",
-      "date": "05 NOVEMBER 2026 - 10:30 AM",
-      "watchUrl": "/home/live/afg-vs-zim.html"
     }
   ];
 }
