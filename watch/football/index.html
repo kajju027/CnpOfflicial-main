@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://matchcentral.in/watch/football/">
 <link rel="preload" as="image" href="https://matchcentral.in/assets/logo.png?v=3">
 <link rel="preconnect" href="https://aarems.org/">
-<link rel="preload" as="script" href="https://aarems.org/1/1eadc3dd7604b2436ca0409b43cf0a34" fetchpriority="high">
+<!--<link rel="preload" as="script" href="https://aarems.org/1/1eadc3dd7604b2436ca0409b43cf0a34" fetchpriority="high">-->
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Acme&amp;family=Amaranth:wght@400;700&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@5.3.3/dist/controls.css">
@@ -319,7 +319,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
 const SPORT='football',API='https://sonujson-v7.pages.dev/Data/events/football.json',
 PROXY='https://stream-through-spark.lovable.app/api/proxy?u=',PROXY_ENCODE=false,
 WA='https://whatsapp.com/channel/0029VbDMpWVAe5VldaFI370o',
-POPUNDER_AD_URL='https://aarems.org/1/1eadc3dd7604b2436ca0409b43cf0a34',LIVE_MAX=432e5,EVERY=6e4;
+POPUNDER_AD_URL='',LIVE_MAX=432e5,EVERY=6e4;
 const $=i=>document.getElementById(i),Q=new URLSearchParams(location.search),pad=n=>String(n).padStart(2,'0');
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safe=u=>{try{const p=new URL(String(u||'').trim());return/^https?:$/.test(p.protocol)?p.href:''}catch(e){return''}};
