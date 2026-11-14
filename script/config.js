@@ -110,20 +110,6 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND ODI",
-      "homeTeam": {
-        "name": "India",
-        "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
-      },
-      "awayTeam": {
-        "name": "New Zealand",
-        "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
-      },
-      "poster": "https://imgh.in/host/l3k0qd",
-      "date": "4TH ODI MATCH LIVE - 07:00 AM",
-      "watchUrl": "/home/live/ind-vs-nz.html"
-    },
-    {
       "tournament": "ACC MEN'S ASIA CUP 2026",
       "homeTeam": {
         "name": "India",
@@ -136,6 +122,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://imgh.in/host/zgw4fb",
       "date": "08 NOV - 14 NOV 2026 - 10:00 AM",
       "watchUrl": "/home/live/acc-asiacup-2026.html"
+    },
+    {
+      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND ODI",
+      "homeTeam": {
+        "name": "India",
+        "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
+      },
+      "awayTeam": {
+        "name": "New Zealand",
+        "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
+      },
+      "poster": "https://imgh.in/host/l3k0qd",
+      "date": "4TH ODI MATCH LIVE - 07:00 AM",
+      "watchUrl": "/home/live/ind-vs-nz.html"
     },
     {
       "tournament": "Zimbabwe Tour of Afghanistan in UAE, 2026",
