@@ -1,42 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CNPTV — Redirecting</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>CNPTV</title>
+<noscript>
+  <meta http-equiv="refresh" content="0;url=https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f">
+</noscript>
+<script>
+(function () {
+  var id  = "0029VbBjdsD9Bb63qmSGBY2f";
+  var web = "https://whatsapp.com/channel/" + id;
+  var app = "whatsapp://channel/" + id;
 
-  <!-- 1. FALLBACK: Meta refresh for users with JavaScript disabled -->
-  <noscript>
-    <meta http-equiv="refresh" content="0;url=https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f">
-  </noscript>
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-  <!-- 2. PRIMARY: JavaScript redirect (highest priority) -->
-  <script>
-    (function() {
-      // Prevent redirect loops: if we've already been here, stop.
-      if (sessionStorage.getItem('cnptv_redirected') === '1') {
-        return; // Let the page render (or show a manual link if you add one)
-      }
+  if (!isMobile) {
+    window.location.replace(web);
+    return;
+  }
 
-      var target = "https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f";
+  var fallback = setTimeout(function () {
+    window.location.replace(web);
+  }, 1500);
 
-      // Use replace() to keep browser history clean (no "back button" trap)
-      // This is the modern standard for redirects.
-      window.location.replace(target);
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) clearTimeout(fallback);
+  });
 
-      // Mark as done so a user manually navigating back doesn't get looped.
-      try { sessionStorage.setItem('cnptv_redirected', '1'); } catch (e) {}
-    })();
-  </script>
-
-  <!-- 3. FINAL FALLBACK: Meta refresh in <head> as a safety net -->
-  <!-- Placed after the script so it only fires if JS fails to execute. -->
-  <meta http-equiv="refresh" content="3;url=https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f">
+  window.location.href = app;
+})();
+</script>
 </head>
-<body>
-  <!-- Optional: A minimal manual link for extreme edge cases -->
-  <p style="text-align:center; margin-top:40vh; font-family:sans-serif;">
-    <a href="https://whatsapp.com/channel/0029VbBjdsD9Bb63qmSGBY2f">Click here if you are not redirected.</a>
-  </p>
-</body>
+<body></body>
 </html>
