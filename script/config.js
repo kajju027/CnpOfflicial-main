@@ -110,7 +110,7 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND ODI",
+      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 1ST TEST",
       "homeTeam": {
         "name": "India",
         "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
@@ -119,8 +119,8 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "name": "New Zealand",
         "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
       },
-      "poster": "https://imgh.in/host/l3k0qd",
-      "date": "5TH ODI MATCH LIVE - 07:00 AM",
+      "poster": "https://imgh.in/host/x98v9c",
+      "date": "1ST TEST MATCH - 3:30 AM",
       "watchUrl": "/home/live/ind-vs-nz.html"
     }
   ];
