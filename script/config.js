@@ -122,6 +122,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://imgh.in/host/x98v9c",
       "date": "1ST TEST MATCH - 3:30 AM",
       "watchUrl": "/home/live/ind-vs-nz.html"
+    },
+    {
+      "tournament": "ASIA CUP 2026 LIVE",
+      "homeTeam": {
+        "name": "India",
+        "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
+      },
+      "awayTeam": {
+        "name": "Pakistan",
+        "logo": "https://flagpedia.net/data/flags/w1160/pk.webp"
+      },
+      "poster": "https://imgh.in/host/bj7cji",
+      "date": "22 NOVEMBER 2026 - 3:30  PM",
+      "watchUrl": "/home/live/asiacup.html"
     }
   ];
 }
