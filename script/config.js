@@ -112,15 +112,15 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
     {
       "tournament": "ASIA CUP 2026 LIVE",
       "homeTeam": {
-        "name": "India",
+        "name": "INDIA",
         "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
       },
       "awayTeam": {
-        "name": "Pakistan",
-        "logo": "https://flagpedia.net/data/flags/w1160/pk.webp"
+        "name": "UAE",
+        "logo": "https://flagpedia.net/data/flags/w1160/ae.webp"
       },
       "poster": "https://imgh.in/host/bj7cji",
-      "date": "22 NOVEMBER 2026 - 3:30  PM",
+      "date": "24 NOVEMBER 2026 - 11:00 PM",
       "watchUrl": "/home/live/asiacup.html"
     },
     {
