@@ -116,11 +116,11 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
       },
       "awayTeam": {
-        "name": "UAE",
-        "logo": "https://flagpedia.net/data/flags/w1160/ae.webp"
+        "name": "Sri Lanka",
+        "logo": "https://flagpedia.net/data/flags/w1160/lk.webp"
       },
-      "poster": "https://imgh.in/host/bj7cji",
-      "date": "24 NOVEMBER 2026 - 11:00 PM",
+      "poster": "https://imgh.in/host/oow0ar",
+      "date": "26 NOVEMBER 2026 - 3:00 PM",
       "watchUrl": "/home/live/asiacup.html"
     },
     {
