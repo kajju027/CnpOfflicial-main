@@ -110,7 +110,7 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "Woman's Big Bash League 2026",
+      "tournament": "International League T20 2026",
       "homeTeam": {
         "name": "ILT20",
         "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLPb2DPj3zNmfruRqU6BXsmrMIYosxxZA0efvdkBZ_4Q&s=10"
