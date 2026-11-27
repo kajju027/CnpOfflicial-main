@@ -110,6 +110,20 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
+      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND TEST",
+      "homeTeam": {
+        "name": "India",
+        "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
+      },
+      "awayTeam": {
+        "name": "New Zealand",
+        "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
+      },
+      "poster": "https://imgh.in/host/x98v9c",
+      "date": "2ND TEST MATCH - 3:30 AM",
+      "watchUrl": "/home/live/ind-vs-nz.html"
+    },
+    {
       "tournament": "International League T20 2026",
       "homeTeam": {
         "name": "ILT20",
@@ -150,20 +164,6 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://imgh.in/host/2vhjlb",
       "date": "27 November 2026 - 1:30 PM",
       "watchUrl": "/home/live/australi-vs-england.html"
-    },
-    {
-      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND TEST",
-      "homeTeam": {
-        "name": "India",
-        "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
-      },
-      "awayTeam": {
-        "name": "New Zealand",
-        "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
-      },
-      "poster": "https://imgh.in/host/x98v9c",
-      "date": "2ND TEST MATCH - 3:30 AM",
-      "watchUrl": "/home/live/ind-vs-nz.html"
     }
   ];
 }
