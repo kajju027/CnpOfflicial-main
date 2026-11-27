@@ -119,7 +119,7 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "name": "ILT20",
         "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLPb2DPj3zNmfruRqU6BXsmrMIYosxxZA0efvdkBZ_4Q&s=10"
       },
-      "poster": "https://images.fancode.com/skillup-uploads/cms-media/4250422_53125_PS-W_HB-W_fc-app-v2_1793352675972.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhLzQyNTA0MjJfNTMxMjVfUFMtV19IQi1XX2ZjLWFwcC12Ml8xNzkzMzUyNjc1OTcyLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJjb3ZlciIsIndpZHRoIjo4MDAsImhlaWdodCI6MTAwMH0sIndlYnAiOnsicXVhbGl0eSI6NjAsImxvc3NsZXNzIjpmYWxzZX19LCJvdXRwdXRGb3JtYXQiOiJ3ZWJwIn0=",
+      "poster": "https://images.fancode.com/skillup-uploads/cms-media/4251056_53162_SW_DC_FC-APP.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhLzQyNTEwNTZfNTMxNjJfU1dfRENfRkMtQVBQLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJjb3ZlciIsIndpZHRoIjo4MDAsImhlaWdodCI6MTAwMH0sIndlYnAiOnsicXVhbGl0eSI6NjAsImxvc3NsZXNzIjpmYWxzZX19LCJvdXRwdXRGb3JtYXQiOiJ3ZWJwIn0=",
       "date": "27 November 2026 - 8:00 PM",
       "watchUrl": "/home/live/ilt20.html"
     },
