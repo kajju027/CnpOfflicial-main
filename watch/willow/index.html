@@ -14,7 +14,7 @@
 <link rel="preload" as="script" href="https://capitalhospitals.org/1/1a1214333a11f56be944032d1324ea8e" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Acme&amp;family=Amaranth:wght@400;700&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@5.2.4/dist/controls.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@5.3.5/dist/controls.css">
 <style>
 :root{color-scheme:dark;--bg:#05070c;--s:#0f141c;--line:rgba(255,255,255,.08);--m:#8fa3b0;--aq:#57ffc4;--g:#00e87b;--y:#ffd257;--live:#ff2d55;--pad:clamp(14px,5vw,48px);--gold:#d4af37;}
 *{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}
@@ -229,7 +229,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px var(--pad) calc(2
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/mux.js@7/dist/mux.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/shaka-player@5.2.4/dist/shaka-player.ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/shaka-player@5.3.5/dist/shaka-player.ui.min.js"></script>
 <script>
 (()=>{'use strict';
 /* ---- settings ---- */
@@ -347,7 +347,7 @@ const ensure=async()=>{if(P)return P;await new Promise(r=>{let n=0;(function c()
  try{
   const ui=new shaka.ui.Overlay(P,$('shell'),$('v'));
   ui.configure({
-   controlPanelElements:['play_pause','mute','volume','time_and_duration','spacer','quality','picture_in_picture','fullscreen'],
+   controlPanelElements:['play_pause','mute','volume','time_and_duration','spacer','language','quality','picture_in_picture','fullscreen'],
    seekBarColors:{base:'#000000',buffered:'#F52545',played:'#0AAD2B'},
    volumeBarColors:{base:'#000000',level:'#0AAD2B'},
    playbackRateBarColors:{base:'#000000',level:'#0AAD2B'}
