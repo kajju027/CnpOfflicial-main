@@ -136,6 +136,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://images.fancode.com/skillup-uploads/cms-media/4251056_53162_SW_DC_FC-APP.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhLzQyNTEwNTZfNTMxNjJfU1dfRENfRkMtQVBQLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJjb3ZlciIsIndpZHRoIjo4MDAsImhlaWdodCI6MTAwMH0sIndlYnAiOnsicXVhbGl0eSI6NjAsImxvc3NsZXNzIjpmYWxzZX19LCJvdXRwdXRGb3JtYXQiOiJ3ZWJwIn0=",
       "date": "27 November 2026 - 8:00 PM",
       "watchUrl": "/home/live/ilt20.html"
+    },
+    {
+      "tournament": "Woman's Big Bash League 2026",
+      "homeTeam": {
+        "name": "WBBL",
+        "logo": "https://img.sofascore.com/api/v1/team/274883/image"
+      },
+      "awayTeam": {
+        "name": "WBBL",
+        "logo": "https://img.sofascore.com/api/v1/team/274889/image"
+      },
+      "poster": "https://ik.imagekit.io/sayanmete/4250424_53125_ST-W_SS-W_fc-app-v2_1793352676697%20(1).webp",
+      "date": "28 November 2026 - 1:45 PM",
+      "watchUrl": "/home/live/wbbl.html"
     }
   ];
 }
