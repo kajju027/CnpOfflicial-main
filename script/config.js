@@ -138,20 +138,6 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "watchUrl": "/home/live/ilt20.html"
     },
     {
-      "tournament": "ACC MEN'S ASIA CUP 2026",
-      "homeTeam": {
-        "name": "Pakistan",
-        "logo": "https://flagpedia.net/data/flags/w1160/pk.webp"
-      },
-      "awayTeam": {
-        "name": "Bangladesh",
-        "logo": "https://flagpedia.net/data/flags/w1160/bd.webp"
-      },
-      "poster": "https://imgh.in/host/9isfq9",
-      "date": "27 November 2026 - 3:30 PM",
-      "watchUrl": "/home/live/asiacup.html"
-    },
-    {
       "tournament": "England tour of Australia, 2026",
       "homeTeam": {
         "name": "Australia",
