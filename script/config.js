@@ -119,7 +119,7 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
         "name": "ILT20",
         "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLPb2DPj3zNmfruRqU6BXsmrMIYosxxZA0efvdkBZ_4Q&s=10"
       },
-      "poster": "https://ik.imagekit.io/sayanmete/4251057_53162_MIE",
+      "poster": "https://images.fancode.com/skillup-uploads/cms-media/4251058_53162_GG_DC_FC-APP.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhLzQyNTEwNThfNTMxNjJfR0dfRENfRkMtQVBQLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJjb3ZlciIsIndpZHRoIjo4MDAsImhlaWdodCI6MTAwMH0sIndlYnAiOnsicXVhbGl0eSI6NjAsImxvc3NsZXNzIjpmYWxzZX19LCJvdXRwdXRGb3JtYXQiOiJ3ZWJwIn0=",
       "date": "28 November 2026 - 3:00 PM",
       "watchUrl": "/home/live/ilt20.html"
     },
