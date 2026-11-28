@@ -110,20 +110,6 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "Woman's Big Bash League 2026",
-      "homeTeam": {
-        "name": "WBBL",
-        "logo": "https://img.sofascore.com/api/v1/team/274883/image"
-      },
-      "awayTeam": {
-        "name": "WBBL",
-        "logo": "https://img.sofascore.com/api/v1/team/274889/image"
-      },
-      "poster": "https://ik.imagekit.io/sayanmete/4250424_53125_ST-W_SS-W_fc-app-v2_1793352676697%20(1).webp",
-      "date": "28 November 2026 - 1:45 PM",
-      "watchUrl": "/home/live/wbbl.html"
-    },
-    {
       "tournament": "International League T20 2026",
       "homeTeam": {
         "name": "ILT20",
@@ -136,6 +122,20 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://ik.imagekit.io/sayanmete/4251057_53162_MIE",
       "date": "28 November 2026 - 3:00 PM",
       "watchUrl": "/home/live/ilt20.html"
+    },
+    {
+      "tournament": "Woman's Big Bash League 2026",
+      "homeTeam": {
+        "name": "WBBL",
+        "logo": "https://img.sofascore.com/api/v1/team/274883/image"
+      },
+      "awayTeam": {
+        "name": "WBBL",
+        "logo": "https://img.sofascore.com/api/v1/team/274889/image"
+      },
+      "poster": "https://ik.imagekit.io/sayanmete/4250424_53125_ST-W_SS-W_fc-app-v2_1793352676697%20(1).webp",
+      "date": "28 November 2026 - 1:45 PM",
+      "watchUrl": "/home/live/wbbl.html"
     },
     {
       "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND TEST",
