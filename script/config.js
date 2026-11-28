@@ -136,20 +136,6 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://images.fancode.com/skillup-uploads/cms-media/4251056_53162_SW_DC_FC-APP.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhLzQyNTEwNTZfNTMxNjJfU1dfRENfRkMtQVBQLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJjb3ZlciIsIndpZHRoIjo4MDAsImhlaWdodCI6MTAwMH0sIndlYnAiOnsicXVhbGl0eSI6NjAsImxvc3NsZXNzIjpmYWxzZX19LCJvdXRwdXRGb3JtYXQiOiJ3ZWJwIn0=",
       "date": "27 November 2026 - 8:00 PM",
       "watchUrl": "/home/live/ilt20.html"
-    },
-    {
-      "tournament": "England tour of Australia, 2026",
-      "homeTeam": {
-        "name": "Australia",
-        "logo": "https://flagpedia.net/data/flags/w1160/au.webp"
-      },
-      "awayTeam": {
-        "name": "England",
-        "logo": "https://flagpedia.net/data/flags/w1160/gb.webp"
-      },
-      "poster": "https://imgh.in/host/2vhjlb",
-      "date": "27 November 2026 - 1:30 PM",
-      "watchUrl": "/home/live/australi-vs-england.html"
     }
   ];
 }
