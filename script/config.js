@@ -110,34 +110,6 @@ if (typeof CNPTV_CONF !== "undefined" && CNPTV_CONF) {
 if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
   CNPTV_CONF.heroMatches = [
     {
-      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND TEST",
-      "homeTeam": {
-        "name": "India",
-        "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
-      },
-      "awayTeam": {
-        "name": "New Zealand",
-        "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
-      },
-      "poster": "https://imgh.in/host/x98v9c",
-      "date": "2ND TEST MATCH - 3:30 AM",
-      "watchUrl": "/home/live/ind-vs-nz.html"
-    },
-    {
-      "tournament": "International League T20 2026",
-      "homeTeam": {
-        "name": "ILT20",
-        "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLPb2DPj3zNmfruRqU6BXsmrMIYosxxZA0efvdkBZ_4Q&s=10"
-      },
-      "awayTeam": {
-        "name": "ILT20",
-        "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLPb2DPj3zNmfruRqU6BXsmrMIYosxxZA0efvdkBZ_4Q&s=10"
-      },
-      "poster": "https://images.fancode.com/skillup-uploads/cms-media/4251056_53162_SW_DC_FC-APP.jpg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvY21zLW1lZGlhLzQyNTEwNTZfNTMxNjJfU1dfRENfRkMtQVBQLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJjb3ZlciIsIndpZHRoIjo4MDAsImhlaWdodCI6MTAwMH0sIndlYnAiOnsicXVhbGl0eSI6NjAsImxvc3NsZXNzIjpmYWxzZX19LCJvdXRwdXRGb3JtYXQiOiJ3ZWJwIn0=",
-      "date": "27 November 2026 - 8:00 PM",
-      "watchUrl": "/home/live/ilt20.html"
-    },
-    {
       "tournament": "Woman's Big Bash League 2026",
       "homeTeam": {
         "name": "WBBL",
@@ -150,6 +122,34 @@ if(typeof CNPTV_CONF!=='undefined'&&CNPTV_CONF){
       "poster": "https://ik.imagekit.io/sayanmete/4250424_53125_ST-W_SS-W_fc-app-v2_1793352676697%20(1).webp",
       "date": "28 November 2026 - 1:45 PM",
       "watchUrl": "/home/live/wbbl.html"
+    },
+    {
+      "tournament": "International League T20 2026",
+      "homeTeam": {
+        "name": "ILT20",
+        "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLPb2DPj3zNmfruRqU6BXsmrMIYosxxZA0efvdkBZ_4Q&s=10"
+      },
+      "awayTeam": {
+        "name": "ILT20",
+        "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLPb2DPj3zNmfruRqU6BXsmrMIYosxxZA0efvdkBZ_4Q&s=10"
+      },
+      "poster": "https://ik.imagekit.io/sayanmete/4251057_53162_MIE",
+      "date": "28 November 2026 - 3:00 PM",
+      "watchUrl": "/home/live/ilt20.html"
+    },
+    {
+      "tournament": "INDIA TOUR OF NEW ZEALAND 2026 - 2ND TEST",
+      "homeTeam": {
+        "name": "India",
+        "logo": "https://flagpedia.net/data/flags/w1160/in.webp"
+      },
+      "awayTeam": {
+        "name": "New Zealand",
+        "logo": "https://flagpedia.net/data/flags/w1160/nz.webp"
+      },
+      "poster": "https://imgh.in/host/x98v9c",
+      "date": "2ND TEST MATCH - 3:30 AM",
+      "watchUrl": "/home/live/ind-vs-nz.html"
     }
   ];
 }
